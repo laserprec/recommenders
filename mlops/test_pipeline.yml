@@ -16,6 +16,6 @@ pipeline:
       name: "TrainingStep"
       script_name: "train.py"
       allow_reuse: True
-      source_directory: "/mlops"
+      source_directory: "/mlops/"
       inputs:
       outputs:
