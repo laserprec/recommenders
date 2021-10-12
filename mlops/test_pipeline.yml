@@ -7,7 +7,7 @@ pipeline:
   default_compute: igniteCluster
   steps:
     Step1:
-      runconfig: "/mlops/run_config.yml"
+      runconfig: "mlops/run_config.yml"
       parameters:
         NUM_ITERATIONS_2:
           source: PipelineParam1
