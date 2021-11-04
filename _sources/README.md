@@ -14,3 +14,10 @@ To build the documentation as HTML:
     make html
 
 To contribute to this repository, please follow our [coding guidelines](https://github.com/Microsoft/Recommenders/wiki/Coding-Guidelines). See also the [reStructuredText documentation](https://www.sphinx-doc.org/en/master/usage/restructuredtext/index.html) for the syntax of docstrings.
+
+
+For jupyter book:
+
+1. `pip install requirements-docs.txt`
+2. Symlink the `examples` folder: `ln -s ../examples examples`
+3. Compile the documentation: jupyter-book build --all ./

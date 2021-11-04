@@ -1,10 +1,8 @@
-# Recommenders
-
 ````{margin}
 ```sh
-pip install recommenders
+pip install recommenders[examples]
 ```
-<a class="github-button" href="https://github.com/microsoft/genalog" data-icon="octicon-star" style="margin:auto" data-size="large" data-show-count="false" aria-label="Star us microsoft/genalog on GitHub">Star Us</a><script async defer src="https://buttons.github.io/buttons.js"></script>
+<a class="github-button" href="https://github.com/microsoft/recommenders" data-icon="octicon-star" style="margin:auto" data-size="large" data-show-count="false" aria-label="Star us microsoft/recommenders on GitHub">Star Us</a><script async defer src="https://buttons.github.io/buttons.js"></script>
 ````
 This repository contains examples and best practices for building recommendation systems, provided as Jupyter notebooks. The examples detail our learnings on five key tasks:
 

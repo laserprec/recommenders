@@ -115,6 +115,38 @@
   </a>
  </li>
 </ul>
+<p class="caption" role="heading">
+ <span class="caption-text">
+  API Documentation
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="source/datasets.html">
+   Dataset module
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="source/evaluation.html">
+   Evaluation module
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="source/models.html">
+   Recommender algorithms module
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="source/tuning.html">
+   Hyperparameter tuning module
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="source/utils.html">
+   Common utilities module
+  </a>
+ </li>
+</ul>
 
     </div>
 </nav> <!-- To handle the deprecated key -->
@@ -219,6 +251,12 @@ make html
 </pre></div>
 </div>
 <p>To contribute to this repository, please follow our <a class="reference external" href="https://github.com/Microsoft/Recommenders/wiki/Coding-Guidelines">coding guidelines</a>. See also the <a class="reference external" href="https://www.sphinx-doc.org/en/master/usage/restructuredtext/index.html">reStructuredText documentation</a> for the syntax of docstrings.</p>
+<p>For jupyter book:</p>
+<ol class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">requirements-docs.txt</span></code></p></li>
+<li><p>Symlink the <code class="docutils literal notranslate"><span class="pre">examples</span></code> folder: <code class="docutils literal notranslate"><span class="pre">ln</span> <span class="pre">-s</span> <span class="pre">../examples</span> <span class="pre">examples</span></code></p></li>
+<li><p>Compile the documentation: jupyter-book build –all ./</p></li>
+</ol>
 </div>
 
     <script type="text/x-thebe-config">
