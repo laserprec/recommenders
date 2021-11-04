@@ -1,0 +1,1807 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Data visualization and analysis for Microsoft Academic Graph &#8212; &lt;h1 style=&#34;font-size:2em;text-align:center;color:#FF5733&#34;&gt;Recommenders&lt;/h1&gt;</title>
+    
+  <link href="../../../_static/css/theme.css" rel="stylesheet" />
+  <link href="../../../_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
+
+    
+  <link rel="stylesheet"
+    href="../../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+
+    
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-book-theme.css?digest=c3fdc42140077d1ad13ad2f1588a4309" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/tabs.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    
+  <link rel="preload" as="script" href="../../../_static/js/index.1c5a1a01449ed65a7b51.js">
+
+    <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/jquery.js"></script>
+    <script src="../../../_static/underscore.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/togglebutton.js"></script>
+    <script src="../../../_static/clipboard.min.js"></script>
+    <script src="../../../_static/copybutton.js"></script>
+    <script src="../../../_static/tabs.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../../../_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script>
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="../../../_static/sphinx-thebe.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en" />
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="../../../index.html">
+      
+      
+      
+      <h1 class="site-logo" id="site-title"><h1 style="font-size:2em;text-align:center;color:#FF5733">Recommenders</h1></h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="../../../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        <p class="caption" role="heading">
+ <span class="caption-text">
+  Getting Started Notebooks
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../00_quick_start/als_movielens.html">
+   Running ALS on MovieLens (PySpark)
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../00_quick_start/ncf_movielens.html">
+   Neural Collaborative Filtering on MovieLens dataset.
+  </a>
+ </li>
+</ul>
+
+    </div>
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="topbar container-xl fixed-top">
+    <div class="topbar-contents row">
+        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
+        <div class="col pl-md-4 topbar-main">
+            
+            <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+                data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+                aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
+                title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+                <i class="fas fa-bars"></i>
+                <i class="fas fa-arrow-left"></i>
+                <i class="fas fa-arrow-up"></i>
+            </button>
+            
+            
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
+            class="fas fa-download"></i></button>
+
+    <div class="dropdown-buttons">
+        <!-- ipynb file if we had a myst markdown file -->
+        
+        <!-- Download raw file -->
+        <a class="dropdown-buttons" href="../../../_sources/examples/07_tutorials/KDD2020-tutorial/pandas-subgraph-local-samples.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
+                data-placement="left">.ipynb</button></a>
+        <!-- Download PDF via print -->
+        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
+            onClick="window.print()" data-toggle="tooltip" data-placement="left">.pdf</button>
+    </div>
+</div>
+
+            <!-- Source interaction buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
+    <div class="dropdown-buttons sourcebuttons">
+        <a class="repository-button"
+            href="https://github.com/microsoft/genalog"><button type="button" class="btn btn-secondary topbarbtn"
+                data-toggle="tooltip" data-placement="left" title="Source repository"><i
+                    class="fab fa-github"></i>repository</button></a>
+        <a class="issues-button"
+            href="https://github.com/microsoft/genalog/issues/new?title=Issue%20on%20page%20%2Fexamples/07_tutorials/KDD2020-tutorial/pandas-subgraph-local-samples.html&body=Your%20issue%20content%20here."><button
+                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
+                title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
+        
+    </div>
+</div>
+
+            <!-- Full screen (wrap in <a> to have style consistency -->
+
+<a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+        data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+        title="Fullscreen mode"><i
+            class="fas fa-expand"></i></button></a>
+
+            <!-- Launch buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Launch interactive content"><i class="fas fa-rocket"></i></button>
+    <div class="dropdown-buttons">
+        
+        <a class="binder-button" href="https://mybinder.org/v2/gh/microsoft/genalog/main?urlpath=tree/docs/genalog_docs/examples/07_tutorials/KDD2020-tutorial/pandas-subgraph-local-samples.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Launch Binder" data-toggle="tooltip"
+                data-placement="left"><img class="binder-button-logo"
+                    src="../../../_static/images/logo_binder.svg"
+                    alt="Interact on binder">Binder</button></a>
+        
+        
+        
+        
+    </div>
+</div>
+
+        </div>
+
+        <!-- Table of contents -->
+        <div class="d-none d-md-block col-md-2 bd-toc show">
+            
+        </div>
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+        
+              <div>
+                
+  <p><i>Copyright (c) Microsoft Corporation. All rights reserved.</i></p>
+<p><i>Licensed under the MIT License.</i></p>
+<div class="tex2jax_ignore mathjax_ignore section" id="data-visualization-and-analysis-for-microsoft-academic-graph">
+<h1>Data visualization and analysis for Microsoft Academic Graph<a class="headerlink" href="#data-visualization-and-analysis-for-microsoft-academic-graph" title="Permalink to this headline">¶</a></h1>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">utils.PandasMagClass</span> <span class="kn">import</span> <span class="n">MicrosoftAcademicGraph</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">datetime</span> <span class="k">as</span> <span class="nn">dt</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">matplotlib.ticker</span> <span class="k">as</span> <span class="nn">ticker</span>
+<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
+<span class="kn">import</span> <span class="nn">os</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">root</span> <span class="o">=</span> <span class="s1">&#39;./data_folder/raw/&#39;</span>
+<span class="n">mag</span> <span class="o">=</span> <span class="n">MicrosoftAcademicGraph</span><span class="p">(</span><span class="n">root</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># load MAG data: Papers</span>
+<span class="n">df_papers</span> <span class="o">=</span> <span class="n">mag</span><span class="o">.</span><span class="n">get_data_frame</span><span class="p">(</span><span class="s1">&#39;Papers&#39;</span><span class="p">)</span>
+<span class="n">df_papers</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>PaperId</th>
+      <th>Rank</th>
+      <th>Doi</th>
+      <th>DocType</th>
+      <th>PaperTitle</th>
+      <th>OriginalTitle</th>
+      <th>BookTitle</th>
+      <th>Year</th>
+      <th>Date</th>
+      <th>OnlineDate</th>
+      <th>...</th>
+      <th>Volume</th>
+      <th>Issue</th>
+      <th>FirstPage</th>
+      <th>LastPage</th>
+      <th>ReferenceCount</th>
+      <th>CitationCount</th>
+      <th>EstimatedCitation</th>
+      <th>OriginalVenue</th>
+      <th>FamilyId</th>
+      <th>CreatedDate</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>342037</td>
+      <td>22085</td>
+      <td>10.1533/9781845694586.3.194</td>
+      <td>NaN</td>
+      <td>detecting virus contamination in seafood</td>
+      <td>Detecting virus contamination in seafood.</td>
+      <td>NaN</td>
+      <td>2008</td>
+      <td>2008-01-01 12:00:00</td>
+      <td>NaT</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>194</td>
+      <td>211</td>
+      <td>105</td>
+      <td>1</td>
+      <td>1</td>
+      <td>Improving Seafood Products for the Consumer</td>
+      <td>NaN</td>
+      <td>2016-06-24 12:00:00</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>392414</td>
+      <td>25423</td>
+      <td>10.1007/978-88-470-0556-3_60</td>
+      <td>NaN</td>
+      <td>il lavaggio broncoalveolare bal in eta pediatrica</td>
+      <td>Il lavaggio broncoalveolare (BAL) in età pedia...</td>
+      <td>NaN</td>
+      <td>2007</td>
+      <td>2007-01-01 12:00:00</td>
+      <td>NaT</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>621</td>
+      <td>634</td>
+      <td>35</td>
+      <td>0</td>
+      <td>0</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>2016-06-24 12:00:00</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>442880</td>
+      <td>24185</td>
+      <td>10.1007/978-1-4684-5823-7_2</td>
+      <td>Journal</td>
+      <td>background paper functions of coronavirus glyc...</td>
+      <td>Background paper: functions of coronavirus gly...</td>
+      <td>NaN</td>
+      <td>1990</td>
+      <td>1990-01-01 12:00:00</td>
+      <td>NaT</td>
+      <td>...</td>
+      <td>276</td>
+      <td>NaN</td>
+      <td>5</td>
+      <td>7</td>
+      <td>1</td>
+      <td>4</td>
+      <td>4</td>
+      <td>Advances in Experimental Medicine and Biology</td>
+      <td>NaN</td>
+      <td>2016-06-24 12:00:00</td>
+    </tr>
+  </tbody>
+</table>
+<p>3 rows × 24 columns</p>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># load MAG data: Paper Author Affiliations</span>
+<span class="n">df_paper_author_affiliations</span> <span class="o">=</span> <span class="n">mag</span><span class="o">.</span><span class="n">get_data_frame</span><span class="p">(</span><span class="s1">&#39;PaperAuthorAffiliations&#39;</span><span class="p">)</span>
+<span class="n">df_paper_author_affiliations</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>PaperId</th>
+      <th>AuthorId</th>
+      <th>AffiliationId</th>
+      <th>AuthorSequenceNumber</th>
+      <th>OriginalAuthor</th>
+      <th>OriginalAffiliation</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>342037</td>
+      <td>2110117508</td>
+      <td>NaN</td>
+      <td>7</td>
+      <td>F. S. le Guyader</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>342037</td>
+      <td>2135466750</td>
+      <td>71999127</td>
+      <td>2</td>
+      <td>R. M. Pintó</td>
+      <td>University of Barcelona, (Spain)</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>342037</td>
+      <td>2149630968</td>
+      <td>71999127</td>
+      <td>1</td>
+      <td>A. Bosch</td>
+      <td>University of Barcelona, (Spain)</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># load MAG data: FieldOfStudy</span>
+<span class="n">df_fos</span> <span class="o">=</span> <span class="n">mag</span><span class="o">.</span><span class="n">get_data_frame</span><span class="p">(</span><span class="s1">&#39;FieldsOfStudy&#39;</span><span class="p">)</span>
+<span class="n">df_fos</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>FieldOfStudyId</th>
+      <th>Rank</th>
+      <th>NormalizedName</th>
+      <th>DisplayName</th>
+      <th>MainType</th>
+      <th>Level</th>
+      <th>PaperCount</th>
+      <th>PaperFamilyCount</th>
+      <th>CitationCount</th>
+      <th>CreatedDate</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>12843</td>
+      <td>11873</td>
+      <td>gravitational singularity</td>
+      <td>Gravitational singularity</td>
+      <td>NaN</td>
+      <td>2</td>
+      <td>38572</td>
+      <td>36517</td>
+      <td>498012</td>
+      <td>2016-06-24 12:00:00</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>20288</td>
+      <td>11771</td>
+      <td>superstring theory</td>
+      <td>Superstring theory</td>
+      <td>NaN</td>
+      <td>3</td>
+      <td>7425</td>
+      <td>6989</td>
+      <td>196930</td>
+      <td>2016-06-24 12:00:00</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>40700</td>
+      <td>9651</td>
+      <td>industrial organization</td>
+      <td>Industrial organization</td>
+      <td>NaN</td>
+      <td>1</td>
+      <td>320951</td>
+      <td>319290</td>
+      <td>2659089</td>
+      <td>2016-06-24 12:00:00</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># load MAG data: Paper Field Of Study</span>
+<span class="n">df_paper_fos</span> <span class="o">=</span> <span class="n">mag</span><span class="o">.</span><span class="n">get_data_frame</span><span class="p">(</span><span class="s1">&#39;PaperFieldsOfStudy&#39;</span><span class="p">)</span>
+<span class="n">df_paper_fos</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>PaperId</th>
+      <th>FieldOfStudyId</th>
+      <th>Score</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>342037</td>
+      <td>31903555</td>
+      <td>0.368951</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>342037</td>
+      <td>34135077</td>
+      <td>0.548833</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>342037</td>
+      <td>86803240</td>
+      <td>0.364040</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># load MAG data: Journals</span>
+<span class="n">df_journals</span> <span class="o">=</span> <span class="n">mag</span><span class="o">.</span><span class="n">get_data_frame</span><span class="p">(</span><span class="s1">&#39;Journals&#39;</span><span class="p">)</span>
+<span class="n">df_journals</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>JournalId</th>
+      <th>Rank</th>
+      <th>NormalizedName</th>
+      <th>DisplayName</th>
+      <th>Issn</th>
+      <th>Publisher</th>
+      <th>Webpage</th>
+      <th>PaperCount</th>
+      <th>PaperFamilyCount</th>
+      <th>CitationCount</th>
+      <th>CreatedDate</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>61661</td>
+      <td>10724</td>
+      <td>journal of prosthodontics</td>
+      <td>Journal of Prosthodontics</td>
+      <td>1059-941X</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>2759</td>
+      <td>2759</td>
+      <td>26991</td>
+      <td>2016-06-24 12:00:00</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>255146</td>
+      <td>9259</td>
+      <td>synthese</td>
+      <td>Synthese</td>
+      <td>0039-7857</td>
+      <td>NaN</td>
+      <td>http://www.springer.com/11229</td>
+      <td>7074</td>
+      <td>7074</td>
+      <td>76660</td>
+      <td>2016-06-24 12:00:00</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>260102</td>
+      <td>12335</td>
+      <td>bmc emergency medicine</td>
+      <td>BMC Emergency Medicine</td>
+      <td>1471-227X</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>556</td>
+      <td>556</td>
+      <td>5457</td>
+      <td>2016-06-24 12:00:00</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># load MAG data: Affiliations</span>
+<span class="n">df_affiliations</span> <span class="o">=</span> <span class="n">mag</span><span class="o">.</span><span class="n">get_data_frame</span><span class="p">(</span><span class="s1">&#39;Affiliations&#39;</span><span class="p">)</span>
+<span class="n">df_affiliations</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>AffiliationId</th>
+      <th>Rank</th>
+      <th>NormalizedName</th>
+      <th>DisplayName</th>
+      <th>GridId</th>
+      <th>OfficialPage</th>
+      <th>WikiPage</th>
+      <th>PaperCount</th>
+      <th>PaperFamilyCount</th>
+      <th>CitationCount</th>
+      <th>Latitude</th>
+      <th>Longitude</th>
+      <th>CreatedDate</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>9507</td>
+      <td>11625</td>
+      <td>sangji university</td>
+      <td>Sangji University</td>
+      <td>grid.412417.5</td>
+      <td>http://www.sangji.ac.kr/</td>
+      <td>http://en.wikipedia.org/wiki/Sangji_University</td>
+      <td>1479</td>
+      <td>1469</td>
+      <td>13387</td>
+      <td>37.369946</td>
+      <td>127.928612</td>
+      <td>2016-06-24 12:00:00</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>15855</td>
+      <td>12646</td>
+      <td>manchester institute of innovation research</td>
+      <td>Manchester Institute of Innovation Research</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>http://en.wikipedia.org/wiki/Manchester_Instit...</td>
+      <td>364</td>
+      <td>356</td>
+      <td>9278</td>
+      <td>53.467999</td>
+      <td>-2.236000</td>
+      <td>2016-06-24 12:00:00</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>19722</td>
+      <td>11477</td>
+      <td>ateneo de manila university</td>
+      <td>Ateneo de Manila University</td>
+      <td>grid.443223.0</td>
+      <td>http://www.ateneo.edu/</td>
+      <td>http://en.wikipedia.org/wiki/Ateneo_de_Manila_...</td>
+      <td>1877</td>
+      <td>1864</td>
+      <td>10674</td>
+      <td>14.638890</td>
+      <td>121.077782</td>
+      <td>2016-06-24 12:00:00</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># top K journals</span>
+
+<span class="c1"># - papers with journals</span>
+<span class="n">paper_with_journals</span> <span class="o">=</span> <span class="n">df_papers</span><span class="p">[</span><span class="n">df_papers</span><span class="p">[</span><span class="s1">&#39;JournalId&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">notnull</span><span class="p">()]</span>
+
+<span class="c1"># - join journals to get journal name</span>
+<span class="n">paper_journals</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">paper_with_journals</span><span class="p">,</span> <span class="n">df_journals</span><span class="p">,</span> <span class="n">on</span> <span class="o">=</span><span class="s1">&#39;JournalId&#39;</span><span class="p">,</span> <span class="n">how</span> <span class="o">=</span> <span class="s1">&#39;inner&#39;</span><span class="p">)[[</span><span class="s1">&#39;JournalId&#39;</span><span class="p">,</span> <span class="s1">&#39;NormalizedName&#39;</span><span class="p">,</span> <span class="s1">&#39;PaperId&#39;</span><span class="p">]]</span>
+
+<span class="c1"># - group by journals and count papers</span>
+<span class="n">journals_stats</span> <span class="o">=</span> <span class="n">paper_journals</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">&#39;JournalId&#39;</span><span class="p">,</span> <span class="s1">&#39;NormalizedName&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">size</span><span class="p">()</span><span class="o">.</span><span class="n">to_frame</span><span class="p">(</span><span class="s1">&#39;PaperCount&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;PaperCount&#39;</span><span class="p">],</span> <span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+<span class="c1"># - get top 10 journals</span>
+<span class="n">journals_stats_top_10</span> <span class="o">=</span> <span class="n">journals_stats</span><span class="o">.</span><span class="n">nlargest</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="s1">&#39;PaperCount&#39;</span><span class="p">)[[</span><span class="s1">&#39;NormalizedName&#39;</span><span class="p">,</span> <span class="s1">&#39;PaperCount&#39;</span><span class="p">]]</span>
+
+<span class="n">journals_stats_top_10</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>NormalizedName</th>
+      <th>PaperCount</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>7378</th>
+      <td>medrxiv</td>
+      <td>3681</td>
+    </tr>
+    <tr>
+      <th>5383</th>
+      <td>plos one</td>
+      <td>1977</td>
+    </tr>
+    <tr>
+      <th>2525</th>
+      <td>journal of virology</td>
+      <td>1664</td>
+    </tr>
+    <tr>
+      <th>5828</th>
+      <td>biorxiv</td>
+      <td>1348</td>
+    </tr>
+    <tr>
+      <th>5046</th>
+      <td>emerging infectious diseases</td>
+      <td>1007</td>
+    </tr>
+    <tr>
+      <th>1250</th>
+      <td>surgical endoscopy and other interventional te...</td>
+      <td>909</td>
+    </tr>
+    <tr>
+      <th>174</th>
+      <td>virology</td>
+      <td>882</td>
+    </tr>
+    <tr>
+      <th>5243</th>
+      <td>scientific reports</td>
+      <td>871</td>
+    </tr>
+    <tr>
+      <th>5140</th>
+      <td>bmj</td>
+      <td>786</td>
+    </tr>
+    <tr>
+      <th>1324</th>
+      <td>the lancet</td>
+      <td>749</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># top K journals: figure</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<span class="n">ax_topk_journals</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">()</span>
+<span class="n">ax_topk_journals</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">barplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s2">&quot;PaperCount&quot;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s2">&quot;NormalizedName&quot;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">journals_stats_top_10</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../../_images/pandas-subgraph-local-samples_11_0.png" src="../../../_images/pandas-subgraph-local-samples_11_0.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># team size average</span>
+
+<span class="c1"># - group by paperId to get team size for each paper</span>
+<span class="n">paper_team_size</span> <span class="o">=</span> <span class="n">df_paper_author_affiliations</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">&#39;PaperId&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">size</span><span class="p">()</span><span class="o">.</span><span class="n">to_frame</span><span class="p">(</span><span class="s1">&#39;TeamSize&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
+
+<span class="c1"># - get average team size for all papers</span>
+<span class="n">paper_team_size_avg</span> <span class="o">=</span> <span class="n">paper_team_size</span><span class="p">[</span><span class="s1">&#39;TeamSize&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+
+<span class="n">paper_team_size_avg</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>6.155347014184458
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># team size distribution</span>
+
+<span class="c1"># - generate paper count per team size </span>
+<span class="n">team_size_distribution</span> <span class="o">=</span> <span class="n">paper_team_size</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">&#39;TeamSize&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">size</span><span class="p">()</span><span class="o">.</span><span class="n">to_frame</span><span class="p">(</span><span class="s1">&#39;PaperCount&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
+
+<span class="c1"># - set team size intervals</span>
+<span class="c1">#bins = [0, 3, 6, 9, 12, 15, 18, 21, 24, 27, 30, 5465]</span>
+<span class="n">bins</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">14</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">18</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">5465</span><span class="p">]</span>
+
+<span class="c1"># - generate paper count per team size intervals</span>
+<span class="n">team_size_range</span> <span class="o">=</span> <span class="n">paper_team_size</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">cut</span><span class="p">(</span><span class="n">paper_team_size</span><span class="p">[</span><span class="s1">&#39;TeamSize&#39;</span><span class="p">],</span> <span class="n">bins</span><span class="o">=</span><span class="n">bins</span><span class="p">))</span><span class="o">.</span><span class="n">size</span><span class="p">()</span><span class="o">.</span><span class="n">to_frame</span><span class="p">(</span><span class="s1">&#39;PaperCount&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
+
+<span class="n">team_size_range</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>TeamSize</th>
+      <th>PaperCount</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>(0, 2]</td>
+      <td>29792</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>(2, 4]</td>
+      <td>27138</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>(4, 6]</td>
+      <td>21485</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>(6, 8]</td>
+      <td>14402</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>(8, 10]</td>
+      <td>8910</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>(10, 12]</td>
+      <td>5120</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>(12, 14]</td>
+      <td>2988</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>(14, 16]</td>
+      <td>1774</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>(16, 18]</td>
+      <td>1152</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>(18, 20]</td>
+      <td>775</td>
+    </tr>
+    <tr>
+      <th>10</th>
+      <td>(20, 5465]</td>
+      <td>2295</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># team size distribution: figure</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<span class="n">ax_team_size_distribution</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">()</span>
+<span class="n">ax_team_size_distribution</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">barplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s2">&quot;TeamSize&quot;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s2">&quot;PaperCount&quot;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">team_size_range</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../../_images/pandas-subgraph-local-samples_14_0.png" src="../../../_images/pandas-subgraph-local-samples_14_0.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># top K geolocation by past 20 year: load data</span>
+<span class="n">df_affiliation_regions</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_table</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="s1">&#39;AffiliationRegions.txt&#39;</span><span class="p">),</span> <span class="n">low_memory</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;AffiliationId&#39;</span><span class="p">,</span> <span class="s1">&#39;Name&#39;</span><span class="p">,</span> <span class="s1">&#39;Region&#39;</span><span class="p">))</span>
+<span class="n">df_affiliation_regions</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>AffiliationId</th>
+      <th>Name</th>
+      <th>Region</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>721619</td>
+      <td>Benemérita Universidad Autónoma de Puebla</td>
+      <td>Mexico</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>6615443</td>
+      <td>Hydro One</td>
+      <td>Canada</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>8086503</td>
+      <td>Sir Salimullah Medical College</td>
+      <td>Bangladesh</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># top K geolocation by past 20 year</span>
+
+<span class="c1"># - filter papers publish year</span>
+<span class="n">papers</span> <span class="o">=</span> <span class="n">df_papers</span><span class="p">[(</span><span class="n">df_papers</span><span class="o">.</span><span class="n">Year</span> <span class="o">&gt;=</span> <span class="mi">2000</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">df_papers</span><span class="o">.</span><span class="n">Year</span> <span class="o">&lt;=</span> <span class="mi">2019</span><span class="p">)]</span>
+
+<span class="c1"># - join papers with paper author affiliation</span>
+<span class="n">papers_with_affi</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">papers</span><span class="p">,</span> <span class="n">df_paper_author_affiliations</span><span class="p">,</span> <span class="n">on</span> <span class="o">=</span><span class="s1">&#39;PaperId&#39;</span><span class="p">,</span> <span class="n">how</span> <span class="o">=</span> <span class="s1">&#39;inner&#39;</span><span class="p">)[[</span><span class="s1">&#39;PaperId&#39;</span><span class="p">,</span> <span class="s1">&#39;Year&#39;</span><span class="p">,</span> <span class="s1">&#39;AffiliationId&#39;</span><span class="p">]]</span>
+
+<span class="c1"># - keep only non-empty and distinct rows</span>
+<span class="n">papers_with_affi_distinct</span> <span class="o">=</span> <span class="n">papers_with_affi</span><span class="p">[</span><span class="n">papers_with_affi</span><span class="p">[</span><span class="s1">&#39;AffiliationId&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">notnull</span><span class="p">()]</span><span class="o">.</span><span class="n">drop_duplicates</span><span class="p">()</span>
+
+<span class="c1"># - join to get affiliation region</span>
+<span class="n">papers_affi_region</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">df_affiliation_regions</span><span class="p">,</span> <span class="n">papers_with_affi_distinct</span><span class="p">,</span> <span class="n">on</span> <span class="o">=</span><span class="s1">&#39;AffiliationId&#39;</span><span class="p">,</span> <span class="n">how</span> <span class="o">=</span> <span class="s1">&#39;inner&#39;</span><span class="p">)[[</span><span class="s1">&#39;PaperId&#39;</span><span class="p">,</span> <span class="s1">&#39;Year&#39;</span><span class="p">,</span> <span class="s1">&#39;AffiliationId&#39;</span><span class="p">,</span> <span class="s1">&#39;Region&#39;</span><span class="p">]]</span>
+
+<span class="c1"># - eliminate double count when authors in one paper are from different affiliations but in the same country</span>
+<span class="n">papers_year_region</span> <span class="o">=</span> <span class="n">papers_affi_region</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">&#39;PaperId&#39;</span><span class="p">,</span> <span class="s1">&#39;Year&#39;</span><span class="p">,</span> <span class="s1">&#39;Region&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">size</span><span class="p">()</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()[[</span><span class="s1">&#39;PaperId&#39;</span><span class="p">,</span> <span class="s1">&#39;Year&#39;</span><span class="p">,</span> <span class="s1">&#39;Region&#39;</span><span class="p">]]</span>
+
+<span class="c1"># - group to get paper count per region and year</span>
+<span class="n">region_year_papercount</span> <span class="o">=</span> <span class="n">papers_year_region</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">&#39;Region&#39;</span><span class="p">,</span> <span class="s1">&#39;Year&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">size</span><span class="p">()</span><span class="o">.</span><span class="n">to_frame</span><span class="p">(</span><span class="s1">&#39;PaperCount&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;PaperCount&#39;</span><span class="p">],</span> <span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+<span class="c1"># - get paper count per region</span>
+<span class="n">region_papercount</span> <span class="o">=</span> <span class="n">region_year_papercount</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">&#39;Region&#39;</span><span class="p">])[</span><span class="s1">&#39;PaperCount&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
+
+<span class="c1"># - get region top paper count</span>
+<span class="n">top_region_papercount</span> <span class="o">=</span> <span class="n">region_papercount</span><span class="o">.</span><span class="n">nlargest</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="s1">&#39;PaperCount&#39;</span><span class="p">)[</span><span class="s1">&#39;Region&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+
+<span class="c1"># - filter top countries on papers count per year and country</span>
+<span class="n">top_region_year_papercount</span> <span class="o">=</span> <span class="n">region_year_papercount</span><span class="p">[</span><span class="n">region_year_papercount</span><span class="p">[</span><span class="s1">&#39;Region&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">top_region_papercount</span><span class="p">))]</span>
+
+<span class="n">top_region_year_papercount</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Region</th>
+      <th>Year</th>
+      <th>PaperCount</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>956</th>
+      <td>United States</td>
+      <td>2017</td>
+      <td>2355</td>
+    </tr>
+    <tr>
+      <th>954</th>
+      <td>United States</td>
+      <td>2015</td>
+      <td>2340</td>
+    </tr>
+    <tr>
+      <th>955</th>
+      <td>United States</td>
+      <td>2016</td>
+      <td>2229</td>
+    </tr>
+    <tr>
+      <th>953</th>
+      <td>United States</td>
+      <td>2014</td>
+      <td>2107</td>
+    </tr>
+    <tr>
+      <th>958</th>
+      <td>United States</td>
+      <td>2019</td>
+      <td>2044</td>
+    </tr>
+    <tr>
+      <th>957</th>
+      <td>United States</td>
+      <td>2018</td>
+      <td>1994</td>
+    </tr>
+    <tr>
+      <th>952</th>
+      <td>United States</td>
+      <td>2013</td>
+      <td>1870</td>
+    </tr>
+    <tr>
+      <th>254</th>
+      <td>EU</td>
+      <td>2019</td>
+      <td>1806</td>
+    </tr>
+    <tr>
+      <th>252</th>
+      <td>EU</td>
+      <td>2017</td>
+      <td>1733</td>
+    </tr>
+    <tr>
+      <th>250</th>
+      <td>EU</td>
+      <td>2015</td>
+      <td>1704</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># top K geolocation by past 20 year: figure</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<span class="n">ax_topk_geolocation</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">()</span>
+<span class="n">ax_topk_geolocation</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">lineplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s2">&quot;Year&quot;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s2">&quot;PaperCount&quot;</span><span class="p">,</span> <span class="n">hue</span><span class="o">=</span><span class="s2">&quot;Region&quot;</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="s2">&quot;Region&quot;</span><span class="p">,</span> <span class="n">markers</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;o&#39;</span><span class="p">,</span><span class="s1">&#39;s&#39;</span><span class="p">,</span><span class="s1">&#39;v&#39;</span><span class="p">,</span><span class="s1">&#39;d&#39;</span><span class="p">,</span> <span class="s1">&#39;^&#39;</span><span class="p">],</span> <span class="n">hue_order</span><span class="o">=</span><span class="n">top_region_papercount</span><span class="p">,</span> <span class="n">dashes</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">top_region_year_papercount</span><span class="p">)</span>
+<span class="n">ax_topk_geolocation</span><span class="o">.</span><span class="n">xaxis</span><span class="o">.</span><span class="n">set_major_formatter</span><span class="p">(</span><span class="n">ticker</span><span class="o">.</span><span class="n">FuncFormatter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">,</span> <span class="n">pos</span><span class="p">:</span> <span class="s1">&#39;</span><span class="si">{:.0f}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">x</span><span class="p">)))</span>
+<span class="n">ax_topk_geolocation</span><span class="o">.</span><span class="n">xaxis</span><span class="o">.</span><span class="n">set_major_locator</span><span class="p">(</span><span class="n">ticker</span><span class="o">.</span><span class="n">MultipleLocator</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../../_images/pandas-subgraph-local-samples_17_0.png" src="../../../_images/pandas-subgraph-local-samples_17_0.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># L0 top Field Of Study distribution</span>
+<span class="n">L0_TopN</span> <span class="o">=</span> <span class="mi">5</span>
+
+<span class="n">L0_fos</span> <span class="o">=</span> <span class="n">df_fos</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">df_fos</span><span class="p">[</span><span class="s1">&#39;Level&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">]</span>
+<span class="n">paper_L0_fos</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">L0_fos</span><span class="p">,</span> <span class="n">df_paper_fos</span><span class="p">,</span> <span class="n">on</span> <span class="o">=</span> <span class="s1">&#39;FieldOfStudyId&#39;</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s1">&#39;inner&#39;</span><span class="p">)</span>
+<span class="n">L0_fos_stats</span> <span class="o">=</span> <span class="n">paper_L0_fos</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;NormalizedName&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">agg</span><span class="p">({</span><span class="s1">&#39;PaperId&#39;</span><span class="p">:[</span><span class="s1">&#39;count&#39;</span><span class="p">]})</span>
+<span class="n">L0_fos_stats</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;PaperCnt&#39;</span><span class="p">]</span>
+<span class="n">L0_fos_stats</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;PaperCnt&#39;</span><span class="p">],</span> <span class="n">inplace</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">L0_fos_stats_sorted</span> <span class="o">=</span> <span class="n">L0_fos_stats</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
+
+<span class="n">L0_fos_stats_sorted</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">L0_fos_stats_sorted</span><span class="o">.</span><span class="n">index</span> <span class="o">&gt;=</span> <span class="n">L0_TopN</span><span class="p">,</span> <span class="s1">&#39;NormalizedName&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;others&#39;</span>
+<span class="n">L0_fos_stats_topN</span> <span class="o">=</span> <span class="n">L0_fos_stats_sorted</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;NormalizedName&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">agg</span><span class="p">({</span><span class="s1">&#39;PaperCnt&#39;</span><span class="p">:[</span><span class="s1">&#39;sum&#39;</span><span class="p">]})</span>
+<span class="n">L0_fos_stats_topN</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;PaperCntSum&#39;</span><span class="p">]</span>
+<span class="n">L0_fos_stats_topN</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;PaperCntSum&#39;</span><span class="p">],</span> <span class="n">inplace</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">L0_fos_stats_topN</span> <span class="o">=</span> <span class="n">L0_fos_stats_topN</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
+<span class="n">L0_fos_stats_topN</span><span class="p">[</span><span class="s1">&#39;Percentage&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">L0_fos_stats_topN</span><span class="o">.</span><span class="n">PaperCntSum</span> <span class="o">/</span> <span class="n">L0_fos_stats_topN</span><span class="o">.</span><span class="n">PaperCntSum</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+<span class="n">L0_fos_stats_topN</span><span class="p">[</span><span class="s1">&#39;Percentage&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="s2">&quot;</span><span class="si">{0:.2f}</span><span class="s2">%&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">val</span> <span class="o">*</span> <span class="mi">100</span><span class="p">)</span> <span class="k">for</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">L0_fos_stats_topN</span><span class="p">[</span><span class="s1">&#39;Percentage&#39;</span><span class="p">]],</span> <span class="n">index</span> <span class="o">=</span> <span class="n">L0_fos_stats_topN</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
+
+<span class="n">L0_fos_stats_topN</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>NormalizedName</th>
+      <th>PaperCntSum</th>
+      <th>Percentage</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>medicine</td>
+      <td>63225</td>
+      <td>54.51%</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>biology</td>
+      <td>36513</td>
+      <td>31.48%</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>others</td>
+      <td>8008</td>
+      <td>6.90%</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>chemistry</td>
+      <td>3936</td>
+      <td>3.39%</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>computer science</td>
+      <td>2219</td>
+      <td>1.91%</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>psychology</td>
+      <td>2078</td>
+      <td>1.79%</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># L0 top Field Of Study distribution : figure</span>
+<span class="n">domains</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">L0_fos_stats_topN</span><span class="p">[</span><span class="s1">&#39;NormalizedName&#39;</span><span class="p">])</span>
+<span class="n">PaperCnt_domain</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">L0_fos_stats_topN</span><span class="p">[</span><span class="s1">&#39;PaperCntSum&#39;</span><span class="p">])</span>
+<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span> 
+<span class="n">plt</span><span class="o">.</span><span class="n">pie</span><span class="p">(</span><span class="n">PaperCnt_domain</span><span class="p">,</span> <span class="n">labels</span> <span class="o">=</span> <span class="n">domains</span><span class="p">)</span> 
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;No. of papers in different domains&quot;</span><span class="p">)</span> 
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span> 
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../../_images/pandas-subgraph-local-samples_19_0.png" src="../../../_images/pandas-subgraph-local-samples_19_0.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># L1 top Field Of Study distribution</span>
+<span class="n">L1_TopN</span> <span class="o">=</span> <span class="mi">10</span>
+
+<span class="n">L1_fos</span> <span class="o">=</span> <span class="n">df_fos</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">df_fos</span><span class="p">[</span><span class="s1">&#39;Level&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">]</span>
+<span class="n">paper_L1_fos</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">L1_fos</span><span class="p">,</span> <span class="n">df_paper_fos</span><span class="p">,</span> <span class="n">on</span> <span class="o">=</span> <span class="s1">&#39;FieldOfStudyId&#39;</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s1">&#39;inner&#39;</span><span class="p">)</span>
+<span class="n">L1_fos_stats</span> <span class="o">=</span> <span class="n">paper_L1_fos</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;NormalizedName&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">agg</span><span class="p">({</span><span class="s1">&#39;PaperId&#39;</span><span class="p">:[</span><span class="s1">&#39;count&#39;</span><span class="p">]})</span>
+<span class="n">L1_fos_stats</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;PaperCnt&#39;</span><span class="p">]</span>
+<span class="n">L1_fos_stats</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;PaperCnt&#39;</span><span class="p">],</span> <span class="n">inplace</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">L1_fos_stats_sorted</span> <span class="o">=</span> <span class="n">L1_fos_stats</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
+
+<span class="n">L1_fos_stats_topN1</span> <span class="o">=</span> <span class="n">L1_fos_stats_sorted</span><span class="o">.</span><span class="n">nlargest</span><span class="p">(</span><span class="n">L1_TopN</span><span class="p">,</span> <span class="s1">&#39;PaperCnt&#39;</span><span class="p">)</span>
+<span class="n">L1_fos_stats_topN1</span><span class="p">[</span><span class="s1">&#39;Percentage&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">L1_fos_stats_topN1</span><span class="o">.</span><span class="n">PaperCnt</span> <span class="o">/</span> <span class="n">L1_fos_stats_topN1</span><span class="o">.</span><span class="n">PaperCnt</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+<span class="n">L1_fos_stats_topN1</span><span class="p">[</span><span class="s1">&#39;Percentage&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="s2">&quot;</span><span class="si">{0:.2f}</span><span class="s2">%&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">val</span> <span class="o">*</span> <span class="mi">100</span><span class="p">)</span> <span class="k">for</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">L1_fos_stats_topN1</span><span class="p">[</span><span class="s1">&#39;Percentage&#39;</span><span class="p">]],</span> <span class="n">index</span> <span class="o">=</span> <span class="n">L1_fos_stats_topN1</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
+
+<span class="n">L1_fos_stats_topN1</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>NormalizedName</th>
+      <th>PaperCnt</th>
+      <th>Percentage</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>virology</td>
+      <td>29567</td>
+      <td>26.28%</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>immunology</td>
+      <td>15954</td>
+      <td>14.18%</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>surgery</td>
+      <td>15667</td>
+      <td>13.92%</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>internal medicine</td>
+      <td>12045</td>
+      <td>10.70%</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>intensive care medicine</td>
+      <td>10624</td>
+      <td>9.44%</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>molecular biology</td>
+      <td>7268</td>
+      <td>6.46%</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>pathology</td>
+      <td>6611</td>
+      <td>5.88%</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>genetics</td>
+      <td>5231</td>
+      <td>4.65%</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>general surgery</td>
+      <td>4963</td>
+      <td>4.41%</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>anesthesia</td>
+      <td>4594</td>
+      <td>4.08%</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># L1 top Field Of Study distribution : figure</span>
+<span class="n">domains</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">L1_fos_stats_topN1</span><span class="p">[</span><span class="s1">&#39;NormalizedName&#39;</span><span class="p">])</span>
+<span class="n">PaperCnt_domain</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">L1_fos_stats_topN1</span><span class="p">[</span><span class="s1">&#39;PaperCnt&#39;</span><span class="p">])</span>
+<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">pie</span><span class="p">(</span><span class="n">PaperCnt_domain</span><span class="p">,</span> <span class="n">labels</span> <span class="o">=</span> <span class="n">domains</span><span class="p">)</span> 
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;No. of papers in different subdomains&quot;</span><span class="p">)</span> 
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span> 
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../../_images/pandas-subgraph-local-samples_21_0.png" src="../../../_images/pandas-subgraph-local-samples_21_0.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># L0 top Field Of Study distribution by year</span>
+<span class="n">L0_topN</span> <span class="o">=</span> <span class="mi">5</span>
+
+<span class="n">L0_fos</span> <span class="o">=</span> <span class="n">df_fos</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">df_fos</span><span class="p">[</span><span class="s1">&#39;Level&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">]</span>
+<span class="n">paper_L0_fos</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">L0_fos</span><span class="p">,</span> <span class="n">df_paper_fos</span><span class="p">,</span> <span class="n">on</span> <span class="o">=</span> <span class="s1">&#39;FieldOfStudyId&#39;</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s1">&#39;inner&#39;</span><span class="p">)[[</span><span class="s1">&#39;NormalizedName&#39;</span><span class="p">,</span> <span class="s1">&#39;Level&#39;</span><span class="p">,</span> <span class="s1">&#39;PaperId&#39;</span><span class="p">]]</span>
+<span class="n">papers</span> <span class="o">=</span> <span class="n">df_papers</span><span class="p">[(</span><span class="n">df_papers</span><span class="o">.</span><span class="n">Year</span> <span class="o">&gt;=</span> <span class="mi">2000</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">df_papers</span><span class="o">.</span><span class="n">Year</span> <span class="o">&lt;=</span> <span class="mi">2019</span><span class="p">)]</span>
+<span class="n">paper_year_L0_fos</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">paper_L0_fos</span><span class="p">,</span> <span class="n">papers</span><span class="p">,</span> <span class="n">on</span> <span class="o">=</span> <span class="s1">&#39;PaperId&#39;</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s1">&#39;inner&#39;</span><span class="p">)[[</span><span class="s1">&#39;NormalizedName&#39;</span><span class="p">,</span> <span class="s1">&#39;Level&#39;</span><span class="p">,</span> <span class="s1">&#39;PaperId&#39;</span><span class="p">,</span> <span class="s1">&#39;Year&#39;</span><span class="p">]]</span>
+<span class="n">fos_L0_year_papercount</span> <span class="o">=</span> <span class="n">paper_year_L0_fos</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">&#39;NormalizedName&#39;</span><span class="p">,</span> <span class="s1">&#39;Year&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">size</span><span class="p">()</span><span class="o">.</span><span class="n">to_frame</span><span class="p">(</span><span class="s1">&#39;PaperCount&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;PaperCount&#39;</span><span class="p">],</span> <span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+<span class="n">fos_L0_papercount</span> <span class="o">=</span> <span class="n">fos_L0_year_papercount</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">&#39;NormalizedName&#39;</span><span class="p">])[</span><span class="s1">&#39;PaperCount&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
+<span class="n">top_fos_L0_papercount</span> <span class="o">=</span> <span class="n">fos_L0_papercount</span><span class="o">.</span><span class="n">nlargest</span><span class="p">(</span><span class="n">L0_topN</span><span class="p">,</span> <span class="s1">&#39;PaperCount&#39;</span><span class="p">)[</span><span class="s1">&#39;NormalizedName&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+
+<span class="n">fos_L0_year_papercount</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="o">~</span><span class="n">fos_L0_year_papercount</span><span class="p">[</span><span class="s1">&#39;NormalizedName&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">top_fos_L0_papercount</span><span class="p">)),</span> <span class="s1">&#39;NormalizedName&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;others&#39;</span>
+<span class="n">fos_L0_year_topN</span> <span class="o">=</span> <span class="n">fos_L0_year_papercount</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">&#39;NormalizedName&#39;</span><span class="p">,</span> <span class="s1">&#39;Year&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">agg</span><span class="p">({</span><span class="s1">&#39;PaperCount&#39;</span><span class="p">:[</span><span class="s1">&#39;sum&#39;</span><span class="p">]})</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
+<span class="n">fos_L0_year_topN</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;NormalizedName&#39;</span><span class="p">,</span><span class="s1">&#39;Year&#39;</span><span class="p">,</span><span class="s1">&#39;PaperCountSum&#39;</span><span class="p">]</span>
+
+<span class="n">fos_L0_year_topN</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">30</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>NormalizedName</th>
+      <th>Year</th>
+      <th>PaperCountSum</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>biology</td>
+      <td>2000</td>
+      <td>262</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>biology</td>
+      <td>2001</td>
+      <td>314</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>biology</td>
+      <td>2002</td>
+      <td>243</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>biology</td>
+      <td>2003</td>
+      <td>478</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>biology</td>
+      <td>2004</td>
+      <td>784</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>biology</td>
+      <td>2005</td>
+      <td>942</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>biology</td>
+      <td>2006</td>
+      <td>1208</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>biology</td>
+      <td>2007</td>
+      <td>1037</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>biology</td>
+      <td>2008</td>
+      <td>1233</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>biology</td>
+      <td>2009</td>
+      <td>1369</td>
+    </tr>
+    <tr>
+      <th>10</th>
+      <td>biology</td>
+      <td>2010</td>
+      <td>1344</td>
+    </tr>
+    <tr>
+      <th>11</th>
+      <td>biology</td>
+      <td>2011</td>
+      <td>1400</td>
+    </tr>
+    <tr>
+      <th>12</th>
+      <td>biology</td>
+      <td>2012</td>
+      <td>1531</td>
+    </tr>
+    <tr>
+      <th>13</th>
+      <td>biology</td>
+      <td>2013</td>
+      <td>1634</td>
+    </tr>
+    <tr>
+      <th>14</th>
+      <td>biology</td>
+      <td>2014</td>
+      <td>1788</td>
+    </tr>
+    <tr>
+      <th>15</th>
+      <td>biology</td>
+      <td>2015</td>
+      <td>2019</td>
+    </tr>
+    <tr>
+      <th>16</th>
+      <td>biology</td>
+      <td>2016</td>
+      <td>2062</td>
+    </tr>
+    <tr>
+      <th>17</th>
+      <td>biology</td>
+      <td>2017</td>
+      <td>2088</td>
+    </tr>
+    <tr>
+      <th>18</th>
+      <td>biology</td>
+      <td>2018</td>
+      <td>2121</td>
+    </tr>
+    <tr>
+      <th>19</th>
+      <td>biology</td>
+      <td>2019</td>
+      <td>2321</td>
+    </tr>
+    <tr>
+      <th>20</th>
+      <td>chemistry</td>
+      <td>2000</td>
+      <td>10</td>
+    </tr>
+    <tr>
+      <th>21</th>
+      <td>chemistry</td>
+      <td>2001</td>
+      <td>6</td>
+    </tr>
+    <tr>
+      <th>22</th>
+      <td>chemistry</td>
+      <td>2002</td>
+      <td>9</td>
+    </tr>
+    <tr>
+      <th>23</th>
+      <td>chemistry</td>
+      <td>2003</td>
+      <td>19</td>
+    </tr>
+    <tr>
+      <th>24</th>
+      <td>chemistry</td>
+      <td>2004</td>
+      <td>61</td>
+    </tr>
+    <tr>
+      <th>25</th>
+      <td>chemistry</td>
+      <td>2005</td>
+      <td>90</td>
+    </tr>
+    <tr>
+      <th>26</th>
+      <td>chemistry</td>
+      <td>2006</td>
+      <td>110</td>
+    </tr>
+    <tr>
+      <th>27</th>
+      <td>chemistry</td>
+      <td>2007</td>
+      <td>123</td>
+    </tr>
+    <tr>
+      <th>28</th>
+      <td>chemistry</td>
+      <td>2008</td>
+      <td>179</td>
+    </tr>
+    <tr>
+      <th>29</th>
+      <td>chemistry</td>
+      <td>2009</td>
+      <td>147</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># L0 top Field Of Study distribution by year: figure</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<span class="n">top_fos_L0_papercount_order</span> <span class="o">=</span> <span class="n">top_fos_L0_papercount</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">top_fos_L0_papercount_order</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;others&#39;</span><span class="p">)</span>
+<span class="n">ax_topk_fos_L0</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">()</span>
+<span class="n">ax_topk_fos_L0</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">lineplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s2">&quot;Year&quot;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s2">&quot;PaperCountSum&quot;</span><span class="p">,</span> <span class="n">hue</span><span class="o">=</span><span class="s2">&quot;NormalizedName&quot;</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="s2">&quot;NormalizedName&quot;</span><span class="p">,</span> <span class="n">markers</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;o&#39;</span><span class="p">,</span><span class="s1">&#39;s&#39;</span><span class="p">,</span><span class="s1">&#39;v&#39;</span><span class="p">,</span><span class="s1">&#39;d&#39;</span><span class="p">,</span> <span class="s1">&#39;^&#39;</span><span class="p">,</span> <span class="s1">&#39;h&#39;</span><span class="p">],</span> <span class="n">hue_order</span><span class="o">=</span><span class="n">top_fos_L0_papercount_order</span><span class="p">,</span> <span class="n">dashes</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">fos_L0_year_topN</span><span class="p">)</span>
+<span class="n">ax_topk_fos_L0</span><span class="o">.</span><span class="n">xaxis</span><span class="o">.</span><span class="n">set_major_formatter</span><span class="p">(</span><span class="n">ticker</span><span class="o">.</span><span class="n">FuncFormatter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">,</span> <span class="n">pos</span><span class="p">:</span> <span class="s1">&#39;</span><span class="si">{:.0f}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">x</span><span class="p">)))</span>
+<span class="n">ax_topk_fos_L0</span><span class="o">.</span><span class="n">xaxis</span><span class="o">.</span><span class="n">set_major_locator</span><span class="p">(</span><span class="n">ticker</span><span class="o">.</span><span class="n">MultipleLocator</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../../_images/pandas-subgraph-local-samples_23_0.png" src="../../../_images/pandas-subgraph-local-samples_23_0.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># L1 top Field Of Study distribution by year</span>
+<span class="n">L1_topN</span> <span class="o">=</span> <span class="mi">10</span>
+
+<span class="n">L1_fos</span> <span class="o">=</span> <span class="n">df_fos</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">df_fos</span><span class="p">[</span><span class="s1">&#39;Level&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">]</span>
+<span class="n">paper_L1_fos</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">L1_fos</span><span class="p">,</span> <span class="n">df_paper_fos</span><span class="p">,</span> <span class="n">on</span> <span class="o">=</span> <span class="s1">&#39;FieldOfStudyId&#39;</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s1">&#39;inner&#39;</span><span class="p">)[[</span><span class="s1">&#39;NormalizedName&#39;</span><span class="p">,</span> <span class="s1">&#39;Level&#39;</span><span class="p">,</span> <span class="s1">&#39;PaperId&#39;</span><span class="p">]]</span>
+<span class="n">papers</span> <span class="o">=</span> <span class="n">df_papers</span><span class="p">[(</span><span class="n">df_papers</span><span class="o">.</span><span class="n">Year</span> <span class="o">&gt;=</span> <span class="mi">2000</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">df_papers</span><span class="o">.</span><span class="n">Year</span> <span class="o">&lt;=</span> <span class="mi">2019</span><span class="p">)]</span>
+<span class="n">paper_year_L1_fos</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">paper_L1_fos</span><span class="p">,</span> <span class="n">papers</span><span class="p">,</span> <span class="n">on</span> <span class="o">=</span> <span class="s1">&#39;PaperId&#39;</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s1">&#39;inner&#39;</span><span class="p">)[[</span><span class="s1">&#39;NormalizedName&#39;</span><span class="p">,</span> <span class="s1">&#39;Level&#39;</span><span class="p">,</span> <span class="s1">&#39;PaperId&#39;</span><span class="p">,</span> <span class="s1">&#39;Year&#39;</span><span class="p">]]</span>
+<span class="n">fos_L1_year_papercount</span> <span class="o">=</span> <span class="n">paper_year_L1_fos</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">&#39;NormalizedName&#39;</span><span class="p">,</span> <span class="s1">&#39;Year&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">size</span><span class="p">()</span><span class="o">.</span><span class="n">to_frame</span><span class="p">(</span><span class="s1">&#39;PaperCount&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;PaperCount&#39;</span><span class="p">],</span> <span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+<span class="n">fos_L1_papercount</span> <span class="o">=</span> <span class="n">fos_L1_year_papercount</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">&#39;NormalizedName&#39;</span><span class="p">])[</span><span class="s1">&#39;PaperCount&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
+<span class="n">top_fos_L1_papercount</span> <span class="o">=</span> <span class="n">fos_L1_papercount</span><span class="o">.</span><span class="n">nlargest</span><span class="p">(</span><span class="n">L1_topN</span><span class="p">,</span> <span class="s1">&#39;PaperCount&#39;</span><span class="p">)[</span><span class="s1">&#39;NormalizedName&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+<span class="n">top_fos_L1_year_papercount</span> <span class="o">=</span> <span class="n">fos_L1_year_papercount</span><span class="p">[</span><span class="n">fos_L1_year_papercount</span><span class="p">[</span><span class="s1">&#39;NormalizedName&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">top_fos_L1_papercount</span><span class="p">))]</span>
+
+<span class="n">top_fos_L1_year_papercount</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>NormalizedName</th>
+      <th>Year</th>
+      <th>PaperCount</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>3282</th>
+      <td>surgery</td>
+      <td>2015</td>
+      <td>1734</td>
+    </tr>
+    <tr>
+      <th>3456</th>
+      <td>virology</td>
+      <td>2016</td>
+      <td>1671</td>
+    </tr>
+    <tr>
+      <th>3455</th>
+      <td>virology</td>
+      <td>2015</td>
+      <td>1636</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># L1 top Field Of Study distribution by year: figure</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<span class="n">ax_topk_fos_L1</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">()</span>
+<span class="n">ax_topk_fos_L1</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">lineplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s2">&quot;Year&quot;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s2">&quot;PaperCount&quot;</span><span class="p">,</span> <span class="n">hue</span><span class="o">=</span><span class="s2">&quot;NormalizedName&quot;</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="s2">&quot;NormalizedName&quot;</span><span class="p">,</span> <span class="n">markers</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;o&#39;</span><span class="p">,</span><span class="s1">&#39;s&#39;</span><span class="p">,</span><span class="s1">&#39;v&#39;</span><span class="p">,</span><span class="s1">&#39;d&#39;</span><span class="p">,</span><span class="s1">&#39;^&#39;</span><span class="p">,</span><span class="s1">&#39;h&#39;</span><span class="p">,</span><span class="s1">&#39;&lt;&#39;</span><span class="p">,</span><span class="s1">&#39;.&#39;</span><span class="p">,</span><span class="s1">&#39;p&#39;</span><span class="p">,</span><span class="s1">&#39;*&#39;</span><span class="p">],</span> <span class="n">hue_order</span><span class="o">=</span><span class="n">top_fos_L1_papercount</span><span class="p">,</span> <span class="n">dashes</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">top_fos_L1_year_papercount</span><span class="p">)</span>
+<span class="n">ax_topk_fos_L1</span><span class="o">.</span><span class="n">xaxis</span><span class="o">.</span><span class="n">set_major_formatter</span><span class="p">(</span><span class="n">ticker</span><span class="o">.</span><span class="n">FuncFormatter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">,</span> <span class="n">pos</span><span class="p">:</span> <span class="s1">&#39;</span><span class="si">{:.0f}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">x</span><span class="p">)))</span>
+<span class="n">ax_topk_fos_L1</span><span class="o">.</span><span class="n">xaxis</span><span class="o">.</span><span class="n">set_major_locator</span><span class="p">(</span><span class="n">ticker</span><span class="o">.</span><span class="n">MultipleLocator</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../../_images/pandas-subgraph-local-samples_25_0.png" src="../../../_images/pandas-subgraph-local-samples_25_0.png" />
+</div>
+</div>
+</div>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "kdd_tutorial_2020"
+        },
+        kernelOptions: {
+            kernelName: "kdd_tutorial_2020",
+            path: "./examples/07_tutorials/KDD2020-tutorial"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'kdd_tutorial_2020'</script>
+
+              </div>
+              
+        
+            
+
+
+
+<div class='prev-next-bottom'>
+    
+
+</div>
+        
+        </div>
+    </div>
+    <footer class="footer">
+    <div class="container">
+      <p>
+        
+          By The Jupyter Book community<br/>
+        
+            &copy; Copyright 2021.<br/>
+      </p>
+    </div>
+  </footer>
+</main>
+
+
+      </div>
+    </div>
+  
+  <script src="../../../_static/js/index.1c5a1a01449ed65a7b51.js"></script>
+
+  
+  </body>
+</html>

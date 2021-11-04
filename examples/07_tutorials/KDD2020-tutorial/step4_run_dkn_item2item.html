@@ -1,0 +1,459 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Item2Item recommendations with DKN &#8212; &lt;h1 style=&#34;font-size:2em;text-align:center;color:#FF5733&#34;&gt;Recommenders&lt;/h1&gt;</title>
+    
+  <link href="../../../_static/css/theme.css" rel="stylesheet" />
+  <link href="../../../_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
+
+    
+  <link rel="stylesheet"
+    href="../../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+
+    
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-book-theme.css?digest=c3fdc42140077d1ad13ad2f1588a4309" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/tabs.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    
+  <link rel="preload" as="script" href="../../../_static/js/index.1c5a1a01449ed65a7b51.js">
+
+    <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/jquery.js"></script>
+    <script src="../../../_static/underscore.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/togglebutton.js"></script>
+    <script src="../../../_static/clipboard.min.js"></script>
+    <script src="../../../_static/copybutton.js"></script>
+    <script src="../../../_static/tabs.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../../../_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script>
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="../../../_static/sphinx-thebe.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en" />
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="../../../index.html">
+      
+      
+      
+      <h1 class="site-logo" id="site-title"><h1 style="font-size:2em;text-align:center;color:#FF5733">Recommenders</h1></h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="../../../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        <p class="caption" role="heading">
+ <span class="caption-text">
+  Getting Started Notebooks
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../00_quick_start/als_movielens.html">
+   Running ALS on MovieLens (PySpark)
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../00_quick_start/ncf_movielens.html">
+   Neural Collaborative Filtering on MovieLens dataset.
+  </a>
+ </li>
+</ul>
+
+    </div>
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="topbar container-xl fixed-top">
+    <div class="topbar-contents row">
+        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
+        <div class="col pl-md-4 topbar-main">
+            
+            <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+                data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+                aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
+                title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+                <i class="fas fa-bars"></i>
+                <i class="fas fa-arrow-left"></i>
+                <i class="fas fa-arrow-up"></i>
+            </button>
+            
+            
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
+            class="fas fa-download"></i></button>
+
+    <div class="dropdown-buttons">
+        <!-- ipynb file if we had a myst markdown file -->
+        
+        <!-- Download raw file -->
+        <a class="dropdown-buttons" href="../../../_sources/examples/07_tutorials/KDD2020-tutorial/step4_run_dkn_item2item.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
+                data-placement="left">.ipynb</button></a>
+        <!-- Download PDF via print -->
+        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
+            onClick="window.print()" data-toggle="tooltip" data-placement="left">.pdf</button>
+    </div>
+</div>
+
+            <!-- Source interaction buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
+    <div class="dropdown-buttons sourcebuttons">
+        <a class="repository-button"
+            href="https://github.com/microsoft/genalog"><button type="button" class="btn btn-secondary topbarbtn"
+                data-toggle="tooltip" data-placement="left" title="Source repository"><i
+                    class="fab fa-github"></i>repository</button></a>
+        <a class="issues-button"
+            href="https://github.com/microsoft/genalog/issues/new?title=Issue%20on%20page%20%2Fexamples/07_tutorials/KDD2020-tutorial/step4_run_dkn_item2item.html&body=Your%20issue%20content%20here."><button
+                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
+                title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
+        
+    </div>
+</div>
+
+            <!-- Full screen (wrap in <a> to have style consistency -->
+
+<a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+        data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+        title="Fullscreen mode"><i
+            class="fas fa-expand"></i></button></a>
+
+            <!-- Launch buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Launch interactive content"><i class="fas fa-rocket"></i></button>
+    <div class="dropdown-buttons">
+        
+        <a class="binder-button" href="https://mybinder.org/v2/gh/microsoft/genalog/main?urlpath=tree/docs/genalog_docs/examples/07_tutorials/KDD2020-tutorial/step4_run_dkn_item2item.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Launch Binder" data-toggle="tooltip"
+                data-placement="left"><img class="binder-button-logo"
+                    src="../../../_static/images/logo_binder.svg"
+                    alt="Interact on binder">Binder</button></a>
+        
+        
+        
+        
+    </div>
+</div>
+
+        </div>
+
+        <!-- Table of contents -->
+        <div class="d-none d-md-block col-md-2 bd-toc show">
+            
+        </div>
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+        
+              <div>
+                
+  <p><i>Copyright (c) Microsoft Corporation. All rights reserved.</i></p>
+<p><i>Licensed under the MIT License.</i></p>
+<div class="tex2jax_ignore mathjax_ignore section" id="item2item-recommendations-with-dkn">
+<h1>Item2Item recommendations with DKN<a class="headerlink" href="#item2item-recommendations-with-dkn" title="Permalink to this headline">¶</a></h1>
+<p>The second task is about knowledge-aware item-to-item recommendations. We still use DKN for demonstration.
+The learning framework is illustrated as follows:
+<img src="https://recodatasets.z20.web.core.windows.net/kdd2020/images/Item2item-framework.JPG"  width="500"></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">recommenders.models.deeprec.deeprec_utils</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">recommenders.models.deeprec.models.dkn_item2item</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">recommenders.models.deeprec.io.dkn_item2item_iterator</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">import</span> <span class="nn">time</span>
+
+<span class="kn">import</span> <span class="nn">tensorflow</span> <span class="k">as</span> <span class="nn">tf</span>
+<span class="n">tf</span><span class="o">.</span><span class="n">logging</span><span class="o">.</span><span class="n">set_verbosity</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">logging</span><span class="o">.</span><span class="n">ERROR</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data_path</span> <span class="o">=</span> <span class="s1">&#39;data_folder/my/DKN-training-folder&#39;</span>
+<span class="n">yaml_file</span> <span class="o">=</span> <span class="s1">&#39;./dkn.yaml&#39;</span> <span class="c1">#os.path.join(data_path, r&#39;../../../../../../dkn.yaml&#39;)</span>
+<span class="n">train_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">data_path</span><span class="p">,</span> <span class="sa">r</span><span class="s1">&#39;item2item_train_instances.txt&#39;</span><span class="p">)</span>
+<span class="n">valid_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">data_path</span><span class="p">,</span> <span class="sa">r</span><span class="s1">&#39;item2item_valid_instances.txt&#39;</span><span class="p">)</span>
+<span class="n">news_feature_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">data_path</span><span class="p">,</span> <span class="sa">r</span><span class="s1">&#39;../paper_feature.txt&#39;</span><span class="p">)</span>
+<span class="n">wordEmb_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">data_path</span><span class="p">,</span> <span class="sa">r</span><span class="s1">&#39;word_embedding.npy&#39;</span><span class="p">)</span>
+<span class="n">entityEmb_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">data_path</span><span class="p">,</span> <span class="sa">r</span><span class="s1">&#39;entity_embedding.npy&#39;</span><span class="p">)</span>
+<span class="n">contextEmb_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">data_path</span><span class="p">,</span> <span class="sa">r</span><span class="s1">&#39;context_embedding.npy&#39;</span><span class="p">)</span>
+<span class="n">infer_embedding_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">data_path</span><span class="p">,</span> <span class="sa">r</span><span class="s1">&#39;infer_embedding_item2item.txt&#39;</span><span class="p">)</span>
+<span class="n">news_feature_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">data_path</span><span class="p">,</span>  <span class="sa">r</span><span class="s1">&#39;../paper_feature.txt&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">epoch</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="n">hparams</span> <span class="o">=</span> <span class="n">prepare_hparams</span><span class="p">(</span><span class="n">yaml_file</span><span class="p">,</span>
+                          <span class="n">news_feature_file</span><span class="o">=</span><span class="n">news_feature_file</span><span class="p">,</span>
+                          <span class="n">wordEmb_file</span><span class="o">=</span><span class="n">wordEmb_file</span><span class="p">,</span>
+                          <span class="n">entityEmb_file</span><span class="o">=</span><span class="n">entityEmb_file</span><span class="p">,</span>
+                          <span class="n">contextEmb_file</span><span class="o">=</span><span class="n">contextEmb_file</span><span class="p">,</span>
+                          <span class="n">epochs</span><span class="o">=</span><span class="n">epoch</span><span class="p">,</span>
+                          <span class="n">is_clip_norm</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                          <span class="n">max_grad_norm</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
+                          <span class="n">his_size</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span>
+                          <span class="n">MODEL_DIR</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">data_path</span><span class="p">,</span> <span class="s1">&#39;save_models&#39;</span><span class="p">),</span>
+                          <span class="n">learning_rate</span><span class="o">=</span><span class="mf">0.0002</span><span class="p">,</span>
+                          <span class="n">embed_l2</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>
+                          <span class="n">layer_l2</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>
+                          <span class="n">batch_size</span><span class="o">=</span><span class="mi">32</span><span class="p">,</span>
+                          <span class="n">use_entity</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                          <span class="n">use_context</span><span class="o">=</span><span class="kc">True</span>
+                          <span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">hparams</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;bound method HParams.values of HParams([(&#39;DNN_FIELD_NUM&#39;, None), (&#39;EARLY_STOP&#39;, 100), (&#39;FEATURE_COUNT&#39;, None), (&#39;FIELD_COUNT&#39;, None), (&#39;L&#39;, None), (&#39;MODEL_DIR&#39;, &#39;data_folder/my/DKN-training-folder/save_models&#39;), (&#39;PAIR_NUM&#39;, None), (&#39;SUMMARIES_DIR&#39;, None), (&#39;T&#39;, None), (&#39;activation&#39;, [&#39;sigmoid&#39;]), (&#39;att_fcn_layer_sizes&#39;, None), (&#39;attention_activation&#39;, &#39;relu&#39;), (&#39;attention_dropout&#39;, 0.0), (&#39;attention_layer_sizes&#39;, 32), (&#39;attention_size&#39;, None), (&#39;batch_size&#39;, 32), (&#39;cate_embedding_dim&#39;, None), (&#39;cate_vocab&#39;, None), (&#39;contextEmb_file&#39;, &#39;data_folder/my/DKN-training-folder/context_embedding.npy&#39;), (&#39;cross_activation&#39;, &#39;identity&#39;), (&#39;cross_l1&#39;, 0.0), (&#39;cross_l2&#39;, 0.0), (&#39;cross_layer_sizes&#39;, None), (&#39;cross_layers&#39;, None), (&#39;data_format&#39;, &#39;dkn&#39;), (&#39;decay&#39;, None), (&#39;dilations&#39;, None), (&#39;dim&#39;, 32), (&#39;doc_size&#39;, 15), (&#39;dropout&#39;, [0.0]), (&#39;dtype&#39;, 32), (&#39;embed_l1&#39;, 0.0), (&#39;embed_l2&#39;, 0.0), (&#39;embed_size&#39;, None), (&#39;embedding_dropout&#39;, 0.3), (&#39;enable_BN&#39;, False), (&#39;entityEmb_file&#39;, &#39;data_folder/my/DKN-training-folder/entity_embedding.npy&#39;), (&#39;entity_dim&#39;, 32), (&#39;entity_embedding_method&#39;, &#39;TransE&#39;), (&#39;entity_size&#39;, 57267), (&#39;epochs&#39;, 10), (&#39;eval_epoch&#39;, None), (&#39;fast_CIN_d&#39;, 0), (&#39;filter_sizes&#39;, [1, 2, 3]), (&#39;hidden_size&#39;, None), (&#39;history_size&#39;, None), (&#39;init_method&#39;, &#39;uniform&#39;), (&#39;init_value&#39;, 0.01), (&#39;is_clip_norm&#39;, True), (&#39;item_embedding_dim&#39;, None), (&#39;item_vocab&#39;, None), (&#39;iterator_type&#39;, None), (&#39;kernel_size&#39;, None), (&#39;kg_file&#39;, None), (&#39;kg_training_interval&#39;, 5), (&#39;layer_l1&#39;, 0.0), (&#39;layer_l2&#39;, 0.0), (&#39;layer_sizes&#39;, [300]), (&#39;learning_rate&#39;, 0.0002), (&#39;load_model_name&#39;, None), (&#39;load_saved_model&#39;, False), (&#39;loss&#39;, &#39;log_loss&#39;), (&#39;lr_kg&#39;, 0.5), (&#39;lr_rs&#39;, 1), (&#39;max_grad_norm&#39;, 0.5), (&#39;max_seq_length&#39;, None), (&#39;method&#39;, &#39;classification&#39;), (&#39;metrics&#39;, [&#39;auc&#39;]), (&#39;min_seq_length&#39;, 1), (&#39;model_type&#39;, &#39;dkn&#39;), (&#39;mu&#39;, None), (&#39;n_h&#39;, None), (&#39;n_item&#39;, None), (&#39;n_item_attr&#39;, None), (&#39;n_layers&#39;, None), (&#39;n_user&#39;, None), (&#39;n_user_attr&#39;, None), (&#39;n_v&#39;, None), (&#39;need_sample&#39;, True), (&#39;news_feature_file&#39;, &#39;data_folder/my/DKN-training-folder/../paper_feature.txt&#39;), (&#39;num_filters&#39;, 50), (&#39;optimizer&#39;, &#39;adam&#39;), (&#39;pairwise_metrics&#39;, [&#39;group_auc&#39;, &#39;mean_mrr&#39;, &#39;ndcg@2;4;6&#39;]), (&#39;reg_kg&#39;, 0.0), (&#39;save_epoch&#39;, 1), (&#39;save_model&#39;, True), (&#39;show_step&#39;, 10000), (&#39;top_k&#39;, None), (&#39;train_num_ngs&#39;, 4), (&#39;train_ratio&#39;, None), (&#39;transform&#39;, True), (&#39;use_CIN_part&#39;, False), (&#39;use_DNN_part&#39;, False), (&#39;use_FM_part&#39;, False), (&#39;use_Linear_part&#39;, False), (&#39;use_context&#39;, True), (&#39;use_entity&#39;, True), (&#39;user_clicks&#39;, None), (&#39;user_dropout&#39;, False), (&#39;user_embedding_dim&#39;, None), (&#39;user_history_file&#39;, None), (&#39;user_vocab&#39;, None), (&#39;wordEmb_file&#39;, &#39;data_folder/my/DKN-training-folder/word_embedding.npy&#39;), (&#39;word_size&#39;, 194755), (&#39;write_tfevents&#39;, False)])&gt;
+</pre></div>
+</div>
+</div>
+</div>
+<p>To build an item2item recommendation model based on the Recommender repo, you only need to modify two files:</p>
+<ol class="simple">
+<li><p>Data Loader :  dkn_item2item_iterator.py</p></li>
+<li><p>Model : dkn_item2item.py</p></li>
+</ol>
+<img src="https://recodatasets.z20.web.core.windows.net/kdd2020/images%2Fcode-changed-item2item.JPG" width="700"><div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">input_creator</span> <span class="o">=</span> <span class="n">DKNItem2itemTextIterator</span>
+<span class="n">hparams</span><span class="o">.</span><span class="n">neg_num</span><span class="o">=</span><span class="mi">9</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>A special parameter is <code class="docutils literal notranslate"><span class="pre">neg_num</span></code>. It indicates how many negative instances exist in a group for softmax computation.
+Training and validation instances are organized as follows:</p>
+<img src="https://recodatasets.z20.web.core.windows.net/kdd2020/images/item2item-instances.JPG" width="700">
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model</span> <span class="o">=</span> <span class="n">DKNItem2Item</span><span class="p">(</span><span class="n">hparams</span><span class="p">,</span> <span class="n">input_creator</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">t01</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">run_eval</span><span class="p">(</span><span class="n">valid_file</span><span class="p">))</span>
+<span class="n">t02</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">((</span><span class="n">t02</span> <span class="o">-</span> <span class="n">t01</span><span class="p">)</span> <span class="o">/</span> <span class="mi">60</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;group_auc&#39;: 0.8558, &#39;mean_mrr&#39;: 0.6916, &#39;ndcg@2&#39;: 0.6443, &#39;ndcg@4&#39;: 0.7192, &#39;ndcg@6&#39;: 0.7482}
+0.9248842358589172
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">train_file</span><span class="p">,</span> <span class="n">valid_file</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>at epoch 1
+train info: logloss loss:50.36440721690707
+eval info: group_auc:0.9498, mean_mrr:0.8773, ndcg@2:0.8712, ndcg@4:0.8951, ndcg@6:0.901
+at epoch 1 , train time: 41.6 eval time: 54.5
+at epoch 2
+train info: logloss loss:47.04455384063052
+eval info: group_auc:0.9514, mean_mrr:0.8879, ndcg@2:0.8827, ndcg@4:0.9027, ndcg@6:0.9078
+at epoch 2 , train time: 40.5 eval time: 54.5
+at epoch 3
+train info: logloss loss:45.84113100337731
+eval info: group_auc:0.9526, mean_mrr:0.8934, ndcg@2:0.8885, ndcg@4:0.9065, ndcg@6:0.9118
+at epoch 3 , train time: 40.7 eval time: 55.0
+at epoch 4
+train info: logloss loss:45.158868913040365
+eval info: group_auc:0.9539, mean_mrr:0.8974, ndcg@2:0.8932, ndcg@4:0.9099, ndcg@6:0.9148
+at epoch 4 , train time: 40.1 eval time: 54.2
+at epoch 5
+train info: logloss loss:44.69093512051153
+eval info: group_auc:0.9551, mean_mrr:0.9007, ndcg@2:0.8967, ndcg@4:0.9126, ndcg@6:0.9173
+at epoch 5 , train time: 40.1 eval time: 54.2
+at epoch 6
+train info: logloss loss:44.35335900643538
+eval info: group_auc:0.9556, mean_mrr:0.9023, ndcg@2:0.898, ndcg@4:0.9139, ndcg@6:0.9188
+at epoch 6 , train time: 40.2 eval time: 54.0
+at epoch 7
+train info: logloss loss:44.07531811900561
+eval info: group_auc:0.9557, mean_mrr:0.9032, ndcg@2:0.8991, ndcg@4:0.9149, ndcg@6:0.9192
+at epoch 7 , train time: 40.4 eval time: 54.4
+at epoch 8
+train info: logloss loss:43.86925596192048
+eval info: group_auc:0.9549, mean_mrr:0.9024, ndcg@2:0.8982, ndcg@4:0.9138, ndcg@6:0.9183
+at epoch 8 , train time: 40.3 eval time: 54.4
+at epoch 9
+train info: logloss loss:43.69110510823603
+eval info: group_auc:0.9545, mean_mrr:0.9024, ndcg@2:0.8982, ndcg@4:0.9137, ndcg@6:0.918
+at epoch 9 , train time: 40.2 eval time: 54.2
+at epoch 10
+train info: logloss loss:43.547584555088484
+eval info: group_auc:0.9559, mean_mrr:0.9045, ndcg@2:0.9012, ndcg@4:0.9156, ndcg@6:0.92
+at epoch 10 , train time: 40.1 eval time: 54.2
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;recommenders.models.deeprec.models.dkn_item2item.DKNItem2Item at 0x7f54e400ba58&gt;
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model</span><span class="o">.</span><span class="n">run_get_embedding</span><span class="p">(</span><span class="n">news_feature_file</span><span class="p">,</span> <span class="n">infer_embedding_file</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;recommenders.models.deeprec.models.dkn_item2item.DKNItem2Item at 0x7f54e400ba58&gt;
+</pre></div>
+</div>
+</div>
+</div>
+<p>Again, we compre with DKN performance between using knowledge entities or without using knowledge entities (DKN(-)):</p>
+<table class="colwidths-auto table">
+<thead>
+<tr class="row-odd"><th class="text-align:left head"><p>Models</p></th>
+<th class="text-align:center head"><p>Group-AUC</p></th>
+<th class="text-align:center head"><p>MRR</p></th>
+<th class="text-align:center head"><p>NDCG&#64;2</p></th>
+<th class="text-align:left head"><p>NDCG&#64;4</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-align:left"><p>DKN</p></td>
+<td class="text-align:center"><p>0.9557</p></td>
+<td class="text-align:center"><p>0.8993</p></td>
+<td class="text-align:center"><p>0.8951</p></td>
+<td class="text-align:left"><p>0.9123</p></td>
+</tr>
+<tr class="row-odd"><td class="text-align:left"><p>DKN(-)</p></td>
+<td class="text-align:center"><p>0.9506</p></td>
+<td class="text-align:center"><p>0.8817</p></td>
+<td class="text-align:center"><p>0.8758</p></td>
+<td class="text-align:left"><p>0.8982</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "reco_gpu"
+        },
+        kernelOptions: {
+            kernelName: "reco_gpu",
+            path: "./examples/07_tutorials/KDD2020-tutorial"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'reco_gpu'</script>
+
+              </div>
+              
+        
+            
+
+
+
+<div class='prev-next-bottom'>
+    
+
+</div>
+        
+        </div>
+    </div>
+    <footer class="footer">
+    <div class="container">
+      <p>
+        
+          By The Jupyter Book community<br/>
+        
+            &copy; Copyright 2021.<br/>
+      </p>
+    </div>
+  </footer>
+</main>
+
+
+      </div>
+    </div>
+  
+  <script src="../../../_static/js/index.1c5a1a01449ed65a7b51.js"></script>
+
+  
+  </body>
+</html>

@@ -1,0 +1,745 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DKN : Deep Knowledge-Aware Network for News Recommendation &#8212; &lt;h1 style=&#34;font-size:2em;text-align:center;color:#FF5733&#34;&gt;Recommenders&lt;/h1&gt;</title>
+    
+  <link href="../../_static/css/theme.css" rel="stylesheet" />
+  <link href="../../_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
+
+    
+  <link rel="stylesheet"
+    href="../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+
+    
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-book-theme.css?digest=c3fdc42140077d1ad13ad2f1588a4309" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/tabs.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    
+  <link rel="preload" as="script" href="../../_static/js/index.1c5a1a01449ed65a7b51.js">
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/togglebutton.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <script src="../../_static/tabs.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../../_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script>
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="../../_static/sphinx-thebe.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en" />
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="../../index.html">
+      
+      
+      
+      <h1 class="site-logo" id="site-title"><h1 style="font-size:2em;text-align:center;color:#FF5733">Recommenders</h1></h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="../../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        <p class="caption" role="heading">
+ <span class="caption-text">
+  Getting Started Notebooks
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../00_quick_start/als_movielens.html">
+   Running ALS on MovieLens (PySpark)
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../00_quick_start/ncf_movielens.html">
+   Neural Collaborative Filtering on MovieLens dataset.
+  </a>
+ </li>
+</ul>
+
+    </div>
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="topbar container-xl fixed-top">
+    <div class="topbar-contents row">
+        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
+        <div class="col pl-md-4 topbar-main">
+            
+            <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+                data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+                aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
+                title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+                <i class="fas fa-bars"></i>
+                <i class="fas fa-arrow-left"></i>
+                <i class="fas fa-arrow-up"></i>
+            </button>
+            
+            
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
+            class="fas fa-download"></i></button>
+
+    <div class="dropdown-buttons">
+        <!-- ipynb file if we had a myst markdown file -->
+        
+        <!-- Download raw file -->
+        <a class="dropdown-buttons" href="../../_sources/examples/02_model_content_based_filtering/dkn_deep_dive.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
+                data-placement="left">.ipynb</button></a>
+        <!-- Download PDF via print -->
+        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
+            onClick="window.print()" data-toggle="tooltip" data-placement="left">.pdf</button>
+    </div>
+</div>
+
+            <!-- Source interaction buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
+    <div class="dropdown-buttons sourcebuttons">
+        <a class="repository-button"
+            href="https://github.com/microsoft/genalog"><button type="button" class="btn btn-secondary topbarbtn"
+                data-toggle="tooltip" data-placement="left" title="Source repository"><i
+                    class="fab fa-github"></i>repository</button></a>
+        <a class="issues-button"
+            href="https://github.com/microsoft/genalog/issues/new?title=Issue%20on%20page%20%2Fexamples/02_model_content_based_filtering/dkn_deep_dive.html&body=Your%20issue%20content%20here."><button
+                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
+                title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
+        
+    </div>
+</div>
+
+            <!-- Full screen (wrap in <a> to have style consistency -->
+
+<a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+        data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+        title="Fullscreen mode"><i
+            class="fas fa-expand"></i></button></a>
+
+            <!-- Launch buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Launch interactive content"><i class="fas fa-rocket"></i></button>
+    <div class="dropdown-buttons">
+        
+        <a class="binder-button" href="https://mybinder.org/v2/gh/microsoft/genalog/main?urlpath=tree/docs/genalog_docs/examples/02_model_content_based_filtering/dkn_deep_dive.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Launch Binder" data-toggle="tooltip"
+                data-placement="left"><img class="binder-button-logo"
+                    src="../../_static/images/logo_binder.svg"
+                    alt="Interact on binder">Binder</button></a>
+        
+        
+        
+        
+    </div>
+</div>
+
+        </div>
+
+        <!-- Table of contents -->
+        <div class="d-none d-md-block col-md-2 bd-toc show">
+            
+            <div class="tocsection onthispage pt-5 pb-3">
+                <i class="fas fa-list"></i> Contents
+            </div>
+            <nav id="bd-toc-nav" aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#properties-of-dkn">
+   Properties of DKN:
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#data-format">
+   Data format
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#mind-dataset">
+   MIND dataset
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#behaviors-tsv">
+     behaviors.tsv
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#news-tsv">
+     news.tsv
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#entity-embedding-vec-relation-embedding-vec">
+     entity_embedding.vec &amp; relation_embedding.vec
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#dkn-architecture">
+   DKN architecture
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#global-settings-and-imports">
+   Global settings and imports
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#data-preparation">
+   Data preparation
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#create-hyper-parameters">
+   Create hyper-parameters
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#train-the-dkn-model">
+   Train the DKN model
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#evaluate-the-dkn-model">
+   Evaluate the DKN model
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#document-embedding-inference-api">
+   Document embedding inference API
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#results-on-large-mind-dataset">
+   Results on large MIND dataset
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#references">
+   References
+  </a>
+ </li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+        
+              <div>
+                
+  <p><i>Copyright (c) Microsoft Corporation. All rights reserved.</i></p>
+<p><i>Licensed under the MIT License.</i></p>
+<div class="tex2jax_ignore mathjax_ignore section" id="dkn-deep-knowledge-aware-network-for-news-recommendation">
+<h1>DKN : Deep Knowledge-Aware Network for News Recommendation<a class="headerlink" href="#dkn-deep-knowledge-aware-network-for-news-recommendation" title="Permalink to this headline">¶</a></h1>
+<p>DKN [1] is a deep learning model which incorporates information from knowledge graph for better news recommendation. Specifically, DKN uses TransX [2] method for knowledge graph representation learning, then applies a CNN framework, named KCNN, to combine entity embedding with word embedding and generate a final embedding vector for a news article. CTR prediction is made via an attention-based neural scorer.</p>
+<div class="section" id="properties-of-dkn">
+<h2>Properties of DKN:<a class="headerlink" href="#properties-of-dkn" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>DKN is a content-based deep model for CTR prediction rather than traditional ID-based collaborative filtering.</p></li>
+<li><p>It makes use of knowledge entities and common sense in news content via joint learning from semantic-level and knowledge-level representations of news articles.</p></li>
+<li><p>DKN uses an attention module to dynamically calculate a user’s aggregated historical representaition.</p></li>
+</ul>
+</div>
+<div class="section" id="data-format">
+<h2>Data format<a class="headerlink" href="#data-format" title="Permalink to this headline">¶</a></h2>
+<p>DKN takes several files as input as follows:</p>
+<ul class="simple">
+<li><p><strong>training / validation / test files</strong>: each line in these files represents one instance. Impressionid is used to evaluate performance within an impression session, so it is only used when evaluating, you can set it to 0 for training data. The format is : <br>
+<code class="docutils literal notranslate"><span class="pre">[label]</span> <span class="pre">[userid]</span> <span class="pre">[CandidateNews]%[impressionid]</span> </code><br>
+e.g., <code class="docutils literal notranslate"><span class="pre">1</span> <span class="pre">train_U1</span> <span class="pre">N1%0</span></code> <br></p></li>
+<li><p><strong>user history file</strong>: each line in this file represents a users’ click history. You need to set <code class="docutils literal notranslate"><span class="pre">history_size</span></code> parameter in the config file, which is the max number of user’s click history we use. We will automatically keep the last <code class="docutils literal notranslate"><span class="pre">history_size</span></code> number of user click history, if user’s click history is more than <code class="docutils literal notranslate"><span class="pre">history_size</span></code>, and we will automatically pad with 0 if user’s click history is less than <code class="docutils literal notranslate"><span class="pre">history_size</span></code>. the format is : <br>
+<code class="docutils literal notranslate"><span class="pre">[Userid]</span> <span class="pre">[newsid1,newsid2...]</span></code><br>
+e.g., <code class="docutils literal notranslate"><span class="pre">train_U1</span> <span class="pre">N1,N2</span></code> <br></p></li>
+<li><p><strong>document feature file</strong>: It contains the word and entity features for news articles. News articles are represented by aligned title words and title entities. To take a quick example, a news title may be: <i>”Trump to deliver State of the Union address next week”</i>, then the title words value may be <code class="docutils literal notranslate"><span class="pre">CandidateNews:34,45,334,23,12,987,3456,111,456,432</span></code> and the title entitie value may be: <code class="docutils literal notranslate"><span class="pre">entity:45,0,0,0,0,0,0,0,0,0</span></code>. Only the first value of entity vector is non-zero due to the word “Trump”. The title value and entity value is hashed from 1 to <code class="docutils literal notranslate"><span class="pre">n</span></code> (where <code class="docutils literal notranslate"><span class="pre">n</span></code> is the number of distinct words or entities). Each feature length should be fixed at k (<code class="docutils literal notranslate"><span class="pre">doc_size</span></code> parameter), if the number of words in document is more than k, you should truncate the document to k words, and if the number of words in document is less than k, you should pad 0 to the end.
+the format is like: <br>
+<code class="docutils literal notranslate"><span class="pre">[Newsid]</span> <span class="pre">[w1,w2,w3...wk]</span> <span class="pre">[e1,e2,e3...ek]</span></code></p></li>
+<li><p><strong>word embedding/entity embedding/ context embedding files</strong>: These are <code class="docutils literal notranslate"><span class="pre">*.npy</span></code> files of pretrained embeddings. After loading, each file is a <code class="docutils literal notranslate"><span class="pre">[n+1,k]</span></code> two-dimensional matrix, n is the number of words(or entities) of their hash dictionary, k is dimension of the embedding, note that we keep embedding 0 for zero padding.</p></li>
+</ul>
+<p>In this experiment, we used GloVe[4] vectors to initialize the word embedding. We trained entity embedding using TransE[2] on knowledge graph and context embedding is the average of the entity’s neighbors in the knowledge graph.<br></p>
+</div>
+<div class="section" id="mind-dataset">
+<h2>MIND dataset<a class="headerlink" href="#mind-dataset" title="Permalink to this headline">¶</a></h2>
+<p>MIND dataset[3] is a large-scale English news dataset. It was collected from anonymized behavior logs of Microsoft News website. MIND contains 1,000,000 users, 161,013 news articles and 15,777,377 impression logs. Every news article contains rich textual content including title, abstract, body, category and entities. Each impression log contains the click events, non-clicked events and historical news click behaviors of this user before this impression.</p>
+<p>A smaller version, <a class="reference external" href="https://azure.microsoft.com/en-us/services/open-datasets/catalog/microsoft-news-dataset/">MIND-small</a>, is a small version of the MIND dataset by randomly sampling 50,000 users and their behavior logs from the MIND dataset.</p>
+<p>The datasets contains these files for both training and validation data:</p>
+<div class="section" id="behaviors-tsv">
+<h3>behaviors.tsv<a class="headerlink" href="#behaviors-tsv" title="Permalink to this headline">¶</a></h3>
+<p>The behaviors.tsv file contains the impression logs and users’ news click hostories. It has 5 columns divided by the tab symbol:</p>
+<ul class="simple">
+<li><p>Impression ID. The ID of an impression.</p></li>
+<li><p>User ID. The anonymous ID of a user.</p></li>
+<li><p>Time. The impression time with format “MM/DD/YYYY HH:MM:SS AM/PM”.</p></li>
+<li><p>History. The news click history (ID list of clicked news) of this user before this impression.</p></li>
+<li><p>Impressions. List of news displayed in this impression and user’s click behaviors on them (1 for click and 0 for non-click).</p></li>
+</ul>
+<p>One simple example:</p>
+<p><code class="docutils literal notranslate"><span class="pre">1</span>&#160;&#160;&#160; <span class="pre">U82271</span>&#160;&#160;&#160; <span class="pre">11/11/2019</span> <span class="pre">3:28:58</span> <span class="pre">PM</span>&#160;&#160;&#160; <span class="pre">N3130</span> <span class="pre">N11621</span> <span class="pre">N12917</span> <span class="pre">N4574</span> <span class="pre">N12140</span> <span class="pre">N9748</span>&#160;&#160;&#160; <span class="pre">N13390-0</span> <span class="pre">N7180-0</span> <span class="pre">N20785-0</span> <span class="pre">N6937-0</span> <span class="pre">N15776-0</span> <span class="pre">N25810-0</span> <span class="pre">N20820-0</span> <span class="pre">N6885-0</span> <span class="pre">N27294-0</span> <span class="pre">N18835-0</span> <span class="pre">N16945-0</span> <span class="pre">N7410-0</span> <span class="pre">N23967-0</span> <span class="pre">N22679-0</span> <span class="pre">N20532-0</span> <span class="pre">N26651-0</span> <span class="pre">N22078-0</span> <span class="pre">N4098-0</span> <span class="pre">N16473-0</span> <span class="pre">N13841-0</span> <span class="pre">N15660-0</span> <span class="pre">N25787-0</span> <span class="pre">N2315-0</span> <span class="pre">N1615-0</span> <span class="pre">N9087-0</span> <span class="pre">N23880-0</span> <span class="pre">N3600-0</span> <span class="pre">N24479-0</span> <span class="pre">N22882-0</span> <span class="pre">N26308-0</span> <span class="pre">N13594-0</span> <span class="pre">N2220-0</span> <span class="pre">N28356-0</span> <span class="pre">N17083-0</span> <span class="pre">N21415-0</span> <span class="pre">N18671-0</span> <span class="pre">N9440-0</span> <span class="pre">N17759-0</span> <span class="pre">N10861-0</span> <span class="pre">N21830-0</span> <span class="pre">N8064-0</span> <span class="pre">N5675-0</span> <span class="pre">N15037-0</span> <span class="pre">N26154-0</span> <span class="pre">N15368-1</span> <span class="pre">N481-0</span> <span class="pre">N3256-0</span> <span class="pre">N20663-0</span> <span class="pre">N23940-0</span> <span class="pre">N7654-0</span> <span class="pre">N10729-0</span> <span class="pre">N7090-0</span> <span class="pre">N23596-0</span> <span class="pre">N15901-0</span> <span class="pre">N16348-0</span> <span class="pre">N13645-0</span> <span class="pre">N8124-0</span> <span class="pre">N20094-0</span> <span class="pre">N27774-0</span> <span class="pre">N23011-0</span> <span class="pre">N14832-0</span> <span class="pre">N15971-0</span> <span class="pre">N27729-0</span> <span class="pre">N2167-0</span> <span class="pre">N11186-0</span> <span class="pre">N18390-0</span> <span class="pre">N21328-0</span> <span class="pre">N10992-0</span> <span class="pre">N20122-0</span> <span class="pre">N1958-0</span> <span class="pre">N2004-0</span> <span class="pre">N26156-0</span> <span class="pre">N17632-0</span> <span class="pre">N26146-0</span> <span class="pre">N17322-0</span> <span class="pre">N18403-0</span> <span class="pre">N17397-0</span> <span class="pre">N18215-0</span> <span class="pre">N14475-0</span> <span class="pre">N9781-0</span> <span class="pre">N17958-0</span> <span class="pre">N3370-0</span> <span class="pre">N1127-0</span> <span class="pre">N15525-0</span> <span class="pre">N12657-0</span> <span class="pre">N10537-0</span> <span class="pre">N18224-0</span> </code></p>
+</div>
+<div class="section" id="news-tsv">
+<h3>news.tsv<a class="headerlink" href="#news-tsv" title="Permalink to this headline">¶</a></h3>
+<p>The news.tsv file contains the detailed information of news articles involved in the behaviors.tsv file. It has 7 columns, which are divided by the tab symbol:</p>
+<ul class="simple">
+<li><p>News ID</p></li>
+<li><p>Category</p></li>
+<li><p>SubCategory</p></li>
+<li><p>Title</p></li>
+<li><p>Abstract</p></li>
+<li><p>URL</p></li>
+<li><p>Title Entities (entities contained in the title of this news)</p></li>
+<li><p>Abstract Entities (entites contained in the abstract of this news)</p></li>
+</ul>
+<p>One simple example:</p>
+<p><code class="docutils literal notranslate"><span class="pre">N46466</span>&#160;&#160;&#160; <span class="pre">lifestyle</span>&#160;&#160;&#160; <span class="pre">lifestyleroyals</span>&#160;&#160;&#160; <span class="pre">The</span> <span class="pre">Brands</span> <span class="pre">Queen</span> <span class="pre">Elizabeth,</span> <span class="pre">Prince</span> <span class="pre">Charles,</span> <span class="pre">and</span> <span class="pre">Prince</span> <span class="pre">Philip</span> <span class="pre">Swear</span> <span class="pre">By</span>&#160;&#160;&#160; <span class="pre">Shop</span> <span class="pre">the</span> <span class="pre">notebooks,</span> <span class="pre">jackets,</span> <span class="pre">and</span> <span class="pre">more</span> <span class="pre">that</span> <span class="pre">the</span> <span class="pre">royals</span> <span class="pre">can't</span> <span class="pre">live</span> <span class="pre">without.</span>&#160;&#160;&#160; <span class="pre">https://www.msn.com/en-us/lifestyle/lifestyleroyals/the-brands-queen-elizabeth,-prince-charles,-and-prince-philip-swear-by/ss-AAGH0ET?ocid=chopendata</span>&#160;&#160;&#160; <span class="pre">[{&quot;Label&quot;:</span> <span class="pre">&quot;Prince</span> <span class="pre">Philip,</span> <span class="pre">Duke</span> <span class="pre">of</span> <span class="pre">Edinburgh&quot;,</span> <span class="pre">&quot;Type&quot;:</span> <span class="pre">&quot;P&quot;,</span> <span class="pre">&quot;WikidataId&quot;:</span> <span class="pre">&quot;Q80976&quot;,</span> <span class="pre">&quot;Confidence&quot;:</span> <span class="pre">1.0,</span> <span class="pre">&quot;OccurrenceOffsets&quot;:</span> <span class="pre">[48],</span> <span class="pre">&quot;SurfaceForms&quot;:</span> <span class="pre">[&quot;Prince</span> <span class="pre">Philip&quot;]},</span> <span class="pre">{&quot;Label&quot;:</span> <span class="pre">&quot;Charles,</span> <span class="pre">Prince</span> <span class="pre">of</span> <span class="pre">Wales&quot;,</span> <span class="pre">&quot;Type&quot;:</span> <span class="pre">&quot;P&quot;,</span> <span class="pre">&quot;WikidataId&quot;:</span> <span class="pre">&quot;Q43274&quot;,</span> <span class="pre">&quot;Confidence&quot;:</span> <span class="pre">1.0,</span> <span class="pre">&quot;OccurrenceOffsets&quot;:</span> <span class="pre">[28],</span> <span class="pre">&quot;SurfaceForms&quot;:</span> <span class="pre">[&quot;Prince</span> <span class="pre">Charles&quot;]},</span> <span class="pre">{&quot;Label&quot;:</span> <span class="pre">&quot;Elizabeth</span> <span class="pre">II&quot;,</span> <span class="pre">&quot;Type&quot;:</span> <span class="pre">&quot;P&quot;,</span> <span class="pre">&quot;WikidataId&quot;:</span> <span class="pre">&quot;Q9682&quot;,</span> <span class="pre">&quot;Confidence&quot;:</span> <span class="pre">0.97,</span> <span class="pre">&quot;OccurrenceOffsets&quot;:</span> <span class="pre">[11],</span> <span class="pre">&quot;SurfaceForms&quot;:</span> <span class="pre">[&quot;Queen</span> <span class="pre">Elizabeth&quot;]}]</span>&#160;&#160;&#160; <span class="pre">[]</span> </code></p>
+</div>
+<div class="section" id="entity-embedding-vec-relation-embedding-vec">
+<h3>entity_embedding.vec &amp; relation_embedding.vec<a class="headerlink" href="#entity-embedding-vec-relation-embedding-vec" title="Permalink to this headline">¶</a></h3>
+<p>The entity_embedding.vec and relation_embedding.vec files contain the 100-dimensional embeddings of the entities and relations learned from the subgraph (from WikiData knowledge graph) by TransE method. In both files, the first column is the ID of entity/relation, and the other columns are the embedding vector values.</p>
+<p>One simple example:</p>
+<p><code class="docutils literal notranslate"><span class="pre">Q42306013</span>&#160; <span class="pre">0.014516</span> <span class="pre">-0.106958</span> <span class="pre">0.024590</span> <span class="pre">...</span> <span class="pre">-0.080382</span></code></p>
+</div>
+</div>
+<div class="section" id="dkn-architecture">
+<h2>DKN architecture<a class="headerlink" href="#dkn-architecture" title="Permalink to this headline">¶</a></h2>
+<p>The following figure shows the architecture of DKN.</p>
+<p><img alt="" src="https://recodatasets.z20.web.core.windows.net/images/dkn_architecture.png" /></p>
+<p>DKN takes one piece of candidate news and one piece of a user’s clicked news as input. For each piece of news, a specially designed KCNN is used to process its title and generate an embedding vector. KCNN is an extension of traditional CNN that allows flexibility in incorporating symbolic knowledge from a knowledge graph into sentence representation learning.</p>
+<p>With the KCNN, we obtain a set of embedding vectors for a user’s clicked history. To get final embedding of the user with
+respect to the current candidate news, we use an attention-based method to automatically match the candidate news to each piece
+of his clicked news, and aggregate the user’s historical interests with different weights. The candidate news embedding and the user embedding are concatenated and fed into a deep neural network (DNN) to calculate the predicted probability that the user will click the candidate news.</p>
+</div>
+<div class="section" id="global-settings-and-imports">
+<h2>Global settings and imports<a class="headerlink" href="#global-settings-and-imports" title="Permalink to this headline">¶</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sys</span>
+
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">from</span> <span class="nn">tempfile</span> <span class="kn">import</span> <span class="n">TemporaryDirectory</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">papermill</span> <span class="k">as</span> <span class="nn">pm</span>
+<span class="kn">import</span> <span class="nn">scrapbook</span> <span class="k">as</span> <span class="nn">sb</span>
+<span class="kn">import</span> <span class="nn">tensorflow</span> <span class="k">as</span> <span class="nn">tf</span>
+<span class="n">tf</span><span class="o">.</span><span class="n">get_logger</span><span class="p">()</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="s1">&#39;ERROR&#39;</span><span class="p">)</span> <span class="c1"># only show error messages</span>
+
+<span class="kn">from</span> <span class="nn">recommenders.datasets.download_utils</span> <span class="kn">import</span> <span class="n">maybe_download</span>
+<span class="kn">from</span> <span class="nn">recommenders.datasets.mind</span> <span class="kn">import</span> <span class="p">(</span><span class="n">download_mind</span><span class="p">,</span> 
+                                     <span class="n">extract_mind</span><span class="p">,</span> 
+                                     <span class="n">read_clickhistory</span><span class="p">,</span> 
+                                     <span class="n">get_train_input</span><span class="p">,</span> 
+                                     <span class="n">get_valid_input</span><span class="p">,</span> 
+                                     <span class="n">get_user_history</span><span class="p">,</span>
+                                     <span class="n">get_words_and_entities</span><span class="p">,</span>
+                                     <span class="n">generate_embeddings</span><span class="p">)</span> 
+<span class="kn">from</span> <span class="nn">recommenders.models.deeprec.deeprec_utils</span> <span class="kn">import</span> <span class="n">prepare_hparams</span>
+<span class="kn">from</span> <span class="nn">recommenders.models.deeprec.models.dkn</span> <span class="kn">import</span> <span class="n">DKN</span>
+<span class="kn">from</span> <span class="nn">recommenders.models.deeprec.io.dkn_iterator</span> <span class="kn">import</span> <span class="n">DKNTextIterator</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;System version: </span><span class="si">{</span><span class="n">sys</span><span class="o">.</span><span class="n">version</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Tensorflow version: </span><span class="si">{</span><span class="n">tf</span><span class="o">.</span><span class="n">__version__</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>System version: 3.6.11 | packaged by conda-forge | (default, Aug  5 2020, 20:09:42) 
+[GCC 7.5.0]
+Tensorflow version: 1.15.2
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Temp dir</span>
+<span class="n">tmpdir</span> <span class="o">=</span> <span class="n">TemporaryDirectory</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell tag_parameters docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Mind parameters</span>
+<span class="n">MIND_SIZE</span> <span class="o">=</span> <span class="s2">&quot;small&quot;</span>
+
+<span class="c1"># DKN parameters</span>
+<span class="n">epochs</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="n">history_size</span> <span class="o">=</span> <span class="mi">50</span>
+<span class="n">batch_size</span> <span class="o">=</span> <span class="mi">100</span>
+
+<span class="c1"># Paths</span>
+<span class="n">data_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">tmpdir</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="s2">&quot;mind-dkn&quot;</span><span class="p">)</span>
+<span class="n">train_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">data_path</span><span class="p">,</span> <span class="s2">&quot;train_mind.txt&quot;</span><span class="p">)</span>
+<span class="n">valid_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">data_path</span><span class="p">,</span> <span class="s2">&quot;valid_mind.txt&quot;</span><span class="p">)</span>
+<span class="n">user_history_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">data_path</span><span class="p">,</span> <span class="s2">&quot;user_history.txt&quot;</span><span class="p">)</span>
+<span class="n">infer_embedding_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">data_path</span><span class="p">,</span> <span class="s2">&quot;infer_embedding.txt&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="data-preparation">
+<h2>Data preparation<a class="headerlink" href="#data-preparation" title="Permalink to this headline">¶</a></h2>
+<p>In this example, let’s go through a real case on how to apply DKN on a raw news dataset from the very beginning. We will download a copy of open-source MIND dataset, in its original raw format. Then we will process the raw data files into DKN’s input data format, which is stated previously.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">train_zip</span><span class="p">,</span> <span class="n">valid_zip</span> <span class="o">=</span> <span class="n">download_mind</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="n">MIND_SIZE</span><span class="p">,</span> <span class="n">dest_path</span><span class="o">=</span><span class="n">data_path</span><span class="p">)</span>
+<span class="n">train_path</span><span class="p">,</span> <span class="n">valid_path</span> <span class="o">=</span> <span class="n">extract_mind</span><span class="p">(</span><span class="n">train_zip</span><span class="p">,</span> <span class="n">valid_zip</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>100%|██████████| 51.7k/51.7k [00:08&lt;00:00, 5.90kKB/s]
+100%|██████████| 30.2k/30.2k [00:05&lt;00:00, 5.60kKB/s]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">train_session</span><span class="p">,</span> <span class="n">train_history</span> <span class="o">=</span> <span class="n">read_clickhistory</span><span class="p">(</span><span class="n">train_path</span><span class="p">,</span> <span class="s2">&quot;behaviors.tsv&quot;</span><span class="p">)</span>
+<span class="n">valid_session</span><span class="p">,</span> <span class="n">valid_history</span> <span class="o">=</span> <span class="n">read_clickhistory</span><span class="p">(</span><span class="n">valid_path</span><span class="p">,</span> <span class="s2">&quot;behaviors.tsv&quot;</span><span class="p">)</span>
+<span class="n">get_train_input</span><span class="p">(</span><span class="n">train_session</span><span class="p">,</span> <span class="n">train_file</span><span class="p">)</span>
+<span class="n">get_valid_input</span><span class="p">(</span><span class="n">valid_session</span><span class="p">,</span> <span class="n">valid_file</span><span class="p">)</span>
+<span class="n">get_user_history</span><span class="p">(</span><span class="n">train_history</span><span class="p">,</span> <span class="n">valid_history</span><span class="p">,</span> <span class="n">user_history_file</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>03:15:49 INFO: Train file /tmp/tmp3gwf53sv/mind-dkn/train_mind.txt successfully generated
+03:15:51 INFO: Validation file /tmp/tmp3gwf53sv/mind-dkn/valid_mind.txt successfully generated
+03:15:51 INFO: User history file /tmp/tmp3gwf53sv/mind-dkn/user_history.txt successfully generated
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">train_news</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">train_path</span><span class="p">,</span> <span class="s2">&quot;news.tsv&quot;</span><span class="p">)</span>
+<span class="n">valid_news</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">valid_path</span><span class="p">,</span> <span class="s2">&quot;news.tsv&quot;</span><span class="p">)</span>
+<span class="n">news_words</span><span class="p">,</span> <span class="n">news_entities</span> <span class="o">=</span> <span class="n">get_words_and_entities</span><span class="p">(</span><span class="n">train_news</span><span class="p">,</span> <span class="n">valid_news</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">train_entities</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">train_path</span><span class="p">,</span> <span class="s2">&quot;entity_embedding.vec&quot;</span><span class="p">)</span>
+<span class="n">valid_entities</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">valid_path</span><span class="p">,</span> <span class="s2">&quot;entity_embedding.vec&quot;</span><span class="p">)</span>
+<span class="n">news_feature_file</span><span class="p">,</span> <span class="n">word_embeddings_file</span><span class="p">,</span> <span class="n">entity_embeddings_file</span> <span class="o">=</span> <span class="n">generate_embeddings</span><span class="p">(</span>
+    <span class="n">data_path</span><span class="p">,</span>
+    <span class="n">news_words</span><span class="p">,</span>
+    <span class="n">news_entities</span><span class="p">,</span>
+    <span class="n">train_entities</span><span class="p">,</span>
+    <span class="n">valid_entities</span><span class="p">,</span>
+    <span class="n">max_sentence</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+    <span class="n">word_embedding_dim</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>03:15:53 INFO: Downloading glove...
+100%|██████████| 842k/842k [06:40&lt;00:00, 2.10kKB/s] 
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="create-hyper-parameters">
+<h2>Create hyper-parameters<a class="headerlink" href="#create-hyper-parameters" title="Permalink to this headline">¶</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">yaml_file</span> <span class="o">=</span> <span class="n">maybe_download</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="s2">&quot;https://recodatasets.z20.web.core.windows.net/deeprec/deeprec/dkn/dkn_MINDsmall.yaml&quot;</span><span class="p">,</span> 
+                           <span class="n">work_directory</span><span class="o">=</span><span class="n">data_path</span><span class="p">)</span>
+<span class="n">hparams</span> <span class="o">=</span> <span class="n">prepare_hparams</span><span class="p">(</span><span class="n">yaml_file</span><span class="p">,</span>
+                          <span class="n">news_feature_file</span><span class="o">=</span><span class="n">news_feature_file</span><span class="p">,</span>
+                          <span class="n">user_history_file</span><span class="o">=</span><span class="n">user_history_file</span><span class="p">,</span>
+                          <span class="n">wordEmb_file</span><span class="o">=</span><span class="n">word_embeddings_file</span><span class="p">,</span>
+                          <span class="n">entityEmb_file</span><span class="o">=</span><span class="n">entity_embeddings_file</span><span class="p">,</span>
+                          <span class="n">epochs</span><span class="o">=</span><span class="n">epochs</span><span class="p">,</span>
+                          <span class="n">history_size</span><span class="o">=</span><span class="n">history_size</span><span class="p">,</span>
+                          <span class="n">batch_size</span><span class="o">=</span><span class="n">batch_size</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="train-the-dkn-model">
+<h2>Train the DKN model<a class="headerlink" href="#train-the-dkn-model" title="Permalink to this headline">¶</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model</span> <span class="o">=</span> <span class="n">DKN</span><span class="p">(</span><span class="n">hparams</span><span class="p">,</span> <span class="n">DKNTextIterator</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">train_file</span><span class="p">,</span> <span class="n">valid_file</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>step 10000 , total_loss: 0.4565, data_loss: 0.4562
+at epoch 1
+train info: logloss loss:0.4638135433827465
+eval info: auc:0.6705, group_auc:0.6381, mean_mrr:0.2957, ndcg@10:0.3883, ndcg@5:0.3237
+at epoch 1 , train time: 474.0 eval time: 620.1
+step 10000 , total_loss: 0.4472, data_loss: 0.4467
+at epoch 2
+train info: logloss loss:0.4505543474856317
+eval info: auc:0.6739, group_auc:0.639, mean_mrr:0.2946, ndcg@10:0.3879, ndcg@5:0.3218
+at epoch 2 , train time: 471.8 eval time: 612.2
+step 10000 , total_loss: 0.4424, data_loss: 0.4418
+at epoch 3
+train info: logloss loss:0.44420040403753597
+eval info: auc:0.6714, group_auc:0.6383, mean_mrr:0.294, ndcg@10:0.3872, ndcg@5:0.3204
+at epoch 3 , train time: 474.1 eval time: 617.7
+step 10000 , total_loss: 0.4466, data_loss: 0.4460
+at epoch 4
+train info: logloss loss:0.4390566331326689
+eval info: auc:0.6687, group_auc:0.639, mean_mrr:0.295, ndcg@10:0.3875, ndcg@5:0.3209
+at epoch 4 , train time: 474.5 eval time: 616.1
+step 10000 , total_loss: 0.4415, data_loss: 0.4408
+at epoch 5
+train info: logloss loss:0.4343439095525456
+eval info: auc:0.6672, group_auc:0.641, mean_mrr:0.2962, ndcg@10:0.388, ndcg@5:0.3217
+at epoch 5 , train time: 473.5 eval time: 608.2
+step 10000 , total_loss: 0.4351, data_loss: 0.4343
+at epoch 6
+train info: logloss loss:0.42958035677504997
+eval info: auc:0.6655, group_auc:0.639, mean_mrr:0.2946, ndcg@10:0.3858, ndcg@5:0.3199
+at epoch 6 , train time: 473.9 eval time: 610.2
+step 10000 , total_loss: 0.4348, data_loss: 0.4339
+at epoch 7
+train info: logloss loss:0.4246704682523697
+eval info: auc:0.6594, group_auc:0.6345, mean_mrr:0.2932, ndcg@10:0.3833, ndcg@5:0.3178
+at epoch 7 , train time: 472.9 eval time: 610.7
+step 10000 , total_loss: 0.4349, data_loss: 0.4338
+at epoch 8
+train info: logloss loss:0.41954958021519734
+eval info: auc:0.6551, group_auc:0.6321, mean_mrr:0.2921, ndcg@10:0.3815, ndcg@5:0.3165
+at epoch 8 , train time: 471.6 eval time: 606.7
+step 10000 , total_loss: 0.4386, data_loss: 0.4375
+at epoch 9
+train info: logloss loss:0.41416185889768203
+eval info: auc:0.6493, group_auc:0.6268, mean_mrr:0.2894, ndcg@10:0.3777, ndcg@5:0.3127
+at epoch 9 , train time: 473.2 eval time: 612.2
+step 10000 , total_loss: 0.4300, data_loss: 0.4288
+at epoch 10
+train info: logloss loss:0.40849729755098674
+eval info: auc:0.645, group_auc:0.6217, mean_mrr:0.2857, ndcg@10:0.3736, ndcg@5:0.3081
+at epoch 10 , train time: 473.5 eval time: 605.4
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;recommenders.models.deeprec.models.dkn.DKN at 0x7fe60850deb8&gt;
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="evaluate-the-dkn-model">
+<h2>Evaluate the DKN model<a class="headerlink" href="#evaluate-the-dkn-model" title="Permalink to this headline">¶</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">res</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">run_eval</span><span class="p">(</span><span class="n">valid_file</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">res</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;auc&#39;: 0.645, &#39;group_auc&#39;: 0.6217, &#39;mean_mrr&#39;: 0.2857, &#39;ndcg@5&#39;: 0.3081, &#39;ndcg@10&#39;: 0.3736}
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sb</span><span class="o">.</span><span class="n">glue</span><span class="p">(</span><span class="s2">&quot;res&quot;</span><span class="p">,</span> <span class="n">res</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+</div>
+</div>
+</div>
+<div class="section" id="document-embedding-inference-api">
+<h2>Document embedding inference API<a class="headerlink" href="#document-embedding-inference-api" title="Permalink to this headline">¶</a></h2>
+<p>After training, you can get document embedding through this document embedding inference API. The input file format is same with document feature file. The output file fomrat is: <code class="docutils literal notranslate"><span class="pre">[Newsid]</span> <span class="pre">[embedding]</span></code></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model</span><span class="o">.</span><span class="n">run_get_embedding</span><span class="p">(</span><span class="n">news_feature_file</span><span class="p">,</span> <span class="n">infer_embedding_file</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;recommenders.models.deeprec.models.dkn.DKN at 0x7fe60850deb8&gt;
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="results-on-large-mind-dataset">
+<h2>Results on large MIND dataset<a class="headerlink" href="#results-on-large-mind-dataset" title="Permalink to this headline">¶</a></h2>
+<p>Here are performances using the large MIND dataset (1,000,000 users, 161,013 news articles and 15,777,377 impression logs).</p>
+<table class="colwidths-auto table">
+<thead>
+<tr class="row-odd"><th class="text-align:left head"><p>Models</p></th>
+<th class="text-align:center head"><p>g-AUC</p></th>
+<th class="text-align:center head"><p>MRR</p></th>
+<th class="text-align:center head"><p>NDCG&#64;5</p></th>
+<th class="text-align:left head"><p>NDCG&#64;10</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-align:left"><p>LibFM</p></td>
+<td class="text-align:center"><p>0.5993</p></td>
+<td class="text-align:center"><p>0.2823</p></td>
+<td class="text-align:center"><p>0.3005</p></td>
+<td class="text-align:left"><p>0.3574</p></td>
+</tr>
+<tr class="row-odd"><td class="text-align:left"><p>Wide&amp;Deep</p></td>
+<td class="text-align:center"><p>0.6216</p></td>
+<td class="text-align:center"><p>0.2931</p></td>
+<td class="text-align:center"><p>0.3138</p></td>
+<td class="text-align:left"><p>0.3712</p></td>
+</tr>
+<tr class="row-even"><td class="text-align:left"><p>DKN</p></td>
+<td class="text-align:center"><p>0.6436</p></td>
+<td class="text-align:center"><p>0.3128</p></td>
+<td class="text-align:center"><p>0.3371</p></td>
+<td class="text-align:left"><p>0.3908</p></td>
+</tr>
+</tbody>
+</table>
+<p>Note that the results of DKN are using Microsoft recommender and the results of the first two models come from the MIND paper [3].
+We compare the results on the same test dataset.</p>
+<p>One epoch takes 6381.3s (5066.6s for training, 1314.7s for evaluating) for DKN on GPU. Hardware specification for running the large dataset: <br>
+GPU: Tesla P100-PCIE-16GB <br>
+CPU: 6 cores Intel(R) Xeon(R) CPU E5-2690 v4 &#64; 2.60GHz</p>
+</div>
+<div class="section" id="references">
+<h2>References<a class="headerlink" href="#references" title="Permalink to this headline">¶</a></h2>
+<p>[1] Wang, Hongwei, et al. “DKN: Deep Knowledge-Aware Network for News Recommendation.” Proceedings of the 2018 World Wide Web Conference on World Wide Web. International World Wide Web Conferences Steering Committee, 2018.<br>
+[2] Knowledge Graph Embeddings including TransE, TransH, TransR and PTransE. <a class="reference external" href="https://github.com/thunlp/KB2E">https://github.com/thunlp/KB2E</a> <br>
+[3] Wu, Fangzhao, et al. “MIND: A Large-scale Dataset for News Recommendation” Proceedings of the 58th Annual Meeting of the Association for Computational Linguistics. <a class="reference external" href="https://msnews.github.io/competition.html">https://msnews.github.io/competition.html</a> <br>
+[4] GloVe: Global Vectors for Word Representation. <a class="reference external" href="https://nlp.stanford.edu/projects/glove/">https://nlp.stanford.edu/projects/glove/</a></p>
+</div>
+</div>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "reco_gpu"
+        },
+        kernelOptions: {
+            kernelName: "reco_gpu",
+            path: "./examples/02_model_content_based_filtering"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'reco_gpu'</script>
+
+              </div>
+              
+        
+            
+
+
+
+<div class='prev-next-bottom'>
+    
+
+</div>
+        
+        </div>
+    </div>
+    <footer class="footer">
+    <div class="container">
+      <p>
+        
+          By The Jupyter Book community<br/>
+        
+            &copy; Copyright 2021.<br/>
+      </p>
+    </div>
+  </footer>
+</main>
+
+
+      </div>
+    </div>
+  
+  <script src="../../_static/js/index.1c5a1a01449ed65a7b51.js"></script>
+
+  
+  </body>
+</html>

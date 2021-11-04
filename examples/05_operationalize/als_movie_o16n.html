@@ -1,0 +1,1372 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Building a Real-time Recommendation API &#8212; &lt;h1 style=&#34;font-size:2em;text-align:center;color:#FF5733&#34;&gt;Recommenders&lt;/h1&gt;</title>
+    
+  <link href="../../_static/css/theme.css" rel="stylesheet" />
+  <link href="../../_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
+
+    
+  <link rel="stylesheet"
+    href="../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+
+    
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-book-theme.css?digest=c3fdc42140077d1ad13ad2f1588a4309" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/tabs.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    
+  <link rel="preload" as="script" href="../../_static/js/index.1c5a1a01449ed65a7b51.js">
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/togglebutton.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <script src="../../_static/tabs.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../../_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script>
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="../../_static/sphinx-thebe.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en" />
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="../../index.html">
+      
+      
+      
+      <h1 class="site-logo" id="site-title"><h1 style="font-size:2em;text-align:center;color:#FF5733">Recommenders</h1></h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="../../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        <p class="caption" role="heading">
+ <span class="caption-text">
+  Getting Started Notebooks
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../00_quick_start/als_movielens.html">
+   Running ALS on MovieLens (PySpark)
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../00_quick_start/ncf_movielens.html">
+   Neural Collaborative Filtering on MovieLens dataset.
+  </a>
+ </li>
+</ul>
+
+    </div>
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="topbar container-xl fixed-top">
+    <div class="topbar-contents row">
+        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
+        <div class="col pl-md-4 topbar-main">
+            
+            <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+                data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+                aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
+                title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+                <i class="fas fa-bars"></i>
+                <i class="fas fa-arrow-left"></i>
+                <i class="fas fa-arrow-up"></i>
+            </button>
+            
+            
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
+            class="fas fa-download"></i></button>
+
+    <div class="dropdown-buttons">
+        <!-- ipynb file if we had a myst markdown file -->
+        
+        <!-- Download raw file -->
+        <a class="dropdown-buttons" href="../../_sources/examples/05_operationalize/als_movie_o16n.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
+                data-placement="left">.ipynb</button></a>
+        <!-- Download PDF via print -->
+        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
+            onClick="window.print()" data-toggle="tooltip" data-placement="left">.pdf</button>
+    </div>
+</div>
+
+            <!-- Source interaction buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
+    <div class="dropdown-buttons sourcebuttons">
+        <a class="repository-button"
+            href="https://github.com/microsoft/genalog"><button type="button" class="btn btn-secondary topbarbtn"
+                data-toggle="tooltip" data-placement="left" title="Source repository"><i
+                    class="fab fa-github"></i>repository</button></a>
+        <a class="issues-button"
+            href="https://github.com/microsoft/genalog/issues/new?title=Issue%20on%20page%20%2Fexamples/05_operationalize/als_movie_o16n.html&body=Your%20issue%20content%20here."><button
+                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
+                title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
+        
+    </div>
+</div>
+
+            <!-- Full screen (wrap in <a> to have style consistency -->
+
+<a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+        data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+        title="Fullscreen mode"><i
+            class="fas fa-expand"></i></button></a>
+
+            <!-- Launch buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Launch interactive content"><i class="fas fa-rocket"></i></button>
+    <div class="dropdown-buttons">
+        
+        <a class="binder-button" href="https://mybinder.org/v2/gh/microsoft/genalog/main?urlpath=tree/docs/genalog_docs/examples/05_operationalize/als_movie_o16n.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Launch Binder" data-toggle="tooltip"
+                data-placement="left"><img class="binder-button-logo"
+                    src="../../_static/images/logo_binder.svg"
+                    alt="Interact on binder">Binder</button></a>
+        
+        
+        
+        
+    </div>
+</div>
+
+        </div>
+
+        <!-- Table of contents -->
+        <div class="d-none d-md-block col-md-2 bd-toc show">
+            
+            <div class="tocsection onthispage pt-5 pb-3">
+                <i class="fas fa-list"></i> Contents
+            </div>
+            <nav id="bd-toc-nav" aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#architecture">
+   Architecture
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#components">
+   Components
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#table-of-contents">
+   Table of Contents.
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#setup">
+   Setup
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#file-imports">
+   0 File Imports
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#service-creation">
+   1 Service Creation
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#services-created-by-this-notebook">
+     Services created by this notebook:
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#import-or-create-the-azureml-workspace">
+     1.1 Import or create the AzureML Workspace.
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#create-a-cosmos-db-to-store-recommendation-results">
+     1.2 Create a Cosmos DB to store recommendation results
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#training">
+   2 Training
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#download-the-movielens-dataset">
+     2.1 Download the MovieLens dataset
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#split-the-data-into-train-test">
+     2.2 Split the data into train, test
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#train-the-als-model-on-the-training-data">
+     2.3 Train the ALS model on the training data
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#get-top-k-recommendations-for-our-testing-data">
+     2.4 Get top-k recommendations for our testing data
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#evaluate-how-well-als-performs">
+     2.5 Evaluate how well ALS performs
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#save-the-model">
+     2.6 Save the model
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#operationalize-the-recommender-service">
+   3. Operationalize the Recommender Service
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#create-a-look-up-for-recommendations-in-cosmos-db">
+     3.1 Create a look-up for Recommendations in Cosmos DB
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#configure-azure-machine-learning">
+     3.2 Configure Azure Machine Learning
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#deploy-the-model-as-a-service-on-aks">
+     3.3 Deploy the model as a Service on AKS
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#create-an-environment-for-your-model">
+       3.3.1 Create an Environment for your model:
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#create-an-aks-cluster-to-run-your-container">
+       3.3.2 Create an AKS Cluster to run your container
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#deploy-the-container-image-to-aks">
+       3.3.3 Deploy the container image to AKS:
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#call-the-aks-model-service">
+     3.4 Call the AKS model service
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#appendix-realtime-scoring-with-azureml">
+   Appendix - Realtime scoring with AzureML
+  </a>
+ </li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+        
+              <div>
+                
+  <p><i>Copyright (c) Microsoft Corporation. All rights reserved.</i></p>
+<p><i>Licensed under the MIT License.</i></p>
+<div class="tex2jax_ignore mathjax_ignore section" id="building-a-real-time-recommendation-api">
+<h1>Building a Real-time Recommendation API<a class="headerlink" href="#building-a-real-time-recommendation-api" title="Permalink to this headline">¶</a></h1>
+<p>This reference architecture shows the full lifecycle of building a recommendation system. It walks through the creation of appropriate azure resources, training a recommendation model using a Virtual Machine or Databricks, and deploying it as an API. It uses Azure Cosmos DB, Azure Machine Learning, and Azure Kubernetes Service.</p>
+<p>This architecture can be generalized for many recommendation engine scenarios, including recommendations for products, movies, and news.</p>
+<div class="section" id="architecture">
+<h2>Architecture<a class="headerlink" href="#architecture" title="Permalink to this headline">¶</a></h2>
+<p><img alt="architecture" src="https://recodatasets.z20.web.core.windows.net/images/reco-arch.png" /></p>
+<p><strong>Scenario</strong>: A media organization wants to provide movie or video recommendations to its users. By providing personalized recommendations, the organization meets several business goals, including increased click-through rates, increased engagement on site, and higher user satisfaction.</p>
+<p>In this reference, we train and deploy a real-time recommender service API that can provide the top 10 movie recommendations for a given user.</p>
+</div>
+<div class="section" id="components">
+<h2>Components<a class="headerlink" href="#components" title="Permalink to this headline">¶</a></h2>
+<p>This architecture consists of the following key components:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://docs.microsoft.com/en-us/azure/azure-databricks/what-is-azure-databricks">Azure Databricks</a><sup>1)</sup> is used as a development environment to prepare input data and train the recommender model on a Spark cluster. Azure Databricks also provides an interactive workspace to run and collaborate on notebooks for any data processing or machine learning tasks.</p></li>
+<li><p><a class="reference external" href="https://docs.microsoft.com/en-us/azure/aks/intro-kubernetes">Azure Kubernetes Service</a>(AKS) is used to deploy and operationalize a machine learning model service API on a Kubernetes cluster. AKS hosts the containerized model, providing scalability that meets throughput requirements, identity and access management, and logging and health monitoring.</p></li>
+<li><p><a class="reference external" href="https://docs.microsoft.com/en-us/azure/cosmos-db/introduction">Azure Cosmos DB</a> is a globally distributed database service used to store the top 10 recommended movies for each user. Azure Cosmos DB is ideal for this scenario as it provides low latency (10 ms at 99th percentile) to read the top recommended items for a given user.</p></li>
+<li><p><a class="reference external" href="https://docs.microsoft.com/en-us/azure/machine-learning/service/">Azure Machine Learning Service</a> is a service used to track and manage machine learning models, and then package and deploy these models to a scalable Azure Kubernetes Service environment.</p></li>
+</ul>
+<p><sup>1) Here, we are just giving an example of using Azure Databricks. Any platforms listed in <span class="xref myst">SETUP</span> can be used as well.</sup></p>
+</div>
+<div class="section" id="table-of-contents">
+<h2>Table of Contents.<a class="headerlink" href="#table-of-contents" title="Permalink to this headline">¶</a></h2>
+<ol class="simple">
+<li><p><a class="reference external" href="#0-File-Imports">File Imports</a></p></li>
+<li><p><a class="reference external" href="#1-Service-Creation">Service Creation</a></p></li>
+<li><p><a class="reference external" href="#2-Training">Training and evaluation</a></p></li>
+<li><p><a class="reference external" href="#3.-Operationalize-the-Recommender-Service">Operationalization</a></p></li>
+</ol>
+</div>
+<div class="section" id="setup">
+<h2>Setup<a class="headerlink" href="#setup" title="Permalink to this headline">¶</a></h2>
+<p>To run this notebook on Azure Databricks, you should setup Azure Databricks by following the appropriate sections in the repository <span class="xref myst">SETUP instructions</span> and import this notebook into your Azure Databricks Workspace (see instructions <a class="reference external" href="https://docs.azuredatabricks.net/user-guide/notebooks/notebook-manage.html#import-a-notebook">here</a>).</p>
+<p>Please note: This notebook <strong>REQUIRES</strong> that you add the dependencies to support <strong>operationalization</strong>. See <span class="xref myst">SETUP</span> for details.</p>
+</div>
+<div class="section" id="file-imports">
+<h2>0 File Imports<a class="headerlink" href="#file-imports" title="Permalink to this headline">¶</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">urllib</span>
+
+<span class="kn">from</span> <span class="nn">azure.common.client_factory</span> <span class="kn">import</span> <span class="n">get_client_from_cli_profile</span>
+<span class="kn">import</span> <span class="nn">azure.mgmt.cosmosdb</span>
+<span class="kn">import</span> <span class="nn">azureml.core</span>
+<span class="kn">from</span> <span class="nn">azureml.core</span> <span class="kn">import</span> <span class="n">Workspace</span>
+<span class="kn">from</span> <span class="nn">azureml.core.model</span> <span class="kn">import</span> <span class="n">Model</span>
+<span class="kn">from</span> <span class="nn">azureml.core.compute</span> <span class="kn">import</span> <span class="n">AksCompute</span><span class="p">,</span> <span class="n">ComputeTarget</span>
+<span class="kn">from</span> <span class="nn">azureml.core.compute_target</span> <span class="kn">import</span> <span class="n">ComputeTargetException</span>
+<span class="kn">from</span> <span class="nn">azureml.core.webservice</span> <span class="kn">import</span> <span class="n">Webservice</span><span class="p">,</span> <span class="n">AksWebservice</span>
+<span class="kn">from</span> <span class="nn">azureml.exceptions</span> <span class="kn">import</span> <span class="n">WebserviceException</span>
+<span class="kn">from</span> <span class="nn">azureml.core</span> <span class="kn">import</span> <span class="n">Environment</span>
+<span class="kn">from</span> <span class="nn">azureml.core.environment</span> <span class="kn">import</span> <span class="n">CondaDependencies</span>
+<span class="kn">from</span> <span class="nn">azureml.core.model</span> <span class="kn">import</span> <span class="n">InferenceConfig</span>
+<span class="kn">from</span> <span class="nn">azureml.core.environment</span> <span class="kn">import</span> <span class="n">SparkPackage</span>
+<span class="kn">import</span> <span class="nn">pydocumentdb.document_client</span> <span class="k">as</span> <span class="nn">document_client</span>
+<span class="kn">from</span> <span class="nn">pyspark.ml.recommendation</span> <span class="kn">import</span> <span class="n">ALS</span>
+<span class="kn">from</span> <span class="nn">pyspark.sql.types</span> <span class="kn">import</span> <span class="n">StructType</span><span class="p">,</span> <span class="n">StructField</span>
+<span class="kn">from</span> <span class="nn">pyspark.sql.types</span> <span class="kn">import</span> <span class="n">FloatType</span><span class="p">,</span> <span class="n">IntegerType</span><span class="p">,</span> <span class="n">LongType</span>
+
+<span class="kn">from</span> <span class="nn">recommenders.datasets</span> <span class="kn">import</span> <span class="n">movielens</span>
+<span class="kn">from</span> <span class="nn">recommenders.datasets.cosmos_cli</span> <span class="kn">import</span> <span class="n">find_collection</span><span class="p">,</span> <span class="n">read_collection</span><span class="p">,</span> <span class="n">read_database</span><span class="p">,</span> <span class="n">find_database</span>
+<span class="kn">from</span> <span class="nn">recommenders.datasets.download_utils</span> <span class="kn">import</span> <span class="n">maybe_download</span>
+<span class="kn">from</span> <span class="nn">recommenders.datasets.spark_splitters</span> <span class="kn">import</span> <span class="n">spark_random_split</span>
+<span class="kn">from</span> <span class="nn">recommenders.evaluation.spark_evaluation</span> <span class="kn">import</span> <span class="n">SparkRatingEvaluation</span><span class="p">,</span> <span class="n">SparkRankingEvaluation</span>
+<span class="kn">from</span> <span class="nn">recommenders.utils.notebook_utils</span> <span class="kn">import</span> <span class="n">is_databricks</span>
+<span class="kn">from</span> <span class="nn">recommenders.utils.timer</span> <span class="kn">import</span> <span class="n">Timer</span>
+<span class="kn">from</span> <span class="nn">recommenders.utils.spark_utils</span> <span class="kn">import</span> <span class="n">start_or_get_spark</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Azure SDK version:&quot;</span><span class="p">,</span> <span class="n">azureml</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">VERSION</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Azure SDK version: 1.0.69
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Start spark session if needed</span>
+<span class="k">if</span> <span class="ow">not</span> <span class="n">is_databricks</span><span class="p">():</span>
+    <span class="n">cosmos_connector</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="s2">&quot;https://search.maven.org/remotecontent?filepath=com/microsoft/azure/&quot;</span>
+        <span class="s2">&quot;azure-cosmosdb-spark_2.3.0_2.11/1.3.3/azure-cosmosdb-spark_2.3.0_2.11-1.3.3-uber.jar&quot;</span>
+    <span class="p">)</span>
+    <span class="n">jar_filepath</span> <span class="o">=</span> <span class="n">maybe_download</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="n">cosmos_connector</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="s2">&quot;cosmos.jar&quot;</span><span class="p">)</span>
+    <span class="n">spark</span> <span class="o">=</span> <span class="n">start_or_get_spark</span><span class="p">(</span><span class="s2">&quot;ALS&quot;</span><span class="p">,</span> <span class="n">memory</span><span class="o">=</span><span class="s2">&quot;10g&quot;</span><span class="p">,</span> <span class="n">jars</span><span class="o">=</span><span class="p">[</span><span class="n">jar_filepath</span><span class="p">])</span>
+    <span class="n">sc</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">sparkContext</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">sc</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html">
+<div>
+    <p><b>SparkContext</b></p>
+
+    <p><a href="http://192.168.99.107:4040">Spark UI</a></p>
+
+    <dl>
+      <dt>Version</dt>
+        <dd><code>v2.4.3</code></dd>
+      <dt>Master</dt>
+        <dd><code>local[*]</code></dd>
+      <dt>AppName</dt>
+        <dd><code>ALS</code></dd>
+    </dl>
+</div>
+</div></div>
+</div>
+</div>
+<div class="section" id="service-creation">
+<h2>1 Service Creation<a class="headerlink" href="#service-creation" title="Permalink to this headline">¶</a></h2>
+<p>Modify the <strong>Subscription ID</strong> to the subscription you would like to deploy to and set the resource name variables.</p>
+<div class="section" id="services-created-by-this-notebook">
+<h3>Services created by this notebook:<a class="headerlink" href="#services-created-by-this-notebook" title="Permalink to this headline">¶</a></h3>
+<ol class="simple">
+<li><p><a class="reference external" href="https://azure.microsoft.com/en-us/services/machine-learning-service/">Azure ML Service</a></p>
+<ol class="simple">
+<li><p><a class="reference external" href="https://docs.microsoft.com/en-us/azure/machine-learning/concept-workspace">Azure ML Workspace</a></p></li>
+<li><p><a class="reference external" href="https://azure.microsoft.com/en-us/services/monitor/">Azure Application Insights</a></p></li>
+<li><p><a class="reference external" href="https://docs.microsoft.com/en-us/azure/storage/common/storage-account-overview">Azure Storage</a></p></li>
+<li><p><a class="reference external" href="https://azure.microsoft.com/en-us/services/key-vault/">Azure Key Vault</a></p></li>
+</ol>
+</li>
+<li><p><a class="reference external" href="https://azure.microsoft.com/en-us/services/cosmos-db/">Azure Cosmos DB</a></p></li>
+<li><p><a class="reference external" href="https://azure.microsoft.com/en-us/services/kubernetes-service/">Azure Kubernetes Service (AKS)</a></p></li>
+</ol>
+<p><strong>Add your Azure subscription ID</strong></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Add your subscription ID</span>
+<span class="n">subscription_id</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+
+<span class="c1"># Set your workspace name</span>
+<span class="n">workspace_name</span> <span class="o">=</span> <span class="s2">&quot;o16n-test&quot;</span>
+<span class="n">resource_group</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">-rg&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">workspace_name</span><span class="p">)</span>
+
+<span class="c1"># Set your region to deploy Azure ML workspace</span>
+<span class="n">location</span> <span class="o">=</span> <span class="s2">&quot;eastus&quot;</span>
+
+<span class="c1"># AzureML service and Azure Kubernetes Service prefix</span>
+<span class="n">service_name</span> <span class="o">=</span> <span class="s2">&quot;mvl-als&quot;</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Login for Azure CLI so that AzureML can use Azure CLI login credentials</span>
+<span class="o">!</span>az login
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Change subscription if needed</span>
+<span class="o">!</span>az account <span class="nb">set</span> --subscription <span class="o">{</span>subscription_id<span class="o">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Check account</span>
+<span class="o">!</span>az account show
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># CosmosDB</span>
+<span class="c1"># account_name for CosmosDB cannot have &quot;_&quot; and needs to be less than 31 chars</span>
+<span class="n">account_name</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">-ds-sql&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">workspace_name</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">,</span> <span class="s2">&quot;-&quot;</span><span class="p">)[:</span><span class="mi">31</span><span class="p">]</span>
+<span class="n">cosmos_database</span> <span class="o">=</span> <span class="s2">&quot;recommendations&quot;</span>
+<span class="n">cosmos_collection</span> <span class="o">=</span> <span class="s2">&quot;user_recommendations_als&quot;</span>
+
+<span class="c1"># AzureML resource names</span>
+<span class="n">model_name</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">-reco.mml&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">service_name</span><span class="p">)</span>
+<span class="n">aks_name</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">-aks&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">service_name</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># top k items to recommend</span>
+<span class="n">TOP_K</span> <span class="o">=</span> <span class="mi">10</span>
+
+<span class="c1"># Select MovieLens data size: 100k, 1m, 10m, or 20m</span>
+<span class="n">MOVIELENS_DATA_SIZE</span> <span class="o">=</span> <span class="s1">&#39;100k&#39;</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">userCol</span> <span class="o">=</span> <span class="s2">&quot;UserId&quot;</span>
+<span class="n">itemCol</span> <span class="o">=</span> <span class="s2">&quot;MovieId&quot;</span>
+<span class="n">ratingCol</span> <span class="o">=</span> <span class="s2">&quot;Rating&quot;</span>
+
+<span class="n">train_data_path</span> <span class="o">=</span> <span class="s2">&quot;train&quot;</span>
+<span class="n">test_data_path</span> <span class="o">=</span> <span class="s2">&quot;test&quot;</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="import-or-create-the-azureml-workspace">
+<h3>1.1 Import or create the AzureML Workspace.<a class="headerlink" href="#import-or-create-the-azureml-workspace" title="Permalink to this headline">¶</a></h3>
+<p>This command will check if the AzureML Workspace exists or not, and will create the workspace if it doesn’t exist.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ws</span> <span class="o">=</span> <span class="n">Workspace</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+    <span class="n">name</span><span class="o">=</span><span class="n">workspace_name</span><span class="p">,</span>
+    <span class="n">subscription_id</span><span class="o">=</span><span class="n">subscription_id</span><span class="p">,</span>
+    <span class="n">resource_group</span><span class="o">=</span><span class="n">resource_group</span><span class="p">,</span> 
+    <span class="n">location</span><span class="o">=</span><span class="n">location</span><span class="p">,</span>
+    <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="create-a-cosmos-db-to-store-recommendation-results">
+<h3>1.2 Create a Cosmos DB to store recommendation results<a class="headerlink" href="#create-a-cosmos-db-to-store-recommendation-results" title="Permalink to this headline">¶</a></h3>
+<p>This step will take some time to create CosmosDB resources.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># explicitly pass subscription_id in case user has multiple subscriptions</span>
+<span class="n">client</span> <span class="o">=</span> <span class="n">get_client_from_cli_profile</span><span class="p">(</span>
+    <span class="n">azure</span><span class="o">.</span><span class="n">mgmt</span><span class="o">.</span><span class="n">cosmosdb</span><span class="o">.</span><span class="n">CosmosDB</span><span class="p">,</span>
+    <span class="n">subscription_id</span><span class="o">=</span><span class="n">subscription_id</span>
+<span class="p">)</span>
+
+<span class="n">async_cosmosdb_create</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">database_accounts</span><span class="o">.</span><span class="n">create_or_update</span><span class="p">(</span>
+    <span class="n">resource_group</span><span class="p">,</span>
+    <span class="n">account_name</span><span class="p">,</span>
+    <span class="p">{</span>
+        <span class="s1">&#39;location&#39;</span><span class="p">:</span> <span class="n">location</span><span class="p">,</span>
+        <span class="s1">&#39;locations&#39;</span><span class="p">:</span> <span class="p">[{</span>
+            <span class="s1">&#39;location_name&#39;</span><span class="p">:</span> <span class="n">location</span>
+        <span class="p">}]</span>
+    <span class="p">}</span>
+<span class="p">)</span>
+<span class="n">account</span> <span class="o">=</span> <span class="n">async_cosmosdb_create</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>
+
+<span class="n">my_keys</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">database_accounts</span><span class="o">.</span><span class="n">list_keys</span><span class="p">(</span><span class="n">resource_group</span><span class="p">,</span> <span class="n">account_name</span><span class="p">)</span>
+<span class="n">master_key</span> <span class="o">=</span> <span class="n">my_keys</span><span class="o">.</span><span class="n">primary_master_key</span>
+<span class="n">endpoint</span> <span class="o">=</span> <span class="s2">&quot;https://&quot;</span> <span class="o">+</span> <span class="n">account_name</span> <span class="o">+</span> <span class="s2">&quot;.documents.azure.com:443/&quot;</span>
+
+<span class="c1"># DB client</span>
+<span class="n">client</span> <span class="o">=</span> <span class="n">document_client</span><span class="o">.</span><span class="n">DocumentClient</span><span class="p">(</span><span class="n">endpoint</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;masterKey&#39;</span><span class="p">:</span> <span class="n">master_key</span><span class="p">})</span>
+
+<span class="k">if</span> <span class="ow">not</span> <span class="n">find_database</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="n">cosmos_database</span><span class="p">):</span>
+    <span class="n">db</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">CreateDatabase</span><span class="p">({</span><span class="s1">&#39;id&#39;</span><span class="p">:</span> <span class="n">cosmos_database</span> <span class="p">})</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Database created&quot;</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">db</span> <span class="o">=</span> <span class="n">read_database</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="n">cosmos_database</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Database found&quot;</span><span class="p">)</span>
+
+<span class="c1"># Create collection options</span>
+<span class="n">options</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">offerThroughput</span><span class="o">=</span><span class="mi">11000</span><span class="p">)</span>
+
+<span class="c1"># Create a collection</span>
+<span class="n">collection_definition</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;id&#39;</span><span class="p">:</span> <span class="n">cosmos_collection</span><span class="p">,</span>
+    <span class="s1">&#39;partitionKey&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;paths&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;/id&#39;</span><span class="p">],</span><span class="s1">&#39;kind&#39;</span><span class="p">:</span> <span class="s1">&#39;Hash&#39;</span><span class="p">}</span>
+<span class="p">}</span>
+<span class="k">if</span> <span class="ow">not</span> <span class="n">find_collection</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="n">cosmos_database</span><span class="p">,</span> <span class="n">cosmos_collection</span><span class="p">):</span>
+    <span class="n">collection</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">CreateCollection</span><span class="p">(</span>
+        <span class="n">db</span><span class="p">[</span><span class="s1">&#39;_self&#39;</span><span class="p">],</span> 
+        <span class="n">collection_definition</span><span class="p">,</span>
+        <span class="n">options</span>
+    <span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Collection created&quot;</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">collection</span> <span class="o">=</span> <span class="n">read_collection</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="n">cosmos_database</span><span class="p">,</span> <span class="n">cosmos_collection</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Collection found&quot;</span><span class="p">)</span>
+    
+<span class="n">dbsecrets</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+    <span class="n">Endpoint</span><span class="o">=</span><span class="n">endpoint</span><span class="p">,</span> 
+    <span class="n">Masterkey</span><span class="o">=</span><span class="n">master_key</span><span class="p">,</span> 
+    <span class="n">Database</span><span class="o">=</span><span class="n">cosmos_database</span><span class="p">,</span> 
+    <span class="n">Collection</span><span class="o">=</span><span class="n">cosmos_collection</span><span class="p">,</span> 
+    <span class="n">Upsert</span><span class="o">=</span><span class="kc">True</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Database created
+Collection created
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="training">
+<h2>2 Training<a class="headerlink" href="#training" title="Permalink to this headline">¶</a></h2>
+<p>Next, we train an <a class="reference external" href="https://spark.apache.org/docs/latest/ml-collaborative-filtering.html">Alternating Least Squares model</a> on <a class="reference external" href="https://grouplens.org/datasets/movielens/">MovieLens</a> dataset.</p>
+<div class="section" id="download-the-movielens-dataset">
+<h3>2.1 Download the MovieLens dataset<a class="headerlink" href="#download-the-movielens-dataset" title="Permalink to this headline">¶</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Note: The DataFrame-based API for ALS currently only supports integers for user and item ids.</span>
+<span class="n">schema</span> <span class="o">=</span> <span class="n">StructType</span><span class="p">(</span>
+    <span class="p">(</span>
+        <span class="n">StructField</span><span class="p">(</span><span class="n">userCol</span><span class="p">,</span> <span class="n">IntegerType</span><span class="p">()),</span>
+        <span class="n">StructField</span><span class="p">(</span><span class="n">itemCol</span><span class="p">,</span> <span class="n">IntegerType</span><span class="p">()),</span>
+        <span class="n">StructField</span><span class="p">(</span><span class="n">ratingCol</span><span class="p">,</span> <span class="n">FloatType</span><span class="p">()),</span>
+    <span class="p">)</span>
+<span class="p">)</span>
+
+<span class="n">data</span> <span class="o">=</span> <span class="n">movielens</span><span class="o">.</span><span class="n">load_spark_df</span><span class="p">(</span><span class="n">spark</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">MOVIELENS_DATA_SIZE</span><span class="p">,</span> <span class="n">schema</span><span class="o">=</span><span class="n">schema</span><span class="p">)</span>
+<span class="n">data</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>100%|██████████| 4.81k/4.81k [00:00&lt;00:00, 11.0kKB/s]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>+------+-------+------+
+|UserId|MovieId|Rating|
++------+-------+------+
+|   196|    242|   3.0|
+|   186|    302|   3.0|
+|    22|    377|   1.0|
+|   244|     51|   2.0|
+|   166|    346|   1.0|
+|   298|    474|   4.0|
+|   115|    265|   2.0|
+|   253|    465|   5.0|
+|   305|    451|   3.0|
+|     6|     86|   3.0|
+|    62|    257|   2.0|
+|   286|   1014|   5.0|
+|   200|    222|   5.0|
+|   210|     40|   3.0|
+|   224|     29|   3.0|
+|   303|    785|   3.0|
+|   122|    387|   5.0|
+|   194|    274|   2.0|
+|   291|   1042|   4.0|
+|   234|   1184|   2.0|
++------+-------+------+
+only showing top 20 rows
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="split-the-data-into-train-test">
+<h3>2.2 Split the data into train, test<a class="headerlink" href="#split-the-data-into-train-test" title="Permalink to this headline">¶</a></h3>
+<p>There are several ways of splitting the data: random, chronological, stratified, etc., each of which favors a different real-world evaluation use case. We will split randomly in this example – for more details on which splitter to choose, consult <a class="reference internal" href="../01_prepare_data/data_split.html"><span class="doc std std-doc">this guide</span></a>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">train</span><span class="p">,</span> <span class="n">test</span> <span class="o">=</span> <span class="n">spark_random_split</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">ratio</span><span class="o">=</span><span class="mf">0.75</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;N train&quot;</span><span class="p">,</span> <span class="n">train</span><span class="o">.</span><span class="n">cache</span><span class="p">()</span><span class="o">.</span><span class="n">count</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;N test&quot;</span><span class="p">,</span> <span class="n">test</span><span class="o">.</span><span class="n">cache</span><span class="p">()</span><span class="o">.</span><span class="n">count</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>N train 75031
+N test 24969
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="train-the-als-model-on-the-training-data">
+<h3>2.3 Train the ALS model on the training data<a class="headerlink" href="#train-the-als-model-on-the-training-data" title="Permalink to this headline">¶</a></h3>
+<p>To predict movie ratings, we use the rating data in the training set as users’ explicit feedback. The hyperparameters used to estimate the model are set based on <a class="reference external" href="http://mymedialite.net/examples/datasets.html">this page</a>.</p>
+<p>Under most circumstances, you would explore the hyperparameters and choose an optimal set based on some criteria. For additional details on this process, please see additional information in the deep dives <a class="reference internal" href="../04_model_select_and_optimize/tuning_spark_als.html"><span class="doc std std-doc">here</span></a>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">als</span> <span class="o">=</span> <span class="n">ALS</span><span class="p">(</span>
+    <span class="n">rank</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+    <span class="n">maxIter</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span>
+    <span class="n">implicitPrefs</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">alpha</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>
+    <span class="n">regParam</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span>
+    <span class="n">coldStartStrategy</span><span class="o">=</span><span class="s1">&#39;drop&#39;</span><span class="p">,</span>
+    <span class="n">nonnegative</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">userCol</span><span class="o">=</span><span class="n">userCol</span><span class="p">,</span>
+    <span class="n">itemCol</span><span class="o">=</span><span class="n">itemCol</span><span class="p">,</span>
+    <span class="n">ratingCol</span><span class="o">=</span><span class="n">ratingCol</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model</span> <span class="o">=</span> <span class="n">als</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">train</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="get-top-k-recommendations-for-our-testing-data">
+<h3>2.4 Get top-k recommendations for our testing data<a class="headerlink" href="#get-top-k-recommendations-for-our-testing-data" title="Permalink to this headline">¶</a></h3>
+<p>In the movie recommendation use case, recommending movies that have been rated by the users do not make sense. Therefore, the rated movies are removed from the recommended items.</p>
+<p>In order to achieve this, we recommend all movies to all users, and then remove the user-movie pairs that exist in the training dataset.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Get the cross join of all user-item pairs and score them.</span>
+<span class="n">users</span> <span class="o">=</span> <span class="n">train</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="n">userCol</span><span class="p">)</span><span class="o">.</span><span class="n">distinct</span><span class="p">()</span>
+<span class="n">items</span> <span class="o">=</span> <span class="n">train</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="n">itemCol</span><span class="p">)</span><span class="o">.</span><span class="n">distinct</span><span class="p">()</span>
+<span class="n">user_item</span> <span class="o">=</span> <span class="n">users</span><span class="o">.</span><span class="n">crossJoin</span><span class="p">(</span><span class="n">items</span><span class="p">)</span>
+<span class="n">dfs_pred</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">user_item</span><span class="p">)</span>
+<span class="n">dfs_pred</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>+------+-------+----------+
+|UserId|MovieId|prediction|
++------+-------+----------+
+|   148|    148| 2.2560365|
+|   463|    148|  2.936453|
+|   471|    148| 3.8262048|
+|   496|    148| 2.2901149|
+|   833|    148| 1.7296925|
+|   243|    148| 2.2667758|
+|   392|    148| 2.4605818|
+|   540|    148| 3.0631547|
+|   623|    148| 3.1649487|
+|   737|    148| 1.7344649|
+|   858|    148| 1.8472893|
+|   897|    148| 3.5229573|
+|    31|    148| 1.9613894|
+|   516|    148| 3.1411705|
+|    85|    148| 2.2291098|
+|   137|    148| 4.0498815|
+|   251|    148| 3.2075853|
+|   451|    148|  4.016654|
+|   580|    148|  2.843738|
+|   808|    148| 3.4666717|
++------+-------+----------+
+only showing top 20 rows
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Remove seen items.</span>
+<span class="n">dfs_pred_exclude_train</span> <span class="o">=</span> <span class="n">dfs_pred</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s2">&quot;pred&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+    <span class="n">train</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s2">&quot;train&quot;</span><span class="p">),</span>
+    <span class="p">(</span><span class="n">dfs_pred</span><span class="p">[</span><span class="n">userCol</span><span class="p">]</span><span class="o">==</span><span class="n">train</span><span class="p">[</span><span class="n">userCol</span><span class="p">])</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">dfs_pred</span><span class="p">[</span><span class="n">itemCol</span><span class="p">]</span><span class="o">==</span><span class="n">train</span><span class="p">[</span><span class="n">itemCol</span><span class="p">]),</span>
+    <span class="n">how</span><span class="o">=</span><span class="s1">&#39;outer&#39;</span>
+<span class="p">)</span>
+<span class="n">top_all</span> <span class="o">=</span> <span class="n">dfs_pred_exclude_train</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">dfs_pred_exclude_train</span><span class="p">[</span><span class="s2">&quot;train.&quot;</span><span class="o">+</span><span class="n">ratingCol</span><span class="p">]</span><span class="o">.</span><span class="n">isNull</span><span class="p">())</span> \
+    <span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="s2">&quot;pred.&quot;</span><span class="o">+</span><span class="n">userCol</span><span class="p">,</span> <span class="s2">&quot;pred.&quot;</span><span class="o">+</span><span class="n">itemCol</span><span class="p">,</span> <span class="s2">&quot;pred.prediction&quot;</span><span class="p">)</span>
+
+<span class="n">top_all</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>+------+-------+----------+
+|UserId|MovieId|prediction|
++------+-------+----------+
+|     1|    587| 3.4595456|
+|     1|    869|  2.967618|
+|     1|   1208|  2.858056|
+|     1|   1677| 2.9235902|
+|     2|     80| 3.0129535|
+|     2|    303| 3.0719132|
+|     2|    472| 3.4143965|
+|     2|    582|  4.877232|
+|     2|    838|  1.529903|
+|     2|    975| 2.9654517|
+|     2|   1260|  3.252151|
+|     2|   1325| 1.1417896|
+|     2|   1381| 3.7900786|
+|     2|   1530|  2.625749|
+|     3|     22| 2.7082264|
+|     3|     57| 2.5156925|
+|     3|     89| 3.7927365|
+|     3|    367| 2.7083492|
+|     3|   1091| 1.5662774|
+|     3|   1167| 3.2427955|
++------+-------+----------+
+only showing top 20 rows
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="evaluate-how-well-als-performs">
+<h3>2.5 Evaluate how well ALS performs<a class="headerlink" href="#evaluate-how-well-als-performs" title="Permalink to this headline">¶</a></h3>
+<p>Evaluate model performance using metrics such as Precision&#64;K, Recall&#64;K, [MAP&#64;K](<a class="reference external" href="https://en.wikipedia.org/wiki/Evaluation_measures_(information_retrieval)">https://en.wikipedia.org/wiki/Evaluation_measures_(information_retrieval)</a> or <a class="reference external" href="https://en.wikipedia.org/wiki/Discounted_cumulative_gain">nDCG&#64;K</a>. For a full guide on what metrics to evaluate your recommender with, consult [this guide]../03_evaluate/evaluation.ipynb).</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cols</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;col_user&#39;</span><span class="p">:</span> <span class="n">userCol</span><span class="p">,</span>
+    <span class="s1">&#39;col_item&#39;</span><span class="p">:</span> <span class="n">itemCol</span><span class="p">,</span>
+    <span class="s1">&#39;col_rating&#39;</span><span class="p">:</span> <span class="n">ratingCol</span><span class="p">,</span>
+    <span class="s1">&#39;col_prediction&#39;</span><span class="p">:</span> <span class="s2">&quot;prediction&quot;</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="n">test</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>+------+-------+------+
+|UserId|MovieId|Rating|
++------+-------+------+
+|     1|      2|   3.0|
+|     1|      3|   4.0|
+|     1|      4|   3.0|
+|     1|     14|   5.0|
+|     1|     17|   3.0|
+|     1|     27|   2.0|
+|     1|     29|   1.0|
+|     1|     35|   1.0|
+|     1|     36|   2.0|
+|     1|     51|   4.0|
+|     1|     52|   4.0|
+|     1|     54|   3.0|
+|     1|     56|   4.0|
+|     1|     60|   5.0|
+|     1|     64|   5.0|
+|     1|     69|   3.0|
+|     1|     77|   4.0|
+|     1|     83|   3.0|
+|     1|     85|   3.0|
+|     1|     88|   4.0|
++------+-------+------+
+only showing top 20 rows
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Evaluate Ranking Metrics</span>
+<span class="n">rank_eval</span> <span class="o">=</span> <span class="n">SparkRankingEvaluation</span><span class="p">(</span>
+    <span class="n">test</span><span class="p">,</span> 
+    <span class="n">top_all</span><span class="p">,</span> 
+    <span class="n">k</span><span class="o">=</span><span class="n">TOP_K</span><span class="p">,</span>
+    <span class="o">**</span><span class="n">cols</span>
+<span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span>
+    <span class="s2">&quot;Model:</span><span class="se">\t</span><span class="s2">ALS&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Top K:</span><span class="se">\t</span><span class="si">%d</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">rank_eval</span><span class="o">.</span><span class="n">k</span><span class="p">,</span>
+    <span class="s2">&quot;MAP:</span><span class="se">\t</span><span class="si">%f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">rank_eval</span><span class="o">.</span><span class="n">map_at_k</span><span class="p">(),</span>
+    <span class="s2">&quot;NDCG:</span><span class="se">\t</span><span class="si">%f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">rank_eval</span><span class="o">.</span><span class="n">ndcg_at_k</span><span class="p">(),</span>
+    <span class="s2">&quot;Precision@K:</span><span class="se">\t</span><span class="si">%f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">rank_eval</span><span class="o">.</span><span class="n">precision_at_k</span><span class="p">(),</span>
+    <span class="s2">&quot;Recall@K:</span><span class="se">\t</span><span class="si">%f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">rank_eval</span><span class="o">.</span><span class="n">recall_at_k</span><span class="p">(),</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Model:	ALS
+Top K:	10
+MAP:	0.003698
+NDCG:	0.034331
+Precision@K:	0.039343
+Recall@K:	0.014976
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Evaluate Rating Metrics</span>
+<span class="n">prediction</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">test</span><span class="p">)</span>
+<span class="n">rating_eval</span> <span class="o">=</span> <span class="n">SparkRatingEvaluation</span><span class="p">(</span>
+    <span class="n">test</span><span class="p">,</span> 
+    <span class="n">prediction</span><span class="p">,</span> 
+    <span class="o">**</span><span class="n">cols</span>
+<span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span>
+    <span class="s2">&quot;Model:</span><span class="se">\t</span><span class="s2">ALS rating prediction&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;RMSE:</span><span class="se">\t</span><span class="si">%.2f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">rating_eval</span><span class="o">.</span><span class="n">rmse</span><span class="p">(),</span>
+    <span class="s2">&quot;MAE:</span><span class="se">\t</span><span class="si">%f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">rating_eval</span><span class="o">.</span><span class="n">mae</span><span class="p">(),</span>
+    <span class="s2">&quot;Explained variance:</span><span class="se">\t</span><span class="si">%f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">rating_eval</span><span class="o">.</span><span class="n">exp_var</span><span class="p">(),</span>
+    <span class="s2">&quot;R squared:</span><span class="se">\t</span><span class="si">%f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">rating_eval</span><span class="o">.</span><span class="n">rsquared</span><span class="p">(),</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Model:	ALS rating prediction
+RMSE:	0.95
+MAE:	0.740282
+Explained variance:	0.289807
+R squared:	0.285394
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="save-the-model">
+<h3>2.6 Save the model<a class="headerlink" href="#save-the-model" title="Permalink to this headline">¶</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">model</span>
+ <span class="o">.</span><span class="n">write</span><span class="p">()</span>
+ <span class="o">.</span><span class="n">overwrite</span><span class="p">()</span>
+ <span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">model_name</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="operationalize-the-recommender-service">
+<h2>3. Operationalize the Recommender Service<a class="headerlink" href="#operationalize-the-recommender-service" title="Permalink to this headline">¶</a></h2>
+<p>Once the model is built with desirable performance, it will be operationalized to run as a REST endpoint to be utilized by a real time service. We will utilize <a class="reference external" href="https://azure.microsoft.com/en-us/services/cosmos-db/">Azure Cosmos DB</a>, <a class="reference external" href="https://azure.microsoft.com/en-us/services/machine-learning-service/">Azure Machine Learning Service</a>, and <a class="reference external" href="https://docs.microsoft.com/en-us/azure/aks/intro-kubernetes">Azure Kubernetes Service</a> to operationalize the recommender service.</p>
+<div class="section" id="create-a-look-up-for-recommendations-in-cosmos-db">
+<h3>3.1 Create a look-up for Recommendations in Cosmos DB<a class="headerlink" href="#create-a-look-up-for-recommendations-in-cosmos-db" title="Permalink to this headline">¶</a></h3>
+<p>First, the Top-10 recommendations for each user as predicted by the model are stored as a lookup table in Cosmos DB. At runtime, the service will return the Top-10 recommendations as precomputed and stored in Cosmos DB:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">recs</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">recommendForAllUsers</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">recs_topk</span> <span class="o">=</span> <span class="n">recs</span><span class="o">.</span><span class="n">withColumn</span><span class="p">(</span><span class="s2">&quot;id&quot;</span><span class="p">,</span> <span class="n">recs</span><span class="p">[</span><span class="n">userCol</span><span class="p">]</span><span class="o">.</span><span class="n">cast</span><span class="p">(</span><span class="s2">&quot;string&quot;</span><span class="p">))</span> \
+    <span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="s2">&quot;id&quot;</span><span class="p">,</span> <span class="s2">&quot;recommendations.&quot;</span> <span class="o">+</span> <span class="n">itemCol</span><span class="p">)</span>
+<span class="n">recs_topk</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>+---+--------------------+
+| id|             MovieId|
++---+--------------------+
+|471|[745, 1540, 244, ...|
+|463|[64, 190, 1286, 3...|
+|833|[1192, 179, 1524,...|
+|496|[320, 1589, 262, ...|
+|148|[1512, 718, 793, ...|
+|540|[958, 1512, 1368,...|
+|392|[1643, 1449, 1512...|
+|243|[285, 251, 1405, ...|
+|623|[390, 1643, 173, ...|
+|737|[856, 60, 61, 151...|
+|897|[1368, 958, 320, ...|
+|858|[1154, 1129, 853,...|
+| 31|[1203, 1245, 889,...|
+|516|[745, 694, 1512, ...|
+|580|[1368, 958, 1589,...|
+|251|[1203, 1449, 253,...|
+|451|[1368, 1019, 958,...|
+| 85|[1643, 1449, 511,...|
+|137|[1368, 1643, 958,...|
+|808|[1512, 867, 1367,...|
++---+--------------------+
+only showing top 20 rows
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Save data to CosmosDB</span>
+<span class="p">(</span><span class="n">recs_topk</span><span class="o">.</span><span class="n">coalesce</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+ <span class="o">.</span><span class="n">write</span>
+ <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s2">&quot;com.microsoft.azure.cosmosdb.spark&quot;</span><span class="p">)</span>
+ <span class="o">.</span><span class="n">mode</span><span class="p">(</span><span class="s1">&#39;overwrite&#39;</span><span class="p">)</span>
+ <span class="o">.</span><span class="n">options</span><span class="p">(</span><span class="o">**</span><span class="n">dbsecrets</span><span class="p">)</span>
+ <span class="o">.</span><span class="n">save</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="configure-azure-machine-learning">
+<h3>3.2 Configure Azure Machine Learning<a class="headerlink" href="#configure-azure-machine-learning" title="Permalink to this headline">¶</a></h3>
+<p>Next, Azure Machine Learning Service is used to create a model scoring image and deploy it to Azure Kubernetes Service as a scalable containerized service. To achieve this, a <strong>scoring script</strong> should be created. In the script, we make a call to Cosmos DB to lookup the top 10 movies to recommend given an input User ID.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">score_sparkml</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">import json</span>
+<span class="s2">import pydocumentdb.document_client as document_client</span>
+
+<span class="s2">def init(local=False):</span>
+<span class="s2">    global client, collection</span>
+<span class="s2">    try:</span>
+<span class="s2">        client = document_client.DocumentClient(&#39;</span><span class="si">{endpoint}</span><span class="s2">&#39;, dict(masterKey=&#39;</span><span class="si">{key}</span><span class="s2">&#39;))</span>
+<span class="s2">        collection = client.ReadCollection(collection_link=&#39;dbs/</span><span class="si">{database}</span><span class="s2">/colls/</span><span class="si">{collection}</span><span class="s2">&#39;)</span>
+<span class="s2">    except Exception as e:</span>
+<span class="s2">        collection = e</span>
+
+<span class="s2">def run(input_json):</span>
+<span class="s2">    try:</span>
+<span class="s2">        # Query them in SQL</span>
+<span class="s2">        id = str(json.loads(json.loads(input_json)[0])[&#39;id&#39;])</span>
+<span class="s2">        query = dict(query=&#39;SELECT * FROM c WHERE c.id = &quot;&#39; + id +&#39;&quot;&#39;)</span>
+<span class="s2">        options = dict(partitionKey=str(id))</span>
+<span class="s2">        document_link = &#39;dbs/</span><span class="si">{database}</span><span class="s2">/colls/</span><span class="si">{collection}</span><span class="s2">/docs/&#39; + id</span>
+<span class="s2">        result = client.ReadDocument(document_link, options);  </span>
+<span class="s2">    except Exception as e:</span>
+<span class="s2">        result = str(e)</span>
+<span class="s2">    return json.dumps(str(result))</span>
+<span class="s2">&quot;&quot;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="n">dbsecrets</span><span class="p">[</span><span class="s1">&#39;Masterkey&#39;</span><span class="p">],</span> 
+           <span class="n">endpoint</span><span class="o">=</span><span class="n">dbsecrets</span><span class="p">[</span><span class="s1">&#39;Endpoint&#39;</span><span class="p">],</span> 
+           <span class="n">database</span><span class="o">=</span><span class="n">dbsecrets</span><span class="p">[</span><span class="s1">&#39;Database&#39;</span><span class="p">],</span> 
+           <span class="n">collection</span><span class="o">=</span><span class="n">dbsecrets</span><span class="p">[</span><span class="s1">&#39;Collection&#39;</span><span class="p">])</span>
+
+<span class="c1"># test validity of python string</span>
+<span class="n">exec</span><span class="p">(</span><span class="n">score_sparkml</span><span class="p">)</span>
+
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;score_sparkml.py&quot;</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
+    <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">score_sparkml</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Register your model:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mymodel</span> <span class="o">=</span> <span class="n">Model</span><span class="o">.</span><span class="n">register</span><span class="p">(</span>
+    <span class="n">model_path</span><span class="o">=</span><span class="n">model_name</span><span class="p">,</span>  <span class="c1"># this points to a local file</span>
+    <span class="n">model_name</span><span class="o">=</span><span class="n">model_name</span><span class="p">,</span>  <span class="c1"># this is the name the model is registered as</span>
+    <span class="n">description</span><span class="o">=</span><span class="s2">&quot;AML trained model&quot;</span><span class="p">,</span>
+    <span class="n">workspace</span><span class="o">=</span><span class="n">ws</span>
+<span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">mymodel</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">mymodel</span><span class="o">.</span><span class="n">description</span><span class="p">,</span> <span class="n">mymodel</span><span class="o">.</span><span class="n">version</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Registering model mvl-als-reco.mml
+mvl-als-reco.mml AML trained model 1
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="deploy-the-model-as-a-service-on-aks">
+<h3>3.3 Deploy the model as a Service on AKS<a class="headerlink" href="#deploy-the-model-as-a-service-on-aks" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="create-an-environment-for-your-model">
+<h4>3.3.1 Create an Environment for your model:<a class="headerlink" href="#create-an-environment-for-your-model" title="Permalink to this headline">¶</a></h4>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">env</span> <span class="o">=</span> <span class="n">Environment</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;sparkmlenv&#39;</span><span class="p">)</span>
+
+<span class="c1"># Specify a public image from microsoft/mmlspark as base image</span>
+<span class="n">env</span><span class="o">.</span><span class="n">docker</span><span class="o">.</span><span class="n">base_image</span><span class="o">=</span><span class="s2">&quot;microsoft/mmlspark:0.15&quot;</span>
+
+<span class="n">pip</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s1">&#39;azureml-defaults&#39;</span><span class="p">,</span> 
+    <span class="s1">&#39;numpy==1.14.2&#39;</span><span class="p">,</span> 
+    <span class="s1">&#39;scikit-learn==0.19.1&#39;</span><span class="p">,</span> 
+    <span class="s1">&#39;pandas&#39;</span><span class="p">,</span> 
+    <span class="s1">&#39;pydocumentdb&#39;</span>
+<span class="p">]</span>
+
+<span class="c1"># Add dependencies needed for inferencing</span>
+<span class="n">env</span><span class="o">.</span><span class="n">python</span><span class="o">.</span><span class="n">conda_dependencies</span> <span class="o">=</span> <span class="n">CondaDependencies</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">pip_packages</span><span class="o">=</span><span class="n">pip</span><span class="p">)</span>
+<span class="n">env</span><span class="o">.</span><span class="n">inferencing_stack_version</span> <span class="o">=</span> <span class="s2">&quot;latest&quot;</span>
+
+<span class="c1"># Add spark packages</span>
+<span class="n">env</span><span class="o">.</span><span class="n">spark</span><span class="o">.</span><span class="n">precache_packages</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">env</span><span class="o">.</span><span class="n">spark</span><span class="o">.</span><span class="n">repositories</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;https://mmlspark.azureedge.net/maven&quot;</span><span class="p">]</span>
+<span class="n">env</span><span class="o">.</span><span class="n">spark</span><span class="o">.</span><span class="n">packages</span><span class="o">=</span> <span class="p">[</span>
+    <span class="n">SparkPackage</span><span class="p">(</span><span class="s2">&quot;com.microsoft.ml.spark&quot;</span><span class="p">,</span> <span class="s2">&quot;mmlspark_2.11&quot;</span><span class="p">,</span> <span class="s2">&quot;0.15&quot;</span><span class="p">),</span>
+    <span class="n">SparkPackage</span><span class="p">(</span><span class="s2">&quot;com.microsoft.azure&quot;</span><span class="p">,</span> <span class="n">artifact</span><span class="o">=</span><span class="s2">&quot;azure-storage&quot;</span><span class="p">,</span> <span class="n">version</span><span class="o">=</span><span class="s2">&quot;2.0.0&quot;</span><span class="p">),</span>
+    <span class="n">SparkPackage</span><span class="p">(</span><span class="n">group</span><span class="o">=</span><span class="s2">&quot;org.apache.hadoop&quot;</span><span class="p">,</span> <span class="n">artifact</span><span class="o">=</span><span class="s2">&quot;hadoop-azure&quot;</span><span class="p">,</span> <span class="n">version</span><span class="o">=</span><span class="s2">&quot;2.7.0&quot;</span><span class="p">)</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="create-an-aks-cluster-to-run-your-container">
+<h4>3.3.2 Create an AKS Cluster to run your container<a class="headerlink" href="#create-an-aks-cluster-to-run-your-container" title="Permalink to this headline">¶</a></h4>
+<p>This may take 20 to 30 minutes depending on the cluster size.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Verify that cluster does not exist already</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="n">aks_target</span> <span class="o">=</span> <span class="n">ComputeTarget</span><span class="p">(</span><span class="n">workspace</span><span class="o">=</span><span class="n">ws</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">aks_name</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Found existing cluster, use it.&quot;</span><span class="p">)</span>
+<span class="k">except</span> <span class="n">ComputeTargetException</span><span class="p">:</span>
+    <span class="c1"># Create the cluster using the default configuration (can also provide parameters to customize)</span>
+    <span class="n">prov_config</span> <span class="o">=</span> <span class="n">AksCompute</span><span class="o">.</span><span class="n">provisioning_configuration</span><span class="p">()</span>
+    <span class="n">aks_target</span> <span class="o">=</span> <span class="n">ComputeTarget</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+        <span class="n">workspace</span><span class="o">=</span><span class="n">ws</span><span class="p">,</span> 
+        <span class="n">name</span><span class="o">=</span><span class="n">aks_name</span><span class="p">,</span> 
+        <span class="n">provisioning_configuration</span><span class="o">=</span><span class="n">prov_config</span>
+    <span class="p">)</span>
+    <span class="n">aks_target</span><span class="o">.</span><span class="n">wait_for_completion</span><span class="p">(</span><span class="n">show_output</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">aks_target</span><span class="o">.</span><span class="n">provisioning_state</span><span class="p">)</span>
+    <span class="c1"># To check any error logs, print(aks_target.provisioning_errors)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Creating.......................................................................................................
+SucceededProvisioning operation finished, operation &quot;Succeeded&quot;
+Succeeded
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="deploy-the-container-image-to-aks">
+<h4>3.3.3 Deploy the container image to AKS:<a class="headerlink" href="#deploy-the-container-image-to-aks" title="Permalink to this headline">¶</a></h4>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create an Inferencing Configuration with your environment and scoring script</span>
+<span class="n">inference_config</span> <span class="o">=</span> <span class="n">InferenceConfig</span><span class="p">(</span>
+    <span class="n">environment</span><span class="o">=</span><span class="n">env</span><span class="p">,</span>
+    <span class="n">entry_script</span><span class="o">=</span><span class="s2">&quot;score_sparkml.py&quot;</span>
+<span class="p">)</span>
+
+<span class="c1"># Set the web service configuration (using default here with app insights)</span>
+<span class="n">aks_config</span> <span class="o">=</span> <span class="n">AksWebservice</span><span class="o">.</span><span class="n">deploy_configuration</span><span class="p">(</span><span class="n">enable_app_insights</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># Webservice creation using single command</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="n">aks_service</span> <span class="o">=</span> <span class="n">Model</span><span class="o">.</span><span class="n">deploy</span><span class="p">(</span>
+        <span class="n">workspace</span><span class="o">=</span><span class="n">ws</span><span class="p">,</span>
+        <span class="n">models</span><span class="o">=</span><span class="p">[</span><span class="n">mymodel</span><span class="p">],</span>
+        <span class="n">name</span><span class="o">=</span><span class="n">service_name</span><span class="p">,</span>
+        <span class="n">inference_config</span><span class="o">=</span><span class="n">inference_config</span><span class="p">,</span>
+        <span class="n">deployment_config</span><span class="o">=</span><span class="n">aks_config</span><span class="p">,</span>
+        <span class="n">deployment_target</span><span class="o">=</span><span class="n">aks_target</span>
+    <span class="p">)</span>
+    <span class="n">aks_service</span><span class="o">.</span><span class="n">wait_for_deployment</span><span class="p">(</span><span class="n">show_output</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">except</span> <span class="n">WebserviceException</span><span class="p">:</span>
+    <span class="c1"># Retrieve existing service.</span>
+    <span class="n">aks_service</span> <span class="o">=</span> <span class="n">Webservice</span><span class="p">(</span><span class="n">ws</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">service_name</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Retrieved existing service&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Running....................................................................................................................
+SucceededAKS service creation operation finished, operation &quot;Succeeded&quot;
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="call-the-aks-model-service">
+<h3>3.4 Call the AKS model service<a class="headerlink" href="#call-the-aks-model-service" title="Permalink to this headline">¶</a></h3>
+<p>After the deployment, the service can be called with a user ID – the service will then look up the top 10 recommendations for that user in Cosmos DB and send back the results.
+The following script demonstrates how to call the recommendation service API and view the result for the given user ID:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">json</span>
+
+<span class="n">scoring_url</span> <span class="o">=</span> <span class="n">aks_service</span><span class="o">.</span><span class="n">scoring_uri</span>
+<span class="n">service_key</span> <span class="o">=</span> <span class="n">aks_service</span><span class="o">.</span><span class="n">get_keys</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
+
+<span class="n">input_data</span> <span class="o">=</span> <span class="s1">&#39;[&quot;{</span><span class="se">\\</span><span class="s1">&quot;id</span><span class="se">\\</span><span class="s1">&quot;:</span><span class="se">\\</span><span class="s1">&quot;496</span><span class="se">\\</span><span class="s1">&quot;}&quot;]&#39;</span><span class="o">.</span><span class="n">encode</span><span class="p">()</span>
+
+<span class="n">req</span> <span class="o">=</span> <span class="n">urllib</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">Request</span><span class="p">(</span><span class="n">scoring_url</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">input_data</span><span class="p">)</span>
+<span class="n">req</span><span class="o">.</span><span class="n">add_header</span><span class="p">(</span><span class="s2">&quot;Authorization&quot;</span><span class="p">,</span><span class="s2">&quot;Bearer </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">service_key</span><span class="p">))</span>
+<span class="n">req</span><span class="o">.</span><span class="n">add_header</span><span class="p">(</span><span class="s2">&quot;Content-Type&quot;</span><span class="p">,</span><span class="s2">&quot;application/json&quot;</span><span class="p">)</span>
+
+<span class="k">with</span> <span class="n">Timer</span><span class="p">()</span> <span class="k">as</span> <span class="n">t</span><span class="p">:</span> 
+    <span class="k">with</span> <span class="n">urllib</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">urlopen</span><span class="p">(</span><span class="n">req</span><span class="p">)</span> <span class="k">as</span> <span class="n">result</span><span class="p">:</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+        <span class="n">resj</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span>
+            <span class="c1"># Cleanup to parse into a json object</span>
+            <span class="n">res</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span>
+            <span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\\</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+            <span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;&quot;&#39;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+            <span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;&#39;&quot;</span><span class="p">,</span> <span class="s1">&#39;&quot;&#39;</span><span class="p">)</span>
+        <span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">resj</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">4</span><span class="p">))</span>
+    
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Full run took </span><span class="si">%.2f</span><span class="s2"> seconds&quot;</span> <span class="o">%</span> <span class="n">t</span><span class="o">.</span><span class="n">interval</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{
+    &quot;MovieId&quot;: [
+        320,
+        1589,
+        262,
+        1344,
+        958,
+        889,
+        1368,
+        645,
+        919,
+        1137
+    ],
+    &quot;id&quot;: &quot;496&quot;,
+    &quot;_rid&quot;: &quot;34hEAIe9pterAQAAAAAACA==&quot;,
+    &quot;_self&quot;: &quot;dbs/34hEAA==/colls/34hEAIe9ptc=/docs/34hEAIe9pterAQAAAAAACA==/&quot;,
+    &quot;_etag&quot;: &quot;6d006b74-0000-0100-0000-5f25f0550000&quot;,
+    &quot;_attachments&quot;: &quot;attachments/&quot;,
+    &quot;_ts&quot;: 1596321877
+}
+Full run took 0.05 seconds
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="appendix-realtime-scoring-with-azureml">
+<h2>Appendix - Realtime scoring with AzureML<a class="headerlink" href="#appendix-realtime-scoring-with-azureml" title="Permalink to this headline">¶</a></h2>
+<p>In the previous cells, we utilized Cosmos DB to cache the recommendation results for realtime serving. Alternatively, we can generate recommendation results on demand by using the model we deployed. Following scripts load the registered model and use it for recommendation:</p>
+<ul>
+<li><p><em>score_sparkml.py</em></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">from</span> <span class="nn">pyspark.ml.recommendation</span> <span class="kn">import</span> <span class="n">ALSModel</span>
+
+<span class="c1"># Note, set `model_name`, `userCol`, and `itemCol` defined earlier.</span>
+<span class="n">model_name</span> <span class="o">=</span> <span class="s2">&quot;mvl-als-reco.mml&quot;</span>
+<span class="n">userCol</span> <span class="o">=</span> <span class="s2">&quot;UserId&quot;</span>
+<span class="n">itemCol</span> <span class="o">=</span> <span class="s2">&quot;MovieId&quot;</span>
+
+<span class="k">def</span> <span class="nf">init</span><span class="p">(</span><span class="n">local</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="k">global</span> <span class="n">model</span>
+
+    <span class="c1"># Load ALS model.</span>
+    <span class="n">model_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">&#39;AZUREML_MODEL_DIR&#39;</span><span class="p">),</span> <span class="n">model_name</span><span class="p">)</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">ALSModel</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">model_path</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="n">input_json</span><span class="p">):</span>
+    <span class="n">js</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">input_json</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="nb">id</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">js</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">])</span>
+    <span class="n">k</span> <span class="o">=</span> <span class="n">js</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+
+    <span class="c1"># Use the model to get recommendation.</span>
+    <span class="n">recs</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">recommendForAllUsers</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>
+    <span class="n">recs_topk</span> <span class="o">=</span> <span class="n">recs</span><span class="o">.</span><span class="n">withColumn</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">,</span> <span class="n">recs</span><span class="p">[</span><span class="n">userCol</span><span class="p">]</span><span class="o">.</span><span class="n">cast</span><span class="p">(</span><span class="s2">&quot;string&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">select</span><span class="p">(</span>
+        <span class="s1">&#39;id&#39;</span><span class="p">,</span> <span class="s2">&quot;recommendations.&quot;</span> <span class="o">+</span> <span class="n">itemCol</span>
+    <span class="p">)</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">recs_topk</span><span class="p">[</span><span class="n">recs_topk</span><span class="o">.</span><span class="n">id</span><span class="o">==</span><span class="nb">id</span><span class="p">]</span><span class="o">.</span><span class="n">collect</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">asDict</span><span class="p">()</span>
+
+    <span class="k">return</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">result</span><span class="p">))</span>
+</pre></div>
+</div>
+</li>
+<li><p>Call the AKS model service</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Get a recommendation of 10 movies</span>
+<span class="n">input_data</span> <span class="o">=</span> <span class="s1">&#39;[&quot;{</span><span class="se">\\</span><span class="s1">&quot;id</span><span class="se">\\</span><span class="s1">&quot;:</span><span class="se">\\</span><span class="s1">&quot;496</span><span class="se">\\</span><span class="s1">&quot;,</span><span class="se">\\</span><span class="s1">&quot;k</span><span class="se">\\</span><span class="s1">&quot;:10}&quot;]&#39;</span><span class="o">.</span><span class="n">encode</span><span class="p">()</span>
+
+<span class="n">req</span> <span class="o">=</span> <span class="n">urllib</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">Request</span><span class="p">(</span><span class="n">scoring_url</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">input_data</span><span class="p">)</span>
+<span class="n">req</span><span class="o">.</span><span class="n">add_header</span><span class="p">(</span><span class="s2">&quot;Authorization&quot;</span><span class="p">,</span><span class="s2">&quot;Bearer </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">service_key</span><span class="p">))</span>
+<span class="n">req</span><span class="o">.</span><span class="n">add_header</span><span class="p">(</span><span class="s2">&quot;Content-Type&quot;</span><span class="p">,</span><span class="s2">&quot;application/json&quot;</span><span class="p">)</span>
+
+<span class="o">...</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</div>
+</div>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "reco_pyspark"
+        },
+        kernelOptions: {
+            kernelName: "reco_pyspark",
+            path: "./examples/05_operationalize"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'reco_pyspark'</script>
+
+              </div>
+              
+        
+            
+
+
+
+<div class='prev-next-bottom'>
+    
+
+</div>
+        
+        </div>
+    </div>
+    <footer class="footer">
+    <div class="container">
+      <p>
+        
+          By The Jupyter Book community<br/>
+        
+            &copy; Copyright 2021.<br/>
+      </p>
+    </div>
+  </footer>
+</main>
+
+
+      </div>
+    </div>
+  
+  <script src="../../_static/js/index.1c5a1a01449ed65a7b51.js"></script>
+
+  
+  </body>
+</html>

@@ -1,0 +1,1635 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>LightFM - hybrid matrix factorisation on MovieLens (Python, CPU) &#8212; &lt;h1 style=&#34;font-size:2em;text-align:center;color:#FF5733&#34;&gt;Recommenders&lt;/h1&gt;</title>
+    
+  <link href="../../_static/css/theme.css" rel="stylesheet" />
+  <link href="../../_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
+
+    
+  <link rel="stylesheet"
+    href="../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+
+    
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-book-theme.css?digest=c3fdc42140077d1ad13ad2f1588a4309" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/tabs.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    
+  <link rel="preload" as="script" href="../../_static/js/index.1c5a1a01449ed65a7b51.js">
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/togglebutton.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <script src="../../_static/tabs.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../../_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script>
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="../../_static/sphinx-thebe.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en" />
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="../../index.html">
+      
+      
+      
+      <h1 class="site-logo" id="site-title"><h1 style="font-size:2em;text-align:center;color:#FF5733">Recommenders</h1></h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="../../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        <p class="caption" role="heading">
+ <span class="caption-text">
+  Getting Started Notebooks
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../00_quick_start/als_movielens.html">
+   Running ALS on MovieLens (PySpark)
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../00_quick_start/ncf_movielens.html">
+   Neural Collaborative Filtering on MovieLens dataset.
+  </a>
+ </li>
+</ul>
+
+    </div>
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="topbar container-xl fixed-top">
+    <div class="topbar-contents row">
+        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
+        <div class="col pl-md-4 topbar-main">
+            
+            <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+                data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+                aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
+                title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+                <i class="fas fa-bars"></i>
+                <i class="fas fa-arrow-left"></i>
+                <i class="fas fa-arrow-up"></i>
+            </button>
+            
+            
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
+            class="fas fa-download"></i></button>
+
+    <div class="dropdown-buttons">
+        <!-- ipynb file if we had a myst markdown file -->
+        
+        <!-- Download raw file -->
+        <a class="dropdown-buttons" href="../../_sources/examples/02_model_hybrid/lightfm_deep_dive.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
+                data-placement="left">.ipynb</button></a>
+        <!-- Download PDF via print -->
+        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
+            onClick="window.print()" data-toggle="tooltip" data-placement="left">.pdf</button>
+    </div>
+</div>
+
+            <!-- Source interaction buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
+    <div class="dropdown-buttons sourcebuttons">
+        <a class="repository-button"
+            href="https://github.com/microsoft/genalog"><button type="button" class="btn btn-secondary topbarbtn"
+                data-toggle="tooltip" data-placement="left" title="Source repository"><i
+                    class="fab fa-github"></i>repository</button></a>
+        <a class="issues-button"
+            href="https://github.com/microsoft/genalog/issues/new?title=Issue%20on%20page%20%2Fexamples/02_model_hybrid/lightfm_deep_dive.html&body=Your%20issue%20content%20here."><button
+                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
+                title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
+        
+    </div>
+</div>
+
+            <!-- Full screen (wrap in <a> to have style consistency -->
+
+<a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+        data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+        title="Fullscreen mode"><i
+            class="fas fa-expand"></i></button></a>
+
+            <!-- Launch buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Launch interactive content"><i class="fas fa-rocket"></i></button>
+    <div class="dropdown-buttons">
+        
+        <a class="binder-button" href="https://mybinder.org/v2/gh/microsoft/genalog/main?urlpath=tree/docs/genalog_docs/examples/02_model_hybrid/lightfm_deep_dive.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Launch Binder" data-toggle="tooltip"
+                data-placement="left"><img class="binder-button-logo"
+                    src="../../_static/images/logo_binder.svg"
+                    alt="Interact on binder">Binder</button></a>
+        
+        
+        
+        
+    </div>
+</div>
+
+        </div>
+
+        <!-- Table of contents -->
+        <div class="d-none d-md-block col-md-2 bd-toc show">
+            
+            <div class="tocsection onthispage pt-5 pb-3">
+                <i class="fas fa-list"></i> Contents
+            </div>
+            <nav id="bd-toc-nav" aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#hybrid-matrix-factorisation-model">
+   1. Hybrid matrix factorisation model
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#background">
+     1.1 Background
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#hybrid-matrix-factorisation-algorithm">
+     1.2 Hybrid matrix factorisation algorithm
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#lightfm-package">
+     1.3 LightFM package
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#modelling-approach">
+       1.3.1 Modelling approach
+      </a>
+     </li>
+    </ul>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#movie-recommender-with-lightfm-using-only-explicit-feedbacks">
+   2. Movie recommender with LightFM using only explicit feedbacks
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#import-libraries">
+     2.1 Import libraries
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#defining-variables">
+     2.2 Defining variables
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#retrieve-data">
+     2.2 Retrieve data
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#prepare-data">
+     2.3 Prepare data
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#fit-the-lightfm-model">
+     2.4 Fit the LightFM model
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#prepare-model-evaluation-data">
+     2.5 Prepare model evaluation data
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#model-evaluation">
+     2.6 Model evaluation
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#movie-recommender-with-lightfm-using-explicit-feedbacks-and-additional-item-and-user-features">
+   3. Movie recommender with LightFM using explicit feedbacks and additional item and user features
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#extract-and-prepare-movie-genres">
+     3.1 Extract and prepare movie genres
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#retrieve-and-prepare-movie-genres">
+     3.2 Retrieve and prepare movie genres
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#retrieve-and-merge-data">
+       3.2.1 Retrieve and merge data
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#extract-and-prepare-user-occupations">
+       3.2.2 Extract and prepare user occupations
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#prepare-data-and-features">
+     3.3 Prepare data and features
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#fit-the-lightfm-model-with-additional-user-and-item-features">
+     3.3 Fit the LightFM model with additional user and item features
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#id1">
+     3.4 Prepare model evaluation data
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#model-evaluation-and-comparison">
+     3.5 Model evaluation and comparison
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#evaluation-metrics-comparison">
+     3.6 Evaluation metrics comparison
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#evaluate-model-fitting-process">
+   4. Evaluate model fitting process
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#performance-comparison">
+     4.1 Performance comparison
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#similar-users-and-items">
+   5. Similar users and items
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#user-affinity">
+     5.1 User affinity
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#item-affinity">
+     5.2 Item affinity
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#conclusion">
+   6. Conclusion
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#references">
+   References
+  </a>
+ </li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+        
+              <div>
+                
+  <p><i>Copyright (c) Microsoft Corporation. All rights reserved.</i></p>
+<p><i>Licensed under the MIT License.</i></p>
+<div class="tex2jax_ignore mathjax_ignore section" id="lightfm-hybrid-matrix-factorisation-on-movielens-python-cpu">
+<h1>LightFM -  hybrid matrix factorisation on MovieLens (Python, CPU)<a class="headerlink" href="#lightfm-hybrid-matrix-factorisation-on-movielens-python-cpu" title="Permalink to this headline">¶</a></h1>
+<p>This notebook explains the concept of a hybrid matrix factorisation based model for recommendation, it also outlines the steps to construct a pure matrix factorisation and a hybrid models using the <a class="reference external" href="https://github.com/lyst/lightfm">LightFM</a> package. It also demonstrates how to extract both user and item affinity from a fitted hybrid model.</p>
+<div class="section" id="hybrid-matrix-factorisation-model">
+<h2>1. Hybrid matrix factorisation model<a class="headerlink" href="#hybrid-matrix-factorisation-model" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="background">
+<h3>1.1 Background<a class="headerlink" href="#background" title="Permalink to this headline">¶</a></h3>
+<p>In general, most recommendation models can be divided into two categories:</p>
+<ul class="simple">
+<li><p>Content based model,</p></li>
+<li><p>Collaborative filtering model.</p></li>
+</ul>
+<p>The content-based model recommends based on similarity of the items and/or users using their description/metadata/profile. On the other hand, collaborative filtering model (discussion is limited to matrix factorisation approach in this notebook) computes the latent factors of the users and items. It works based on the assumption that if a group of people expressed similar opinions on an item, these peole would tend to have similar opinions on other items. For further background and detailed explanation between these two approaches, the reader can refer to machine learning literatures [3, 4].</p>
+<p>The choice between the two models is largely based on the data availability. For example, the collaborative filtering model is usually adopted and effective when sufficient ratings/feedbacks have been recorded for a group of users and items.</p>
+<p>However, if there is a lack of ratings, content based model can be used provided that the metadata of the users and items are available. This is also the common approach to address the cold-start issues, where there are insufficient historical collaborative interactions available to model new users and/or items.</p>
+<!-- In addition, most collaborative filtering models only consume explicit ratings e.g. movie 
+
+**NOTE** add stuff about implicit and explicit ratings -->
+</div>
+<div class="section" id="hybrid-matrix-factorisation-algorithm">
+<h3>1.2 Hybrid matrix factorisation algorithm<a class="headerlink" href="#hybrid-matrix-factorisation-algorithm" title="Permalink to this headline">¶</a></h3>
+<p>In view of the above problems, there have been a number of proposals to address the cold-start issues by combining both content-based and collaborative filtering approaches. The hybrid matrix factorisation model is among one of the solutions proposed [1].</p>
+<p>In general, most hybrid approaches proposed different ways of assessing and/or combining the feature data in conjunction with the collaborative information.</p>
+</div>
+<div class="section" id="lightfm-package">
+<h3>1.3 LightFM package<a class="headerlink" href="#lightfm-package" title="Permalink to this headline">¶</a></h3>
+<p>LightFM is a Python implementation of a hybrid recommendation algorithms for both implicit and explicit feedbacks [1].</p>
+<p>It is a hybrid content-collaborative model which represents users and items as linear combinations of their content features’ latent factors. The model learns <strong>embeddings or latent representations of the users and items in such a way that it encodes user preferences over items</strong>. These representations produce scores for every item for a given user; items scored highly are more likely to be interesting to the user.</p>
+<p>The user and item embeddings are estimated for every feature, and these features are then added together to be the final representations for users and items.</p>
+<p>For example, for user i, the model retrieves the i-th row of the feature matrix to find the features with non-zero weights. The embeddings for these features will then be added together to become the user representation e.g. if user 10 has weight 1 in the 5th column of the user feature matrix, and weight 3 in the 20th column, the user 10’s representation is the sum of embedding for the 5th and the 20th features multiplying their corresponding weights. The representation for each items is computed in the same approach.</p>
+<div class="section" id="modelling-approach">
+<h4>1.3.1 Modelling approach<a class="headerlink" href="#modelling-approach" title="Permalink to this headline">¶</a></h4>
+<p>Let <span class="math notranslate nohighlight">\(U\)</span> be the set of users and <span class="math notranslate nohighlight">\(I\)</span> be the set of items, and each user can be described by a set of user features <span class="math notranslate nohighlight">\(f_{u} \subset F^{U}\)</span> whilst each items can be described by item features <span class="math notranslate nohighlight">\(f_{i} \subset F^{I}\)</span>. Both <span class="math notranslate nohighlight">\(F^{U}\)</span> and <span class="math notranslate nohighlight">\(F^{I}\)</span> are all the features which fully describe all users and items.</p>
+<p>The LightFM model operates based binary feedbacks, the ratings will be normalised into two groups. The user-item interaction pairs <span class="math notranslate nohighlight">\((u,i) \in U\times I\)</span> are the union of positive (favourable reviews) <span class="math notranslate nohighlight">\(S^+\)</span> and negative interactions (negative reviews) <span class="math notranslate nohighlight">\(S^-\)</span> for explicit ratings. For implicit feedbacks, these can be the observed and not observed interactions respectively.</p>
+<p>For each user and item feature, their embeddings are <span class="math notranslate nohighlight">\(e_{f}^{U}\)</span> and <span class="math notranslate nohighlight">\(e_{f}^{I}\)</span> respectively. Furthermore, each feature is also has a scalar bias term (<span class="math notranslate nohighlight">\(b_U^f\)</span> for user and <span class="math notranslate nohighlight">\(b_I^f\)</span> for item features). The embedding (latent representation) of user <span class="math notranslate nohighlight">\(u\)</span> and item <span class="math notranslate nohighlight">\(i\)</span> are the sum of its respective features’ latent vectors:</p>
+<div class="math notranslate nohighlight">
+\[ 
+q_{u} = \sum_{j \in f_{u}} e_{j}^{U}
+\]</div>
+<div class="math notranslate nohighlight">
+\[
+p_{i} = \sum_{j \in f_{i}} e_{j}^{I}
+\]</div>
+<p>Similarly the biases for user <span class="math notranslate nohighlight">\(u\)</span> and item <span class="math notranslate nohighlight">\(i\)</span> are the sum of its respective bias vectors. These variables capture the variation in behaviour across users and items:</p>
+<div class="math notranslate nohighlight">
+\[
+b_{u} = \sum_{j \in f_{u}} b_{j}^{U}
+\]</div>
+<div class="math notranslate nohighlight">
+\[
+b_{i} = \sum_{j \in f_{i}} b_{j}^{I}
+\]</div>
+<p>In LightFM, the representation for each user/item is a linear weighted sum of its feature vectors.</p>
+<p>The prediction for user <span class="math notranslate nohighlight">\(u\)</span> and item <span class="math notranslate nohighlight">\(i\)</span> can be modelled as sigmoid of the dot product of user and item vectors, adjusted by its feature biases as follows:</p>
+<div class="math notranslate nohighlight">
+\[
+\hat{r}_{ui} = \sigma (q_{u} \cdot p_{i} + b_{u} + b_{i})
+\]</div>
+<p>As the LightFM is constructed to predict binary outcomes e.g. <span class="math notranslate nohighlight">\(S^+\)</span> and <span class="math notranslate nohighlight">\(S^-\)</span>, the function <span class="math notranslate nohighlight">\(\sigma()\)</span> is based on the <a class="reference external" href="https://mathworld.wolfram.com/SigmoidFunction.html">sigmoid function</a>.</p>
+<p>The LightFM algorithm estimates interaction latent vectors and bias for features. For model fitting, the cost function of the model consists of maximising the likelihood of data conditional on the parameters described above using stochastic gradient descent. The likelihood can be expressed as follows:</p>
+<div class="math notranslate nohighlight">
+\[
+L = \prod_{(u,i) \in S+}\hat{r}_{ui} \times \prod_{(u,i) \in S-}1 - \hat{r}_{ui}
+\]</div>
+<p>Note that if the feature latent vectors are not available, the algorithm will behaves like a <a class="reference external" href="http://stanford.edu/%7Erezab/nips2014workshop/submits/logmat.pdf">logistic matrix factorisation model</a>.</p>
+</div>
+</div>
+</div>
+<div class="section" id="movie-recommender-with-lightfm-using-only-explicit-feedbacks">
+<h2>2. Movie recommender with LightFM using only explicit feedbacks<a class="headerlink" href="#movie-recommender-with-lightfm-using-only-explicit-feedbacks" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="import-libraries">
+<h3>2.1 Import libraries<a class="headerlink" href="#import-libraries" title="Permalink to this headline">¶</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">os</span>
+
+<span class="kn">import</span> <span class="nn">itertools</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
+
+<span class="kn">import</span> <span class="nn">lightfm</span>
+<span class="kn">from</span> <span class="nn">lightfm</span> <span class="kn">import</span> <span class="n">LightFM</span>
+<span class="kn">from</span> <span class="nn">lightfm.data</span> <span class="kn">import</span> <span class="n">Dataset</span>
+<span class="kn">from</span> <span class="nn">lightfm</span> <span class="kn">import</span> <span class="n">cross_validation</span>
+
+<span class="c1"># Import LightFM&#39;s evaluation metrics</span>
+<span class="kn">from</span> <span class="nn">lightfm.evaluation</span> <span class="kn">import</span> <span class="n">precision_at_k</span> <span class="k">as</span> <span class="n">lightfm_prec_at_k</span>
+<span class="kn">from</span> <span class="nn">lightfm.evaluation</span> <span class="kn">import</span> <span class="n">recall_at_k</span> <span class="k">as</span> <span class="n">lightfm_recall_at_k</span>
+
+<span class="c1"># Import repo&#39;s evaluation metrics</span>
+<span class="kn">from</span> <span class="nn">recommenders.evaluation.python_evaluation</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">precision_at_k</span><span class="p">,</span> <span class="n">recall_at_k</span><span class="p">)</span>
+
+<span class="kn">from</span> <span class="nn">recommenders.utils.timer</span> <span class="kn">import</span> <span class="n">Timer</span>
+<span class="kn">from</span> <span class="nn">recommenders.datasets</span> <span class="kn">import</span> <span class="n">movielens</span>
+<span class="kn">from</span> <span class="nn">recommenders.models.lightfm.lightfm_utils</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">track_model_metrics</span><span class="p">,</span> <span class="n">prepare_test_df</span><span class="p">,</span> <span class="n">prepare_all_predictions</span><span class="p">,</span>
+    <span class="n">compare_metric</span><span class="p">,</span> <span class="n">similar_users</span><span class="p">,</span> <span class="n">similar_items</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;System version: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">version</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;LightFM version: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">lightfm</span><span class="o">.</span><span class="n">__version__</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>System version: 3.6.10 |Anaconda, Inc.| (default, Mar 25 2020, 23:51:54) 
+[GCC 7.3.0]
+LightFM version: 1.15
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="defining-variables">
+<h3>2.2 Defining variables<a class="headerlink" href="#defining-variables" title="Permalink to this headline">¶</a></h3>
+<div class="cell tag_parameters docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Select MovieLens data size</span>
+<span class="n">MOVIELENS_DATA_SIZE</span> <span class="o">=</span> <span class="s1">&#39;100k&#39;</span>
+
+<span class="c1"># default number of recommendations</span>
+<span class="n">K</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="c1"># percentage of data used for testing</span>
+<span class="n">TEST_PERCENTAGE</span> <span class="o">=</span> <span class="mf">0.25</span>
+<span class="c1"># model learning rate</span>
+<span class="n">LEARNING_RATE</span> <span class="o">=</span> <span class="mf">0.25</span>
+<span class="c1"># no of latent factors</span>
+<span class="n">NO_COMPONENTS</span> <span class="o">=</span> <span class="mi">20</span>
+<span class="c1"># no of epochs to fit model</span>
+<span class="n">NO_EPOCHS</span> <span class="o">=</span> <span class="mi">20</span>
+<span class="c1"># no of threads to fit model</span>
+<span class="n">NO_THREADS</span> <span class="o">=</span> <span class="mi">32</span>
+<span class="c1"># regularisation for both user and item features</span>
+<span class="n">ITEM_ALPHA</span><span class="o">=</span><span class="mf">1e-6</span>
+<span class="n">USER_ALPHA</span><span class="o">=</span><span class="mf">1e-6</span>
+
+<span class="c1"># seed for pseudonumber generations</span>
+<span class="n">SEEDNO</span> <span class="o">=</span> <span class="mi">42</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="retrieve-data">
+<h3>2.2 Retrieve data<a class="headerlink" href="#retrieve-data" title="Permalink to this headline">¶</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data</span> <span class="o">=</span> <span class="n">movielens</span><span class="o">.</span><span class="n">load_pandas_df</span><span class="p">(</span>
+    <span class="n">size</span><span class="o">=</span><span class="n">MOVIELENS_DATA_SIZE</span><span class="p">,</span>
+    <span class="n">genres_col</span><span class="o">=</span><span class="s1">&#39;genre&#39;</span><span class="p">,</span>
+    <span class="n">header</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;userID&quot;</span><span class="p">,</span> <span class="s2">&quot;itemID&quot;</span><span class="p">,</span> <span class="s2">&quot;rating&quot;</span><span class="p">]</span>
+<span class="p">)</span>
+<span class="c1"># quick look at the data</span>
+<span class="n">data</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>100%|██████████| 4.81k/4.81k [00:06&lt;00:00, 794KB/s]
+</pre></div>
+</div>
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>userID</th>
+      <th>itemID</th>
+      <th>rating</th>
+      <th>genre</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>86814</th>
+      <td>854</td>
+      <td>544</td>
+      <td>3.0</td>
+      <td>Crime|Drama|Romance</td>
+    </tr>
+    <tr>
+      <th>7007</th>
+      <td>625</td>
+      <td>4</td>
+      <td>4.0</td>
+      <td>Action|Comedy|Drama</td>
+    </tr>
+    <tr>
+      <th>40359</th>
+      <td>526</td>
+      <td>271</td>
+      <td>3.0</td>
+      <td>Action|Adventure|Sci-Fi|War</td>
+    </tr>
+    <tr>
+      <th>21909</th>
+      <td>910</td>
+      <td>405</td>
+      <td>4.0</td>
+      <td>Action|Adventure|Mystery</td>
+    </tr>
+    <tr>
+      <th>33526</th>
+      <td>58</td>
+      <td>56</td>
+      <td>5.0</td>
+      <td>Crime|Drama</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+</div>
+<div class="section" id="prepare-data">
+<h3>2.3 Prepare data<a class="headerlink" href="#prepare-data" title="Permalink to this headline">¶</a></h3>
+<p>Before fitting the LightFM model, we need to create an instance of <code class="docutils literal notranslate"><span class="pre">Dataset</span></code> which holds the interaction matrix.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dataset</span> <span class="o">=</span> <span class="n">Dataset</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">fit</span></code> method creates the user/item id mappings.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dataset</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">users</span><span class="o">=</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;userID&#39;</span><span class="p">],</span> 
+            <span class="n">items</span><span class="o">=</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;itemID&#39;</span><span class="p">])</span>
+
+<span class="c1"># quick check to determine the number of unique users and items in the data</span>
+<span class="n">num_users</span><span class="p">,</span> <span class="n">num_topics</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">interactions_shape</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Num users: </span><span class="si">{</span><span class="n">num_users</span><span class="si">}</span><span class="s1">, num_topics: </span><span class="si">{</span><span class="n">num_topics</span><span class="si">}</span><span class="s1">.&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Num users: 943, num_topics: 1682.
+</pre></div>
+</div>
+</div>
+</div>
+<p>Next is to build the interaction matrix. The <code class="docutils literal notranslate"><span class="pre">build_interactions</span></code> method returns 2 COO sparse matrices, namely the <code class="docutils literal notranslate"><span class="pre">interactions</span></code> and <code class="docutils literal notranslate"><span class="pre">weights</span></code> matrices.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">interactions</span><span class="p">,</span> <span class="n">weights</span><span class="p">)</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">build_interactions</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">:</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>LightLM works slightly differently compared to other packages as it expects the train and test sets to have same dimension. Therefore the conventional train test split will not work.</p>
+<p>The package has included the <code class="docutils literal notranslate"><span class="pre">cross_validation.random_train_test_split</span></code> method to split the interaction data and splits it into two disjoint training and test sets.</p>
+<p>However, note that <strong>it does not validate the interactions in the test set to guarantee all items and users have historical interactions in the training set</strong>. Therefore this may result into a partial cold-start problem in the test set.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">train_interactions</span><span class="p">,</span> <span class="n">test_interactions</span> <span class="o">=</span> <span class="n">cross_validation</span><span class="o">.</span><span class="n">random_train_test_split</span><span class="p">(</span>
+    <span class="n">interactions</span><span class="p">,</span> <span class="n">test_percentage</span><span class="o">=</span><span class="n">TEST_PERCENTAGE</span><span class="p">,</span>
+    <span class="n">random_state</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">RandomState</span><span class="p">(</span><span class="n">SEEDNO</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Double check the size of both the train and test sets.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Shape of train interactions: </span><span class="si">{</span><span class="n">train_interactions</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Shape of test interactions: </span><span class="si">{</span><span class="n">test_interactions</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Shape of train interactions: (943, 1682)
+Shape of test interactions: (943, 1682)
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="fit-the-lightfm-model">
+<h3>2.4 Fit the LightFM model<a class="headerlink" href="#fit-the-lightfm-model" title="Permalink to this headline">¶</a></h3>
+<p>In this notebook, the LightFM model will be using the weighted Approximate-Rank Pairwise (WARP) as the loss. Further explanation on the topic can be found <a class="reference external" href="https://making.lyst.com/lightfm/docs/examples/warp_loss.html#learning-to-rank-using-the-warp-loss">here</a>.</p>
+<p>In general, it maximises the rank of positive examples by repeatedly sampling negative examples until a rank violation has been located. This approach is recommended when only positive interactions are present.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model1</span> <span class="o">=</span> <span class="n">LightFM</span><span class="p">(</span><span class="n">loss</span><span class="o">=</span><span class="s1">&#39;warp&#39;</span><span class="p">,</span> <span class="n">no_components</span><span class="o">=</span><span class="n">NO_COMPONENTS</span><span class="p">,</span> 
+                 <span class="n">learning_rate</span><span class="o">=</span><span class="n">LEARNING_RATE</span><span class="p">,</span>                 
+                 <span class="n">random_state</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">RandomState</span><span class="p">(</span><span class="n">SEEDNO</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>The LightFM model can be fitted with the following code:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model1</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">interactions</span><span class="o">=</span><span class="n">train_interactions</span><span class="p">,</span>
+          <span class="n">epochs</span><span class="o">=</span><span class="n">NO_EPOCHS</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="prepare-model-evaluation-data">
+<h3>2.5 Prepare model evaluation data<a class="headerlink" href="#prepare-model-evaluation-data" title="Permalink to this headline">¶</a></h3>
+<p>Before we can evaluate the fitted model and to get the data into a format which is compatible with the existing evaluation methods within this repo, the data needs to be massaged slightly.</p>
+<p>First the train/test indices need to be extracted from the <code class="docutils literal notranslate"><span class="pre">lightfm.cross_validation</span></code> method as follows:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">uids</span><span class="p">,</span> <span class="n">iids</span><span class="p">,</span> <span class="n">interaction_data</span> <span class="o">=</span> <span class="n">cross_validation</span><span class="o">.</span><span class="n">_shuffle</span><span class="p">(</span>
+    <span class="n">interactions</span><span class="o">.</span><span class="n">row</span><span class="p">,</span> <span class="n">interactions</span><span class="o">.</span><span class="n">col</span><span class="p">,</span> <span class="n">interactions</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> 
+    <span class="n">random_state</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">RandomState</span><span class="p">(</span><span class="n">SEEDNO</span><span class="p">))</span>
+
+<span class="n">cutoff</span> <span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="mf">1.0</span> <span class="o">-</span> <span class="n">TEST_PERCENTAGE</span><span class="p">)</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">uids</span><span class="p">))</span>
+<span class="n">test_idx</span> <span class="o">=</span> <span class="nb">slice</span><span class="p">(</span><span class="n">cutoff</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Then the the mapping between internal and external representation of the user and item are extracted as follows:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">uid_map</span><span class="p">,</span> <span class="n">ufeature_map</span><span class="p">,</span> <span class="n">iid_map</span><span class="p">,</span> <span class="n">ifeature_map</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">mapping</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Once the train/test indices and mapping are ready, the test dataframe can be constructed as follows:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">Timer</span><span class="p">()</span> <span class="k">as</span> <span class="n">test_time</span><span class="p">:</span>
+    <span class="n">test_df</span> <span class="o">=</span> <span class="n">prepare_test_df</span><span class="p">(</span><span class="n">test_idx</span><span class="p">,</span> <span class="n">uids</span><span class="p">,</span> <span class="n">iids</span><span class="p">,</span> <span class="n">uid_map</span><span class="p">,</span> <span class="n">iid_map</span><span class="p">,</span> <span class="n">weights</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Took </span><span class="si">{</span><span class="n">test_time</span><span class="o">.</span><span class="n">interval</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2"> seconds for prepare and predict test data.&quot;</span><span class="p">)</span>  
+<span class="n">time_reco1</span> <span class="o">=</span> <span class="n">test_time</span><span class="o">.</span><span class="n">interval</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Took 2.0 seconds for prepare and predict test data.
+</pre></div>
+</div>
+</div>
+</div>
+<p>And samples of the test dataframe:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">test_df</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>userID</th>
+      <th>itemID</th>
+      <th>rating</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>20675</th>
+      <td>749</td>
+      <td>731</td>
+      <td>3.0</td>
+    </tr>
+    <tr>
+      <th>22917</th>
+      <td>224</td>
+      <td>470</td>
+      <td>4.0</td>
+    </tr>
+    <tr>
+      <th>11688</th>
+      <td>682</td>
+      <td>280</td>
+      <td>3.0</td>
+    </tr>
+    <tr>
+      <th>6005</th>
+      <td>838</td>
+      <td>271</td>
+      <td>4.0</td>
+    </tr>
+    <tr>
+      <th>4884</th>
+      <td>92</td>
+      <td>452</td>
+      <td>2.0</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>In addition, the predictions of all unseen user-item pairs (e.g. removing those seen in the training data) can be prepared as follows:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">Timer</span><span class="p">()</span> <span class="k">as</span> <span class="n">test_time</span><span class="p">:</span>
+    <span class="n">all_predictions</span> <span class="o">=</span> <span class="n">prepare_all_predictions</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">uid_map</span><span class="p">,</span> <span class="n">iid_map</span><span class="p">,</span> 
+                                              <span class="n">interactions</span><span class="o">=</span><span class="n">train_interactions</span><span class="p">,</span>
+                                              <span class="n">model</span><span class="o">=</span><span class="n">model1</span><span class="p">,</span> 
+                                              <span class="n">num_threads</span><span class="o">=</span><span class="n">NO_THREADS</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Took </span><span class="si">{</span><span class="n">test_time</span><span class="o">.</span><span class="n">interval</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2"> seconds for prepare and predict all data.&quot;</span><span class="p">)</span>
+<span class="n">time_reco2</span> <span class="o">=</span> <span class="n">test_time</span><span class="o">.</span><span class="n">interval</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Took 763.3 seconds for prepare and predict all data.
+</pre></div>
+</div>
+</div>
+</div>
+<p>Samples of the <code class="docutils literal notranslate"><span class="pre">all_predictions</span></code> dataframe:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">all_predictions</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>userID</th>
+      <th>itemID</th>
+      <th>prediction</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>1143776</th>
+      <td>759</td>
+      <td>678</td>
+      <td>115.532867</td>
+    </tr>
+    <tr>
+      <th>879478</th>
+      <td>128</td>
+      <td>1158</td>
+      <td>-24.874775</td>
+    </tr>
+    <tr>
+      <th>887889</th>
+      <td>37</td>
+      <td>61</td>
+      <td>12.243621</td>
+    </tr>
+    <tr>
+      <th>17054</th>
+      <td>35</td>
+      <td>1188</td>
+      <td>-30.835514</td>
+    </tr>
+    <tr>
+      <th>1075633</th>
+      <td>337</td>
+      <td>1062</td>
+      <td>-45.256855</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>Note that the <strong>raw prediction values from the LightFM model are for ranking purposes only</strong>, they should not be used directly. The magnitude and sign of these values do not have any specific interpretation.</p>
+</div>
+<div class="section" id="model-evaluation">
+<h3>2.6 Model evaluation<a class="headerlink" href="#model-evaluation" title="Permalink to this headline">¶</a></h3>
+<p>Once the evaluation data are ready, they can be passed into to the repo’s evaluation methods as follows. The performance of the model will be tracked using both Precision&#64;K and Recall&#64;K.</p>
+<p>In addition, the results have also being compared with those computed from LightFM’s own evaluation methods to ensure accuracy.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">Timer</span><span class="p">()</span> <span class="k">as</span> <span class="n">test_time</span><span class="p">:</span>
+    <span class="n">eval_precision</span> <span class="o">=</span> <span class="n">precision_at_k</span><span class="p">(</span><span class="n">rating_true</span><span class="o">=</span><span class="n">test_df</span><span class="p">,</span> 
+                                <span class="n">rating_pred</span><span class="o">=</span><span class="n">all_predictions</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="n">K</span><span class="p">)</span>
+    <span class="n">eval_recall</span> <span class="o">=</span> <span class="n">recall_at_k</span><span class="p">(</span><span class="n">test_df</span><span class="p">,</span> <span class="n">all_predictions</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="n">K</span><span class="p">)</span>
+<span class="n">time_reco3</span> <span class="o">=</span> <span class="n">test_time</span><span class="o">.</span><span class="n">interval</span>
+
+<span class="k">with</span> <span class="n">Timer</span><span class="p">()</span> <span class="k">as</span> <span class="n">test_time</span><span class="p">:</span>
+    <span class="n">eval_precision_lfm</span> <span class="o">=</span> <span class="n">lightfm_prec_at_k</span><span class="p">(</span><span class="n">model1</span><span class="p">,</span> <span class="n">test_interactions</span><span class="p">,</span> 
+                                           <span class="n">train_interactions</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="n">K</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+    <span class="n">eval_recall_lfm</span> <span class="o">=</span> <span class="n">lightfm_recall_at_k</span><span class="p">(</span><span class="n">model1</span><span class="p">,</span> <span class="n">test_interactions</span><span class="p">,</span> 
+                                          <span class="n">train_interactions</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="n">K</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+<span class="n">time_lfm</span> <span class="o">=</span> <span class="n">test_time</span><span class="o">.</span><span class="n">interval</span>
+    
+<span class="nb">print</span><span class="p">(</span>
+    <span class="s2">&quot;------ Using Repo&#39;s evaluation methods ------&quot;</span><span class="p">,</span>
+    <span class="sa">f</span><span class="s2">&quot;Precision@K:</span><span class="se">\t</span><span class="si">{</span><span class="n">eval_precision</span><span class="si">:</span><span class="s2">.6f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+    <span class="sa">f</span><span class="s2">&quot;Recall@K:</span><span class="se">\t</span><span class="si">{</span><span class="n">eval_recall</span><span class="si">:</span><span class="s2">.6f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">------ Using LightFM evaluation methods ------&quot;</span><span class="p">,</span>
+    <span class="sa">f</span><span class="s2">&quot;Precision@K:</span><span class="se">\t</span><span class="si">{</span><span class="n">eval_precision_lfm</span><span class="si">:</span><span class="s2">.6f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+    <span class="sa">f</span><span class="s2">&quot;Recall@K:</span><span class="se">\t</span><span class="si">{</span><span class="n">eval_recall_lfm</span><span class="si">:</span><span class="s2">.6f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> 
+    <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>------ Using Repo&#39;s evaluation methods ------
+Precision@K:	0.131601
+Recall@K:	0.038056
+
+------ Using LightFM evaluation methods ------
+Precision@K:	0.131601
+Recall@K:	0.038056
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="movie-recommender-with-lightfm-using-explicit-feedbacks-and-additional-item-and-user-features">
+<h2>3. Movie recommender with LightFM using explicit feedbacks and additional item and user features<a class="headerlink" href="#movie-recommender-with-lightfm-using-explicit-feedbacks-and-additional-item-and-user-features" title="Permalink to this headline">¶</a></h2>
+<p>As the LightFM was designed to incorporates both user and item metadata, the model can be extended to include additional features such as movie genres and user occupations.</p>
+<div class="section" id="extract-and-prepare-movie-genres">
+<h3>3.1 Extract and prepare movie genres<a class="headerlink" href="#extract-and-prepare-movie-genres" title="Permalink to this headline">¶</a></h3>
+<p>In this notebook, the movie’s genres will be used as the item metadata. As the genres have already been loaded during the initial data import, it can be processed directly as follows:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># split the genre based on the separator</span>
+<span class="n">movie_genre</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;|&#39;</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;genre&#39;</span><span class="p">]]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># retrieve the all the unique genres in the data</span>
+<span class="n">all_movie_genre</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">itertools</span><span class="o">.</span><span class="n">chain</span><span class="o">.</span><span class="n">from_iterable</span><span class="p">(</span><span class="n">movie_genre</span><span class="p">))))</span>
+<span class="c1"># quick look at the all the genres within the data</span>
+<span class="n">all_movie_genre</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;Action&#39;,
+ &#39;Adventure&#39;,
+ &#39;Animation&#39;,
+ &quot;Children&#39;s&quot;,
+ &#39;Comedy&#39;,
+ &#39;Crime&#39;,
+ &#39;Documentary&#39;,
+ &#39;Drama&#39;,
+ &#39;Fantasy&#39;,
+ &#39;Film-Noir&#39;,
+ &#39;Horror&#39;,
+ &#39;Musical&#39;,
+ &#39;Mystery&#39;,
+ &#39;Romance&#39;,
+ &#39;Sci-Fi&#39;,
+ &#39;Thriller&#39;,
+ &#39;War&#39;,
+ &#39;Western&#39;,
+ &#39;unknown&#39;]
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="retrieve-and-prepare-movie-genres">
+<h3>3.2 Retrieve and prepare movie genres<a class="headerlink" href="#retrieve-and-prepare-movie-genres" title="Permalink to this headline">¶</a></h3>
+<p>Further user features can be included as part of the model fitting process. In this notebook, <strong>only the occupation of each user will be included</strong> but the feature list can be extended easily.</p>
+<div class="section" id="retrieve-and-merge-data">
+<h4>3.2.1 Retrieve and merge data<a class="headerlink" href="#retrieve-and-merge-data" title="Permalink to this headline">¶</a></h4>
+<p>The user features can be retrieved directly from the grouplens website and merged with the existing data as follows:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">user_feature_URL</span> <span class="o">=</span> <span class="s1">&#39;http://files.grouplens.org/datasets/movielens/ml-100k/u.user&#39;</span>
+<span class="n">user_data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_table</span><span class="p">(</span><span class="n">user_feature_URL</span><span class="p">,</span> 
+              <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;|&#39;</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+<span class="n">user_data</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;userID&#39;</span><span class="p">,</span><span class="s1">&#39;age&#39;</span><span class="p">,</span><span class="s1">&#39;gender&#39;</span><span class="p">,</span><span class="s1">&#39;occupation&#39;</span><span class="p">,</span><span class="s1">&#39;zipcode&#39;</span><span class="p">]</span>
+
+<span class="c1"># merging user feature with existing data</span>
+<span class="n">new_data</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">user_data</span><span class="p">[[</span><span class="s1">&#39;userID&#39;</span><span class="p">,</span><span class="s1">&#39;occupation&#39;</span><span class="p">]],</span> <span class="n">left_on</span><span class="o">=</span><span class="s1">&#39;userID&#39;</span><span class="p">,</span> <span class="n">right_on</span><span class="o">=</span><span class="s1">&#39;userID&#39;</span><span class="p">)</span>
+<span class="c1"># quick look at the merged data</span>
+<span class="n">new_data</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>userID</th>
+      <th>itemID</th>
+      <th>rating</th>
+      <th>genre</th>
+      <th>occupation</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>6917</th>
+      <td>624</td>
+      <td>678</td>
+      <td>3.0</td>
+      <td>Drama|Thriller</td>
+      <td>student</td>
+    </tr>
+    <tr>
+      <th>24294</th>
+      <td>446</td>
+      <td>748</td>
+      <td>2.0</td>
+      <td>Action|Romance|Thriller</td>
+      <td>educator</td>
+    </tr>
+    <tr>
+      <th>22108</th>
+      <td>104</td>
+      <td>346</td>
+      <td>3.0</td>
+      <td>Crime|Drama</td>
+      <td>student</td>
+    </tr>
+    <tr>
+      <th>93983</th>
+      <td>763</td>
+      <td>588</td>
+      <td>4.0</td>
+      <td>Animation|Children's|Musical</td>
+      <td>scientist</td>
+    </tr>
+    <tr>
+      <th>58278</th>
+      <td>290</td>
+      <td>825</td>
+      <td>3.0</td>
+      <td>Action|Sci-Fi|Thriller</td>
+      <td>engineer</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+</div>
+<div class="section" id="extract-and-prepare-user-occupations">
+<h4>3.2.2 Extract and prepare user occupations<a class="headerlink" href="#extract-and-prepare-user-occupations" title="Permalink to this headline">¶</a></h4>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># retrieve all the unique occupations in the data</span>
+<span class="n">all_occupations</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">new_data</span><span class="p">[</span><span class="s1">&#39;occupation&#39;</span><span class="p">])))</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="prepare-data-and-features">
+<h3>3.3 Prepare data and features<a class="headerlink" href="#prepare-data-and-features" title="Permalink to this headline">¶</a></h3>
+<p>Similar to the previous model, the data is required to be converted into a <code class="docutils literal notranslate"><span class="pre">Dataset</span></code> instance and then create a user/item id mapping with the <code class="docutils literal notranslate"><span class="pre">fit</span></code> method.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dataset2</span> <span class="o">=</span> <span class="n">Dataset</span><span class="p">()</span>
+<span class="n">dataset2</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;userID&#39;</span><span class="p">],</span> 
+            <span class="n">data</span><span class="p">[</span><span class="s1">&#39;itemID&#39;</span><span class="p">],</span> 
+            <span class="n">item_features</span><span class="o">=</span><span class="n">all_movie_genre</span><span class="p">,</span>
+            <span class="n">user_features</span><span class="o">=</span><span class="n">all_occupations</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>The movie genres are then converted into a item feature matrix using the <code class="docutils literal notranslate"><span class="pre">build_item_features</span></code> method as follows:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">item_features</span> <span class="o">=</span> <span class="n">dataset2</span><span class="o">.</span><span class="n">build_item_features</span><span class="p">(</span>
+    <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span><span class="p">,</span><span class="n">y</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">itemID</span><span class="p">,</span> <span class="n">movie_genre</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>The user occupations are then converted into an user feature matrix using the <code class="docutils literal notranslate"><span class="pre">build_user_features</span></code> method as follows:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">user_features</span> <span class="o">=</span> <span class="n">dataset2</span><span class="o">.</span><span class="n">build_user_features</span><span class="p">(</span>
+    <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="p">[</span><span class="n">y</span><span class="p">])</span> <span class="k">for</span> <span class="n">x</span><span class="p">,</span><span class="n">y</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">new_data</span><span class="o">.</span><span class="n">userID</span><span class="p">,</span> <span class="n">new_data</span><span class="p">[</span><span class="s1">&#39;occupation&#39;</span><span class="p">]))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Once the item and user features matrices have been completed, the next steps are similar as before, which is to build the interaction matrix and split the interactions into train and test sets as follows:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">interactions2</span><span class="p">,</span> <span class="n">weights2</span><span class="p">)</span> <span class="o">=</span> <span class="n">dataset2</span><span class="o">.</span><span class="n">build_interactions</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">:</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
+
+<span class="n">train_interactions2</span><span class="p">,</span> <span class="n">test_interactions2</span> <span class="o">=</span> <span class="n">cross_validation</span><span class="o">.</span><span class="n">random_train_test_split</span><span class="p">(</span>
+    <span class="n">interactions2</span><span class="p">,</span> <span class="n">test_percentage</span><span class="o">=</span><span class="n">TEST_PERCENTAGE</span><span class="p">,</span>
+    <span class="n">random_state</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">RandomState</span><span class="p">(</span><span class="n">SEEDNO</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="fit-the-lightfm-model-with-additional-user-and-item-features">
+<h3>3.3 Fit the LightFM model with additional user and item features<a class="headerlink" href="#fit-the-lightfm-model-with-additional-user-and-item-features" title="Permalink to this headline">¶</a></h3>
+<p>The parameters of the second model will be similar to the first model to facilitates comparison.</p>
+<p>The model performance at each epoch is also tracked by the same metrics as before.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model2</span> <span class="o">=</span> <span class="n">LightFM</span><span class="p">(</span><span class="n">loss</span><span class="o">=</span><span class="s1">&#39;warp&#39;</span><span class="p">,</span> <span class="n">no_components</span><span class="o">=</span><span class="n">NO_COMPONENTS</span><span class="p">,</span> 
+                 <span class="n">learning_rate</span><span class="o">=</span><span class="n">LEARNING_RATE</span><span class="p">,</span> 
+                 <span class="n">item_alpha</span><span class="o">=</span><span class="n">ITEM_ALPHA</span><span class="p">,</span>
+                 <span class="n">user_alpha</span><span class="o">=</span><span class="n">USER_ALPHA</span><span class="p">,</span>
+                 <span class="n">random_state</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">RandomState</span><span class="p">(</span><span class="n">SEEDNO</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>The LightFM model can then be fitted:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model2</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">interactions</span><span class="o">=</span><span class="n">train_interactions2</span><span class="p">,</span>
+           <span class="n">user_features</span><span class="o">=</span><span class="n">user_features</span><span class="p">,</span>
+           <span class="n">item_features</span><span class="o">=</span><span class="n">item_features</span><span class="p">,</span>
+           <span class="n">epochs</span><span class="o">=</span><span class="n">NO_EPOCHS</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="id1">
+<h3>3.4 Prepare model evaluation data<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+<p>Similar to the previous model, the evaluation data needs to be prepared in order to get them into a format consumable with this repo’s evaluation methods.</p>
+<p>Firstly the train/test indices and id mappings are extracted using the new interations matrix as follows:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">uids</span><span class="p">,</span> <span class="n">iids</span><span class="p">,</span> <span class="n">interaction_data</span> <span class="o">=</span> <span class="n">cross_validation</span><span class="o">.</span><span class="n">_shuffle</span><span class="p">(</span>
+    <span class="n">interactions2</span><span class="o">.</span><span class="n">row</span><span class="p">,</span> <span class="n">interactions2</span><span class="o">.</span><span class="n">col</span><span class="p">,</span> <span class="n">interactions2</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> 
+    <span class="n">random_state</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">RandomState</span><span class="p">(</span><span class="n">SEEDNO</span><span class="p">))</span>
+
+<span class="n">uid_map</span><span class="p">,</span> <span class="n">ufeature_map</span><span class="p">,</span> <span class="n">iid_map</span><span class="p">,</span> <span class="n">ifeature_map</span> <span class="o">=</span> <span class="n">dataset2</span><span class="o">.</span><span class="n">mapping</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>The test dataframe is then constructed as follows:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">Timer</span><span class="p">()</span> <span class="k">as</span> <span class="n">test_time</span><span class="p">:</span>
+    <span class="n">test_df2</span> <span class="o">=</span> <span class="n">prepare_test_df</span><span class="p">(</span><span class="n">test_idx</span><span class="p">,</span> <span class="n">uids</span><span class="p">,</span> <span class="n">iids</span><span class="p">,</span> <span class="n">uid_map</span><span class="p">,</span> <span class="n">iid_map</span><span class="p">,</span> <span class="n">weights2</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Took </span><span class="si">{</span><span class="n">test_time</span><span class="o">.</span><span class="n">interval</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2"> seconds for prepare and predict test data.&quot;</span><span class="p">)</span>  
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Took 2.0 seconds for prepare and predict test data.
+</pre></div>
+</div>
+</div>
+</div>
+<p>The predictions of all unseen user-item pairs can be prepared as follows:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">Timer</span><span class="p">()</span> <span class="k">as</span> <span class="n">test_time</span><span class="p">:</span>
+    <span class="n">all_predictions2</span> <span class="o">=</span> <span class="n">prepare_all_predictions</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">uid_map</span><span class="p">,</span> <span class="n">iid_map</span><span class="p">,</span> 
+                                              <span class="n">interactions</span><span class="o">=</span><span class="n">train_interactions2</span><span class="p">,</span>
+                                               <span class="n">user_features</span><span class="o">=</span><span class="n">user_features</span><span class="p">,</span>
+                                               <span class="n">item_features</span><span class="o">=</span><span class="n">item_features</span><span class="p">,</span>
+                                               <span class="n">model</span><span class="o">=</span><span class="n">model2</span><span class="p">,</span>
+                                               <span class="n">num_threads</span><span class="o">=</span><span class="n">NO_THREADS</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Took </span><span class="si">{</span><span class="n">test_time</span><span class="o">.</span><span class="n">interval</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2"> seconds for prepare and predict all data.&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Took 274.7 seconds for prepare and predict all data.
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="model-evaluation-and-comparison">
+<h3>3.5 Model evaluation and comparison<a class="headerlink" href="#model-evaluation-and-comparison" title="Permalink to this headline">¶</a></h3>
+<p>The predictive performance of the new model can be computed and compared with the previous model (which used only the explicit rating) as follows:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">eval_precision2</span> <span class="o">=</span> <span class="n">precision_at_k</span><span class="p">(</span><span class="n">rating_true</span><span class="o">=</span><span class="n">test_df2</span><span class="p">,</span> 
+                                <span class="n">rating_pred</span><span class="o">=</span><span class="n">all_predictions2</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="n">K</span><span class="p">)</span>
+<span class="n">eval_recall2</span> <span class="o">=</span> <span class="n">recall_at_k</span><span class="p">(</span><span class="n">test_df2</span><span class="p">,</span> <span class="n">all_predictions2</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="n">K</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span>
+    <span class="s2">&quot;------ Using only explicit ratings ------&quot;</span><span class="p">,</span>
+    <span class="sa">f</span><span class="s2">&quot;Precision@K:</span><span class="se">\t</span><span class="si">{</span><span class="n">eval_precision</span><span class="si">:</span><span class="s2">.6f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+    <span class="sa">f</span><span class="s2">&quot;Recall@K:</span><span class="se">\t</span><span class="si">{</span><span class="n">eval_recall</span><span class="si">:</span><span class="s2">.6f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">------ Using both implicit and explicit ratings ------&quot;</span><span class="p">,</span>
+    <span class="sa">f</span><span class="s2">&quot;Precision@K:</span><span class="se">\t</span><span class="si">{</span><span class="n">eval_precision2</span><span class="si">:</span><span class="s2">.6f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+    <span class="sa">f</span><span class="s2">&quot;Recall@K:</span><span class="se">\t</span><span class="si">{</span><span class="n">eval_recall2</span><span class="si">:</span><span class="s2">.6f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+    <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>------ Using only explicit ratings ------
+Precision@K:	0.131601
+Recall@K:	0.038056
+
+------ Using both implicit and explicit ratings ------
+Precision@K:	0.147826
+Recall@K:	0.053450
+</pre></div>
+</div>
+</div>
+</div>
+<p>The new model which used both implicit and explicit data performed consistently better than the previous model which used only the explicit data, thus highlighting the benefits of including such additional features to the model.</p>
+</div>
+<div class="section" id="evaluation-metrics-comparison">
+<h3>3.6 Evaluation metrics comparison<a class="headerlink" href="#evaluation-metrics-comparison" title="Permalink to this headline">¶</a></h3>
+<p>Note that the evaluation approaches here are solely for demonstration purposes only.</p>
+<p>If the reader were using the LightFM package and/or its models, the LightFM’s built-in evaluation methods are much more efficient and are the recommended approach for production usage as they are designed and optimised to work with the package.</p>
+<p>As a comparison, the times recorded to compute Precision&#64;K and Recall&#64;K for model1 are shown as follows:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span>
+    <span class="s2">&quot;------ Using Repo&#39;s evaluation methods ------&quot;</span><span class="p">,</span>
+    <span class="sa">f</span><span class="s2">&quot;Time [sec]:</span><span class="se">\t</span><span class="si">{</span><span class="p">(</span><span class="n">time_reco1</span><span class="o">+</span><span class="n">time_reco2</span><span class="o">+</span><span class="n">time_reco3</span><span class="p">)</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">------ Using LightFM evaluation methods ------&quot;</span><span class="p">,</span>
+    <span class="sa">f</span><span class="s2">&quot;Time [sec]:</span><span class="se">\t</span><span class="si">{</span><span class="n">time_lfm</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+    <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>------ Using Repo&#39;s evaluation methods ------
+Time [sec]:	770.3
+
+------ Using LightFM evaluation methods ------
+Time [sec]:	0.3
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="evaluate-model-fitting-process">
+<h2>4. Evaluate model fitting process<a class="headerlink" href="#evaluate-model-fitting-process" title="Permalink to this headline">¶</a></h2>
+<p>In addition to the inclusion of both implicit and explicit data, the model fitting process can also be monitored in order to determine whether the model is being trained properly.</p>
+<p>This notebook also includes a <code class="docutils literal notranslate"><span class="pre">track_model_metrics</span></code> method which plots the model’s metrics e.g. Precision&#64;K and Recall&#64;K as model fitting progresses.</p>
+<p>For the first model (using only explicit data), the model fitting progress is shown as follows:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">output1</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">track_model_metrics</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="n">model1</span><span class="p">,</span> <span class="n">train_interactions</span><span class="o">=</span><span class="n">train_interactions</span><span class="p">,</span> 
+                              <span class="n">test_interactions</span><span class="o">=</span><span class="n">test_interactions</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="n">K</span><span class="p">,</span>
+                              <span class="n">no_epochs</span><span class="o">=</span><span class="n">NO_EPOCHS</span><span class="p">,</span> <span class="n">no_threads</span><span class="o">=</span><span class="n">NO_THREADS</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/lightfm_deep_dive_86_0.png" src="../../_images/lightfm_deep_dive_86_0.png" />
+</div>
+</div>
+<p>The second model (with both implicit and explicit data) fitting progress:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">output2</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">track_model_metrics</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="n">model2</span><span class="p">,</span> <span class="n">train_interactions</span><span class="o">=</span><span class="n">train_interactions2</span><span class="p">,</span> 
+                              <span class="n">test_interactions</span><span class="o">=</span><span class="n">test_interactions2</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="n">K</span><span class="p">,</span>
+                              <span class="n">no_epochs</span><span class="o">=</span><span class="n">NO_EPOCHS</span><span class="p">,</span> <span class="n">no_threads</span><span class="o">=</span><span class="n">NO_THREADS</span><span class="p">,</span> 
+                              <span class="n">item_features</span><span class="o">=</span><span class="n">item_features</span><span class="p">,</span>
+                              <span class="n">user_features</span><span class="o">=</span><span class="n">user_features</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/lightfm_deep_dive_88_0.png" src="../../_images/lightfm_deep_dive_88_0.png" />
+</div>
+</div>
+<p>These show slightly different behaviour with the two approaches, the reader can then tune the hyperparameters to improve the model fitting process.</p>
+<div class="section" id="performance-comparison">
+<h3>4.1 Performance comparison<a class="headerlink" href="#performance-comparison" title="Permalink to this headline">¶</a></h3>
+<p>In addition, the model’s performance metrics (based on the test dataset) can be plotted together to facilitate easier comparison as follows:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;Precision&#39;</span><span class="p">,</span> <span class="s1">&#39;Recall&#39;</span><span class="p">]:</span>
+    <span class="n">sns</span><span class="o">.</span><span class="n">set_palette</span><span class="p">(</span><span class="s2">&quot;Set2&quot;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+    <span class="n">sns</span><span class="o">.</span><span class="n">scatterplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s2">&quot;epoch&quot;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s2">&quot;value&quot;</span><span class="p">,</span> <span class="n">hue</span><span class="o">=</span><span class="s1">&#39;data&#39;</span><span class="p">,</span>
+                <span class="n">data</span><span class="o">=</span><span class="n">compare_metric</span><span class="p">(</span><span class="n">df_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">output1</span><span class="p">,</span> <span class="n">output2</span><span class="p">],</span> <span class="n">metric</span><span class="o">=</span><span class="n">i</span><span class="p">)</span>
+               <span class="p">)</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s1"> comparison using test set&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/lightfm_deep_dive_92_0.png" src="../../_images/lightfm_deep_dive_92_0.png" />
+<img alt="../../_images/lightfm_deep_dive_92_1.png" src="../../_images/lightfm_deep_dive_92_1.png" />
+</div>
+</div>
+<p>Referring to the figures above, it is rather obvious that the number of epochs is too low as the model’s performances have not stabilised. Reader can decide on the number of epochs and other hyperparameters to adjust suit the application.</p>
+<p>As stated previously, it is interesting to see model2 (using both implicit and explicit data) performed consistently better than model1 (using only explicit ratings).</p>
+</div>
+</div>
+<div class="section" id="similar-users-and-items">
+<h2>5. Similar users and items<a class="headerlink" href="#similar-users-and-items" title="Permalink to this headline">¶</a></h2>
+<p>As the LightFM package operates based on latent embeddings, these can be retrieved once the model has been fitted to assess user-user and/or item-item affinity.</p>
+<div class="section" id="user-affinity">
+<h3>5.1 User affinity<a class="headerlink" href="#user-affinity" title="Permalink to this headline">¶</a></h3>
+<p>The user-user affinity can be retrieved with the <code class="docutils literal notranslate"><span class="pre">get_user_representations</span></code> method from the fitted model as follows:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">_</span><span class="p">,</span> <span class="n">user_embeddings</span> <span class="o">=</span> <span class="n">model2</span><span class="o">.</span><span class="n">get_user_representations</span><span class="p">(</span><span class="n">features</span><span class="o">=</span><span class="n">user_features</span><span class="p">)</span>
+<span class="n">user_embeddings</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[ 1.6208545 , -2.0801244 ,  0.29000854, ...,  1.9506047 ,
+        -2.9648001 ,  3.3220475 ],
+       [ 2.532207  , -0.17591256,  1.4384304 , ...,  2.552038  ,
+        -4.923464  ,  3.7328699 ],
+       [ 2.7307076 ,  1.2757684 ,  0.40170258, ...,  0.53212243,
+        -5.6057224 ,  4.1384106 ],
+       ...,
+       [ 3.2812703 , -2.0771208 ,  1.802339  , ...,  1.3999628 ,
+        -2.4171133 ,  2.7771792 ],
+       [ 2.4532616 , -0.15192671,  1.4297578 , ...,  2.5044203 ,
+        -4.7720947 ,  3.591335  ],
+       [ 1.8169118 ,  0.9889456 ,  0.6572489 , ...,  2.2373357 ,
+        -4.187849  ,  4.355454  ]], dtype=float32)
+</pre></div>
+</div>
+</div>
+</div>
+<p>In order to retrieve the top N similar users, we can use the <code class="docutils literal notranslate"><span class="pre">similar_users</span></code> from <code class="docutils literal notranslate"><span class="pre">recommenders</span></code>. For example, if we want to choose top 10 users most similar to the user 1:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">similar_users</span><span class="p">(</span><span class="n">user_id</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">user_features</span><span class="o">=</span><span class="n">user_features</span><span class="p">,</span> 
+            <span class="n">model</span><span class="o">=</span><span class="n">model2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>userID</th>
+      <th>score</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>555</td>
+      <td>0.999998</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>54</td>
+      <td>0.999996</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>314</td>
+      <td>0.999992</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>465</td>
+      <td>0.999990</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>395</td>
+      <td>0.999990</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>282</td>
+      <td>0.999989</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>411</td>
+      <td>0.999989</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>527</td>
+      <td>0.999988</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>481</td>
+      <td>0.999982</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>881</td>
+      <td>0.999980</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+</div>
+<div class="section" id="item-affinity">
+<h3>5.2 Item affinity<a class="headerlink" href="#item-affinity" title="Permalink to this headline">¶</a></h3>
+<p>Similar to the user affinity, the item-item affinity can be retrieved with the <code class="docutils literal notranslate"><span class="pre">get_item_representations</span></code> method using the fitted model.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">_</span><span class="p">,</span> <span class="n">item_embeddings</span> <span class="o">=</span> <span class="n">model2</span><span class="o">.</span><span class="n">get_item_representations</span><span class="p">(</span><span class="n">features</span><span class="o">=</span><span class="n">item_features</span><span class="p">)</span>
+<span class="n">item_embeddings</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[-0.11479151,  0.93140936,  1.5966691 , ...,  1.8705213 ,
+        -2.4184883 ,  2.2852988 ],
+       [ 0.6439721 ,  0.85031474,  1.6993418 , ...,  1.8807421 ,
+        -2.1288579 ,  2.0951574 ],
+       [ 0.3511901 ,  0.98630357,  1.5790751 , ...,  1.7143724 ,
+        -2.2341046 ,  2.0473025 ],
+       ...,
+       [-0.5794922 ,  0.45613813,  1.2313437 , ...,  0.8687049 ,
+        -0.91763794,  0.9281359 ],
+       [-1.5155623 , -0.10658365,  1.5712368 , ...,  1.788055  ,
+        -1.261617  ,  1.6786036 ],
+       [ 0.12454936, -0.19605719,  1.2740307 , ...,  1.2044019 ,
+        -1.3142295 ,  1.3720794 ]], dtype=float32)
+</pre></div>
+</div>
+</div>
+</div>
+<p>The function to retrieve the top N similar items is similar to similar_users() above. For example, if we want to choose top 10 items most similar to the item 10:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">similar_items</span><span class="p">(</span><span class="n">item_id</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">item_features</span><span class="o">=</span><span class="n">item_features</span><span class="p">,</span> 
+            <span class="n">model</span><span class="o">=</span><span class="n">model2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>itemID</th>
+      <th>score</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>146</td>
+      <td>0.999761</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>14</td>
+      <td>0.999761</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>44</td>
+      <td>0.999708</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>499</td>
+      <td>0.999683</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>1101</td>
+      <td>0.999626</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>613</td>
+      <td>0.999604</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>219</td>
+      <td>0.999599</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>373</td>
+      <td>0.999597</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>706</td>
+      <td>0.999579</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>305</td>
+      <td>0.999577</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+</div>
+</div>
+<div class="section" id="conclusion">
+<h2>6. Conclusion<a class="headerlink" href="#conclusion" title="Permalink to this headline">¶</a></h2>
+<p>In this notebook, the background of hybrid matrix factorisation model has been explained together with a detailed example of LightFM’s implementation.</p>
+<p>The process of incorporating additional user and item metadata has also been demonstrated with performance comparison. Furthermore, the calculation of both user and item affinity scores have also been demonstrated and extracted from the fitted model.</p>
+<p>This notebook remains a fairly simple treatment on the subject and hopefully could serve as a good foundation for the reader.</p>
+</div>
+<div class="section" id="references">
+<h2>References<a class="headerlink" href="#references" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>[<a class="reference external" href="https://arxiv.org/abs/1507.08439">1</a>]. Maciej Kula - Metadata Embeddings for User and Item Cold-start Recommendations, 2015. arXiv:1507.08439</p></li>
+<li><p>[<a class="reference external" href="https://making.lyst.com/lightfm/docs/home.html">2</a>]. LightFM documentation,</p></li>
+<li><p>[3]. Charu C. Aggarwal - Recommender Systems: The Textbook, Springer, April 2016. ISBN 978-3-319-29659-3</p></li>
+<li><p>[4]. Deepak K. Agarwal, Bee-Chung Chen - Statistical Methods for Recommender Systems, 2016. ISBN: 9781107036079</p></li>
+</ul>
+</div>
+</div>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "reco_base"
+        },
+        kernelOptions: {
+            kernelName: "reco_base",
+            path: "./examples/02_model_hybrid"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'reco_base'</script>
+
+              </div>
+              
+        
+            
+
+
+
+<div class='prev-next-bottom'>
+    
+
+</div>
+        
+        </div>
+    </div>
+    <footer class="footer">
+    <div class="container">
+      <p>
+        
+          By The Jupyter Book community<br/>
+        
+            &copy; Copyright 2021.<br/>
+      </p>
+    </div>
+  </footer>
+</main>
+
+
+      </div>
+    </div>
+  
+  <script src="../../_static/js/index.1c5a1a01449ed65a7b51.js"></script>
+
+  
+  </body>
+</html>

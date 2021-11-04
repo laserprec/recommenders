@@ -1,0 +1,1025 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>recommenders.models.rbm.rbm &#8212; &lt;h1 style=&#34;font-size:2em;text-align:center;color:#FF5733&#34;&gt;Recommenders&lt;/h1&gt;</title>
+    
+  <link href="../../../../_static/css/theme.css" rel="stylesheet" />
+  <link href="../../../../_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
+
+    
+  <link rel="stylesheet"
+    href="../../../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+
+    
+    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/sphinx-book-theme.css?digest=c3fdc42140077d1ad13ad2f1588a4309" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/tabs.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    
+  <link rel="preload" as="script" href="../../../../_static/js/index.1c5a1a01449ed65a7b51.js">
+
+    <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
+    <script src="../../../../_static/jquery.js"></script>
+    <script src="../../../../_static/underscore.js"></script>
+    <script src="../../../../_static/doctools.js"></script>
+    <script src="../../../../_static/togglebutton.js"></script>
+    <script src="../../../../_static/clipboard.min.js"></script>
+    <script src="../../../../_static/copybutton.js"></script>
+    <script src="../../../../_static/tabs.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../../../../_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
+    <link rel="canonical" href="https://microsoft.github.io/genalog/_modules/recommenders/models/rbm/rbm.html" />
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en" />
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="../../../../index.html">
+      
+      
+      
+      <h1 class="site-logo" id="site-title"><h1 style="font-size:2em;text-align:center;color:#FF5733">Recommenders</h1></h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="../../../../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        
+    </div>
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="topbar container-xl fixed-top">
+    <div class="topbar-contents row">
+        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
+        <div class="col pl-md-4 topbar-main">
+            
+            <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+                data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+                aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
+                title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+                <i class="fas fa-bars"></i>
+                <i class="fas fa-arrow-left"></i>
+                <i class="fas fa-arrow-up"></i>
+            </button>
+            
+            
+            <!-- Source interaction buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
+    <div class="dropdown-buttons sourcebuttons">
+        <a class="repository-button"
+            href="https://github.com/microsoft/genalog"><button type="button" class="btn btn-secondary topbarbtn"
+                data-toggle="tooltip" data-placement="left" title="Source repository"><i
+                    class="fab fa-github"></i>repository</button></a>
+        <a class="issues-button"
+            href="https://github.com/microsoft/genalog/issues/new?title=Issue%20on%20page%20%2F_modules/recommenders/models/rbm/rbm.html&body=Your%20issue%20content%20here."><button
+                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
+                title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
+        
+    </div>
+</div>
+
+            <!-- Full screen (wrap in <a> to have style consistency -->
+
+<a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+        data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+        title="Fullscreen mode"><i
+            class="fas fa-expand"></i></button></a>
+
+            <!-- Launch buttons -->
+
+        </div>
+
+        <!-- Table of contents -->
+        <div class="d-none d-md-block col-md-2 bd-toc show">
+            
+        </div>
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+        
+              <div>
+                
+  <h1>Source code for recommenders.models.rbm.rbm</h1><div class="highlight"><pre>
+<span></span><span class="c1"># Copyright (c) Microsoft Corporation. All rights reserved.</span>
+<span class="c1"># Licensed under the MIT License.</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">tensorflow</span> <span class="k">as</span> <span class="nn">tf</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">time</span> <span class="k">as</span> <span class="nn">tm</span>
+
+
+<span class="n">log</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="RBM"><a class="viewcode-back" href="../../../../source/models.html#recommenders.models.rbm.rbm.RBM">[docs]</a><span class="k">class</span> <span class="nc">RBM</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Restricted  Boltzmann Machine&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">hidden_units</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span>
+        <span class="n">keep_prob</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span>
+        <span class="n">init_stdv</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>
+        <span class="n">learning_rate</span><span class="o">=</span><span class="mf">0.004</span><span class="p">,</span>
+        <span class="n">minibatch_size</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
+        <span class="n">training_epoch</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span>
+        <span class="n">display_epoch</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+        <span class="n">sampling_protocol</span><span class="o">=</span><span class="p">[</span><span class="mi">50</span><span class="p">,</span> <span class="mi">70</span><span class="p">,</span> <span class="mi">80</span><span class="p">,</span> <span class="mi">90</span><span class="p">,</span> <span class="mi">100</span><span class="p">],</span>
+        <span class="n">debug</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">with_metrics</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">seed</span><span class="o">=</span><span class="mi">42</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Implementation of a multinomial Restricted Boltzmann Machine for collaborative filtering</span>
+<span class="sd">        in numpy/pandas/tensorflow</span>
+
+<span class="sd">        Based on the article by Ruslan Salakhutdinov, Andriy Mnih and Geoffrey Hinton</span>
+<span class="sd">        https://www.cs.toronto.edu/~rsalakhu/papers/rbmcf.pdf</span>
+
+<span class="sd">        In this implementation we use multinomial units instead of the one-hot-encoded used in</span>
+<span class="sd">        the paper.This means that the weights are rank 2 (matrices) instead of rank 3 tensors.</span>
+
+<span class="sd">        Basic mechanics:</span>
+
+<span class="sd">        1) A computational graph is created when the RBM class is instantiated;</span>
+<span class="sd">        For an item based recommender this consists of:</span>
+<span class="sd">        visible units: The number Nv of visible units equals the number of items</span>
+<span class="sd">        hidden units : hyperparameter to fix during training</span>
+
+<span class="sd">        2) Gibbs Sampling:</span>
+
+<span class="sd">        2.1) for each training epoch, the visible units are first clamped on the data</span>
+
+<span class="sd">        2.2) The activation probability of the hidden units, given a linear combination of</span>
+<span class="sd">        the visibles, is evaluated P(h=1|phi_v). The latter is then used to sample the</span>
+<span class="sd">        value of the hidden units.</span>
+
+<span class="sd">        2.3) The probability P(v=l|phi_h) is evaluated, where l=1,..,r are the rates (e.g.</span>
+<span class="sd">        r=5 for the movielens dataset). In general, this is a multinomial distribution,</span>
+<span class="sd">        from which we sample the value of v.</span>
+
+<span class="sd">        2.4) This step is repeated k times, where k increases as optimization converges. It is</span>
+<span class="sd">        essential to fix to zero the original unrated items during the all learning process.</span>
+
+<span class="sd">        3) Optimization:</span>
+<span class="sd">        The free energy of the visible units given the hidden is evaluated at the beginning (F_0)</span>
+<span class="sd">        and after k steps of Bernoulli sampling (F_k). The weights and biases are updated by</span>
+<span class="sd">        minimizing the differene F_0 - F_k.</span>
+
+<span class="sd">        4) Inference:</span>
+<span class="sd">        Once the joint probability distribution P(v,h) is learned, this is used to generate ratings</span>
+<span class="sd">        for unrated items for all users</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># RBM parameters</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Nhidden</span> <span class="o">=</span> <span class="n">hidden_units</span>  <span class="c1"># number of hidden units</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">keep</span> <span class="o">=</span> <span class="n">keep_prob</span>  <span class="c1"># keep probability for dropout regularization</span>
+
+        <span class="c1"># standard deviation used to initialize the weights matrices</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">stdv</span> <span class="o">=</span> <span class="n">init_stdv</span>
+
+        <span class="c1"># learning rate used in the update method of the optimizer</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">learning_rate</span> <span class="o">=</span> <span class="n">learning_rate</span>
+
+        <span class="c1"># size of the minibatch used in the random minibatches training; setting to 1 correspoNds to</span>
+        <span class="c1"># stochastic gradient descent, and it is considerably slower.Good performance is achieved</span>
+        <span class="c1"># for a size of ~100.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">minibatch</span> <span class="o">=</span> <span class="n">minibatch_size</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">epochs</span> <span class="o">=</span> <span class="n">training_epoch</span> <span class="o">+</span> <span class="mi">1</span>  <span class="c1"># number of epochs used to train the model</span>
+
+        <span class="c1"># number of epochs to show the mse error during training</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">display</span> <span class="o">=</span> <span class="n">display_epoch</span>
+
+        <span class="c1"># protocol to increase Gibbs sampling&#39;s step. Array containing the</span>
+        <span class="c1"># percentage of the total training epoch when the step increases by 1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sampling_protocol</span> <span class="o">=</span> <span class="n">sampling_protocol</span>
+
+        <span class="c1"># if true, functions print their control paramters and/or outputs</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">debug</span> <span class="o">=</span> <span class="n">debug</span>
+
+        <span class="c1"># if true, compute msre and accuracy during training</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">with_metrics</span> <span class="o">=</span> <span class="n">with_metrics</span>
+
+        <span class="c1"># Initialize the start time</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">start_time</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="c1"># Seed</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">seed</span> <span class="o">=</span> <span class="n">seed</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">seed</span><span class="p">)</span>
+        <span class="n">tf</span><span class="o">.</span><span class="n">set_random_seed</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">seed</span><span class="p">)</span>
+
+<div class="viewcode-block" id="RBM.time"><a class="viewcode-back" href="../../../../source/models.html#recommenders.models.rbm.rbm.RBM.time">[docs]</a>    <span class="k">def</span> <span class="nf">time</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Time a particular section of the code - call this once to set the state somewhere</span>
+<span class="sd">        in the code, then call it again to return the elapsed time since last call.</span>
+<span class="sd">        Call again to set the time and so on...</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            float: if timer started time in seconds since the last time time function was called</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">start_time</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">start_time</span> <span class="o">=</span> <span class="n">tm</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+            <span class="k">return</span> <span class="kc">False</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">answer</span> <span class="o">=</span> <span class="n">tm</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">start_time</span>
+            <span class="c1"># reset state</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">start_time</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="k">return</span> <span class="n">answer</span></div>
+
+<div class="viewcode-block" id="RBM.binomial_sampling"><a class="viewcode-back" href="../../../../source/models.html#recommenders.models.rbm.rbm.RBM.binomial_sampling">[docs]</a>    <span class="k">def</span> <span class="nf">binomial_sampling</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pr</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Binomial sampling of hidden units activations using a rejection method.</span>
+
+<span class="sd">        Basic mechanics:</span>
+
+<span class="sd">        1) Extract a random number from a uniform distribution (g) and compare it with</span>
+<span class="sd">        the unit&#39;s probability (pr)</span>
+
+<span class="sd">        2) Choose 0 if pr&lt;g, 1 otherwise. It is convenient to implement this condtion using</span>
+<span class="sd">        the relu function.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            pr (tf.Tensor, float32): Input conditional probability.</span>
+<span class="sd">            g  (numpy.ndarray, float32):  Uniform probability used for comparison.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            tf.Tensor: Float32 tensor of sampled units. The value is 1 if pr&gt;g and 0 otherwise.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># sample from a Bernoulli distribution with same dimensions as input distribution</span>
+        <span class="n">g</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">convert_to_tensor</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="n">pr</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+
+        <span class="c1"># sample the value of the hidden units</span>
+        <span class="n">h_sampled</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">relu</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">sign</span><span class="p">(</span><span class="n">pr</span> <span class="o">-</span> <span class="n">g</span><span class="p">))</span>
+
+        <span class="k">return</span> <span class="n">h_sampled</span></div>
+
+<div class="viewcode-block" id="RBM.multinomial_sampling"><a class="viewcode-back" href="../../../../source/models.html#recommenders.models.rbm.rbm.RBM.multinomial_sampling">[docs]</a>    <span class="k">def</span> <span class="nf">multinomial_sampling</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pr</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Multinomial Sampling of ratings</span>
+
+<span class="sd">        Basic mechanics:</span>
+<span class="sd">        For r classes, we sample r binomial distributions using the rejection method. This is possible</span>
+<span class="sd">        since each class is statistically independent from the other. Note that this is the same method</span>
+<span class="sd">        used in numpy&#39;s random.multinomial() function.</span>
+
+<span class="sd">        1) extract a size r array of random numbers from a uniform distribution (g). As pr is normalized,</span>
+<span class="sd">        we need to normalize g as well.</span>
+
+<span class="sd">        2) For each user and item, compare pr with the reference distribution. Note that the latter needs</span>
+<span class="sd">        to be the same for ALL the user/item pairs in the dataset, as by assumptions they are sampled</span>
+<span class="sd">        from a common distribution.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            pr (tf.Tensor, float32): A distributions of shape (m, n, r), where m is the number of examples, n the number</span>
+<span class="sd">                 of features and r the number of classes. pr needs to be normalized, i.e. sum_k p(k) = 1 for all m, at fixed n.</span>
+<span class="sd">            f (tf.Tensor, float32): Normalized, uniform probability used for comparison.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            tf.Tensor: An (m,n) float32 tensor of sampled rankings from 1 to r.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">g</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="n">pr</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>  <span class="c1"># sample from a uniform distribution</span>
+        <span class="n">f</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">convert_to_tensor</span><span class="p">(</span>
+            <span class="n">g</span> <span class="o">/</span> <span class="n">g</span><span class="o">.</span><span class="n">sum</span><span class="p">(),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">float32</span>
+        <span class="p">)</span>  <span class="c1"># normalize and convert to tensor</span>
+
+        <span class="n">samp</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">relu</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">sign</span><span class="p">(</span><span class="n">pr</span> <span class="o">-</span> <span class="n">f</span><span class="p">))</span>  <span class="c1"># apply rejection method</span>
+        <span class="n">v_samp</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">cast</span><span class="p">(</span>
+            <span class="n">tf</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">samp</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;float32&quot;</span>
+        <span class="p">)</span>  <span class="c1"># select sampled element</span>
+
+        <span class="k">return</span> <span class="n">v_samp</span></div>
+
+<div class="viewcode-block" id="RBM.multinomial_distribution"><a class="viewcode-back" href="../../../../source/models.html#recommenders.models.rbm.rbm.RBM.multinomial_distribution">[docs]</a>    <span class="k">def</span> <span class="nf">multinomial_distribution</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">phi</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Probability that unit v has value l given phi: P(v=l|phi)</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            phi (tf.Tensor): linear combination of values of the previous layer</span>
+<span class="sd">            r (float): rating scale, corresponding to the number of classes</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            tf.Tensor:</span>
+<span class="sd">            - A tensor of shape (r, m, Nv): This needs to be reshaped as (m, Nv, r) in the last step to allow for faster sampling when used in the multinomial function.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">numerator</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">tf</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">multiply</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">constant</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s2">&quot;float32&quot;</span><span class="p">),</span> <span class="n">phi</span><span class="p">))</span>
+            <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ratings</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="p">]</span>
+
+        <span class="n">denominator</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">reduce_sum</span><span class="p">(</span><span class="n">numerator</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+        <span class="n">prob</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">div</span><span class="p">(</span><span class="n">numerator</span><span class="p">,</span> <span class="n">denominator</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">tf</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">prob</span><span class="p">,</span> <span class="n">perm</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span></div>
+
+<div class="viewcode-block" id="RBM.free_energy"><a class="viewcode-back" href="../../../../source/models.html#recommenders.models.rbm.rbm.RBM.free_energy">[docs]</a>    <span class="k">def</span> <span class="nf">free_energy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Free energy of the visible units given the hidden units. Since the sum is over the hidden units&#39;</span>
+<span class="sd">        states, the functional form of the visible units Free energy is the same as the one for the binary model.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            x (tf.Tensor): This can be either the sampled value of the visible units (v_k) or the input data</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            tf.Tensor: Free energy of the model.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">bias</span> <span class="o">=</span> <span class="o">-</span><span class="n">tf</span><span class="o">.</span><span class="n">reduce_sum</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">tf</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">bv</span><span class="p">)))</span>
+
+        <span class="n">phi_x</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">w</span><span class="p">)</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">bh</span>
+        <span class="n">f</span> <span class="o">=</span> <span class="o">-</span><span class="n">tf</span><span class="o">.</span><span class="n">reduce_sum</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">softplus</span><span class="p">(</span><span class="n">phi_x</span><span class="p">))</span>
+
+        <span class="n">F</span> <span class="o">=</span> <span class="n">bias</span> <span class="o">+</span> <span class="n">f</span>  <span class="c1"># free energy density per training example</span>
+
+        <span class="k">return</span> <span class="n">F</span></div>
+
+<div class="viewcode-block" id="RBM.placeholder"><a class="viewcode-back" href="../../../../source/models.html#recommenders.models.rbm.rbm.RBM.placeholder">[docs]</a>    <span class="k">def</span> <span class="nf">placeholder</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Initialize the placeholders for the visible units&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">vu</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">placeholder</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">Nvisible</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="s2">&quot;float32&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="RBM.init_parameters"><a class="viewcode-back" href="../../../../source/models.html#recommenders.models.rbm.rbm.RBM.init_parameters">[docs]</a>    <span class="k">def</span> <span class="nf">init_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Initialize the parameters of the model.</span>
+
+<span class="sd">        This is a single layer model with two biases. So we have a rectangular matrix w_{ij} and</span>
+<span class="sd">        two bias vectors to initialize.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            Nv (int): number of visible units (input layer)</span>
+<span class="sd">            Nh (int): number of hidden units (latent variables of the model)</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            tf.Tensor, tf.Tensor, tf.Tensor:</span>
+<span class="sd">            - `w` of size (Nv, Nh): correlation matrix initialized by sampling from a normal distribution with zero mean and given variance init_stdv.</span>
+<span class="sd">            - `bv` of size (1, Nvisible): visible units&#39; bias, initialized to zero.</span>
+<span class="sd">            - `bh` of size (1, Nhidden): hidden units&#39; bias, initiliazed to zero.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">with</span> <span class="n">tf</span><span class="o">.</span><span class="n">variable_scope</span><span class="p">(</span><span class="s2">&quot;Network_parameters&quot;</span><span class="p">):</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">w</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">get_variable</span><span class="p">(</span>
+                <span class="s2">&quot;weight&quot;</span><span class="p">,</span>
+                <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">Nvisible</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">Nhidden</span><span class="p">],</span>
+                <span class="n">initializer</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">random_normal_initializer</span><span class="p">(</span>
+                    <span class="n">stddev</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">stdv</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">seed</span>
+                <span class="p">),</span>
+                <span class="n">dtype</span><span class="o">=</span><span class="s2">&quot;float32&quot;</span><span class="p">,</span>
+            <span class="p">)</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">bv</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">get_variable</span><span class="p">(</span>
+                <span class="s2">&quot;v_bias&quot;</span><span class="p">,</span>
+                <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">Nvisible</span><span class="p">],</span>
+                <span class="n">initializer</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">zeros_initializer</span><span class="p">(),</span>
+                <span class="n">dtype</span><span class="o">=</span><span class="s2">&quot;float32&quot;</span><span class="p">,</span>
+            <span class="p">)</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">bh</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">get_variable</span><span class="p">(</span>
+                <span class="s2">&quot;h_bias&quot;</span><span class="p">,</span>
+                <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">Nhidden</span><span class="p">],</span>
+                <span class="n">initializer</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">zeros_initializer</span><span class="p">(),</span>
+                <span class="n">dtype</span><span class="o">=</span><span class="s2">&quot;float32&quot;</span><span class="p">,</span>
+            <span class="p">)</span></div>
+
+<div class="viewcode-block" id="RBM.sample_hidden_units"><a class="viewcode-back" href="../../../../source/models.html#recommenders.models.rbm.rbm.RBM.sample_hidden_units">[docs]</a>    <span class="k">def</span> <span class="nf">sample_hidden_units</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vv</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Sampling: In RBM we use Contrastive divergence to sample the parameter space. In order to do that we need</span>
+<span class="sd">        to initialize the two conditional probabilities:</span>
+
+<span class="sd">        P(h|phi_v) --&gt; returns the probability that the i-th hidden unit is active</span>
+
+<span class="sd">        P(v|phi_h) --&gt; returns the probability that the  i-th visible unit is active</span>
+
+<span class="sd">        Sample hidden units given the visibles. This can be thought of as a Forward pass step in a FFN</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            vv (tf.Tensor, float32): visible units</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            tf.Tensor, tf.Tensor:</span>
+<span class="sd">            - `phv`: The activation probability of the hidden unit.</span>
+<span class="sd">            - `h_`: The sampled value of the hidden unit from a Bernoulli distributions having success probability `phv`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">with</span> <span class="n">tf</span><span class="o">.</span><span class="n">name_scope</span><span class="p">(</span><span class="s2">&quot;sample_hidden_units&quot;</span><span class="p">):</span>
+
+            <span class="n">phi_v</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">vv</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">w</span><span class="p">)</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">bh</span>  <span class="c1"># create a linear combination</span>
+            <span class="n">phv</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">sigmoid</span><span class="p">(</span><span class="n">phi_v</span><span class="p">)</span>  <span class="c1"># conditional probability of h given v</span>
+            <span class="n">phv_reg</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">dropout</span><span class="p">(</span><span class="n">phv</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">keep</span><span class="p">)</span>
+
+            <span class="c1"># Sampling</span>
+            <span class="n">h_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">binomial_sampling</span><span class="p">(</span>
+                <span class="n">phv_reg</span>
+            <span class="p">)</span>  <span class="c1"># obtain the value of the hidden units via Bernoulli sampling</span>
+
+        <span class="k">return</span> <span class="n">phv</span><span class="p">,</span> <span class="n">h_</span></div>
+
+<div class="viewcode-block" id="RBM.sample_visible_units"><a class="viewcode-back" href="../../../../source/models.html#recommenders.models.rbm.rbm.RBM.sample_visible_units">[docs]</a>    <span class="k">def</span> <span class="nf">sample_visible_units</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">h</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Sample the visible units given the hiddens. This can be thought of as a Backward pass in a FFN</span>
+<span class="sd">        (negative phase). Each visible unit can take values in [1,rating], while the zero is reserved</span>
+<span class="sd">        for missing data; as such the value of the hidden unit is sampled from a multinomial distribution.</span>
+
+<span class="sd">        Basic mechanics:</span>
+
+<span class="sd">        1) For every training example we first sample Nv Multinomial distributions. The result is of the</span>
+<span class="sd">        form [0,1,0,0,0,...,0] where the index of the 1 element corresponds to the rth rating. The index</span>
+<span class="sd">        is extracted using the argmax function and we need to add 1 at the end since array indeces starts</span>
+<span class="sd">        from 0.</span>
+
+<span class="sd">        2) Selects only those units that have been sampled. During the training phase it is important to not</span>
+<span class="sd">        use the reconstructed inputs, so we beed to enforce a zero value in the reconstructed ratings in</span>
+<span class="sd">        the same position as the original input.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            h (tf.Tensor, float32): visible units.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            tf.Tensor, tf.Tensor:</span>
+<span class="sd">            - `pvh`: The activation probability of the visible unit given the hidden.</span>
+<span class="sd">            - `v_`: The sampled value of the visible unit from a Multinomial distributions having success probability `pvh`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">with</span> <span class="n">tf</span><span class="o">.</span><span class="n">name_scope</span><span class="p">(</span><span class="s2">&quot;sample_visible_units&quot;</span><span class="p">):</span>
+
+            <span class="n">phi_h</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">h</span><span class="p">,</span> <span class="n">tf</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">w</span><span class="p">))</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">bv</span>  <span class="c1"># linear combination</span>
+            <span class="n">pvh</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">multinomial_distribution</span><span class="p">(</span>
+                <span class="n">phi_h</span>
+            <span class="p">)</span>  <span class="c1"># conditional probability of v given h</span>
+
+            <span class="c1"># Sampling (modify here )</span>
+            <span class="n">v_tmp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">multinomial_sampling</span><span class="p">(</span>
+                <span class="n">pvh</span>
+            <span class="p">)</span>  <span class="c1"># sample the value of the visible units</span>
+
+            <span class="n">mask</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">equal</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">v</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>  <span class="c1"># selects the inactive units in the input vector</span>
+
+            <span class="n">v_</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">where</span><span class="p">(</span>
+                <span class="n">mask</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">v</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">v_tmp</span>
+            <span class="p">)</span>  <span class="c1"># enforce inactive units in the reconstructed vector</span>
+
+        <span class="k">return</span> <span class="n">pvh</span><span class="p">,</span> <span class="n">v_</span></div>
+
+<div class="viewcode-block" id="RBM.gibbs_sampling"><a class="viewcode-back" href="../../../../source/models.html#recommenders.models.rbm.rbm.RBM.gibbs_sampling">[docs]</a>    <span class="k">def</span> <span class="nf">gibbs_sampling</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Gibbs sampling: Determines an estimate of the model configuration via sampling. In the binary</span>
+<span class="sd">        RBM we need to impose that unseen movies stay as such, i.e. the sampling phase should not modify</span>
+<span class="sd">        the elements where v=0.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            k (scalar, integer): iterator. Number of sampling steps.</span>
+<span class="sd">            v (tf.Tensor, float32): visible units.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            tf.Tensor, tf.Tensor:</span>
+<span class="sd">            - `h_k`: The sampled value of the hidden unit at step k, float32.</span>
+<span class="sd">            - `v_k`: The sampled value of the visible unit at step k, float32.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">with</span> <span class="n">tf</span><span class="o">.</span><span class="n">name_scope</span><span class="p">(</span><span class="s2">&quot;gibbs_sampling&quot;</span><span class="p">):</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">v_k</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">v</span>
+            <span class="p">)</span>  <span class="c1"># initialize the value of the visible units at step k=0 on the data</span>
+
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">debug</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;CD step&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">k</span><span class="p">)</span>
+
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">k</span><span class="p">):</span>  <span class="c1"># k_sampling</span>
+                <span class="n">_</span><span class="p">,</span> <span class="n">h_k</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sample_hidden_units</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">v_k</span><span class="p">)</span>
+                <span class="n">_</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">v_k</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sample_visible_units</span><span class="p">(</span><span class="n">h_k</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="RBM.losses"><a class="viewcode-back" href="../../../../source/models.html#recommenders.models.rbm.rbm.RBM.losses">[docs]</a>    <span class="k">def</span> <span class="nf">losses</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vv</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Loss functions.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            v (tf.Tensor, float32): empirical input</span>
+<span class="sd">            v_k (tf.Tensor, float32): sampled visible units at step k</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            object:</span>
+<span class="sd">            - Objective function of Contrastive divergence: the difference between the free energy clamped on the data (v) and the model Free energy (v_k).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">with</span> <span class="n">tf</span><span class="o">.</span><span class="n">variable_scope</span><span class="p">(</span><span class="s2">&quot;losses&quot;</span><span class="p">):</span>
+            <span class="n">obj</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">free_energy</span><span class="p">(</span><span class="n">vv</span><span class="p">)</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">free_energy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">v_k</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">obj</span></div>
+
+<div class="viewcode-block" id="RBM.gibbs_protocol"><a class="viewcode-back" href="../../../../source/models.html#recommenders.models.rbm.rbm.RBM.gibbs_protocol">[docs]</a>    <span class="k">def</span> <span class="nf">gibbs_protocol</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">i</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Gibbs protocol.</span>
+
+<span class="sd">        Basic mechanics:</span>
+
+<span class="sd">        If the current epoch i is in the interval specified in the training protocol,</span>
+<span class="sd">        the number of steps in Gibbs sampling (k) is incremented by one and gibbs_sampling is updated</span>
+<span class="sd">        accordingly.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            i (int): Current epoch in the loop</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">with</span> <span class="n">tf</span><span class="o">.</span><span class="n">name_scope</span><span class="p">(</span><span class="s2">&quot;gibbs_protocol&quot;</span><span class="p">):</span>
+
+            <span class="n">epoch_percentage</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="n">i</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">epochs</span>
+            <span class="p">)</span> <span class="o">*</span> <span class="mi">100</span>  <span class="c1"># current percentage of the total #epochs</span>
+
+            <span class="k">if</span> <span class="n">epoch_percentage</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">if</span> <span class="p">(</span>
+                    <span class="n">epoch_percentage</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sampling_protocol</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">l</span><span class="p">]</span>
+                    <span class="ow">and</span> <span class="n">epoch_percentage</span> <span class="o">&lt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sampling_protocol</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">l</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
+                <span class="p">):</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">k</span> <span class="o">+=</span> <span class="mi">1</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">l</span> <span class="o">+=</span> <span class="mi">1</span>  <span class="c1"># noqa: E741 ambiguous variable name &#39;l&#39;</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">gibbs_sampling</span><span class="p">()</span>
+
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">debug</span><span class="p">:</span>
+                <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;percentage of epochs covered so far </span><span class="si">%f</span><span class="s2">2&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">epoch_percentage</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="RBM.accuracy"><a class="viewcode-back" href="../../../../source/models.html#recommenders.models.rbm.rbm.RBM.accuracy">[docs]</a>    <span class="k">def</span> <span class="nf">accuracy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vp</span><span class="p">):</span>
+        <span class="c1"># flake8: noqa W695 invalid escape sequence &#39;\s&#39;</span>
+        <span class="sd">&quot;&quot;&quot;Train/Test Mean average precision</span>
+
+<span class="sd">        Evaluates MAP over the train/test set in online mode. Note that this needs to be evaluated on</span>
+<span class="sd">        the rated items only.</span>
+
+<span class="sd">        :math:`acc = 1/m \sum_{mu=1}^{m} \sum{i=1}^Nv 1/s(i) I(v-vp = 0)_{mu,i}`</span>
+
+<span class="sd">        where `m = Nusers`, `Nv = number of items = number of visible units` and `s(i)` is the number of non-zero elements</span>
+<span class="sd">        per row.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            vp (tf.Tensor, float32): Inferred output (Network prediction)</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            tf.Tensor: accuracy.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">with</span> <span class="n">tf</span><span class="o">.</span><span class="n">name_scope</span><span class="p">(</span><span class="s2">&quot;accuracy&quot;</span><span class="p">):</span>
+
+            <span class="c1"># 1) define and apply the mask</span>
+            <span class="n">mask</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">not_equal</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">v</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+            <span class="n">n_values</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">reduce_sum</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">cast</span><span class="p">(</span><span class="n">mask</span><span class="p">,</span> <span class="s2">&quot;float32&quot;</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+            <span class="c1"># 2) Take the difference between the input data and the inferred ones. This value is zero whenever</span>
+            <span class="c1">#    the two values coincides</span>
+            <span class="n">vd</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">where</span><span class="p">(</span>
+                <span class="n">mask</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">subtract</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">v</span><span class="p">,</span> <span class="n">vp</span><span class="p">)),</span> <span class="n">y</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">ones_like</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">v</span><span class="p">)</span>
+            <span class="p">)</span>
+
+            <span class="c1"># correct values: find the location where v = vp</span>
+            <span class="n">corr</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">cast</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">equal</span><span class="p">(</span><span class="n">vd</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="s2">&quot;float32&quot;</span><span class="p">)</span>
+
+            <span class="c1"># 3) evaluate the accuracy</span>
+            <span class="n">ac_score</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">reduce_mean</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">div</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">reduce_sum</span><span class="p">(</span><span class="n">corr</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span> <span class="n">n_values</span><span class="p">))</span>
+
+        <span class="k">return</span> <span class="n">ac_score</span></div>
+
+<div class="viewcode-block" id="RBM.rmse"><a class="viewcode-back" href="../../../../source/models.html#recommenders.models.rbm.rbm.RBM.rmse">[docs]</a>    <span class="k">def</span> <span class="nf">rmse</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vp</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Root Mean Square Error</span>
+
+<span class="sd">        Note that this needs to be evaluated on the rated items only</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            vp (tf.Tensor, float32): Inferred output (Network prediction)</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            tf.Tensor: root mean square error.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">with</span> <span class="n">tf</span><span class="o">.</span><span class="n">name_scope</span><span class="p">(</span><span class="s2">&quot;re&quot;</span><span class="p">):</span>
+
+            <span class="n">mask</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">not_equal</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">v</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>  <span class="c1"># selects only the rated items</span>
+            <span class="n">n_values</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">reduce_sum</span><span class="p">(</span>
+                <span class="n">tf</span><span class="o">.</span><span class="n">cast</span><span class="p">(</span><span class="n">mask</span><span class="p">,</span> <span class="s2">&quot;float32&quot;</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span>
+            <span class="p">)</span>  <span class="c1"># number of rated items</span>
+
+            <span class="c1"># evaluate the square difference between the inferred and the input data on the rated items</span>
+            <span class="n">e</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">where</span><span class="p">(</span>
+                <span class="n">mask</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">squared_difference</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">v</span><span class="p">,</span> <span class="n">vp</span><span class="p">),</span> <span class="n">y</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">v</span><span class="p">)</span>
+            <span class="p">)</span>
+
+            <span class="c1"># evaluate the msre</span>
+            <span class="n">err</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span>
+                <span class="n">tf</span><span class="o">.</span><span class="n">reduce_mean</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">div</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">reduce_sum</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span> <span class="n">n_values</span><span class="p">))</span> <span class="o">/</span> <span class="mi">2</span>
+            <span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">err</span></div>
+
+<div class="viewcode-block" id="RBM.data_pipeline"><a class="viewcode-back" href="../../../../source/models.html#recommenders.models.rbm.rbm.RBM.data_pipeline">[docs]</a>    <span class="k">def</span> <span class="nf">data_pipeline</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Define the data pipeline&quot;&quot;&quot;</span>
+
+        <span class="c1"># placeholder for the batch_size</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">batch_size</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">placeholder</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">int64</span><span class="p">)</span>
+
+        <span class="c1"># Create the data pipeline for faster training</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dataset</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Dataset</span><span class="o">.</span><span class="n">from_tensor_slices</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vu</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">dataset</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dataset</span><span class="o">.</span><span class="n">shuffle</span><span class="p">(</span>
+            <span class="n">buffer_size</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">reshuffle_each_iteration</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">seed</span>
+        <span class="p">)</span>  <span class="c1"># randomize the batch</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">dataset</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dataset</span><span class="o">.</span><span class="n">batch</span><span class="p">(</span><span class="n">batch_size</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">batch_size</span><span class="p">)</span><span class="o">.</span><span class="n">repeat</span><span class="p">()</span>
+
+        <span class="c1"># define iterator</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">iter</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dataset</span><span class="o">.</span><span class="n">make_initializable_iterator</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">v</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">iter</span><span class="o">.</span><span class="n">get_next</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="RBM.init_metrics"><a class="viewcode-back" href="../../../../source/models.html#recommenders.models.rbm.rbm.RBM.init_metrics">[docs]</a>    <span class="k">def</span> <span class="nf">init_metrics</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Initialize metrics&quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">with_metrics</span><span class="p">:</span>  <span class="c1"># if true (default) returns evaluation metrics</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">Rmse</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">rmse</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">v_k</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">Clacc</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">accuracy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">v_k</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="RBM.train_test_precision"><a class="viewcode-back" href="../../../../source/models.html#recommenders.models.rbm.rbm.RBM.train_test_precision">[docs]</a>    <span class="k">def</span> <span class="nf">train_test_precision</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xtst</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Evaluates precision on the train and test set</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            xtst (numpy.ndarray, integer32): The user/affinity matrix for the test set</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            float, float: Precision on the train and test sets.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">with_metrics</span><span class="p">:</span>
+
+            <span class="n">precision_train</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Clacc</span><span class="p">)</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">iter</span><span class="o">.</span><span class="n">initializer</span><span class="p">,</span>
+                <span class="n">feed_dict</span><span class="o">=</span><span class="p">{</span><span class="bp">self</span><span class="o">.</span><span class="n">vu</span><span class="p">:</span> <span class="n">xtst</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">batch_size</span><span class="p">:</span> <span class="n">xtst</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]},</span>
+            <span class="p">)</span>
+
+            <span class="n">precision_test</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Clacc</span><span class="p">)</span>
+
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">precision_train</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="n">precision_test</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="k">return</span> <span class="n">precision_train</span><span class="p">,</span> <span class="n">precision_test</span></div>
+
+<div class="viewcode-block" id="RBM.display_metrics"><a class="viewcode-back" href="../../../../source/models.html#recommenders.models.rbm.rbm.RBM.display_metrics">[docs]</a>    <span class="k">def</span> <span class="nf">display_metrics</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Rmse_train</span><span class="p">,</span> <span class="n">precision_train</span><span class="p">,</span> <span class="n">precision_test</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Display training/test metrics and plots the rmse error as a function</span>
+<span class="sd">        of the training epochs</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            Rmse_train (list, float32): Per epoch rmse on the train set.</span>
+<span class="sd">            precision_train (float): Precision on the train set.</span>
+<span class="sd">            precision_test  (float): Precision on the test set.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">with_metrics</span><span class="p">:</span>
+
+            <span class="c1"># Display training error as a function of epochs</span>
+            <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">Rmse_train</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;train&quot;</span><span class="p">)</span>
+            <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;rmse&quot;</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="s2">&quot;x-large&quot;</span><span class="p">)</span>
+            <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;epochs&quot;</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="s2">&quot;x-large&quot;</span><span class="p">)</span>
+            <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">ncol</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+            <span class="c1"># Final precision scores</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Train set accuracy </span><span class="si">%f</span><span class="s2">2&quot;</span> <span class="o">%</span> <span class="n">precision_train</span><span class="p">)</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Test set accuracy </span><span class="si">%f</span><span class="s2">2&quot;</span> <span class="o">%</span> <span class="n">precision_test</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="RBM.generate_graph"><a class="viewcode-back" href="../../../../source/models.html#recommenders.models.rbm.rbm.RBM.generate_graph">[docs]</a>    <span class="k">def</span> <span class="nf">generate_graph</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Call the different RBM modules to generate the computational graph&quot;&quot;&quot;</span>
+
+        <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Creating the computational graph&quot;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">placeholder</span><span class="p">()</span>  <span class="c1"># create the visible units placeholder</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data_pipeline</span><span class="p">()</span>  <span class="c1"># data_pipeline</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">init_parameters</span><span class="p">()</span>  <span class="c1"># initialize Network parameters</span>
+
+        <span class="c1"># --------------Initialize protocol for Gibbs sampling------------------</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Initialize Gibbs protocol&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">k</span> <span class="o">=</span> <span class="mi">1</span>  <span class="c1"># initialize the G_sampling step</span>
+        <span class="c1"># initialize epoch_sample index</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">l</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># noqa: E741 ambiguous variable name &#39;l&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gibbs_sampling</span><span class="p">()</span>  <span class="c1"># returns the sampled value of the visible units</span>
+
+        <span class="c1"># ---Instantiate loss function and optimizer----------------------------</span>
+        <span class="n">obj</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">losses</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">v</span><span class="p">)</span>  <span class="c1"># objective function</span>
+
+        <span class="n">rate</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">learning_rate</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">minibatch</span>
+        <span class="p">)</span>  <span class="c1"># learning rate rescaled by the batch size</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">opt</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">contrib</span><span class="o">.</span><span class="n">optimizer_v2</span><span class="o">.</span><span class="n">AdamOptimizer</span><span class="p">(</span><span class="n">learning_rate</span><span class="o">=</span><span class="n">rate</span><span class="p">)</span><span class="o">.</span><span class="n">minimize</span><span class="p">(</span>
+            <span class="n">loss</span><span class="o">=</span><span class="n">obj</span>
+        <span class="p">)</span>  <span class="c1"># Instantiate the optimizer</span></div>
+
+<div class="viewcode-block" id="RBM.init_gpu"><a class="viewcode-back" href="../../../../source/models.html#recommenders.models.rbm.rbm.RBM.init_gpu">[docs]</a>    <span class="k">def</span> <span class="nf">init_gpu</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Config GPU memory&quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">config_gpu</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">ConfigProto</span><span class="p">(</span>
+            <span class="n">log_device_placement</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">allow_soft_placement</span><span class="o">=</span><span class="kc">True</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">config_gpu</span><span class="o">.</span><span class="n">gpu_options</span><span class="o">.</span><span class="n">allow_growth</span> <span class="o">=</span> <span class="kc">True</span>  <span class="c1"># dynamic memory allocation</span></div>
+
+<div class="viewcode-block" id="RBM.init_training_session"><a class="viewcode-back" href="../../../../source/models.html#recommenders.models.rbm.rbm.RBM.init_training_session">[docs]</a>    <span class="k">def</span> <span class="nf">init_training_session</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xtr</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Initialize the TF session on training data</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            xtr (numpy.ndarray, int32): The user/affinity matrix for the train set.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">init_graph</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">global_variables_initializer</span><span class="p">()</span>
+
+        <span class="c1"># Start TF training session on default graph</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sess</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">Session</span><span class="p">(</span><span class="n">config</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">config_gpu</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">init_graph</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">iter</span><span class="o">.</span><span class="n">initializer</span><span class="p">,</span>
+            <span class="n">feed_dict</span><span class="o">=</span><span class="p">{</span><span class="bp">self</span><span class="o">.</span><span class="n">vu</span><span class="p">:</span> <span class="n">xtr</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">batch_size</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">minibatch</span><span class="p">},</span>
+        <span class="p">)</span></div>
+
+<div class="viewcode-block" id="RBM.batch_training"><a class="viewcode-back" href="../../../../source/models.html#recommenders.models.rbm.rbm.RBM.batch_training">[docs]</a>    <span class="k">def</span> <span class="nf">batch_training</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">num_minibatches</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Perform training over input minibatches. If `self.with_metrics` is False,</span>
+<span class="sd">        no online metrics are evaluated.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            num_minibatches (scalar, int32): Number of training minibatches.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            float: Training error per single epoch. If `self.with_metrics` is False, this is zero.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">epoch_tr_err</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># initialize the training error for each epoch to zero</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">with_metrics</span><span class="p">:</span>
+            <span class="c1"># minibatch loop</span>
+            <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_minibatches</span><span class="p">):</span>  <span class="c1"># noqa: E741 ambiguous variable name &#39;l&#39;</span>
+                <span class="n">_</span><span class="p">,</span> <span class="n">batch_err</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">opt</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">Rmse</span><span class="p">])</span>
+                <span class="c1"># average msr error per minibatch</span>
+                <span class="n">epoch_tr_err</span> <span class="o">+=</span> <span class="n">batch_err</span> <span class="o">/</span> <span class="n">num_minibatches</span>
+
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># minibatch loop</span>
+            <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_minibatches</span><span class="p">):</span>  <span class="c1"># noqa: E741 ambiguous variable name &#39;l&#39;</span>
+                <span class="n">_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">opt</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">epoch_tr_err</span></div>
+
+<div class="viewcode-block" id="RBM.fit"><a class="viewcode-back" href="../../../../source/models.html#recommenders.models.rbm.rbm.RBM.fit">[docs]</a>    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xtr</span><span class="p">,</span> <span class="n">xtst</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Fit method</span>
+
+<span class="sd">        Training in generative models takes place in two steps:</span>
+
+<span class="sd">        1) Gibbs sampling</span>
+<span class="sd">        2) Gradient evaluation and parameters update</span>
+
+<span class="sd">        This estimate is later used in the weight update step by minimizing the distance between the</span>
+<span class="sd">        model and the empirical free energy. Note that while the unit&#39;s configuration space is sampled,</span>
+<span class="sd">        the weights are determined via maximum likelihood (saddle point).</span>
+
+<span class="sd">        Main component of the algo; once instantiated, it generates the computational graph and performs</span>
+<span class="sd">        model training</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            xtr (numpy.ndarray, integers): the user/affinity matrix for the train set</span>
+<span class="sd">            xtst (numpy.ndarray, integers): the user/affinity matrix for the test set</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            float: elapsed time during training</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># keep the position of the items in the train set so that they can be optionally exluded from recommendation</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">seen_mask</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">not_equal</span><span class="p">(</span><span class="n">xtr</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ratings</span> <span class="o">=</span> <span class="n">xtr</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>  <span class="c1"># obtain the rating scale, e.g. 1 to 5</span>
+
+        <span class="n">m</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">Nvisible</span> <span class="o">=</span> <span class="n">xtr</span><span class="o">.</span><span class="n">shape</span>  <span class="c1"># m= # users, Nvisible= # items</span>
+        <span class="n">num_minibatches</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">m</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">minibatch</span><span class="p">)</span>  <span class="c1"># number of minibatches</span>
+
+        <span class="n">tf</span><span class="o">.</span><span class="n">reset_default_graph</span><span class="p">()</span>
+
+        <span class="c1"># ----------------------Initializers-------------------------------------</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">generate_graph</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">init_metrics</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">init_gpu</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">init_training_session</span><span class="p">(</span><span class="n">xtr</span><span class="p">)</span>
+
+        <span class="n">Rmse_train</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># List to collect the metrics across epochs</span>
+
+        <span class="c1"># start loop over training epochs</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">epochs</span><span class="p">):</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">gibbs_protocol</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>  <span class="c1"># Gibbs sampling update</span>
+            <span class="n">epoch_tr_err</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">batch_training</span><span class="p">(</span><span class="n">num_minibatches</span><span class="p">)</span>  <span class="c1"># model train</span>
+
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">with_metrics</span> <span class="ow">and</span> <span class="n">i</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">display</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;training epoch </span><span class="si">%i</span><span class="s2"> rmse </span><span class="si">%f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">epoch_tr_err</span><span class="p">))</span>
+
+            <span class="n">Rmse_train</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">epoch_tr_err</span><span class="p">)</span>  <span class="c1"># mse training error per training epoch</span>
+
+        <span class="c1"># optionally evaluate precision metrics</span>
+        <span class="n">precision_train</span><span class="p">,</span> <span class="n">precision_test</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">train_test_precision</span><span class="p">(</span><span class="n">xtst</span><span class="p">)</span>
+        <span class="n">elapsed</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+
+        <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;done training, Training time </span><span class="si">%f</span><span class="s2">2&quot;</span> <span class="o">%</span> <span class="n">elapsed</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">display_metrics</span><span class="p">(</span><span class="n">Rmse_train</span><span class="p">,</span> <span class="n">precision_train</span><span class="p">,</span> <span class="n">precision_test</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">elapsed</span></div>
+
+<div class="viewcode-block" id="RBM.eval_out"><a class="viewcode-back" href="../../../../source/models.html#recommenders.models.rbm.rbm.RBM.eval_out">[docs]</a>    <span class="k">def</span> <span class="nf">eval_out</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Implement multinomial sampling from a trained model&quot;&quot;&quot;</span>
+
+        <span class="c1"># Sampling</span>
+        <span class="n">_</span><span class="p">,</span> <span class="n">h</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sample_hidden_units</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vu</span><span class="p">)</span>  <span class="c1"># sample h</span>
+
+        <span class="c1"># sample v</span>
+        <span class="n">phi_h</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">tf</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">w</span><span class="p">,</span> <span class="n">tf</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">h</span><span class="p">)))</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">bv</span>
+        <span class="p">)</span>  <span class="c1"># linear combination</span>
+        <span class="n">pvh</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">multinomial_distribution</span><span class="p">(</span>
+            <span class="n">phi_h</span>
+        <span class="p">)</span>  <span class="c1"># conditional probability of v given h</span>
+
+        <span class="n">v</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">multinomial_sampling</span><span class="p">(</span><span class="n">pvh</span><span class="p">)</span>  <span class="c1"># sample the value of the visible units</span>
+
+        <span class="k">return</span> <span class="n">v</span><span class="p">,</span> <span class="n">pvh</span></div>
+
+<div class="viewcode-block" id="RBM.recommend_k_items"><a class="viewcode-back" href="../../../../source/models.html#recommenders.models.rbm.rbm.RBM.recommend_k_items">[docs]</a>    <span class="k">def</span> <span class="nf">recommend_k_items</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">top_k</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">remove_seen</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Returns the top-k items ordered by a relevancy score.</span>
+
+<span class="sd">        Basic mechanics:</span>
+
+<span class="sd">        The method samples new ratings from the learned joint distribution, together with their</span>
+<span class="sd">        probabilities. The input x must have the same number of columns as the one used for training</span>
+<span class="sd">        the model (i.e. the same number of items) but it can have an arbitrary number of rows (users).</span>
+
+<span class="sd">        A recommendation score is evaluated by taking the element-wise product between the ratings and</span>
+<span class="sd">        the associated probabilities. For example, we could have the following situation:</span>
+
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">                    rating     probability     score</span>
+<span class="sd">            item1     5           0.5          2.5</span>
+<span class="sd">            item2     4           0.8          3.2</span>
+
+<span class="sd">        then item2 will be recommended.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            x (numpy.ndarray, int32): input user/affinity matrix. Note that this can be a single vector, i.e. the ratings</span>
+<span class="sd">            of a single user.</span>
+<span class="sd">            top_k (scalar, int32): the number of items to recommend.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            numpy.ndarray, float:</span>
+<span class="sd">            - A sparse matrix containing the top_k elements ordered by their score.</span>
+<span class="sd">            - The time taken to recommend k items.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+        <span class="c1"># evaluate the ratings and the associated probabilities</span>
+        <span class="n">v_</span><span class="p">,</span> <span class="n">pvh_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">eval_out</span><span class="p">()</span>
+
+        <span class="c1"># evaluate v_ and pvh_ on the input data</span>
+        <span class="n">vp</span><span class="p">,</span> <span class="n">pvh</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">([</span><span class="n">v_</span><span class="p">,</span> <span class="n">pvh_</span><span class="p">],</span> <span class="n">feed_dict</span><span class="o">=</span><span class="p">{</span><span class="bp">self</span><span class="o">.</span><span class="n">vu</span><span class="p">:</span> <span class="n">x</span><span class="p">})</span>
+        <span class="c1"># returns only the probabilities for the predicted ratings in vp</span>
+        <span class="n">pv</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">pvh</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+
+        <span class="c1"># evaluate the score</span>
+        <span class="n">score</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">multiply</span><span class="p">(</span><span class="n">vp</span><span class="p">,</span> <span class="n">pv</span><span class="p">)</span>
+        <span class="c1"># ----------------------Return the results as a P dataframe------------------------------------</span>
+
+        <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Extracting top </span><span class="si">%i</span><span class="s2"> elements&quot;</span> <span class="o">%</span> <span class="n">top_k</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">remove_seen</span><span class="p">:</span>
+            <span class="c1"># if true, it removes items from the train set by setting them to zero</span>
+            <span class="n">vp</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">seen_mask</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="n">pv</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">seen_mask</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="n">score</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">seen_mask</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="n">top_items</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argpartition</span><span class="p">(</span><span class="o">-</span><span class="n">score</span><span class="p">,</span> <span class="nb">range</span><span class="p">(</span><span class="n">top_k</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)[</span>
+            <span class="p">:,</span> <span class="p">:</span><span class="n">top_k</span>
+        <span class="p">]</span>  <span class="c1"># get the top k items</span>
+
+        <span class="n">score_c</span> <span class="o">=</span> <span class="n">score</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>  <span class="c1"># get a copy of the score matrix</span>
+
+        <span class="n">score_c</span><span class="p">[</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">score_c</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])[:,</span> <span class="kc">None</span><span class="p">],</span> <span class="n">top_items</span>
+        <span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># set to zero the top_k elements</span>
+
+        <span class="n">top_scores</span> <span class="o">=</span> <span class="n">score</span> <span class="o">-</span> <span class="n">score_c</span>  <span class="c1"># set to zeros all elements other then the top_k</span>
+        <span class="n">elapsed</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+
+        <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Done recommending items, time </span><span class="si">%f</span><span class="s2">2&quot;</span> <span class="o">%</span> <span class="n">elapsed</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">top_scores</span><span class="p">,</span> <span class="n">elapsed</span></div>
+
+<div class="viewcode-block" id="RBM.predict"><a class="viewcode-back" href="../../../../source/models.html#recommenders.models.rbm.rbm.RBM.predict">[docs]</a>    <span class="k">def</span> <span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">maps</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Returns the inferred ratings. This method is similar to recommend_k_items() with the</span>
+<span class="sd">        exceptions that it returns all the inferred ratings</span>
+
+<span class="sd">        Basic mechanics:</span>
+
+<span class="sd">        The method samples new ratings from the learned joint distribution, together with</span>
+<span class="sd">        their probabilities. The input x must have the same number of columns as the one used</span>
+<span class="sd">        for training the model, i.e. the same number of items, but it can have an arbitrary number</span>
+<span class="sd">        of rows (users).</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            x (numpy.ndarray, int32): Input user/affinity matrix. Note that this can be a single vector, i.e.</span>
+<span class="sd">            the ratings of a single user.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            numpy.ndarray, float:</span>
+<span class="sd">            - A matrix with the inferred ratings.</span>
+<span class="sd">            - The elapsed time for predediction.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+
+        <span class="n">v_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">eval_out</span><span class="p">()</span>  <span class="c1"># evaluate the ratings and the associated probabilities</span>
+        <span class="n">vp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">v_</span><span class="p">,</span> <span class="n">feed_dict</span><span class="o">=</span><span class="p">{</span><span class="bp">self</span><span class="o">.</span><span class="n">vu</span><span class="p">:</span> <span class="n">x</span><span class="p">})</span>
+        <span class="n">elapsed</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+
+        <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Done inference, time </span><span class="si">%f</span><span class="s2">2&quot;</span> <span class="o">%</span> <span class="n">elapsed</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">vp</span><span class="p">,</span> <span class="n">elapsed</span></div></div>
+</pre></div>
+
+              </div>
+              
+        
+            
+
+
+
+<div class='prev-next-bottom'>
+    
+
+</div>
+        
+        </div>
+    </div>
+    <footer class="footer">
+    <div class="container">
+      <p>
+        
+          By The Jupyter Book community<br/>
+        
+            &copy; Copyright 2021.<br/>
+          <div class="extra_footer">
+            Don't forget to check out <a href= https://arxiv.org/abs/2108.02899>our paper from Document Intelligence Workshop at KDD 2021!</a>
+          </div>
+      </p>
+    </div>
+  </footer>
+</main>
+
+
+      </div>
+    </div>
+  
+  <script src="../../../../_static/js/index.1c5a1a01449ed65a7b51.js"></script>
+
+  
+  </body>
+</html>

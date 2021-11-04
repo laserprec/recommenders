@@ -1,0 +1,1264 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>RBM Deep Dive with Tensorflow &#8212; &lt;h1 style=&#34;font-size:2em;text-align:center;color:#FF5733&#34;&gt;Recommenders&lt;/h1&gt;</title>
+    
+  <link href="../../_static/css/theme.css" rel="stylesheet" />
+  <link href="../../_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
+
+    
+  <link rel="stylesheet"
+    href="../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+
+    
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-book-theme.css?digest=c3fdc42140077d1ad13ad2f1588a4309" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/tabs.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    
+  <link rel="preload" as="script" href="../../_static/js/index.1c5a1a01449ed65a7b51.js">
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/togglebutton.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <script src="../../_static/tabs.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../../_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script>
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="../../_static/sphinx-thebe.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en" />
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="../../index.html">
+      
+      
+      
+      <h1 class="site-logo" id="site-title"><h1 style="font-size:2em;text-align:center;color:#FF5733">Recommenders</h1></h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="../../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        <p class="caption" role="heading">
+ <span class="caption-text">
+  Getting Started Notebooks
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../00_quick_start/als_movielens.html">
+   Running ALS on MovieLens (PySpark)
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../00_quick_start/ncf_movielens.html">
+   Neural Collaborative Filtering on MovieLens dataset.
+  </a>
+ </li>
+</ul>
+
+    </div>
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="topbar container-xl fixed-top">
+    <div class="topbar-contents row">
+        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
+        <div class="col pl-md-4 topbar-main">
+            
+            <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+                data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+                aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
+                title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+                <i class="fas fa-bars"></i>
+                <i class="fas fa-arrow-left"></i>
+                <i class="fas fa-arrow-up"></i>
+            </button>
+            
+            
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
+            class="fas fa-download"></i></button>
+
+    <div class="dropdown-buttons">
+        <!-- ipynb file if we had a myst markdown file -->
+        
+        <!-- Download raw file -->
+        <a class="dropdown-buttons" href="../../_sources/examples/02_model_collaborative_filtering/rbm_deep_dive.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
+                data-placement="left">.ipynb</button></a>
+        <!-- Download PDF via print -->
+        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
+            onClick="window.print()" data-toggle="tooltip" data-placement="left">.pdf</button>
+    </div>
+</div>
+
+            <!-- Source interaction buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
+    <div class="dropdown-buttons sourcebuttons">
+        <a class="repository-button"
+            href="https://github.com/microsoft/genalog"><button type="button" class="btn btn-secondary topbarbtn"
+                data-toggle="tooltip" data-placement="left" title="Source repository"><i
+                    class="fab fa-github"></i>repository</button></a>
+        <a class="issues-button"
+            href="https://github.com/microsoft/genalog/issues/new?title=Issue%20on%20page%20%2Fexamples/02_model_collaborative_filtering/rbm_deep_dive.html&body=Your%20issue%20content%20here."><button
+                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
+                title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
+        
+    </div>
+</div>
+
+            <!-- Full screen (wrap in <a> to have style consistency -->
+
+<a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+        data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+        title="Fullscreen mode"><i
+            class="fas fa-expand"></i></button></a>
+
+            <!-- Launch buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Launch interactive content"><i class="fas fa-rocket"></i></button>
+    <div class="dropdown-buttons">
+        
+        <a class="binder-button" href="https://mybinder.org/v2/gh/microsoft/genalog/main?urlpath=tree/docs/genalog_docs/examples/02_model_collaborative_filtering/rbm_deep_dive.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Launch Binder" data-toggle="tooltip"
+                data-placement="left"><img class="binder-button-logo"
+                    src="../../_static/images/logo_binder.svg"
+                    alt="Interact on binder">Binder</button></a>
+        
+        
+        
+        
+    </div>
+</div>
+
+        </div>
+
+        <!-- Table of contents -->
+        <div class="d-none d-md-block col-md-2 bd-toc show">
+            
+            <div class="tocsection onthispage pt-5 pb-3">
+                <i class="fas fa-list"></i> Contents
+            </div>
+            <nav id="bd-toc-nav" aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#">
+   RBM Deep Dive with Tensorflow
+  </a>
+  <ul class="visible nav section-nav flex-column">
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#overview">
+     Overview
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#advantages-of-rbm">
+     Advantages of RBM:
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#outline">
+     Outline
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#global-settings-and-import">
+     0 Global Settings and Import
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#rbm-theory">
+     1. RBM Theory
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#overview-and-main-differences-with-other-recommender-algorithms">
+     1.1 Overview and main differences with other recommender algorithms
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#model">
+     1.2 Model
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#learning-algorithm">
+     1.3 Learning Algorithm
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h3 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#positive">
+       Positive
+      </a>
+     </li>
+     <li class="toc-h3 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#negative">
+       Negative
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#tensorflow-implemetation-and-model-parameters">
+     2. TensorFlow implemetation and model parameters
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#data-preparation-and-inspection">
+   3 Data preparation and inspection
+  </a>
+  <ul class="visible nav section-nav flex-column">
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#split-the-data-using-the-stratified-splitter">
+     3.1 Split the data using the stratified splitter
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#train">
+     Train
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#test">
+     Test
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#model-application-performance-and-analysis-of-the-results">
+   4. Model application, performance and analysis of the results
+  </a>
+  <ul class="visible nav section-nav flex-column">
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#m-dataset">
+     4.1 1m Dataset
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h3 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#model-evaluation">
+       4.1.2 Model Evaluation
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#k-dataset">
+     4.2 100k Dataset
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h3 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#id1">
+       4.2.1 Model evaluation
+      </a>
+     </li>
+    </ul>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+        
+              <div>
+                
+  <p><i>Copyright (c) Microsoft Corporation. All rights reserved.</i></p>
+<p><i>Licensed under the MIT License.</i></p>
+<div class="tex2jax_ignore mathjax_ignore section" id="rbm-deep-dive-with-tensorflow">
+<h1>RBM Deep Dive with Tensorflow<a class="headerlink" href="#rbm-deep-dive-with-tensorflow" title="Permalink to this headline">¶</a></h1>
+<p>In this notebook we provide a complete walkthrough of the Restricted Boltzmann Machine (RBM) algorithm with applications to recommender systems. In particular, we use as a case study the <a class="reference external" href="https://movielens.org">movielens dataset</a>, comprising user’s ranking of movies on a scale of 1 to 5. A quickstart version of this notebook can be found <a class="reference internal" href="../00_quick_start/rbm_movielens.html"><span class="doc std std-doc">here</span></a>.</p>
+<div class="section" id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+<p>A Restricted Boltzmann Machine (RBM) is a generative neural network model typically used to perform unsupervised learning. The main task of an RBM is to learn the joint probability distribution <span class="math notranslate nohighlight">\(P(v,h)\)</span>, where <span class="math notranslate nohighlight">\(v\)</span> are the visible units and <span class="math notranslate nohighlight">\(h\)</span> the hidden ones. The hidden units represent latent variables while the visible units are clamped on the input data. Once the joint distribution is learnt, new examples are generated by sampling from it.</p>
+<p>The implementation presented here is based on the article by Ruslan Salakhutdinov, Andriy Mnih and Geoffrey Hinton <a class="reference external" href="https://www.cs.toronto.edu/%7Ersalakhu/papers/rbmcf.pdf">Restricted Boltzmann Machines for Collaborative Filtering</a> with the exception that here we use multinomial units instead of the one-hot encoded used in the paper.</p>
+</div>
+<div class="section" id="advantages-of-rbm">
+<h2>Advantages of RBM:<a class="headerlink" href="#advantages-of-rbm" title="Permalink to this headline">¶</a></h2>
+<p>The model generates ratings for a user/movie pair using a collaborative filtering based approach. While matrix factorization methods learn how to reproduce an instance of the user/item affinity matrix, the RBM learns its underlying probability distribution. This has several advantages:</p>
+<ul class="simple">
+<li><p>Generalizability : the model generalize well to new examples as long as they do not differ much in probability</p></li>
+<li><p>Stability in time: if the recommendation task is time-stationary, the model does not need to be trained often to accomodate new ratings/users.</p></li>
+<li><p>The tensorflow implementation presented here allows fast, scalable  training on GPU</p></li>
+</ul>
+</div>
+<div class="section" id="outline">
+<h2>Outline<a class="headerlink" href="#outline" title="Permalink to this headline">¶</a></h2>
+<p>This notebook is organized as follows:</p>
+<ol class="simple">
+<li><p>RBM Theory</p></li>
+<li><p>Tensorflow implementation and model parameters</p></li>
+<li><p>Data preparation and inspection</p></li>
+<li><p>Model application, performance and analysis</p></li>
+</ol>
+<p>Sections 1 and 2 require basic knowledge of linear algebra, probability theory and tensorflow while<br />
+sections 3 and 4 only require some basic data science understanding. <strong>Feel free to jump to the section you are most interested in!</strong></p>
+</div>
+<div class="section" id="global-settings-and-import">
+<h2>0 Global Settings and Import<a class="headerlink" href="#global-settings-and-import" title="Permalink to this headline">¶</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">absolute_import</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">division</span>
+
+<span class="c1"># set the environment path to find Recommenders</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="o">%</span><span class="k">matplotlib</span> inline
+
+<span class="kn">import</span> <span class="nn">papermill</span> 
+
+<span class="c1">#RBM </span>
+<span class="kn">from</span> <span class="nn">recommenders.models.rbm.rbm</span> <span class="kn">import</span> <span class="n">RBM</span>
+<span class="kn">from</span> <span class="nn">recommenders.datasets.python_splitters</span> <span class="kn">import</span> <span class="n">numpy_stratified_split</span>
+<span class="kn">from</span> <span class="nn">recommenders.datasets.sparse</span> <span class="kn">import</span> <span class="n">AffinityMatrix</span>
+
+<span class="c1">#Evaluation libraries</span>
+<span class="kn">from</span> <span class="nn">recommenders.datasets</span> <span class="kn">import</span> <span class="n">movielens</span> 
+
+<span class="kn">from</span> <span class="nn">recommenders.evaluation.python_evaluation</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">map_at_k</span><span class="p">,</span>
+    <span class="n">ndcg_at_k</span><span class="p">,</span>
+    <span class="n">precision_at_k</span><span class="p">,</span>
+    <span class="n">recall_at_k</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="kn">from</span> <span class="nn">recommenders.tuning.parameter_sweep</span> <span class="kn">import</span> <span class="n">generate_param_grid</span>
+<span class="c1">#For interactive mode only</span>
+<span class="o">%</span><span class="k">load_ext</span> autoreload
+<span class="o">%</span><span class="k">autoreload</span> 2
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;System version: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">version</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Pandas version: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">__version__</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>System version: 3.6.7 |Anaconda, Inc.| (default, Oct 23 2018, 19:16:44) 
+[GCC 7.3.0]
+Pandas version: 0.23.4
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="rbm-theory">
+<h2>1. RBM Theory<a class="headerlink" href="#rbm-theory" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="overview-and-main-differences-with-other-recommender-algorithms">
+<h2>1.1 Overview and main differences with other recommender algorithms<a class="headerlink" href="#overview-and-main-differences-with-other-recommender-algorithms" title="Permalink to this headline">¶</a></h2>
+<p>A Restricted Boltzmann Machine (RBM) is an undirected graphical model originally devised to study the statistical mechanics (or physics) of magnetic systems. Statistical mechanics (SM) provides a probabilistic description of complex systems made of a huge number of constituents (typically <span class="math notranslate nohighlight">\(\sim 10^{23}\)</span>); instead of looking at a particular instance of the system, the aim of SM is to describe their <strong>typical</strong> behaviour. This approach has been succesfull for the description of gases, liquids, complex materials (e.g. semiconductors) and even the famous <a class="reference external" href="https://en.wikipedia.org/wiki/Higgs_boson">Higgs boson</a>!</p>
+<p>Being designed to handle and organize a large amount of data, SM finds ideal applications in modern learning algorithms. In the context of <strong>recommender systems</strong>, the idea is to learn typical user behaviour instead of particular instances. To better understand this consider the most general setup of a recommendation problem: there are <span class="math notranslate nohighlight">\(m\)</span> users rating <span class="math notranslate nohighlight">\(n\)</span> items according to some scale (e.g. 1 to 5). In a typical scenario of online shopping, streaming services or decision processes, the user only rates a subset <span class="math notranslate nohighlight">\(l \ll m\)</span> of the products. If we now create a matrix representation of this problem, we obtain the user/item affinity matrix <span class="math notranslate nohighlight">\(X\)</span>. In a more readable table form, <span class="math notranslate nohighlight">\(X\)</span> will look like this:</p>
+<table class="colwidths-auto table">
+<thead>
+<tr class="row-odd"><th class="head"><p><span class="math notranslate nohighlight">\(X\)</span></p></th>
+<th class="head"><p><span class="math notranslate nohighlight">\(i_1\)</span></p></th>
+<th class="head"><p><span class="math notranslate nohighlight">\(i_2\)</span></p></th>
+<th class="head"><p><span class="math notranslate nohighlight">\(i_3\)</span></p></th>
+<th class="head"><p>…</p></th>
+<th class="head"><p><span class="math notranslate nohighlight">\(i_m\)</span></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><span class="math notranslate nohighlight">\(u_1\)</span></p></td>
+<td><p>5</p></td>
+<td><p>0</p></td>
+<td><p>2</p></td>
+<td><p>0 …</p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-odd"><td><p><span class="math notranslate nohighlight">\(u_2\)</span></p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>3</p></td>
+<td><p>4 …</p></td>
+<td><p>0</p></td>
+</tr>
+<tr class="row-even"><td><p>…</p></td>
+<td><p>…</p></td>
+<td><p>…</p></td>
+<td><p>…</p></td>
+<td><p>…</p></td>
+<td><p>…</p></td>
+</tr>
+<tr class="row-odd"><td><p><span class="math notranslate nohighlight">\(u_m\)</span></p></td>
+<td><p>3</p></td>
+<td><p>3</p></td>
+<td><p>0</p></td>
+<td><p>5…</p></td>
+<td><p>2</p></td>
+</tr>
+</tbody>
+</table>
+<p>where the zeroes denote unrated items. In a nutshell, the recommender task is to “fill in” the missing ratings (later we will see that in practice this is not the only criteria used to recommend a product). The classical approach to this problem is called matrix factorization: the basic idea is to decompose <span class="math notranslate nohighlight">\(X\)</span> into a user (<span class="math notranslate nohighlight">\(P\)</span>) and item (<span class="math notranslate nohighlight">\(Q\)</span>) matrix, such that <span class="math notranslate nohighlight">\(X = Q^T P\)</span>. The dimensions of the two matrices are <span class="math notranslate nohighlight">\(dim(Q) = (f, n)\)</span> and <span class="math notranslate nohighlight">\(dim(P)= (f,m)\)</span> where <span class="math notranslate nohighlight">\(f \le m,n\)</span> is the number of latent factors, e.g. the genre of a movie, the type of food etc… and it is an hyperparameter of the model, for more details see the <span class="xref myst">ALS notebook</span>. By learning <span class="math notranslate nohighlight">\(Q\)</span> and <span class="math notranslate nohighlight">\(P\)</span> we try to reproduce a particular instance of <span class="math notranslate nohighlight">\(X\)</span> (provided by the available data) and use this information to fill up the missing matrix elements.</p>
+<p>The RBM approach is to look at <span class="math notranslate nohighlight">\(X\)</span> as a particular realization (sample) of a more general process; instead of learning a specific <span class="math notranslate nohighlight">\(X\)</span>, we try to learn the matrix distribution from which <span class="math notranslate nohighlight">\(X\)</span> has been sampled from. Effectively, we learn the typical distribution of <em>tastes</em> (i.e. latent factors) and use this information to <em>generate</em> new ratings. For this reason, this class of neural network models is also called <strong>generative</strong>. Consider the following example: imagine you are given the  income distribution per age window of a particular country (this is easy to find from goverments data), then we could fix the age window and <em>generate</em> virtual citizens with various incomes by sampling from this distibution.</p>
+</div>
+<div class="section" id="model">
+<h2>1.2 Model<a class="headerlink" href="#model" title="Permalink to this headline">¶</a></h2>
+<p>The central quantity of every SM model is the <a class="reference external" href="https://en.wikipedia.org/wiki/Boltzmann_distribution">Boltzmann distribution </a>; this can be seen as the least biased probability distribution on a given probability space <span class="math notranslate nohighlight">\(\Sigma\)</span> and can be obtained using a maximum entropy principle on the space of distributions over <span class="math notranslate nohighlight">\(\Sigma\)</span>. Its typical form is:</p>
+<div class="math notranslate nohighlight">
+\[P = \frac{1}{Z} \, e^{- \beta \, H},\]</div>
+<p>where <span class="math notranslate nohighlight">\(Z\)</span> is a normalization constant known as the partition function, <span class="math notranslate nohighlight">\(\beta\)</span> is a noise parameter with units of inverse energy and <span class="math notranslate nohighlight">\(H\)</span> is the Hamiltonian, or energy function of the system. For this reason, this class of models is also known as <em>energy based</em> in computer science. In physics, <span class="math notranslate nohighlight">\(\beta\)</span> is the inverse temperature of the system in units of Boltzmann’s constant, but here we will effectively rescale it inside <span class="math notranslate nohighlight">\(H\)</span>, so that this is now a pure number. <span class="math notranslate nohighlight">\(H\)</span> describes the behaviour of two sets of stochastic vectors, typically called <span class="math notranslate nohighlight">\(v_i\)</span> (visibles) and <span class="math notranslate nohighlight">\(h_j\)</span> (hidden). The former constitute both the input <em>and</em> the ouput of the algo (this will be clear later), while the hidden units are the latent factors we want to learn. This structure results in the following Neural Network topology:</p>
+<p><img alt="rbm1" src="https://recodatasets.z20.web.core.windows.net/images/RBM1.png" /></p>
+<p>The input of the movielens database consists of ratings from 1 to 5; we shall thus consider a discrete configuration space of <span class="math notranslate nohighlight">\(m\)</span> visible variables, each taking values in a finite set <span class="math notranslate nohighlight">\(\chi_v = \{ 1, 2, 3,4,5 \}\)</span>. A global configuration of the system is determined by <span class="math notranslate nohighlight">\(\mathbf{v} = (v_1, v_2, ..., v_m) \in \chi_v^m\)</span> and we reserve <span class="math notranslate nohighlight">\(0\)</span> for an unrated movie. We also need to specify the hidden units, that we take as random binary variables <span class="math notranslate nohighlight">\(\chi_h = \{0,1 \}\)</span> denoting if the particular unit is active or not and <span class="math notranslate nohighlight">\(\mathbf{h} = (h_1, h_2, ...,h_n) \in \chi_h^n\)</span>. The hidden units may describe attributes such as the genre of a movie; for example, given a sci-fi/horror movie, only the hidden units describing such attributes should be active. The minimal model for such a system is defined by the following Hamiltonian:</p>
+<div class="math notranslate nohighlight">
+\[H = - \sum_{i,j \in G} v_i \, w_{ij} \, h_j - \sum_{i=1}^m v_i \, a_i - \sum_{j=1}^n h_i \, b_i\]</div>
+<p>The first term is an “interaction term”, capturing the correlations between the visible and hidden units, while the other two terms are “potential terms”, taking into account the bias of the units. The correlation matrix <span class="math notranslate nohighlight">\(w_{ij}\)</span> and the two biases <span class="math notranslate nohighlight">\(a_i\)</span> and <span class="math notranslate nohighlight">\(b_i\)</span> are learning parameters to be fixed by the minimization of a properly defined cost function. Remember that this is an unsupervised problem, i.e. there is no real output and therefore we cannot directly minimize the error function between the prediction and the labeled data. As in every SM problem, the right quantity to minimize is the Free energy (remember that <span class="math notranslate nohighlight">\(\beta =1\)</span>)</p>
+<p>$<span class="math notranslate nohighlight">\( F =- \log Z =- \log \sum_{ v_i, h_i } P(v, h) \)</span>$.</p>
+<p>In the language of probability theory, the above quantity is the cumulant generating function. One way of evaluating the free energy is to use a <a class="reference external" href="https://en.wikipedia.org/wiki/Monte_Carlo_method#Computer_graphics">Markov-chain Montecarlo sampling</a> algorithm such as the Metropolis-Hasting; here we will use instead an approximate method called Contrastive divergence, based on <a class="reference external" href="https://en.wikipedia.org/wiki/Gibbs_sampling">Gibbs sampling</a> (see below). The latter has the advantage of being faster than Montecarlo. Once the candidate <span class="math notranslate nohighlight">\(F\)</span> has been found, we fix the learning parameters by minimizing <span class="math notranslate nohighlight">\(F\)</span>. Let us see how this works in practice in the next section.</p>
+</div>
+<div class="section" id="learning-algorithm">
+<h2>1.3 Learning Algorithm<a class="headerlink" href="#learning-algorithm" title="Permalink to this headline">¶</a></h2>
+<p>Instead of sampling directly from the joint probability distribution, one can evaluate the conditional distributions</p>
+<div class="math notranslate nohighlight">
+\[ P(v, h) = P(v|h) P(h) = P(h|v) P(v) \]</div>
+<p>where the second equality follows from the fact that the model is undirected or, in physical terms, it is in equilibrium. Gibbs sampling essentially consists of two steps called <strong>positive</strong> and <strong>negative</strong> phases:</p>
+<div class="section" id="positive">
+<h3>Positive<a class="headerlink" href="#positive" title="Permalink to this headline">¶</a></h3>
+<p><strong>Fix the visible units on the data and evaluate <span class="math notranslate nohighlight">\(P(h_j =1| \mathbf{v})\)</span></strong>, i.e. the probability that the jth hidden unit is active given the entire input vector. In practice, it is convenient to evaluate the generating function:</p>
+<div class="math notranslate nohighlight">
+\[ Z[v,b] = \prod_j \sum_{h_j = 0,1}  e^{(\sum_i w_{ij} v_i + b_j) h_j} = \prod_j \left( 1+  e^{\sum_i w_{ij} v_i + b_j} \right).\]</div>
+<p>Taking the gradients with respect to the bias we obtain</p>
+<div class="math notranslate nohighlight">
+\[\frac{\partial}{\partial b_j}\log Z[v,b] =  \frac{1}{1+ e^{-(\sum_i w_{ij} v_i + b_j)}} = \sigma( \phi_j(v, b) ),\]</div>
+<p>where <span class="math notranslate nohighlight">\(\phi_j(v,b) = \sum_i w_{ij} v_i + b_j \)</span> and we have identified the logistic function <span class="math notranslate nohighlight">\(\sigma(.) \equiv P(h_j=1|v,b)\)</span>.</p>
+<p><strong>Use <span class="math notranslate nohighlight">\(\sigma\)</span> to sample the value of <span class="math notranslate nohighlight">\(h_j\)</span></strong></p>
+</div>
+<div class="section" id="negative">
+<h3>Negative<a class="headerlink" href="#negative" title="Permalink to this headline">¶</a></h3>
+<p><strong>Use the sampled value of the hidden units to evaluate <span class="math notranslate nohighlight">\(P(v_i = q |h)\)</span></strong>, where <span class="math notranslate nohighlight">\(q=1,...,5\)</span>. This is given by the multinomial expression</p>
+<div class="math notranslate nohighlight">
+\[ \begin{align}\begin{aligned} P(v_i = q |h,a) =  \prod_{v_i=1}^q e^{v_i (\sum_j w_{ij} \, h_j + a_i ) }/Z_q $$,\\where $Z_q$ is the partition function evaluated over the $q$ outcomes (note that $0$ should not be included in the sum). Finally, sample the values of $v_i$ from the above distribution. Clearly, these new $v_i$ are not necessarily those we have used as an input, at least not at the beginning of training. The above steps are repeated $k$ times, where $k$ is usually increased during training according to a given protocol. \\At the end of each k-step Gibbs sampling, we evaluate the difference between the initial free energy at $k=0$ (given v) and the one after k-steps \\$$ \Delta F = F_0 - F_k, \end{aligned}\end{align} \]</div>
+<p>and update the learning parameters <span class="math notranslate nohighlight">\(w_{ij}\)</span>, <span class="math notranslate nohighlight">\(b_i\)</span> and <span class="math notranslate nohighlight">\(a_i\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[ \frac{\partial}{\partial b_j} \Delta F = \frac{\partial}{\partial b_j} (\log Z_0[v,b] - \log Z_k[v,b]) = P_0(h_j=1|v,b) - P_k(h_j=1|v,b) \]</div>
+<div class="math notranslate nohighlight">
+\[ \frac{\partial}{\partial w_{ij} } \Delta F = v_i \, P_0(v_i = q|h, a) - v_i P_k(v_i| h,a) \equiv \langle v_i\rangle_0 - \langle v_i \rangle_k. \]</div>
+<p>This process is repeated for each training epoch, eventually until <span class="math notranslate nohighlight">\(\Delta F =0\)</span>, i.e. the learned distribution faithfully reproduces the empirical one. In this sense, <span class="math notranslate nohighlight">\(v_i\)</span> serves both as an input and output of the model. As <span class="math notranslate nohighlight">\(w_{ij}\)</span> contains informations on how users’ votes are correlated, we can use this information to generate ratings for the unseen movies by sampling from the learned, marginal distribution:</p>
+<div class="math notranslate nohighlight">
+\[ \langle v_i \rangle = \sum_{v_i} v_i \, P(v) \]</div>
+<p>The entire workflow is summarised below</p>
+<p><img alt="gibbs" src="https://recodatasets.z20.web.core.windows.net/images/Gsampling.png" /></p>
+</div>
+</div>
+<div class="section" id="tensorflow-implemetation-and-model-parameters">
+<h2>2. TensorFlow implemetation and model parameters<a class="headerlink" href="#tensorflow-implemetation-and-model-parameters" title="Permalink to this headline">¶</a></h2>
+<p>In this section we briefly describe how the algorithm is implemented in Tensorflow and which parameters can be customized by the user during training. We also discuss some best practices to be used when training the RBM model on a recommendation task. Further technical details are explained directly in the code.</p>
+<p>Tensorflow (TF) is an open source framework to develop deep learning (DL) models in a fast and efficient way. One of the shared characteristics of DL frameworks is autodifferentiation, i.e. the symbolic evaluation of gradients, that will be particulary useful here. The other advantage of TF is the generation and optimization of the symbolic operations defined on a computational graph, for fast and scalable deployment on both CPU and GPU. For more informations on TF see <span class="xref myst">here</span>. Unfortunately, TF is tailor made for supervised learning tasks, so its application to unsupervised model needs some more work. Note: although TF has recently started developing a <span class="xref myst">set of libraries to perform probabilistic inference</span>, we found their performance still not optimal and therefore we will not use them here.</p>
+<p>The RBM model is instantiated as a class with several methods to build the graph, perform sampling, training and inference. The skeleton of the graph is built at the moment the class is instantiated; mandatory fields are:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">hidden_units</span></code> integer (Default =500) : number of hidden units</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">training_epoch</span></code>integer (Default = 20): number of training epochs</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">minibatch_size</span></code>integer (Default = 100): size of the batch to be chosen at random at each training epoch</p></li>
+</ul>
+<p>The optional parameters are:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">keep_prob</span></code> : float (Default = 0.7) we use dropout regularization on the hidden units, so this parameter specifies the probability of keeping the connection to a hidden unit active. Dropout will affect specific matrix elements of <span class="math notranslate nohighlight">\(w_{ij}\)</span>, decreasing in this way the model’s complexity and improving generalization.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">sampling_protocol</span></code> : Array (Default = <span class="math notranslate nohighlight">\([50, 70, 80,90,100]\)</span>) percentage of the entire training epochs when the the k-sampling step is increased in an annealing fashion. In the default case, the first 50% of the training epochs are sampled with a single k-step. As training converges, the number of k-steps is increased by <span class="math notranslate nohighlight">\(1\)</span> at each percentage.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">debug</span></code>: Boolean (Default = False) if True, prints the output of some of the intermediate steps for inspection.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">with_metrics</span></code>: Boolean (Default= False) if True it evaluates, print and finally plot the mean squared root error per training epoch on the training set. At the end, it also evaluates and print the total model accuracy both on the training and test set. We suggest to switch it off only for benchmarking execution time.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">init_stdv</span></code>: float (Default = 0.1) standard deviation used to inititialize the correlation matrix.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">learning_rate</span></code>: float (Default = 0.004) init learning rate used in the optimization algorithm. Note that the optimizer uses a different, effective learning rate scaled to the batch size <span class="math notranslate nohighlight">\(\alpha\)</span> = <code class="docutils literal notranslate"><span class="pre">learning_rate/minibatch_size</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">display_epoch</span> </code>: integer (Default = 10) the number of epochs after which the rmse error is printed out during the learning phase.</p></li>
+</ul>
+<p>Although optional, it is likely that <code class="docutils literal notranslate"><span class="pre">sampling_protocol</span></code> needs to be modified for different recommenders; we recommend to keep this in mind when training on a new dataset.</p>
+</div>
+</div>
+<div class="tex2jax_ignore mathjax_ignore section" id="data-preparation-and-inspection">
+<h1>3 Data preparation and inspection<a class="headerlink" href="#data-preparation-and-inspection" title="Permalink to this headline">¶</a></h1>
+<p>The MovieLens dataset comes in different sizes, denoting the number of available ratings. The number of users and rated movies also changes across the different dataset. The data are imported in a pandas dataframe including the <strong>user ID</strong>, the <strong>item ID</strong>, the <strong>ratings</strong> and a <strong>timestamp</strong> denoting when a particular user rated a particular item. Although this last feature could be explicitely included, it will not be considered here. The underlying assumption of this choice is that user’s tastes are weakly time dependent, i.e. a user’s taste typically chage on time scales (usually years) much longer than the typical recommendation time scale (e.g. hours/days). As a consequence, the joint probability distribution we want to learn can be safely considered as time dependent. Nevertheless, timestamps could be used as <em>contextual variables</em>, e.g. recommend a certain movie during the weekend and another during weekdays.</p>
+<p>Below, we first load the different movielens data in pandas dataframes, explain how the user/affinity matrix is built and how the train/test set is generated. As this procedure is common to all the datasets considered here, we explain it in details only for the 1m dataset.</p>
+<p>We start with downloading the different datasets:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">MOVIELENS_DATA_SIZE</span> <span class="o">=</span> <span class="s1">&#39;100k&#39;</span>
+
+<span class="n">mldf_100k</span> <span class="o">=</span> <span class="n">movielens</span><span class="o">.</span><span class="n">load_pandas_df</span><span class="p">(</span>
+    <span class="n">size</span><span class="o">=</span><span class="n">MOVIELENS_DATA_SIZE</span><span class="p">,</span>
+    <span class="n">header</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;userID&#39;</span><span class="p">,</span><span class="s1">&#39;movieID&#39;</span><span class="p">,</span><span class="s1">&#39;rating&#39;</span><span class="p">,</span><span class="s1">&#39;timestamp&#39;</span><span class="p">]</span>
+<span class="p">)</span>
+
+<span class="c1"># Convert the float precision to 32-bit in order to reduce memory consumption </span>
+<span class="n">mldf_100k</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,</span> <span class="s1">&#39;rating&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">mldf_100k</span><span class="p">[</span><span class="s1">&#39;rating&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">int32</span><span class="p">)</span> 
+
+<span class="n">mldf_100k</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>userID</th>
+      <th>movieID</th>
+      <th>rating</th>
+      <th>timestamp</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>196</td>
+      <td>242</td>
+      <td>3</td>
+      <td>881250949</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>186</td>
+      <td>302</td>
+      <td>3</td>
+      <td>891717742</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>22</td>
+      <td>377</td>
+      <td>1</td>
+      <td>878887116</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>244</td>
+      <td>51</td>
+      <td>2</td>
+      <td>880606923</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>166</td>
+      <td>346</td>
+      <td>1</td>
+      <td>886397596</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">MOVIELENS_DATA_SIZE</span> <span class="o">=</span> <span class="s1">&#39;1m&#39;</span>
+
+<span class="n">mldf_1m</span> <span class="o">=</span> <span class="n">movielens</span><span class="o">.</span><span class="n">load_pandas_df</span><span class="p">(</span>
+    <span class="n">size</span><span class="o">=</span><span class="n">MOVIELENS_DATA_SIZE</span><span class="p">,</span>
+    <span class="n">header</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;userID&#39;</span><span class="p">,</span><span class="s1">&#39;movieID&#39;</span><span class="p">,</span><span class="s1">&#39;rating&#39;</span><span class="p">,</span><span class="s1">&#39;timestamp&#39;</span><span class="p">]</span>
+<span class="p">)</span>
+
+<span class="c1"># Convert the float precision to 32-bit in order to reduce memory consumption </span>
+<span class="n">mldf_1m</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,</span> <span class="s1">&#39;rating&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">mldf_1m</span><span class="p">[</span><span class="s1">&#39;rating&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">int32</span><span class="p">)</span> 
+
+<span class="n">mldf_1m</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>userID</th>
+      <th>movieID</th>
+      <th>rating</th>
+      <th>timestamp</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1</td>
+      <td>1193</td>
+      <td>5</td>
+      <td>978300760</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>1</td>
+      <td>661</td>
+      <td>3</td>
+      <td>978302109</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>1</td>
+      <td>914</td>
+      <td>3</td>
+      <td>978301968</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>1</td>
+      <td>3408</td>
+      <td>4</td>
+      <td>978300275</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>1</td>
+      <td>2355</td>
+      <td>5</td>
+      <td>978824291</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="section" id="split-the-data-using-the-stratified-splitter">
+<h2>3.1 Split the data using the stratified splitter<a class="headerlink" href="#split-the-data-using-the-stratified-splitter" title="Permalink to this headline">¶</a></h2>
+<p>As a second step, we split the data into train and test set by mantaining the same matrix size. Clearly, the two matrices will contain different ratings in different proportions.</p>
+<ul class="simple">
+<li><p>First, we use the <code class="docutils literal notranslate"><span class="pre">AffinityMatrix</span></code> class to generate the <span class="math notranslate nohighlight">\((m,n)\)</span> user/affinity matrix <span class="math notranslate nohighlight">\(X\)</span> defined in section <strong>1.1</strong>; this also returns the sparseness percentage. For example, for the 1m dataset, <span class="math notranslate nohighlight">\(95\)</span> % of the matrix entries are zeros. This represents a challenge for the learning task: fixing <span class="math notranslate nohighlight">\(95\)</span> % of entries with only <span class="math notranslate nohighlight">\(5\)</span> % of data points.</p></li>
+<li><p>Second, use the <code class="docutils literal notranslate"><span class="pre">numpy_stratified_split()</span></code> to split <span class="math notranslate nohighlight">\(X\)</span> into train and test set. By default, we choose a <span class="math notranslate nohighlight">\(75\)</span>% to <span class="math notranslate nohighlight">\(25\)</span>% ratio. The split function selects, for every user, <span class="math notranslate nohighlight">\(25\)</span> % of rated movies and it moves them in the new test matrix. This way of splitting the data makes sure the rating distribution remains the same across the train/test set, both locally (user-wise) and globally. If you consider the user/item matrix <span class="math notranslate nohighlight">\(X\)</span> defined above, we would have</p></li>
+</ul>
+</div>
+<div class="section" id="train">
+<h2>Train<a class="headerlink" href="#train" title="Permalink to this headline">¶</a></h2>
+<table class="colwidths-auto table">
+<thead>
+<tr class="row-odd"><th class="head"><p><span class="math notranslate nohighlight">\(X_{tr}\)</span></p></th>
+<th class="head"><p><span class="math notranslate nohighlight">\(i_1\)</span></p></th>
+<th class="head"><p><span class="math notranslate nohighlight">\(i_2\)</span></p></th>
+<th class="head"><p><span class="math notranslate nohighlight">\(i_3\)</span></p></th>
+<th class="head"><p><span class="math notranslate nohighlight">\(...\)</span></p></th>
+<th class="head"><p><span class="math notranslate nohighlight">\(i_n\)</span></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><span class="math notranslate nohighlight">\(u_1\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(0\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(0\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(2\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(0...\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(0\)</span></p></td>
+</tr>
+<tr class="row-odd"><td><p><span class="math notranslate nohighlight">\(u_2\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(0\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(0\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(3\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(0...\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(0\)</span></p></td>
+</tr>
+<tr class="row-even"><td><p><span class="math notranslate nohighlight">\(...\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(...\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(...\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(...\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(...\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(...\)</span></p></td>
+</tr>
+<tr class="row-odd"><td><p><span class="math notranslate nohighlight">\(u_m\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(3\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(0\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(0\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(0...\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(2\)</span></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="test">
+<h2>Test<a class="headerlink" href="#test" title="Permalink to this headline">¶</a></h2>
+<table class="colwidths-auto table">
+<thead>
+<tr class="row-odd"><th class="head"><p><span class="math notranslate nohighlight">\(X_{tst}\)</span></p></th>
+<th class="head"><p><span class="math notranslate nohighlight">\(i_1\)</span></p></th>
+<th class="head"><p><span class="math notranslate nohighlight">\(i_2\)</span></p></th>
+<th class="head"><p><span class="math notranslate nohighlight">\(i_3\)</span></p></th>
+<th class="head"><p>…</p></th>
+<th class="head"><p><span class="math notranslate nohighlight">\(i_n\)</span></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><span class="math notranslate nohighlight">\(u_1\)</span></p></td>
+<td><p>5</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0 …</p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-odd"><td><p><span class="math notranslate nohighlight">\(u_2\)</span></p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>4 …</p></td>
+<td><p>0</p></td>
+</tr>
+<tr class="row-even"><td><p>…</p></td>
+<td><p>…</p></td>
+<td><p>…</p></td>
+<td><p>…</p></td>
+<td><p>…</p></td>
+<td><p>…</p></td>
+</tr>
+<tr class="row-odd"><td><p><span class="math notranslate nohighlight">\(u_m\)</span></p></td>
+<td><p>0</p></td>
+<td><p>3</p></td>
+<td><p>0</p></td>
+<td><p>5…</p></td>
+<td><p>0</p></td>
+</tr>
+</tbody>
+</table>
+<p>The Train and Test matrices have exactly the same dimensions (i.e. same numbers of users and movies) but contain different ratings. Once the model is trained, at inference time, we use the test set user vectors to obtain the inferred values for the ratings.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#to use standard names across the analysis </span>
+<span class="n">header</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;col_user&quot;</span><span class="p">:</span> <span class="s2">&quot;userID&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;col_item&quot;</span><span class="p">:</span> <span class="s2">&quot;movieID&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;col_rating&quot;</span><span class="p">:</span> <span class="s2">&quot;rating&quot;</span><span class="p">,</span>
+    <span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#instantiate the splitter </span>
+<span class="n">am1m</span> <span class="o">=</span> <span class="n">AffinityMatrix</span><span class="p">(</span><span class="n">df</span> <span class="o">=</span> <span class="n">mldf_1m</span><span class="p">,</span> <span class="o">**</span><span class="n">header</span><span class="p">)</span>
+
+<span class="c1">#obtain the sparse matrix </span>
+<span class="n">X1m</span> <span class="o">=</span> <span class="n">am1m</span><span class="o">.</span><span class="n">gen_affinity_matrix</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Generating the user/item affinity matrix...
+Matrix generated, sparseness percentage: 95
+</pre></div>
+</div>
+</div>
+</div>
+<p>Next, we split the matrix above into train and test set sparse matrices</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Xtr_1m</span><span class="p">,</span> <span class="n">Xtst_1m</span> <span class="o">=</span> <span class="n">numpy_stratified_split</span><span class="p">(</span><span class="n">X1m</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>It is useful to inspect the distribution of ratings in the test/train matrix to make sure that the splitter keeps it constant. We can inspect this by plotting the normalized histograms</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">_</span><span class="p">,</span> <span class="p">(</span><span class="n">ax1m</span><span class="p">,</span> <span class="n">ax2m</span><span class="p">)</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">sharey</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">5</span><span class="p">))</span>
+<span class="n">ax1m</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">Xtr_1m</span><span class="p">[</span><span class="n">Xtr_1m</span> <span class="o">!=</span><span class="mi">0</span><span class="p">],</span> <span class="mi">5</span><span class="p">,</span> <span class="n">density</span><span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+<span class="n">ax1m</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Train&#39;</span><span class="p">)</span>
+<span class="n">ax1m</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xlabel</span><span class="o">=</span><span class="s2">&quot;ratings&quot;</span><span class="p">,</span> <span class="n">ylabel</span><span class="o">=</span><span class="s2">&quot;density&quot;</span><span class="p">)</span>
+<span class="n">ax2m</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">Xtst_1m</span><span class="p">[</span><span class="n">Xtst_1m</span> <span class="o">!=</span><span class="mi">0</span><span class="p">],</span> <span class="mi">5</span><span class="p">,</span> <span class="n">density</span><span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+<span class="n">ax2m</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Test&#39;</span><span class="p">)</span>
+<span class="n">ax2m</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xlabel</span><span class="o">=</span><span class="s2">&quot;ratings&quot;</span><span class="p">,</span> <span class="n">ylabel</span><span class="o">=</span><span class="s2">&quot;density&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[Text(0,0.5,&#39;density&#39;), Text(0.5,0,&#39;ratings&#39;)]
+</pre></div>
+</div>
+<img alt="../../_images/rbm_deep_dive_17_1.png" src="../../_images/rbm_deep_dive_17_1.png" />
+</div>
+</div>
+<p>We now repeat the same operations for the other datasets</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#100k</span>
+<span class="n">am100k</span> <span class="o">=</span> <span class="n">AffinityMatrix</span><span class="p">(</span><span class="n">df</span> <span class="o">=</span> <span class="n">mldf_100k</span><span class="p">,</span> <span class="o">**</span><span class="n">header</span><span class="p">)</span>
+<span class="n">X100k</span><span class="o">=</span> <span class="n">am100k</span><span class="o">.</span><span class="n">gen_affinity_matrix</span><span class="p">()</span>
+<span class="n">Xtr_100k</span><span class="p">,</span> <span class="n">Xtst_100k</span> <span class="o">=</span> <span class="n">numpy_stratified_split</span><span class="p">(</span><span class="n">X100k</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Generating the user/item affinity matrix...
+Matrix generated, sparseness percentage: 93
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">_</span><span class="p">,</span> <span class="p">(</span><span class="n">ax1k</span><span class="p">,</span> <span class="n">ax2k</span><span class="p">)</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">sharey</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">5</span><span class="p">))</span>
+<span class="n">ax1k</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">Xtr_100k</span><span class="p">[</span><span class="n">Xtr_100k</span> <span class="o">!=</span><span class="mi">0</span><span class="p">],</span> <span class="mi">5</span><span class="p">,</span> <span class="n">density</span><span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+<span class="n">ax1k</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Train&#39;</span><span class="p">)</span>
+<span class="n">ax1k</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xlabel</span><span class="o">=</span><span class="s2">&quot;ratings&quot;</span><span class="p">,</span> <span class="n">ylabel</span><span class="o">=</span><span class="s2">&quot;density&quot;</span><span class="p">)</span>
+<span class="n">ax2k</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">Xtst_100k</span><span class="p">[</span><span class="n">Xtst_100k</span> <span class="o">!=</span><span class="mi">0</span><span class="p">],</span> <span class="mi">5</span><span class="p">,</span> <span class="n">density</span><span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+<span class="n">ax2k</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Test&#39;</span><span class="p">)</span>
+<span class="n">ax2k</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xlabel</span><span class="o">=</span><span class="s2">&quot;ratings&quot;</span><span class="p">,</span> <span class="n">ylabel</span><span class="o">=</span><span class="s2">&quot;density&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[Text(0,0.5,&#39;density&#39;), Text(0.5,0,&#39;ratings&#39;)]
+</pre></div>
+</div>
+<img alt="../../_images/rbm_deep_dive_20_1.png" src="../../_images/rbm_deep_dive_20_1.png" />
+</div>
+</div>
+<p>From the plots above we can see that the two datasets have very similar rating distributions. The main difference is in the degree of sparsness of the user/item affinity matrix; this is an important factor as it states the ratio between datapoints and unrated movies to infere. Note that the split function returns the total (or per dataset) sparsness, not the user-wise one.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#collection of evaluation metrics for later use</span>
+<span class="k">def</span> <span class="nf">ranking_metrics</span><span class="p">(</span>
+    <span class="n">data_size</span><span class="p">,</span>
+    <span class="n">data_true</span><span class="p">,</span>
+    <span class="n">data_pred</span><span class="p">,</span>
+    <span class="n">time_train</span><span class="p">,</span>
+    <span class="n">time_test</span><span class="p">,</span>
+    <span class="n">K</span>
+<span class="p">):</span>
+
+    <span class="n">eval_map</span> <span class="o">=</span> <span class="n">map_at_k</span><span class="p">(</span><span class="n">data_true</span><span class="p">,</span> <span class="n">data_pred</span><span class="p">,</span> <span class="n">col_user</span><span class="o">=</span><span class="s2">&quot;userID&quot;</span><span class="p">,</span> <span class="n">col_item</span><span class="o">=</span><span class="s2">&quot;movieID&quot;</span><span class="p">,</span> 
+                    <span class="n">col_rating</span><span class="o">=</span><span class="s2">&quot;rating&quot;</span><span class="p">,</span> <span class="n">col_prediction</span><span class="o">=</span><span class="s2">&quot;prediction&quot;</span><span class="p">,</span> 
+                    <span class="n">relevancy_method</span><span class="o">=</span><span class="s2">&quot;top_k&quot;</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span> <span class="n">K</span><span class="p">)</span>
+
+    <span class="n">eval_ndcg</span> <span class="o">=</span> <span class="n">ndcg_at_k</span><span class="p">(</span><span class="n">data_true</span><span class="p">,</span> <span class="n">data_pred</span><span class="p">,</span> <span class="n">col_user</span><span class="o">=</span><span class="s2">&quot;userID&quot;</span><span class="p">,</span> <span class="n">col_item</span><span class="o">=</span><span class="s2">&quot;movieID&quot;</span><span class="p">,</span> 
+                      <span class="n">col_rating</span><span class="o">=</span><span class="s2">&quot;rating&quot;</span><span class="p">,</span> <span class="n">col_prediction</span><span class="o">=</span><span class="s2">&quot;prediction&quot;</span><span class="p">,</span> 
+                      <span class="n">relevancy_method</span><span class="o">=</span><span class="s2">&quot;top_k&quot;</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span> <span class="n">K</span><span class="p">)</span>
+
+    <span class="n">eval_precision</span> <span class="o">=</span> <span class="n">precision_at_k</span><span class="p">(</span><span class="n">data_true</span><span class="p">,</span> <span class="n">data_pred</span><span class="p">,</span> <span class="n">col_user</span><span class="o">=</span><span class="s2">&quot;userID&quot;</span><span class="p">,</span> <span class="n">col_item</span><span class="o">=</span><span class="s2">&quot;movieID&quot;</span><span class="p">,</span> 
+                               <span class="n">col_rating</span><span class="o">=</span><span class="s2">&quot;rating&quot;</span><span class="p">,</span> <span class="n">col_prediction</span><span class="o">=</span><span class="s2">&quot;prediction&quot;</span><span class="p">,</span> 
+                               <span class="n">relevancy_method</span><span class="o">=</span><span class="s2">&quot;top_k&quot;</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span> <span class="n">K</span><span class="p">)</span>
+
+    <span class="n">eval_recall</span> <span class="o">=</span> <span class="n">recall_at_k</span><span class="p">(</span><span class="n">data_true</span><span class="p">,</span> <span class="n">data_pred</span><span class="p">,</span> <span class="n">col_user</span><span class="o">=</span><span class="s2">&quot;userID&quot;</span><span class="p">,</span> <span class="n">col_item</span><span class="o">=</span><span class="s2">&quot;movieID&quot;</span><span class="p">,</span> 
+                          <span class="n">col_rating</span><span class="o">=</span><span class="s2">&quot;rating&quot;</span><span class="p">,</span> <span class="n">col_prediction</span><span class="o">=</span><span class="s2">&quot;prediction&quot;</span><span class="p">,</span> 
+                          <span class="n">relevancy_method</span><span class="o">=</span><span class="s2">&quot;top_k&quot;</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span> <span class="n">K</span><span class="p">)</span>
+
+    
+    <span class="n">df_result</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
+        <span class="p">{</span>   <span class="s2">&quot;Dataset&quot;</span><span class="p">:</span> <span class="n">data_size</span><span class="p">,</span>
+            <span class="s2">&quot;K&quot;</span><span class="p">:</span> <span class="n">K</span><span class="p">,</span>
+            <span class="s2">&quot;MAP&quot;</span><span class="p">:</span> <span class="n">eval_map</span><span class="p">,</span>
+            <span class="s2">&quot;nDCG@k&quot;</span><span class="p">:</span> <span class="n">eval_ndcg</span><span class="p">,</span>
+            <span class="s2">&quot;Precision@k&quot;</span><span class="p">:</span> <span class="n">eval_precision</span><span class="p">,</span>
+            <span class="s2">&quot;Recall@k&quot;</span><span class="p">:</span> <span class="n">eval_recall</span><span class="p">,</span>
+            <span class="s2">&quot;Train time (s)&quot;</span><span class="p">:</span> <span class="n">time_train</span><span class="p">,</span>
+            <span class="s2">&quot;Test time (s)&quot;</span><span class="p">:</span> <span class="n">time_test</span>
+        <span class="p">},</span> 
+        <span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="p">)</span>
+    
+    <span class="k">return</span> <span class="n">df_result</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="tex2jax_ignore mathjax_ignore section" id="model-application-performance-and-analysis-of-the-results">
+<h1>4. Model application, performance and analysis of the results<a class="headerlink" href="#model-application-performance-and-analysis-of-the-results" title="Permalink to this headline">¶</a></h1>
+<p>The model has been implemented as a Tensorflow (TF) class with the TF session hidden inside the <code class="docutils literal notranslate"><span class="pre">fit()</span></code> method, so that no explicit call is needed. The algorithm operates in three different steps:</p>
+<ul class="simple">
+<li><p>Model initialization: This is where we tell TF how to build the computational graph. The main parameters to specify are the number of hidden units, the number of training epochs and the minibatch size.</p></li>
+<li><p>Model fit: This is where we train the model on the data. The method takes two arguments: the training and test set matrices. Note that the model is trained <strong>only</strong> on the training set, the test set is used to display the test set accuracy of the trained model, that in turn is an estimation of the generazation capabilities of the algorithm. It is generally useful to look at these quantities to have a first idea of the optimization behaviour.</p></li>
+<li><p>Model prediction: This is where we generate ratings for the unseen items. Once the model has been trained and we are satisfied with its overall accuracy, we sample new ratings from the learned distribution. In particular, we extract the top_k (e.g. 10) most relevant recommendations according to some predefined scorea. The prediction is then returned in a dataframe format ready to be analysed and deployed.</p></li>
+</ul>
+<div class="section" id="m-dataset">
+<h2>4.1 1m Dataset<a class="headerlink" href="#m-dataset" title="Permalink to this headline">¶</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#First we initialize the model class</span>
+<span class="n">model_1m</span> <span class="o">=</span> <span class="n">RBM</span><span class="p">(</span><span class="n">hidden_units</span><span class="o">=</span> <span class="mi">1200</span><span class="p">,</span> <span class="n">training_epoch</span> <span class="o">=</span> <span class="mi">30</span><span class="p">,</span> <span class="n">minibatch_size</span><span class="o">=</span> <span class="mi">350</span><span class="p">,</span> <span class="n">with_metrics</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TensorFlow version: 1.12.0
+</pre></div>
+</div>
+</div>
+</div>
+<p>Note that the first time the fit method is called it may take longer to return the result. This is due to the fact that TF needs to initialized the GPU session. You will notice that this is not the case when training the algorithm the second or more times. As for the <code class="docutils literal notranslate"><span class="pre">minibatch_size</span></code>, you would like to choose a value that gives you a good generalization error while mantaining a reasonable running time. The lower the size, the closer you get to stochastic gradient descent, but training takes longer. A big size value (say 1/2 of batch size) will speed up training but will increase the generalization error.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#Model Fit</span>
+<span class="n">train_time</span> <span class="o">=</span> <span class="n">model_1m</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">Xtr_1m</span><span class="p">,</span> <span class="n">Xtst_1m</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Creating the computational graph
+Initialize Gibbs protocol
+training epoch 0 rmse 0.961369
+training epoch 10 rmse 0.902065
+training epoch 20 rmse 0.864718
+training epoch 30 rmse 0.848415
+done training, Training time 10.9566452
+Train set accuracy 0.3561482
+Test set accuracy 0.3516242
+</pre></div>
+</div>
+<img alt="../../_images/rbm_deep_dive_27_1.png" src="../../_images/rbm_deep_dive_27_1.png" />
+</div>
+</div>
+<p>During training, we evauate the root mean squared error to have an idea of how learning is proceeding. Remember that in the RBM this is not the quantity being minimized, but plotting the rmse per epoch gives us a rough understanding of how learning is proceeding and how we should adjust the hyper parameters. Generally, we would like to see the rmse decrease monotonically as a function of the learning epochs. Even though you may be using an automated hyper parameter optimization method, I strongly suggest to spend some time to manually inspect the learning process; this will give you an idea of the value range to expect for the hyperparameters. Finally, note that most automated hyperparameters search methods are optimized for supervised learning, so they may not work as well for unsupervised tasks.</p>
+<p>The two final scores are the train/test mean average accuracies across the all set together with their difference. This has been defined as:</p>
+<div class="math notranslate nohighlight">
+\[ AC = \frac{1}{m} \sum_{\mu=1}^{m} \sum_{i=1}^{N_v} \frac{1}{s_i} \, I(v=vp)_{\mu,i}, \]</div>
+<p>where <span class="math notranslate nohighlight">\(m\)</span> = total number of users, <span class="math notranslate nohighlight">\(N_v\)</span> = Total number of items <span class="math notranslate nohighlight">\(\equiv\)</span> number of visible units and <span class="math notranslate nohighlight">\(s_i\)</span>= the number of non-zero elements per row, i.e. the per user total number of ratings.
+Remember that for a model to generalize well, the difference between train and test metrics should not be too big. In order to visualize these online metrics, choose <code class="docutils literal notranslate"><span class="pre">with_metrics</span> <span class="pre">=True</span></code> in the <code class="docutils literal notranslate"><span class="pre">RBM()</span></code> model function. When evaluating metrics, the model takes a bit longer to run, but you need to do so only in the exploratory phase of your work</p>
+<div class="section" id="model-evaluation">
+<h3>4.1.2 Model Evaluation<a class="headerlink" href="#model-evaluation" title="Permalink to this headline">¶</a></h3>
+<p>To evaluate the model performance and compare it against the other algorithms in this repository, we use the <code class="docutils literal notranslate"><span class="pre">recommend_k_items()</span></code> method. Note that we pass ‘maps’ as a second argument in order to return the correct user/item IDs in a pandas dataframe format.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#number of top score elements to be recommended  </span>
+<span class="n">K</span> <span class="o">=</span> <span class="mi">10</span>
+
+<span class="c1">#Model prediction on the test set Xtst. </span>
+<span class="n">top_k_1m</span><span class="p">,</span> <span class="n">test_time</span> <span class="o">=</span>  <span class="n">model_1m</span><span class="o">.</span><span class="n">recommend_k_items</span><span class="p">(</span><span class="n">Xtst_1m</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/anaconda/envs/reco_full/lib/python3.6/site-packages/numpy/core/fromnumeric.py:83: RuntimeWarning: invalid value encountered in reduce
+  return ufunc.reduce(obj, axis, dtype, out, **passkwargs)
+Extracting top 10 elements
+Done recommending items, time 1.7780292
+</pre></div>
+</div>
+</div>
+</div>
+<p>top_k returns the first K elements having the highest recommendation score. Here the recommendation score is evaluated by multiplying the predicted rating by its probability, i.e. the confidence the algorithm has about its output. So if we have two items both with predicted ratings 5, but one with probability 0.5 and the other 0.9, the latter will be considered more relevant. In order to inspect the prediction and use the evaluation metrics in this repository, we convert both top_k and Xtst to pandas dataframe format:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">top_k_df_1m</span> <span class="o">=</span> <span class="n">am1m</span><span class="o">.</span><span class="n">map_back_sparse</span><span class="p">(</span><span class="n">top_k_1m</span><span class="p">,</span> <span class="n">kind</span> <span class="o">=</span> <span class="s1">&#39;prediction&#39;</span><span class="p">)</span>
+<span class="n">test_df_1m</span> <span class="o">=</span> <span class="n">am1m</span><span class="o">.</span><span class="n">map_back_sparse</span><span class="p">(</span><span class="n">Xtst_1m</span><span class="p">,</span> <span class="n">kind</span> <span class="o">=</span> <span class="s1">&#39;ratings&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">rating_1m</span><span class="o">=</span> <span class="n">ranking_metrics</span><span class="p">(</span>
+    <span class="n">data_size</span> <span class="o">=</span> <span class="s2">&quot;mv 1m&quot;</span><span class="p">,</span>
+    <span class="n">data_true</span> <span class="o">=</span><span class="n">test_df_1m</span><span class="p">,</span>
+    <span class="n">data_pred</span> <span class="o">=</span><span class="n">top_k_df_1m</span><span class="p">,</span>
+    <span class="n">time_train</span><span class="o">=</span><span class="n">train_time</span><span class="p">,</span>
+    <span class="n">time_test</span> <span class="o">=</span><span class="n">test_time</span><span class="p">,</span>
+    <span class="n">K</span> <span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+
+<span class="n">rating_1m</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Dataset</th>
+      <th>K</th>
+      <th>MAP</th>
+      <th>nDCG@k</th>
+      <th>Precision@k</th>
+      <th>Recall@k</th>
+      <th>Train time (s)</th>
+      <th>Test time (s)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>mv 1m</td>
+      <td>10</td>
+      <td>0.379384</td>
+      <td>0.844124</td>
+      <td>0.747103</td>
+      <td>0.396285</td>
+      <td>10.956645</td>
+      <td>1.778029</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>Formally, one should train the model until the cost function becomes flat but often an “early stopping” does the job. In the above example, we decided to train the algorithm to achieve higher ranking metrics. A faster optimization will do as well, but it will decrease the ranking metrics.</p>
+</div>
+</div>
+<div class="section" id="k-dataset">
+<h2>4.2 100k Dataset<a class="headerlink" href="#k-dataset" title="Permalink to this headline">¶</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#100k</span>
+<span class="n">model_100k</span> <span class="o">=</span> <span class="n">RBM</span><span class="p">(</span><span class="n">hidden_units</span><span class="o">=</span> <span class="mi">600</span><span class="p">,</span> <span class="n">training_epoch</span> <span class="o">=</span> <span class="mi">30</span><span class="p">,</span> <span class="n">minibatch_size</span><span class="o">=</span> <span class="mi">60</span><span class="p">,</span><span class="n">keep_prob</span><span class="o">=</span> <span class="mf">0.9</span><span class="p">,</span> <span class="n">with_metrics</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TensorFlow version: 1.12.0
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">train_time</span> <span class="o">=</span> <span class="n">model_100k</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">Xtr_100k</span><span class="p">,</span> <span class="n">Xtst_100k</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Creating the computational graph
+Initialize Gibbs protocol
+training epoch 0 rmse 0.943123
+training epoch 10 rmse 0.807337
+training epoch 20 rmse 0.786743
+training epoch 30 rmse 0.779240
+done training, Training time 2.4838602
+Train set accuracy 0.3806472
+Test set accuracy 0.3675472
+</pre></div>
+</div>
+<img alt="../../_images/rbm_deep_dive_37_1.png" src="../../_images/rbm_deep_dive_37_1.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#Model prediction on the test set Xtst. </span>
+<span class="n">top_k_100k</span><span class="p">,</span> <span class="n">test_time</span> <span class="o">=</span>  <span class="n">model_100k</span><span class="o">.</span><span class="n">recommend_k_items</span><span class="p">(</span><span class="n">Xtst_100k</span><span class="p">)</span>
+
+<span class="c1">#to df</span>
+<span class="n">top_k_df_100k</span> <span class="o">=</span> <span class="n">am100k</span><span class="o">.</span><span class="n">map_back_sparse</span><span class="p">(</span><span class="n">top_k_100k</span><span class="p">,</span> <span class="n">kind</span> <span class="o">=</span> <span class="s1">&#39;prediction&#39;</span><span class="p">)</span>
+<span class="n">test_df_100k</span> <span class="o">=</span> <span class="n">am100k</span><span class="o">.</span><span class="n">map_back_sparse</span><span class="p">(</span><span class="n">Xtst_100k</span><span class="p">,</span> <span class="n">kind</span> <span class="o">=</span> <span class="s1">&#39;ratings&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Extracting top 10 elements
+Done recommending items, time 0.1804592
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="id1">
+<h3>4.2.1 Model evaluation<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">eval_100k</span><span class="o">=</span> <span class="n">ranking_metrics</span><span class="p">(</span>
+    <span class="n">data_size</span> <span class="o">=</span> <span class="s2">&quot;mv 100k&quot;</span><span class="p">,</span>
+    <span class="n">data_true</span> <span class="o">=</span><span class="n">test_df_100k</span><span class="p">,</span>
+    <span class="n">data_pred</span> <span class="o">=</span><span class="n">top_k_df_100k</span><span class="p">,</span>
+    <span class="n">time_train</span><span class="o">=</span><span class="n">train_time</span><span class="p">,</span>
+    <span class="n">time_test</span> <span class="o">=</span><span class="n">test_time</span><span class="p">,</span>
+    <span class="n">K</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span> 
+
+<span class="n">eval_100k</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Dataset</th>
+      <th>K</th>
+      <th>MAP</th>
+      <th>nDCG@k</th>
+      <th>Precision@k</th>
+      <th>Recall@k</th>
+      <th>Train time (s)</th>
+      <th>Test time (s)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>mv 100k</td>
+      <td>10</td>
+      <td>0.40663</td>
+      <td>0.818305</td>
+      <td>0.698621</td>
+      <td>0.432109</td>
+      <td>2.48386</td>
+      <td>0.180459</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+</div>
+</div>
+</div>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "reco_full"
+        },
+        kernelOptions: {
+            kernelName: "reco_full",
+            path: "./examples/02_model_collaborative_filtering"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'reco_full'</script>
+
+              </div>
+              
+        
+            
+
+
+
+<div class='prev-next-bottom'>
+    
+
+</div>
+        
+        </div>
+    </div>
+    <footer class="footer">
+    <div class="container">
+      <p>
+        
+          By The Jupyter Book community<br/>
+        
+            &copy; Copyright 2021.<br/>
+      </p>
+    </div>
+  </footer>
+</main>
+
+
+      </div>
+    </div>
+  
+  <script src="../../_static/js/index.1c5a1a01449ed65a7b51.js"></script>
+
+  
+  </body>
+</html>

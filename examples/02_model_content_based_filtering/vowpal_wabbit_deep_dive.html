@@ -1,0 +1,1273 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vowpal Wabbit Deep Dive &#8212; &lt;h1 style=&#34;font-size:2em;text-align:center;color:#FF5733&#34;&gt;Recommenders&lt;/h1&gt;</title>
+    
+  <link href="../../_static/css/theme.css" rel="stylesheet" />
+  <link href="../../_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
+
+    
+  <link rel="stylesheet"
+    href="../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+
+    
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-book-theme.css?digest=c3fdc42140077d1ad13ad2f1588a4309" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/tabs.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    
+  <link rel="preload" as="script" href="../../_static/js/index.1c5a1a01449ed65a7b51.js">
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/togglebutton.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <script src="../../_static/tabs.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../../_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script>
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="../../_static/sphinx-thebe.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en" />
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="../../index.html">
+      
+      
+      
+      <h1 class="site-logo" id="site-title"><h1 style="font-size:2em;text-align:center;color:#FF5733">Recommenders</h1></h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="../../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        <p class="caption" role="heading">
+ <span class="caption-text">
+  Getting Started Notebooks
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../00_quick_start/als_movielens.html">
+   Running ALS on MovieLens (PySpark)
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../00_quick_start/ncf_movielens.html">
+   Neural Collaborative Filtering on MovieLens dataset.
+  </a>
+ </li>
+</ul>
+
+    </div>
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="topbar container-xl fixed-top">
+    <div class="topbar-contents row">
+        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
+        <div class="col pl-md-4 topbar-main">
+            
+            <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+                data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+                aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
+                title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+                <i class="fas fa-bars"></i>
+                <i class="fas fa-arrow-left"></i>
+                <i class="fas fa-arrow-up"></i>
+            </button>
+            
+            
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
+            class="fas fa-download"></i></button>
+
+    <div class="dropdown-buttons">
+        <!-- ipynb file if we had a myst markdown file -->
+        
+        <!-- Download raw file -->
+        <a class="dropdown-buttons" href="../../_sources/examples/02_model_content_based_filtering/vowpal_wabbit_deep_dive.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
+                data-placement="left">.ipynb</button></a>
+        <!-- Download PDF via print -->
+        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
+            onClick="window.print()" data-toggle="tooltip" data-placement="left">.pdf</button>
+    </div>
+</div>
+
+            <!-- Source interaction buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
+    <div class="dropdown-buttons sourcebuttons">
+        <a class="repository-button"
+            href="https://github.com/microsoft/genalog"><button type="button" class="btn btn-secondary topbarbtn"
+                data-toggle="tooltip" data-placement="left" title="Source repository"><i
+                    class="fab fa-github"></i>repository</button></a>
+        <a class="issues-button"
+            href="https://github.com/microsoft/genalog/issues/new?title=Issue%20on%20page%20%2Fexamples/02_model_content_based_filtering/vowpal_wabbit_deep_dive.html&body=Your%20issue%20content%20here."><button
+                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
+                title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
+        
+    </div>
+</div>
+
+            <!-- Full screen (wrap in <a> to have style consistency -->
+
+<a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+        data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+        title="Fullscreen mode"><i
+            class="fas fa-expand"></i></button></a>
+
+            <!-- Launch buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Launch interactive content"><i class="fas fa-rocket"></i></button>
+    <div class="dropdown-buttons">
+        
+        <a class="binder-button" href="https://mybinder.org/v2/gh/microsoft/genalog/main?urlpath=tree/docs/genalog_docs/examples/02_model_content_based_filtering/vowpal_wabbit_deep_dive.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Launch Binder" data-toggle="tooltip"
+                data-placement="left"><img class="binder-button-logo"
+                    src="../../_static/images/logo_binder.svg"
+                    alt="Interact on binder">Binder</button></a>
+        
+        
+        
+        
+    </div>
+</div>
+
+        </div>
+
+        <!-- Table of contents -->
+        <div class="d-none d-md-block col-md-2 bd-toc show">
+            
+            <div class="tocsection onthispage pt-5 pb-3">
+                <i class="fas fa-list"></i> Contents
+            </div>
+            <nav id="bd-toc-nav" aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#">
+   Vowpal Wabbit Deep Dive
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#global-setup">
+   0. Global Setup
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#load-transform-data">
+   1. Load &amp; Transform Data
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#regression-based-recommendations">
+   2. Regression Based Recommendations
+  </a>
+  <ul class="visible nav section-nav flex-column">
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#linear-regression">
+     2.1 Linear Regression
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#linear-regression-with-interaction-features">
+     2.2 Linear Regression with Interaction Features
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#multinomial-logistic-regression">
+     2.3 Multinomial Logistic Regression
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#logistic-regression">
+     2.4 Logistic Regression
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#matrix-factorization-based-recommendations">
+   3. Matrix Factorization Based Recommendations
+  </a>
+  <ul class="visible nav section-nav flex-column">
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#singular-value-decomposition-based-matrix-factorization">
+     3.1. Singular Value Decomposition Based Matrix Factorization
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#factorization-machine-based-matrix-factorization">
+     3.2. Factorization Machine Based Matrix Factorization
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#conclusion">
+   4. Conclusion
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#scoring">
+   5. Scoring
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#cleanup">
+   6. Cleanup
+  </a>
+  <ul class="visible nav section-nav flex-column">
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#references">
+     References
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+        
+              <div>
+                
+  <p><i>Copyright (c) Microsoft Corporation. All rights reserved.</i></p>
+<p><i>Licensed under the MIT License.</i></p>
+<div class="tex2jax_ignore mathjax_ignore section" id="vowpal-wabbit-deep-dive">
+<h1>Vowpal Wabbit Deep Dive<a class="headerlink" href="#vowpal-wabbit-deep-dive" title="Permalink to this headline">¶</a></h1>
+<center>
+<img src="https://github.com/VowpalWabbit/vowpal_wabbit/blob/master/logo_assets/vowpal-wabbits-github-logo.png?raw=true" height="30%" width="30%" alt="Vowpal Wabbit">
+</center>
+<p><a class="reference external" href="https://github.com/VowpalWabbit/vowpal_wabbit">Vowpal Wabbit</a> is a fast online machine learning library that implements several algorithms relevant to the recommendation use case.</p>
+<p>The main advantage of Vowpal Wabbit (VW) is that training is done in an online fashion typically using Stochastic Gradient Descent or similar variants, which allows it to scale well to very large datasets. Additionally, it is optimized to run very quickly and can support distributed training scenarios for extremely large datasets.</p>
+<p>VW is best applied to problems where the dataset is too large to fit into memory but can be stored on disk in a single node. Though distributed training is possible with additional setup and configuration of the nodes. The kinds of problems that VW handles well mostly fall into the supervised classification domain of machine learning (Linear Regression, Logistic Regression, Multiclass Classification, Support Vector Machines, Simple Neural Nets). It also supports Matrix Factorization approaches and Latent Dirichlet Allocation, as well as a few other algorithms (see the <a class="reference external" href="https://github.com/VowpalWabbit/vowpal_wabbit/wiki">wiki</a> for more information).</p>
+<p>A good example of a typical deployment use case is a Real Time Bidding scenario, where an auction to place an ad for a user is being decided in a matter of milliseconds. Feature information about the user and items must be extracted and passed into a model to predict likelihood of click (or other interaction) in short order. And if the user and context features are constantly changing (e.g. user browser and local time of day) it may be infeasible to score every possible input combination before hand. This is where VW provides value, as a platform to explore various algorithms offline to train a highly accurate model on a large set of historical data then deploy the model into production so it can generate rapid predictions in real time. Of course this isn’t the only manner VW can be deployed, it is also possible to use it entirely online where the model is constantly updating, or use active learning approaches, or work completely offline in a pre-scoring mode.</p>
+<h3>Vowpal Wabbit for Recommendations</h3>
+<p>In this notebook we demonstrate how to use the VW library to generate recommendations on the <a class="reference external" href="https://grouplens.org/datasets/movielens/">MovieLens</a> dataset.</p>
+<p>Several things are worth noting in how VW is being used in this notebook:</p>
+<p>By leveraging an Azure Data Science Virtual Machine (<a class="reference external" href="https://azure.microsoft.com/en-us/services/virtual-machines/data-science-virtual-machines/">DSVM</a>), VW comes pre-installed and can be used directly from the command line. If you are not using a DSVM you must install vw yourself.</p>
+<p>There are also python bindings to allow VW use within a python environment and even a wrapper conforming to the SciKit-Learn Estimator API. However, the python bindings must be installed as an additional python package with Boost dependencies, so for simplicity’s sake execution of VW is done via a subprocess call mimicking what would happen from the command line execution of the model.</p>
+<p>VW expects a specific <a class="reference external" href="https://github.com/VowpalWabbit/vowpal_wabbit/wiki/Input-format">input format</a>, in this notebook to_vw() is a convenience function that converts the standard movielens dataset into the required data format. Datafiles are then written to disk and passed to VW for training.</p>
+<p>The examples shown are to demonstrate functional capabilities of VW not to indicate performance advantages of different approaches. There are several hyper-parameters (e.g. learning rate and regularization terms) that can greatly impact performance of VW models which can be adjusted using <a class="reference external" href="https://github.com/VowpalWabbit/vowpal_wabbit/wiki/Command-Line-Arguments">command line options</a>. To properly compare approaches it is helpful to learn about and tune these parameters on the relevant dataset.</p>
+</div>
+<div class="tex2jax_ignore mathjax_ignore section" id="global-setup">
+<h1>0. Global Setup<a class="headerlink" href="#global-setup" title="Permalink to this headline">¶</a></h1>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sys</span>
+
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">from</span> <span class="nn">subprocess</span> <span class="kn">import</span> <span class="n">run</span>
+<span class="kn">from</span> <span class="nn">tempfile</span> <span class="kn">import</span> <span class="n">TemporaryDirectory</span>
+<span class="kn">from</span> <span class="nn">time</span> <span class="kn">import</span> <span class="n">process_time</span>
+
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">papermill</span> <span class="k">as</span> <span class="nn">pm</span>
+<span class="kn">import</span> <span class="nn">scrapbook</span> <span class="k">as</span> <span class="nn">sb</span>
+
+<span class="kn">from</span> <span class="nn">recommenders.utils.notebook_utils</span> <span class="kn">import</span> <span class="n">is_jupyter</span>
+<span class="kn">from</span> <span class="nn">recommenders.datasets.movielens</span> <span class="kn">import</span> <span class="n">load_pandas_df</span>
+<span class="kn">from</span> <span class="nn">recommenders.datasets.python_splitters</span> <span class="kn">import</span> <span class="n">python_random_split</span>
+<span class="kn">from</span> <span class="nn">recommenders.evaluation.python_evaluation</span> <span class="kn">import</span> <span class="p">(</span><span class="n">rmse</span><span class="p">,</span> <span class="n">mae</span><span class="p">,</span> <span class="n">exp_var</span><span class="p">,</span> <span class="n">rsquared</span><span class="p">,</span> <span class="n">get_top_k_items</span><span class="p">,</span>
+                                                     <span class="n">map_at_k</span><span class="p">,</span> <span class="n">ndcg_at_k</span><span class="p">,</span> <span class="n">precision_at_k</span><span class="p">,</span> <span class="n">recall_at_k</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;System version: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">version</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Pandas version: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">__version__</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>System version: 3.6.8 |Anaconda, Inc.| (default, Dec 30 2018, 01:22:34) 
+[GCC 7.3.0]
+Pandas version: 0.24.1
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">to_vw</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">output</span><span class="p">,</span> <span class="n">logistic</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Convert Pandas DataFrame to vw input format</span>
+<span class="sd">    Args:</span>
+<span class="sd">        df (pd.DataFrame): input DataFrame</span>
+<span class="sd">        output (str): path to output file</span>
+<span class="sd">        logistic (bool): flag to convert label to logistic value</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">output</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="n">tmp</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
+
+        <span class="c1"># we need to reset the rating type to an integer to simplify the vw formatting</span>
+        <span class="n">tmp</span><span class="p">[</span><span class="s1">&#39;rating&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">tmp</span><span class="p">[</span><span class="s1">&#39;rating&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;int64&#39;</span><span class="p">)</span>
+        
+        <span class="c1"># convert rating to binary value</span>
+        <span class="k">if</span> <span class="n">logistic</span><span class="p">:</span>
+            <span class="n">tmp</span><span class="p">[</span><span class="s1">&#39;rating&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">tmp</span><span class="p">[</span><span class="s1">&#39;rating&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="mi">1</span> <span class="k">if</span> <span class="n">x</span> <span class="o">&gt;=</span> <span class="mi">3</span> <span class="k">else</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+        
+        <span class="c1"># convert each row to VW input format (https://github.com/VowpalWabbit/vowpal_wabbit/wiki/Input-format)</span>
+        <span class="c1"># [label] [tag]|[user namespace] [user id feature] |[item namespace] [movie id feature]</span>
+        <span class="c1"># label is the true rating, tag is a unique id for the example just used to link predictions to truth</span>
+        <span class="c1"># user and item namespaces separate the features to support interaction features through command line options</span>
+        <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">tmp</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
+            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{rating:d}</span><span class="s1"> </span><span class="si">{index:d}</span><span class="s1">|user </span><span class="si">{userID:d}</span><span class="s1"> |item </span><span class="si">{itemID:d}</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format_map</span><span class="p">(</span><span class="n">row</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">run_vw</span><span class="p">(</span><span class="n">train_params</span><span class="p">,</span> <span class="n">test_params</span><span class="p">,</span> <span class="n">test_data</span><span class="p">,</span> <span class="n">prediction_path</span><span class="p">,</span> <span class="n">logistic</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Convenience function to train, test, and show metrics of interest</span>
+<span class="sd">    Args:</span>
+<span class="sd">        train_params (str): vw training parameters</span>
+<span class="sd">        test_params (str): vw testing parameters</span>
+<span class="sd">        test_data (pd.dataFrame): test data</span>
+<span class="sd">        prediction_path (str): path to vw prediction output</span>
+<span class="sd">        logistic (bool): flag to convert label to logistic value</span>
+<span class="sd">    Returns:</span>
+<span class="sd">        (dict): metrics and timing information</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># train model</span>
+    <span class="n">train_start</span> <span class="o">=</span> <span class="n">process_time</span><span class="p">()</span>
+    <span class="n">run</span><span class="p">(</span><span class="n">train_params</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">),</span> <span class="n">check</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">train_stop</span> <span class="o">=</span> <span class="n">process_time</span><span class="p">()</span>
+    
+    <span class="c1"># test model</span>
+    <span class="n">test_start</span> <span class="o">=</span> <span class="n">process_time</span><span class="p">()</span>
+    <span class="n">run</span><span class="p">(</span><span class="n">test_params</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">),</span> <span class="n">check</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">test_stop</span> <span class="o">=</span> <span class="n">process_time</span><span class="p">()</span>
+    
+    <span class="c1"># read in predictions</span>
+    <span class="n">pred_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">prediction_path</span><span class="p">,</span> <span class="n">delim_whitespace</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;prediction&#39;</span><span class="p">],</span> <span class="n">index_col</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">test_data</span><span class="p">)</span>
+    <span class="n">pred_df</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="s2">&quot;rating&quot;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="n">test_df</span> <span class="o">=</span> <span class="n">test_data</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">logistic</span><span class="p">:</span>
+        <span class="c1"># make the true label binary so that the metrics are captured correctly</span>
+        <span class="n">test_df</span><span class="p">[</span><span class="s1">&#39;rating&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">test</span><span class="p">[</span><span class="s1">&#39;rating&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="mi">1</span> <span class="k">if</span> <span class="n">x</span> <span class="o">&gt;=</span> <span class="mi">3</span> <span class="k">else</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="c1"># ensure results are integers in correct range</span>
+        <span class="n">pred_df</span><span class="p">[</span><span class="s1">&#39;prediction&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pred_df</span><span class="p">[</span><span class="s1">&#39;prediction&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">min</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="nb">round</span><span class="p">(</span><span class="n">x</span><span class="p">)))))</span>
+
+    <span class="c1"># calculate metrics</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+    <span class="n">result</span><span class="p">[</span><span class="s1">&#39;RMSE&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">rmse</span><span class="p">(</span><span class="n">test_df</span><span class="p">,</span> <span class="n">pred_df</span><span class="p">)</span>
+    <span class="n">result</span><span class="p">[</span><span class="s1">&#39;MAE&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">mae</span><span class="p">(</span><span class="n">test_df</span><span class="p">,</span> <span class="n">pred_df</span><span class="p">)</span>
+    <span class="n">result</span><span class="p">[</span><span class="s1">&#39;R2&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">rsquared</span><span class="p">(</span><span class="n">test_df</span><span class="p">,</span> <span class="n">pred_df</span><span class="p">)</span>
+    <span class="n">result</span><span class="p">[</span><span class="s1">&#39;Explained Variance&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">exp_var</span><span class="p">(</span><span class="n">test_df</span><span class="p">,</span> <span class="n">pred_df</span><span class="p">)</span>
+    <span class="n">result</span><span class="p">[</span><span class="s1">&#39;Train Time (ms)&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">train_stop</span> <span class="o">-</span> <span class="n">train_start</span><span class="p">)</span> <span class="o">*</span> <span class="mi">1000</span>
+    <span class="n">result</span><span class="p">[</span><span class="s1">&#39;Test Time (ms)&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">test_stop</span> <span class="o">-</span> <span class="n">test_start</span><span class="p">)</span> <span class="o">*</span> <span class="mi">1000</span>
+    
+    <span class="k">return</span> <span class="n">result</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># create temp directory to maintain data files</span>
+<span class="n">tmpdir</span> <span class="o">=</span> <span class="n">TemporaryDirectory</span><span class="p">()</span>
+
+<span class="n">model_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">tmpdir</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="s1">&#39;vw.model&#39;</span><span class="p">)</span>
+<span class="n">saved_model_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">tmpdir</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="s1">&#39;vw_saved.model&#39;</span><span class="p">)</span>
+<span class="n">train_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">tmpdir</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="s1">&#39;train.dat&#39;</span><span class="p">)</span>
+<span class="n">test_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">tmpdir</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="s1">&#39;test.dat&#39;</span><span class="p">)</span>
+<span class="n">train_logistic_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">tmpdir</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="s1">&#39;train_logistic.dat&#39;</span><span class="p">)</span>
+<span class="n">test_logistic_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">tmpdir</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="s1">&#39;test_logistic.dat&#39;</span><span class="p">)</span>
+<span class="n">prediction_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">tmpdir</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="s1">&#39;prediction.dat&#39;</span><span class="p">)</span>
+<span class="n">all_test_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">tmpdir</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="s1">&#39;new_test.dat&#39;</span><span class="p">)</span>
+<span class="n">all_prediction_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">tmpdir</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="s1">&#39;new_prediction.dat&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="tex2jax_ignore mathjax_ignore section" id="load-transform-data">
+<h1>1. Load &amp; Transform Data<a class="headerlink" href="#load-transform-data" title="Permalink to this headline">¶</a></h1>
+<div class="cell tag_parameters docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Select MovieLens data size: 100k, 1m, 10m, or 20m</span>
+<span class="n">MOVIELENS_DATA_SIZE</span> <span class="o">=</span> <span class="s1">&#39;100k&#39;</span>
+<span class="n">TOP_K</span> <span class="o">=</span> <span class="mi">10</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># load movielens data </span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">load_pandas_df</span><span class="p">(</span><span class="n">MOVIELENS_DATA_SIZE</span><span class="p">)</span>
+
+<span class="c1"># split data to train and test sets, default values take 75% of each users ratings as train, and 25% as test</span>
+<span class="n">train</span><span class="p">,</span> <span class="n">test</span> <span class="o">=</span> <span class="n">python_random_split</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="mf">0.75</span><span class="p">)</span>
+
+<span class="c1"># save train and test data in vw format</span>
+<span class="n">to_vw</span><span class="p">(</span><span class="n">df</span><span class="o">=</span><span class="n">train</span><span class="p">,</span> <span class="n">output</span><span class="o">=</span><span class="n">train_path</span><span class="p">)</span>
+<span class="n">to_vw</span><span class="p">(</span><span class="n">df</span><span class="o">=</span><span class="n">test</span><span class="p">,</span> <span class="n">output</span><span class="o">=</span><span class="n">test_path</span><span class="p">)</span>
+
+<span class="c1"># save data for logistic regression (requires adjusting the label)</span>
+<span class="n">to_vw</span><span class="p">(</span><span class="n">df</span><span class="o">=</span><span class="n">train</span><span class="p">,</span> <span class="n">output</span><span class="o">=</span><span class="n">train_logistic_path</span><span class="p">,</span> <span class="n">logistic</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">to_vw</span><span class="p">(</span><span class="n">df</span><span class="o">=</span><span class="n">test</span><span class="p">,</span> <span class="n">output</span><span class="o">=</span><span class="n">test_logistic_path</span><span class="p">,</span> <span class="n">logistic</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4.93MB [00:00, 6.18MB/s]                            
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="tex2jax_ignore mathjax_ignore section" id="regression-based-recommendations">
+<h1>2. Regression Based Recommendations<a class="headerlink" href="#regression-based-recommendations" title="Permalink to this headline">¶</a></h1>
+<p>When considering different approaches for solving a problem with machine learning it is helpful to generate a baseline approach to understand how more complex solutions perform across dimensions of performance, time, and resource (memory or cpu) usage.</p>
+<p>Regression based approaches are some of the simplest and fastest baselines to consider for many ML problems.</p>
+<div class="section" id="linear-regression">
+<h2>2.1 Linear Regression<a class="headerlink" href="#linear-regression" title="Permalink to this headline">¶</a></h2>
+<p>As the data provides a numerical rating between 1-5, fitting those values with a linear regression model is easy approach. This model is trained on examples of ratings as the target variable and corresponding user ids and movie ids as independent features.</p>
+<p>By passing each user-item rating in as an example the model will begin to learn weights based on average ratings for each user as well as average ratings per item.</p>
+<p>This however can generate predicted ratings which are no longer integers, so some additional adjustments should be made at prediction time to convert them back to the integer scale of 1 through 5 if necessary. Here, this is done in the evaluate function.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Quick description of command line parameters used</span>
+<span class="sd">  Other optional parameters can be found here: https://github.com/VowpalWabbit/vowpal_wabbit/wiki/Command-Line-Arguments</span>
+<span class="sd">  VW uses linear regression by default, so no extra command line options</span>
+<span class="sd">  -f &lt;model_path&gt;: indicates where the final model file will reside after training</span>
+<span class="sd">  -d &lt;data_path&gt;: indicates which data file to use for training or testing</span>
+<span class="sd">  --quiet: this runs vw in quiet mode silencing stdout (for debugging it&#39;s helpful to not use quiet mode)</span>
+<span class="sd">  -i &lt;model_path&gt;: indicates where to load the previously model file created during training</span>
+<span class="sd">  -t: this executes inference only (no learned updates to the model)</span>
+<span class="sd">  -p &lt;prediction_path&gt;: indicates where to store prediction output</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="n">train_params</span> <span class="o">=</span> <span class="s1">&#39;vw -f </span><span class="si">{model}</span><span class="s1"> -d </span><span class="si">{data}</span><span class="s1"> --quiet&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="n">model_path</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">train_path</span><span class="p">)</span>
+<span class="c1"># save these results for later use during top-k analysis</span>
+<span class="n">test_params</span> <span class="o">=</span> <span class="s1">&#39;vw -i </span><span class="si">{model}</span><span class="s1"> -d </span><span class="si">{data}</span><span class="s1"> -t -p </span><span class="si">{pred}</span><span class="s1"> --quiet&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="n">model_path</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">test_path</span><span class="p">,</span> <span class="n">pred</span><span class="o">=</span><span class="n">prediction_path</span><span class="p">)</span>
+
+<span class="n">result</span> <span class="o">=</span> <span class="n">run_vw</span><span class="p">(</span><span class="n">train_params</span><span class="o">=</span><span class="n">train_params</span><span class="p">,</span> 
+                <span class="n">test_params</span><span class="o">=</span><span class="n">test_params</span><span class="p">,</span> 
+                <span class="n">test_data</span><span class="o">=</span><span class="n">test</span><span class="p">,</span> 
+                <span class="n">prediction_path</span><span class="o">=</span><span class="n">prediction_path</span><span class="p">)</span>
+
+<span class="n">comparison</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Linear Regression&#39;</span><span class="p">])</span>
+<span class="n">comparison</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>RMSE</th>
+      <th>MAE</th>
+      <th>R2</th>
+      <th>Explained Variance</th>
+      <th>Train Time (ms)</th>
+      <th>Test Time (ms)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>Linear Regression</th>
+      <td>0.988433</td>
+      <td>0.70988</td>
+      <td>0.227276</td>
+      <td>0.227286</td>
+      <td>62.5</td>
+      <td>15.625</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+</div>
+<div class="section" id="linear-regression-with-interaction-features">
+<h2>2.2 Linear Regression with Interaction Features<a class="headerlink" href="#linear-regression-with-interaction-features" title="Permalink to this headline">¶</a></h2>
+<p>Previously we treated the user features and item features independently, but taking into account interactions between features can provide a mechanism to learn more fine grained preferences of the users.</p>
+<p>To generate interaction features use the quadratic command line argument and specify the namespaces that should be combined: ‘-q ui’ combines the user and item namespaces based on the first letter of each.</p>
+<p>Currently the userIDs and itemIDs used are integers which means the feature ID is used directly, for instance when user ID 123 rates movie 456, the training example puts a 1 in the values for features 123 and 456. However when interaction is specified (or if a feature is a string) the resulting interaction feature is hashed into the available feature space. Feature hashing is a way to take a very sparse high dimensional feature space and reduce it into a lower dimensional space. This allows for reduced memory while retaining fast computation of feature and model weights.</p>
+<p>The caveat with feature hashing, is that it can lead to hash collisions, where separate features are mapped to the same location. In this case it can be beneficial to increase the size of the space to support interactions between features of high cardinality. The available feature space is dictated by the –bit_precision (-b) <N> argument. Where the total available space for all features in the model is 2<sup>N</sup>.</p>
+<p>See <a class="reference external" href="https://github.com/VowpalWabbit/vowpal_wabbit/wiki/Feature-Hashing-and-Extraction">Feature Hashing and Extraction</a> for more details.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Quick description of command line parameters used</span>
+<span class="sd">  -b &lt;N&gt;: sets the memory size to 2&lt;sup&gt;N&lt;/sup&gt; entries</span>
+<span class="sd">  -q &lt;ab&gt;: create quadratic feature interactions between features in namespaces starting with &#39;a&#39; and &#39;b&#39; </span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="n">train_params</span> <span class="o">=</span> <span class="s1">&#39;vw -b 26 -q ui -f </span><span class="si">{model}</span><span class="s1"> -d </span><span class="si">{data}</span><span class="s1"> --quiet&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="n">saved_model_path</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">train_path</span><span class="p">)</span>
+<span class="n">test_params</span> <span class="o">=</span> <span class="s1">&#39;vw -i </span><span class="si">{model}</span><span class="s1"> -d </span><span class="si">{data}</span><span class="s1"> -t -p </span><span class="si">{pred}</span><span class="s1"> --quiet&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="n">saved_model_path</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">test_path</span><span class="p">,</span> <span class="n">pred</span><span class="o">=</span><span class="n">prediction_path</span><span class="p">)</span>
+
+<span class="n">result</span> <span class="o">=</span> <span class="n">run_vw</span><span class="p">(</span><span class="n">train_params</span><span class="o">=</span><span class="n">train_params</span><span class="p">,</span>
+                <span class="n">test_params</span><span class="o">=</span><span class="n">test_params</span><span class="p">,</span>
+                <span class="n">test_data</span><span class="o">=</span><span class="n">test</span><span class="p">,</span>
+                <span class="n">prediction_path</span><span class="o">=</span><span class="n">prediction_path</span><span class="p">)</span>
+<span class="n">saved_result</span> <span class="o">=</span> <span class="n">result</span>
+
+<span class="n">comparison</span> <span class="o">=</span> <span class="n">comparison</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Linear Regression w/ Interaction&#39;</span><span class="p">]))</span>
+<span class="n">comparison</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>RMSE</th>
+      <th>MAE</th>
+      <th>R2</th>
+      <th>Explained Variance</th>
+      <th>Train Time (ms)</th>
+      <th>Test Time (ms)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>Linear Regression</th>
+      <td>0.988433</td>
+      <td>0.70988</td>
+      <td>0.227276</td>
+      <td>0.227286</td>
+      <td>62.500</td>
+      <td>15.625</td>
+    </tr>
+    <tr>
+      <th>Linear Regression w/ Interaction</th>
+      <td>0.985921</td>
+      <td>0.71292</td>
+      <td>0.231199</td>
+      <td>0.231338</td>
+      <td>15.625</td>
+      <td>31.250</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+</div>
+<div class="section" id="multinomial-logistic-regression">
+<h2>2.3 Multinomial Logistic Regression<a class="headerlink" href="#multinomial-logistic-regression" title="Permalink to this headline">¶</a></h2>
+<p>An alternative to linear regression is to leverage multinomial logistic regression, or multiclass classification, which treats each rating value as a distinct class.</p>
+<p>This avoids any non integer results, but also reduces the training data for each class which could lead to poorer performance if the counts of different rating levels are skewed.</p>
+<p>Basic multiclass logistic regression can be accomplished using the One Against All approach specified by the ‘–oaa N’ option, where N is the number of classes and proving the logistic option for the loss function to be used.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Quick description of command line parameters used</span>
+<span class="sd">  --loss_function logistic: sets the model loss function for logistic regression</span>
+<span class="sd">  --oaa &lt;N&gt;: trains N separate models using One-Against-All approach (all models are captured in the single model file)</span>
+<span class="sd">             This expects the labels to be contiguous integers starting at 1</span>
+<span class="sd">  --link logistic: converts the predicted output from logit to probability</span>
+<span class="sd">The predicted output is the model (label) with the largest likelihood</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="n">train_params</span> <span class="o">=</span> <span class="s1">&#39;vw --loss_function logistic --oaa 5 -f </span><span class="si">{model}</span><span class="s1"> -d </span><span class="si">{data}</span><span class="s1"> --quiet&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="n">model_path</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">train_path</span><span class="p">)</span>
+<span class="n">test_params</span> <span class="o">=</span> <span class="s1">&#39;vw --link logistic -i </span><span class="si">{model}</span><span class="s1"> -d </span><span class="si">{data}</span><span class="s1"> -t -p </span><span class="si">{pred}</span><span class="s1"> --quiet&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="n">model_path</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">test_path</span><span class="p">,</span> <span class="n">pred</span><span class="o">=</span><span class="n">prediction_path</span><span class="p">)</span>
+
+<span class="n">result</span> <span class="o">=</span> <span class="n">run_vw</span><span class="p">(</span><span class="n">train_params</span><span class="o">=</span><span class="n">train_params</span><span class="p">,</span>
+                <span class="n">test_params</span><span class="o">=</span><span class="n">test_params</span><span class="p">,</span>
+                <span class="n">test_data</span><span class="o">=</span><span class="n">test</span><span class="p">,</span>
+                <span class="n">prediction_path</span><span class="o">=</span><span class="n">prediction_path</span><span class="p">)</span>
+
+<span class="n">comparison</span> <span class="o">=</span> <span class="n">comparison</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Multinomial Regression&#39;</span><span class="p">]))</span>
+<span class="n">comparison</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>RMSE</th>
+      <th>MAE</th>
+      <th>R2</th>
+      <th>Explained Variance</th>
+      <th>Train Time (ms)</th>
+      <th>Test Time (ms)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>Linear Regression</th>
+      <td>0.988433</td>
+      <td>0.70988</td>
+      <td>0.227276</td>
+      <td>0.227286</td>
+      <td>62.500</td>
+      <td>15.625</td>
+    </tr>
+    <tr>
+      <th>Linear Regression w/ Interaction</th>
+      <td>0.985921</td>
+      <td>0.71292</td>
+      <td>0.231199</td>
+      <td>0.231338</td>
+      <td>15.625</td>
+      <td>31.250</td>
+    </tr>
+    <tr>
+      <th>Multinomial Regression</th>
+      <td>1.112780</td>
+      <td>0.75564</td>
+      <td>0.020626</td>
+      <td>0.050111</td>
+      <td>62.500</td>
+      <td>31.250</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+</div>
+<div class="section" id="logistic-regression">
+<h2>2.4 Logistic Regression<a class="headerlink" href="#logistic-regression" title="Permalink to this headline">¶</a></h2>
+<p>Additionally, one might simply be interested in whether the user likes or dislikes an item and we can adjust the input data to represent a binary outcome, where ratings in (1,3] are dislikes (negative results) and (3,5] are likes (positive results).</p>
+<p>This framing allows for a simple logistic regression model to be applied. To perform logistic regression the loss_function parameter is changed to ‘logistic’ and the target label is switched to [0, 1]. Also, be sure to set ‘–link logistic’ during prediction to convert the logit output back to a probability value.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">train_params</span> <span class="o">=</span> <span class="s1">&#39;vw --loss_function logistic -f </span><span class="si">{model}</span><span class="s1"> -d </span><span class="si">{data}</span><span class="s1"> --quiet&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="n">model_path</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">train_logistic_path</span><span class="p">)</span>
+<span class="n">test_params</span> <span class="o">=</span> <span class="s1">&#39;vw --link logistic -i </span><span class="si">{model}</span><span class="s1"> -d </span><span class="si">{data}</span><span class="s1"> -t -p </span><span class="si">{pred}</span><span class="s1"> --quiet&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="n">model_path</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">test_logistic_path</span><span class="p">,</span> <span class="n">pred</span><span class="o">=</span><span class="n">prediction_path</span><span class="p">)</span>
+
+<span class="n">result</span> <span class="o">=</span> <span class="n">run_vw</span><span class="p">(</span><span class="n">train_params</span><span class="o">=</span><span class="n">train_params</span><span class="p">,</span>
+                <span class="n">test_params</span><span class="o">=</span><span class="n">test_params</span><span class="p">,</span>
+                <span class="n">test_data</span><span class="o">=</span><span class="n">test</span><span class="p">,</span>
+                <span class="n">prediction_path</span><span class="o">=</span><span class="n">prediction_path</span><span class="p">,</span>
+                <span class="n">logistic</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="n">comparison</span> <span class="o">=</span> <span class="n">comparison</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Logistic Regression&#39;</span><span class="p">]))</span>
+<span class="n">comparison</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>RMSE</th>
+      <th>MAE</th>
+      <th>R2</th>
+      <th>Explained Variance</th>
+      <th>Train Time (ms)</th>
+      <th>Test Time (ms)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>Linear Regression</th>
+      <td>0.988433</td>
+      <td>0.709880</td>
+      <td>0.227276</td>
+      <td>0.227286</td>
+      <td>62.500</td>
+      <td>15.625</td>
+    </tr>
+    <tr>
+      <th>Linear Regression w/ Interaction</th>
+      <td>0.985921</td>
+      <td>0.712920</td>
+      <td>0.231199</td>
+      <td>0.231338</td>
+      <td>15.625</td>
+      <td>31.250</td>
+    </tr>
+    <tr>
+      <th>Multinomial Regression</th>
+      <td>1.112780</td>
+      <td>0.755640</td>
+      <td>0.020626</td>
+      <td>0.050111</td>
+      <td>62.500</td>
+      <td>31.250</td>
+    </tr>
+    <tr>
+      <th>Logistic Regression</th>
+      <td>0.717475</td>
+      <td>0.409551</td>
+      <td>0.096362</td>
+      <td>0.142500</td>
+      <td>46.875</td>
+      <td>31.250</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+</div>
+</div>
+<div class="tex2jax_ignore mathjax_ignore section" id="matrix-factorization-based-recommendations">
+<h1>3. Matrix Factorization Based Recommendations<a class="headerlink" href="#matrix-factorization-based-recommendations" title="Permalink to this headline">¶</a></h1>
+<p>All of the above approaches train a regression model, but VW also supports matrix factorization with two different approaches.</p>
+<p>As opposed to learning direct weights for specific users, items and interactions when training a regression model, matrix factorization attempts to learn latent factors that determine how a user rates an item. An example of how this might work is if you could represent user preference and item categorization by genre. Given a smaller set of genres we can associate how much each item belongs to each genre class, and we can set weights for a user’s preference for each genre. Both sets of weights could be represented as a vectors where the inner product would be the user-item rating. Matrix factorization approaches learn low rank matrices for latent features of users and items such that those matrices can be combined to approximate the original user item matrix.</p>
+<div class="section" id="singular-value-decomposition-based-matrix-factorization">
+<h2>3.1. Singular Value Decomposition Based Matrix Factorization<a class="headerlink" href="#singular-value-decomposition-based-matrix-factorization" title="Permalink to this headline">¶</a></h2>
+<p>The first approach performs matrix factorization based on Singular Value Decomposition (SVD) to learn a low rank approximation for the user-item rating matix. It is is called using the ‘–rank’ command line argument.</p>
+<p>See the <a class="reference external" href="https://github.com/VowpalWabbit/vowpal_wabbit/wiki/Matrix-factorization-example">Matrix Factorization Example</a> for more detail.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Quick description of command line parameters used</span>
+<span class="sd">  --rank &lt;N&gt;: sets the number of latent factors in the reduced matrix</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="n">train_params</span> <span class="o">=</span> <span class="s1">&#39;vw --rank 5 -q ui -f </span><span class="si">{model}</span><span class="s1"> -d </span><span class="si">{data}</span><span class="s1"> --quiet&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="n">model_path</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">train_path</span><span class="p">)</span>
+<span class="n">test_params</span> <span class="o">=</span> <span class="s1">&#39;vw -i </span><span class="si">{model}</span><span class="s1"> -d </span><span class="si">{data}</span><span class="s1"> -t -p </span><span class="si">{pred}</span><span class="s1"> --quiet&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="n">model_path</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">test_path</span><span class="p">,</span> <span class="n">pred</span><span class="o">=</span><span class="n">prediction_path</span><span class="p">)</span>
+
+<span class="n">result</span> <span class="o">=</span> <span class="n">run_vw</span><span class="p">(</span><span class="n">train_params</span><span class="o">=</span><span class="n">train_params</span><span class="p">,</span>
+                <span class="n">test_params</span><span class="o">=</span><span class="n">test_params</span><span class="p">,</span>
+                <span class="n">test_data</span><span class="o">=</span><span class="n">test</span><span class="p">,</span>
+                <span class="n">prediction_path</span><span class="o">=</span><span class="n">prediction_path</span><span class="p">)</span>
+
+<span class="n">comparison</span> <span class="o">=</span> <span class="n">comparison</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Matrix Factorization (Rank)&#39;</span><span class="p">]))</span>
+<span class="n">comparison</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>RMSE</th>
+      <th>MAE</th>
+      <th>R2</th>
+      <th>Explained Variance</th>
+      <th>Train Time (ms)</th>
+      <th>Test Time (ms)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>Linear Regression</th>
+      <td>0.988433</td>
+      <td>0.709880</td>
+      <td>0.227276</td>
+      <td>0.227286</td>
+      <td>62.500</td>
+      <td>15.625</td>
+    </tr>
+    <tr>
+      <th>Linear Regression w/ Interaction</th>
+      <td>0.985921</td>
+      <td>0.712920</td>
+      <td>0.231199</td>
+      <td>0.231338</td>
+      <td>15.625</td>
+      <td>31.250</td>
+    </tr>
+    <tr>
+      <th>Multinomial Regression</th>
+      <td>1.112780</td>
+      <td>0.755640</td>
+      <td>0.020626</td>
+      <td>0.050111</td>
+      <td>62.500</td>
+      <td>31.250</td>
+    </tr>
+    <tr>
+      <th>Logistic Regression</th>
+      <td>0.717475</td>
+      <td>0.409551</td>
+      <td>0.096362</td>
+      <td>0.142500</td>
+      <td>46.875</td>
+      <td>31.250</td>
+    </tr>
+    <tr>
+      <th>Matrix Factorization (Rank)</th>
+      <td>1.010723</td>
+      <td>0.745800</td>
+      <td>0.192033</td>
+      <td>0.221080</td>
+      <td>31.250</td>
+      <td>15.625</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+</div>
+<div class="section" id="factorization-machine-based-matrix-factorization">
+<h2>3.2. Factorization Machine Based Matrix Factorization<a class="headerlink" href="#factorization-machine-based-matrix-factorization" title="Permalink to this headline">¶</a></h2>
+<p>An alternative approach based on <a class="reference external" href="https://cseweb.ucsd.edu/classes/fa17/cse291-b/reading/Rendle2010FM.pdf">Rendel’s factorization machines</a> is called using ‘–lrq’ (low rank quadratic). More LRQ details in this <a class="reference external" href="https://github.com/VowpalWabbit/vowpal_wabbit/tree/master/demo/movielens">demo</a>.</p>
+<p>This learns two lower rank matrices which are multiplied to generate an approximation of the user-item rating matrix. Compressing the matrix in this way leads to learning generalizable factors which avoids some of the limitations of using regression models with extremely sparse interaction features. This can lead to better convergence and smaller on-disk models.</p>
+<p>An additional term to improve performance is –lrqdropout which will dropout columns during training. This however tends to increase the optimal rank size. Other parameters such as L2 regularization can help avoid overfitting.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Quick description of command line parameters used</span>
+<span class="sd">  --lrq &lt;abN&gt;: learns approximations of rank N for the quadratic interaction between namespaces starting with &#39;a&#39; and &#39;b&#39;</span>
+<span class="sd">  --lrqdroupout: performs dropout during training to improve generalization</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="n">train_params</span> <span class="o">=</span> <span class="s1">&#39;vw --lrq ui7 -f </span><span class="si">{model}</span><span class="s1"> -d </span><span class="si">{data}</span><span class="s1"> --quiet&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="n">model_path</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">train_path</span><span class="p">)</span>
+<span class="n">test_params</span> <span class="o">=</span> <span class="s1">&#39;vw -i </span><span class="si">{model}</span><span class="s1"> -d </span><span class="si">{data}</span><span class="s1"> -t -p </span><span class="si">{pred}</span><span class="s1"> --quiet&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="n">model_path</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">test_path</span><span class="p">,</span> <span class="n">pred</span><span class="o">=</span><span class="n">prediction_path</span><span class="p">)</span>
+
+<span class="n">result</span> <span class="o">=</span> <span class="n">run_vw</span><span class="p">(</span><span class="n">train_params</span><span class="o">=</span><span class="n">train_params</span><span class="p">,</span>
+                <span class="n">test_params</span><span class="o">=</span><span class="n">test_params</span><span class="p">,</span>
+                <span class="n">test_data</span><span class="o">=</span><span class="n">test</span><span class="p">,</span>
+                <span class="n">prediction_path</span><span class="o">=</span><span class="n">prediction_path</span><span class="p">)</span>
+
+<span class="n">comparison</span> <span class="o">=</span> <span class="n">comparison</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Matrix Factorization (LRQ)&#39;</span><span class="p">]))</span>
+<span class="n">comparison</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>RMSE</th>
+      <th>MAE</th>
+      <th>R2</th>
+      <th>Explained Variance</th>
+      <th>Train Time (ms)</th>
+      <th>Test Time (ms)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>Linear Regression</th>
+      <td>0.988433</td>
+      <td>0.709880</td>
+      <td>0.227276</td>
+      <td>0.227286</td>
+      <td>62.500</td>
+      <td>15.625</td>
+    </tr>
+    <tr>
+      <th>Linear Regression w/ Interaction</th>
+      <td>0.985921</td>
+      <td>0.712920</td>
+      <td>0.231199</td>
+      <td>0.231338</td>
+      <td>15.625</td>
+      <td>31.250</td>
+    </tr>
+    <tr>
+      <th>Multinomial Regression</th>
+      <td>1.112780</td>
+      <td>0.755640</td>
+      <td>0.020626</td>
+      <td>0.050111</td>
+      <td>62.500</td>
+      <td>31.250</td>
+    </tr>
+    <tr>
+      <th>Logistic Regression</th>
+      <td>0.717475</td>
+      <td>0.409551</td>
+      <td>0.096362</td>
+      <td>0.142500</td>
+      <td>46.875</td>
+      <td>31.250</td>
+    </tr>
+    <tr>
+      <th>Matrix Factorization (Rank)</th>
+      <td>1.010723</td>
+      <td>0.745800</td>
+      <td>0.192033</td>
+      <td>0.221080</td>
+      <td>31.250</td>
+      <td>15.625</td>
+    </tr>
+    <tr>
+      <th>Matrix Factorization (LRQ)</th>
+      <td>1.013627</td>
+      <td>0.726640</td>
+      <td>0.187383</td>
+      <td>0.187388</td>
+      <td>31.250</td>
+      <td>31.250</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+</div>
+</div>
+<div class="tex2jax_ignore mathjax_ignore section" id="conclusion">
+<h1>4. Conclusion<a class="headerlink" href="#conclusion" title="Permalink to this headline">¶</a></h1>
+<p>The table above shows a few of the approaches in the VW library that can be used for recommendation prediction. The relative performance can change when applied to different datasets and properly tuned, but it is useful to note the rapid speed at which all approaches are able to train (75,000 examples) and test (25,000 examples).</p>
+</div>
+<div class="tex2jax_ignore mathjax_ignore section" id="scoring">
+<h1>5. Scoring<a class="headerlink" href="#scoring" title="Permalink to this headline">¶</a></h1>
+<p>After training a model with any of the above approaches, the model can be used to score potential user-pairs in offline batch mode, or in a real-time scoring mode. The example below shows how to leverage the utilities in the recommenders directory to  generate Top-K recommendations from offline scored output.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># First construct a test set of all items (except those seen during training) for each user</span>
+<span class="n">users</span> <span class="o">=</span> <span class="n">df</span><span class="p">[[</span><span class="s1">&#39;userID&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">drop_duplicates</span><span class="p">()</span>
+<span class="n">users</span><span class="p">[</span><span class="s1">&#39;key&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+
+<span class="n">items</span> <span class="o">=</span> <span class="n">df</span><span class="p">[[</span><span class="s1">&#39;itemID&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">drop_duplicates</span><span class="p">()</span>
+<span class="n">items</span><span class="p">[</span><span class="s1">&#39;key&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+
+<span class="n">all_pairs</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">users</span><span class="p">,</span> <span class="n">items</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="s1">&#39;key&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;key&#39;</span><span class="p">])</span>
+
+<span class="c1"># now combine with training data and keep only entries that were note in training</span>
+<span class="n">merged</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">train</span><span class="p">[[</span><span class="s1">&#39;userID&#39;</span><span class="p">,</span> <span class="s1">&#39;itemID&#39;</span><span class="p">,</span> <span class="s1">&#39;rating&#39;</span><span class="p">]],</span> <span class="n">all_pairs</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;userID&quot;</span><span class="p">,</span> <span class="s2">&quot;itemID&quot;</span><span class="p">],</span> <span class="n">how</span><span class="o">=</span><span class="s2">&quot;outer&quot;</span><span class="p">)</span>
+<span class="n">all_user_items</span> <span class="o">=</span> <span class="n">merged</span><span class="p">[</span><span class="n">merged</span><span class="p">[</span><span class="s1">&#39;rating&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">isnull</span><span class="p">()]</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;int64&#39;</span><span class="p">)</span>
+
+<span class="c1"># save in vw format (this can take a while)</span>
+<span class="n">to_vw</span><span class="p">(</span><span class="n">df</span><span class="o">=</span><span class="n">all_user_items</span><span class="p">,</span> <span class="n">output</span><span class="o">=</span><span class="n">all_test_path</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># run the saved model (linear regression with interactions) on the new dataset</span>
+<span class="n">test_start</span> <span class="o">=</span> <span class="n">process_time</span><span class="p">()</span>
+<span class="n">test_params</span> <span class="o">=</span> <span class="s1">&#39;vw -i </span><span class="si">{model}</span><span class="s1"> -d </span><span class="si">{data}</span><span class="s1"> -t -p </span><span class="si">{pred}</span><span class="s1"> --quiet&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="n">saved_model_path</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">all_test_path</span><span class="p">,</span> <span class="n">pred</span><span class="o">=</span><span class="n">prediction_path</span><span class="p">)</span>
+<span class="n">run</span><span class="p">(</span><span class="n">test_params</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">),</span> <span class="n">check</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">test_stop</span> <span class="o">=</span> <span class="n">process_time</span><span class="p">()</span>
+<span class="n">test_time</span> <span class="o">=</span> <span class="n">test_stop</span> <span class="o">-</span> <span class="n">test_start</span>
+
+<span class="c1"># load predictions and get top-k from previous saved results</span>
+<span class="n">pred_data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">prediction_path</span><span class="p">,</span> <span class="n">delim_whitespace</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;prediction&#39;</span><span class="p">],</span> <span class="n">index_col</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">all_user_items</span><span class="p">)</span>
+<span class="n">top_k</span> <span class="o">=</span> <span class="n">get_top_k_items</span><span class="p">(</span><span class="n">pred_data</span><span class="p">,</span> <span class="n">col_rating</span><span class="o">=</span><span class="s1">&#39;prediction&#39;</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="n">TOP_K</span><span class="p">)[[</span><span class="s1">&#39;prediction&#39;</span><span class="p">,</span> <span class="s1">&#39;userID&#39;</span><span class="p">,</span> <span class="s1">&#39;itemID&#39;</span><span class="p">]]</span>
+<span class="n">top_k</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>prediction</th>
+      <th>userID</th>
+      <th>itemID</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>4.565871</td>
+      <td>1</td>
+      <td>318</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>4.533308</td>
+      <td>1</td>
+      <td>64</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>4.530738</td>
+      <td>1</td>
+      <td>408</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>4.525889</td>
+      <td>1</td>
+      <td>603</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>4.501398</td>
+      <td>1</td>
+      <td>483</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># get ranking metrics</span>
+<span class="n">args</span> <span class="o">=</span> <span class="p">[</span><span class="n">test</span><span class="p">,</span> <span class="n">top_k</span><span class="p">]</span>
+<span class="n">kwargs</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">col_user</span><span class="o">=</span><span class="s1">&#39;userID&#39;</span><span class="p">,</span> <span class="n">col_item</span><span class="o">=</span><span class="s1">&#39;itemID&#39;</span><span class="p">,</span> <span class="n">col_rating</span><span class="o">=</span><span class="s1">&#39;rating&#39;</span><span class="p">,</span> <span class="n">col_prediction</span><span class="o">=</span><span class="s1">&#39;prediction&#39;</span><span class="p">,</span>
+              <span class="n">relevancy_method</span><span class="o">=</span><span class="s1">&#39;top_k&#39;</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="n">TOP_K</span><span class="p">)</span>
+
+<span class="n">rank_metrics</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;MAP&#39;</span><span class="p">:</span> <span class="n">map_at_k</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">),</span> 
+                <span class="s1">&#39;NDCG&#39;</span><span class="p">:</span> <span class="n">ndcg_at_k</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">),</span>
+                <span class="s1">&#39;Precision&#39;</span><span class="p">:</span> <span class="n">precision_at_k</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">),</span>
+                <span class="s1">&#39;Recall&#39;</span><span class="p">:</span> <span class="n">recall_at_k</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)}</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># final results</span>
+<span class="n">all_results</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;</span><span class="si">{k}</span><span class="s1">: </span><span class="si">{v}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">k</span><span class="o">=</span><span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="o">=</span><span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">saved_result</span><span class="o">.</span><span class="n">items</span><span class="p">()]</span>
+<span class="n">all_results</span> <span class="o">+=</span> <span class="p">[</span><span class="s1">&#39;</span><span class="si">{k}</span><span class="s1">: </span><span class="si">{v}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">k</span><span class="o">=</span><span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="o">=</span><span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">rank_metrics</span><span class="o">.</span><span class="n">items</span><span class="p">()]</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">all_results</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>RMSE: 0.9859208893212478
+MAE: 0.71292
+R2: 0.23119931215379363
+Explained Variance: 0.2313379575958101
+Train Time (ms): 15.625
+Test Time (ms): 31.25
+MAP: 0.012535184652143394
+NDCG: 0.0965940631559385
+Precision: 0.0977707006369427
+Recall: 0.03761253544606115
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="tex2jax_ignore mathjax_ignore section" id="cleanup">
+<h1>6. Cleanup<a class="headerlink" href="#cleanup" title="Permalink to this headline">¶</a></h1>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># record results for testing</span>
+<span class="k">if</span> <span class="n">is_jupyter</span><span class="p">():</span>
+    <span class="n">sb</span><span class="o">.</span><span class="n">glue</span><span class="p">(</span><span class="s1">&#39;rmse&#39;</span><span class="p">,</span> <span class="n">saved_result</span><span class="p">[</span><span class="s1">&#39;RMSE&#39;</span><span class="p">])</span>
+    <span class="n">sb</span><span class="o">.</span><span class="n">glue</span><span class="p">(</span><span class="s1">&#39;mae&#39;</span><span class="p">,</span> <span class="n">saved_result</span><span class="p">[</span><span class="s1">&#39;MAE&#39;</span><span class="p">])</span>
+    <span class="n">sb</span><span class="o">.</span><span class="n">glue</span><span class="p">(</span><span class="s1">&#39;rsquared&#39;</span><span class="p">,</span> <span class="n">saved_result</span><span class="p">[</span><span class="s1">&#39;R2&#39;</span><span class="p">])</span>
+    <span class="n">sb</span><span class="o">.</span><span class="n">glue</span><span class="p">(</span><span class="s1">&#39;exp_var&#39;</span><span class="p">,</span> <span class="n">saved_result</span><span class="p">[</span><span class="s1">&#39;Explained Variance&#39;</span><span class="p">])</span>
+    <span class="n">sb</span><span class="o">.</span><span class="n">glue</span><span class="p">(</span><span class="s2">&quot;train_time&quot;</span><span class="p">,</span> <span class="n">saved_result</span><span class="p">[</span><span class="s1">&#39;Train Time (ms)&#39;</span><span class="p">])</span>
+    <span class="n">sb</span><span class="o">.</span><span class="n">glue</span><span class="p">(</span><span class="s2">&quot;test_time&quot;</span><span class="p">,</span> <span class="n">test_time</span><span class="p">)</span>
+    <span class="n">sb</span><span class="o">.</span><span class="n">glue</span><span class="p">(</span><span class="s1">&#39;map&#39;</span><span class="p">,</span> <span class="n">rank_metrics</span><span class="p">[</span><span class="s1">&#39;MAP&#39;</span><span class="p">])</span>
+    <span class="n">sb</span><span class="o">.</span><span class="n">glue</span><span class="p">(</span><span class="s1">&#39;ndcg&#39;</span><span class="p">,</span> <span class="n">rank_metrics</span><span class="p">[</span><span class="s1">&#39;NDCG&#39;</span><span class="p">])</span>
+    <span class="n">sb</span><span class="o">.</span><span class="n">glue</span><span class="p">(</span><span class="s1">&#39;precision&#39;</span><span class="p">,</span> <span class="n">rank_metrics</span><span class="p">[</span><span class="s1">&#39;Precision&#39;</span><span class="p">])</span>
+    <span class="n">sb</span><span class="o">.</span><span class="n">glue</span><span class="p">(</span><span class="s1">&#39;recall&#39;</span><span class="p">,</span> <span class="n">rank_metrics</span><span class="p">[</span><span class="s1">&#39;Recall&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">tmpdir</span><span class="o">.</span><span class="n">cleanup</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="references">
+<h2>References<a class="headerlink" href="#references" title="Permalink to this headline">¶</a></h2>
+<ol class="simple">
+<li><p>John Langford, et. al. Vowpal Wabbit Wiki. URL: <a class="reference external" href="https://github.com/VowpalWabbit/vowpal_wabbit/wiki">https://github.com/VowpalWabbit/vowpal_wabbit/wiki</a></p></li>
+<li><p>Steffen Rendel. Factorization Machines. 2010 IEEE International Conference on Data Mining.</p></li>
+<li><p>Jake Hoffman. Matrix Factorization Example. URL: <a class="reference external" href="https://github.com/VowpalWabbit/vowpal_wabbit/wiki/Matrix-factorization-example">https://github.com/VowpalWabbit/vowpal_wabbit/wiki/Matrix-factorization-example</a></p></li>
+<li><p>Paul Minero. Low Rank Quadratic Example. URL: <a class="reference external" href="https://github.com/VowpalWabbit/vowpal_wabbit/tree/master/demo/movielens">https://github.com/VowpalWabbit/vowpal_wabbit/tree/master/demo/movielens</a></p></li>
+</ol>
+</div>
+</div>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./examples/02_model_content_based_filtering"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+              </div>
+              
+        
+            
+
+
+
+<div class='prev-next-bottom'>
+    
+
+</div>
+        
+        </div>
+    </div>
+    <footer class="footer">
+    <div class="container">
+      <p>
+        
+          By The Jupyter Book community<br/>
+        
+            &copy; Copyright 2021.<br/>
+      </p>
+    </div>
+  </footer>
+</main>
+
+
+      </div>
+    </div>
+  
+  <script src="../../_static/js/index.1c5a1a01449ed65a7b51.js"></script>
+
+  
+  </body>
+</html>

@@ -1,0 +1,650 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Content-Based Personalization with LightGBM on Spark &#8212; &lt;h1 style=&#34;font-size:2em;text-align:center;color:#FF5733&#34;&gt;Recommenders&lt;/h1&gt;</title>
+    
+  <link href="../../_static/css/theme.css" rel="stylesheet" />
+  <link href="../../_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
+
+    
+  <link rel="stylesheet"
+    href="../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+
+    
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-book-theme.css?digest=c3fdc42140077d1ad13ad2f1588a4309" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/tabs.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    
+  <link rel="preload" as="script" href="../../_static/js/index.1c5a1a01449ed65a7b51.js">
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/togglebutton.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <script src="../../_static/tabs.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../../_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script>
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="../../_static/sphinx-thebe.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en" />
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="../../index.html">
+      
+      
+      
+      <h1 class="site-logo" id="site-title"><h1 style="font-size:2em;text-align:center;color:#FF5733">Recommenders</h1></h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="../../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        <p class="caption" role="heading">
+ <span class="caption-text">
+  Getting Started Notebooks
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../00_quick_start/als_movielens.html">
+   Running ALS on MovieLens (PySpark)
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../00_quick_start/ncf_movielens.html">
+   Neural Collaborative Filtering on MovieLens dataset.
+  </a>
+ </li>
+</ul>
+
+    </div>
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="topbar container-xl fixed-top">
+    <div class="topbar-contents row">
+        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
+        <div class="col pl-md-4 topbar-main">
+            
+            <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+                data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+                aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
+                title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+                <i class="fas fa-bars"></i>
+                <i class="fas fa-arrow-left"></i>
+                <i class="fas fa-arrow-up"></i>
+            </button>
+            
+            
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
+            class="fas fa-download"></i></button>
+
+    <div class="dropdown-buttons">
+        <!-- ipynb file if we had a myst markdown file -->
+        
+        <!-- Download raw file -->
+        <a class="dropdown-buttons" href="../../_sources/examples/02_model_content_based_filtering/mmlspark_lightgbm_criteo.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
+                data-placement="left">.ipynb</button></a>
+        <!-- Download PDF via print -->
+        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
+            onClick="window.print()" data-toggle="tooltip" data-placement="left">.pdf</button>
+    </div>
+</div>
+
+            <!-- Source interaction buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
+    <div class="dropdown-buttons sourcebuttons">
+        <a class="repository-button"
+            href="https://github.com/microsoft/genalog"><button type="button" class="btn btn-secondary topbarbtn"
+                data-toggle="tooltip" data-placement="left" title="Source repository"><i
+                    class="fab fa-github"></i>repository</button></a>
+        <a class="issues-button"
+            href="https://github.com/microsoft/genalog/issues/new?title=Issue%20on%20page%20%2Fexamples/02_model_content_based_filtering/mmlspark_lightgbm_criteo.html&body=Your%20issue%20content%20here."><button
+                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
+                title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
+        
+    </div>
+</div>
+
+            <!-- Full screen (wrap in <a> to have style consistency -->
+
+<a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+        data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+        title="Fullscreen mode"><i
+            class="fas fa-expand"></i></button></a>
+
+            <!-- Launch buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Launch interactive content"><i class="fas fa-rocket"></i></button>
+    <div class="dropdown-buttons">
+        
+        <a class="binder-button" href="https://mybinder.org/v2/gh/microsoft/genalog/main?urlpath=tree/docs/genalog_docs/examples/02_model_content_based_filtering/mmlspark_lightgbm_criteo.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Launch Binder" data-toggle="tooltip"
+                data-placement="left"><img class="binder-button-logo"
+                    src="../../_static/images/logo_binder.svg"
+                    alt="Interact on binder">Binder</button></a>
+        
+        
+        
+        
+    </div>
+</div>
+
+        </div>
+
+        <!-- Table of contents -->
+        <div class="d-none d-md-block col-md-2 bd-toc show">
+            
+            <div class="tocsection onthispage pt-5 pb-3">
+                <i class="fas fa-list"></i> Contents
+            </div>
+            <nav id="bd-toc-nav" aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#global-settings-and-imports">
+   Global Settings and Imports
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#data-preparation">
+   Data Preparation
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#feature-processing">
+     Feature Processing
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#model-training">
+   Model Training
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#hyper-parameters">
+     Hyper-parameters
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#model-training-and-evaluation">
+     Model Training and Evaluation
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#model-saving">
+   Model Saving
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#additional-reading">
+   Additional Reading
+  </a>
+ </li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+        
+              <div>
+                
+  <p><i>Copyright (c) Microsoft Corporation. All rights reserved.</i></p>
+<p><i>Licensed under the MIT License.</i></p>
+<div class="tex2jax_ignore mathjax_ignore section" id="content-based-personalization-with-lightgbm-on-spark">
+<h1>Content-Based Personalization with LightGBM on Spark<a class="headerlink" href="#content-based-personalization-with-lightgbm-on-spark" title="Permalink to this headline">¶</a></h1>
+<p>This notebook provides a quick example of how to train a <a class="reference external" href="https://github.com/Microsoft/Lightgbm">LightGBM</a> model on Spark using <a class="reference external" href="https://github.com/Azure/mmlspark">MMLSpark</a> for a content-based personalization scenario.</p>
+<p>We use the <a class="reference external" href="https://www.kaggle.com/c/criteo-display-ad-challenge">CRITEO dataset</a>, a well known dataset of website ads that can be used to optimize the Click-Through Rate (CTR). The dataset consists of a series of numerical and categorical features and a binary label indicating whether the add has been clicked or not.</p>
+<p>The model is based on <a class="reference external" href="https://github.com/Microsoft/Lightgbm">LightGBM</a>, which is a gradient boosting framework that uses tree-based learning algorithms. Finally, we take advantage of
+<a class="reference external" href="https://github.com/Azure/mmlspark">MMLSpark</a> library, which allows LightGBM to be called in a Spark environment and be computed distributely.</p>
+<p>This scenario is a good example of <strong>implicit feedback</strong>, where binary labels indicate the interaction between a user and an item. This contrasts with explicit feedback, where the user explicitely rate the content, for example from 1 to 5.</p>
+<div class="section" id="global-settings-and-imports">
+<h2>Global Settings and Imports<a class="headerlink" href="#global-settings-and-imports" title="Permalink to this headline">¶</a></h2>
+<p>This notebook can be run in a Spark environment in a DSVM or in Azure Databricks. For more details about the installation process, please refer to the <span class="xref myst">setup instructions</span>.</p>
+<p><strong>NOTE for Azure Databricks:</strong></p>
+<ul class="simple">
+<li><p>A python script is provided to simplify setting up Azure Databricks with the correct dependencies. Run <code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">tools/databricks_install.py</span> <span class="pre">-h</span></code> for more details.</p></li>
+<li><p>MMLSpark should not be run on a cluster with autoscaling enabled. Disable the flag in the Azure Databricks Cluster configuration before running this notebook.</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+
+
+<span class="kn">import</span> <span class="nn">pyspark</span>
+<span class="kn">from</span> <span class="nn">pyspark.ml</span> <span class="kn">import</span> <span class="n">PipelineModel</span>
+<span class="kn">from</span> <span class="nn">pyspark.ml.feature</span> <span class="kn">import</span> <span class="n">FeatureHasher</span>
+<span class="kn">import</span> <span class="nn">papermill</span> <span class="k">as</span> <span class="nn">pm</span>
+<span class="kn">import</span> <span class="nn">scrapbook</span> <span class="k">as</span> <span class="nn">sb</span>
+
+<span class="kn">from</span> <span class="nn">recommenders.utils.notebook_utils</span> <span class="kn">import</span> <span class="n">is_databricks</span>
+<span class="kn">from</span> <span class="nn">recommenders.utils.spark_utils</span> <span class="kn">import</span> <span class="n">start_or_get_spark</span>
+<span class="kn">from</span> <span class="nn">recommenders.datasets.criteo</span> <span class="kn">import</span> <span class="n">load_spark_df</span>
+<span class="kn">from</span> <span class="nn">recommenders.datasets.spark_splitters</span> <span class="kn">import</span> <span class="n">spark_random_split</span>
+
+<span class="c1"># Setup MML Spark</span>
+<span class="kn">from</span> <span class="nn">recommenders.utils.spark_utils</span> <span class="kn">import</span> <span class="n">MMLSPARK_REPO</span><span class="p">,</span> <span class="n">MMLSPARK_PACKAGE</span>
+<span class="n">packages</span> <span class="o">=</span> <span class="p">[</span><span class="n">MMLSPARK_PACKAGE</span><span class="p">]</span>
+<span class="n">repos</span> <span class="o">=</span> <span class="p">[</span><span class="n">MMLSPARK_REPO</span><span class="p">]</span>
+<span class="n">spark</span> <span class="o">=</span> <span class="n">start_or_get_spark</span><span class="p">(</span><span class="n">packages</span><span class="o">=</span><span class="n">packages</span><span class="p">,</span> <span class="n">repositories</span><span class="o">=</span><span class="n">repos</span><span class="p">)</span>
+<span class="n">dbutils</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;MMLSpark version: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">MMLSPARK_PACKAGE</span><span class="p">))</span>
+
+<span class="kn">from</span> <span class="nn">mmlspark.train</span> <span class="kn">import</span> <span class="n">ComputeModelStatistics</span>
+<span class="kn">from</span> <span class="nn">mmlspark.lightgbm</span> <span class="kn">import</span> <span class="n">LightGBMClassifier</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;System version: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">version</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;PySpark version: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">pyspark</span><span class="o">.</span><span class="n">version</span><span class="o">.</span><span class="n">__version__</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>MMLSpark version: com.microsoft.ml.spark:mmlspark_2.11:0.18.1
+System version: 3.6.10 |Anaconda, Inc.| (default, May  8 2020, 02:54:21) 
+[GCC 7.3.0]
+PySpark version: 2.4.3
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell tag_parameters docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Criteo data size, it can be &quot;sample&quot; or &quot;full&quot;</span>
+<span class="n">DATA_SIZE</span> <span class="o">=</span> <span class="s2">&quot;sample&quot;</span>
+
+<span class="c1"># LightGBM parameters</span>
+<span class="c1"># More details on parameters: https://lightgbm.readthedocs.io/en/latest/Parameters-Tuning.html</span>
+<span class="n">NUM_LEAVES</span> <span class="o">=</span> <span class="mi">32</span>
+<span class="n">NUM_ITERATIONS</span> <span class="o">=</span> <span class="mi">50</span>
+<span class="n">LEARNING_RATE</span> <span class="o">=</span> <span class="mf">0.1</span>
+<span class="n">FEATURE_FRACTION</span> <span class="o">=</span> <span class="mf">0.8</span>
+<span class="n">EARLY_STOPPING_ROUND</span> <span class="o">=</span> <span class="mi">10</span>
+
+<span class="c1"># Model name</span>
+<span class="n">MODEL_NAME</span> <span class="o">=</span> <span class="s1">&#39;lightgbm_criteo.mml&#39;</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="data-preparation">
+<h2>Data Preparation<a class="headerlink" href="#data-preparation" title="Permalink to this headline">¶</a></h2>
+<p>The <a class="reference external" href="https://www.kaggle.com/c/criteo-display-ad-challenge">Criteo Display Advertising Challenge</a> (Criteo DAC) dataset is a well-known industry benchmarking dataset for developing CTR prediction models, and is used frequently by research papers. The original dataset contains over 45M rows, but there is also a down-sampled dataset which has 100,000 rows (this can be used by setting <code class="docutils literal notranslate"><span class="pre">DATA_SIZE</span> <span class="pre">=</span> <span class="pre">&quot;sample&quot;</span></code>). Each row corresponds to a display ad served by Criteo and the first column is indicates whether this ad has been clicked or not.<br><br>
+The dataset contains 1 label column and 39 feature columns, where 13 columns are integer values (int00-int12) and 26 columns are categorical features (cat00-cat25).<br><br>
+What the columns represent is not provided, but for this case we can consider the integer and categorical values as features representing the user and / or item content. The label is binary and is an example of implicit feedback indicating a user’s interaction with an item. With this dataset we can demonstrate how to build a model that predicts the probability of a user interacting with an item based on available user and item content features.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">raw_data</span> <span class="o">=</span> <span class="n">load_spark_df</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="n">DATA_SIZE</span><span class="p">,</span> <span class="n">spark</span><span class="o">=</span><span class="n">spark</span><span class="p">,</span> <span class="n">dbutils</span><span class="o">=</span><span class="n">dbutils</span><span class="p">)</span>
+<span class="c1"># visualize data</span>
+<span class="n">raw_data</span><span class="o">.</span><span class="n">limit</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">toPandas</span><span class="p">()</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>100%|██████████| 8.58k/8.58k [00:01&lt;00:00, 5.15kKB/s]
+</pre></div>
+</div>
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>label</th>
+      <th>int00</th>
+      <th>int01</th>
+      <th>int02</th>
+      <th>int03</th>
+      <th>int04</th>
+      <th>int05</th>
+      <th>int06</th>
+      <th>int07</th>
+      <th>int08</th>
+      <th>...</th>
+      <th>cat16</th>
+      <th>cat17</th>
+      <th>cat18</th>
+      <th>cat19</th>
+      <th>cat20</th>
+      <th>cat21</th>
+      <th>cat22</th>
+      <th>cat23</th>
+      <th>cat24</th>
+      <th>cat25</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>0</td>
+      <td>1</td>
+      <td>1</td>
+      <td>5</td>
+      <td>0</td>
+      <td>1382</td>
+      <td>4</td>
+      <td>15</td>
+      <td>2</td>
+      <td>181</td>
+      <td>...</td>
+      <td>e5ba7672</td>
+      <td>f54016b9</td>
+      <td>21ddcdc9</td>
+      <td>b1252a9d</td>
+      <td>07b5194c</td>
+      <td>None</td>
+      <td>3a171ecb</td>
+      <td>c5c50484</td>
+      <td>e8b83407</td>
+      <td>9727dd16</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>0</td>
+      <td>2</td>
+      <td>0</td>
+      <td>44</td>
+      <td>1</td>
+      <td>102</td>
+      <td>8</td>
+      <td>2</td>
+      <td>2</td>
+      <td>4</td>
+      <td>...</td>
+      <td>07c540c4</td>
+      <td>b04e4670</td>
+      <td>21ddcdc9</td>
+      <td>5840adea</td>
+      <td>60f6221e</td>
+      <td>None</td>
+      <td>3a171ecb</td>
+      <td>43f13e8b</td>
+      <td>e8b83407</td>
+      <td>731c3655</td>
+    </tr>
+  </tbody>
+</table>
+<p>2 rows × 40 columns</p>
+</div></div></div>
+</div>
+<div class="section" id="feature-processing">
+<h3>Feature Processing<a class="headerlink" href="#feature-processing" title="Permalink to this headline">¶</a></h3>
+<p>The feature data provided has many missing values across both integer and categorical feature fields. In addition the categorical features have many distinct values, so effectively cleaning and representing the feature data is an important step prior to training a model.<br><br>
+One of the simplest ways of managing both features that have missing values as well as high cardinality is to use the hashing trick. The <a class="reference external" href="http://spark.apache.org/docs/latest/ml-features.html#featurehasher">FeatureHasher</a> transformer will pass integer values through and will hash categorical features into a sparse vector of lower dimensionality, which can be used effectively by LightGBM.<br><br>
+First, the dataset is splitted randomly for training and testing and feature processing is applied to each dataset.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">raw_train</span><span class="p">,</span> <span class="n">raw_test</span> <span class="o">=</span> <span class="n">spark_random_split</span><span class="p">(</span><span class="n">raw_data</span><span class="p">,</span> <span class="n">ratio</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="n">c</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">raw_data</span><span class="o">.</span><span class="n">columns</span> <span class="k">if</span> <span class="n">c</span> <span class="o">!=</span> <span class="s1">&#39;label&#39;</span><span class="p">]</span>
+<span class="n">feature_processor</span> <span class="o">=</span> <span class="n">FeatureHasher</span><span class="p">(</span><span class="n">inputCols</span><span class="o">=</span><span class="n">columns</span><span class="p">,</span> <span class="n">outputCol</span><span class="o">=</span><span class="s1">&#39;features&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">train</span> <span class="o">=</span> <span class="n">feature_processor</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">raw_train</span><span class="p">)</span>
+<span class="n">test</span> <span class="o">=</span> <span class="n">feature_processor</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">raw_test</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="model-training">
+<h2>Model Training<a class="headerlink" href="#model-training" title="Permalink to this headline">¶</a></h2>
+<p>In MMLSpark, the LightGBM implementation for binary classification is invoked using the <code class="docutils literal notranslate"><span class="pre">LightGBMClassifier</span></code> class and specifying the objective as <code class="docutils literal notranslate"><span class="pre">&quot;binary&quot;</span></code>. In this instance, the occurrence of positive labels is quite low, so setting the <code class="docutils literal notranslate"><span class="pre">isUnbalance</span></code> flag to true helps account for this imbalance.<br><br></p>
+<div class="section" id="hyper-parameters">
+<h3>Hyper-parameters<a class="headerlink" href="#hyper-parameters" title="Permalink to this headline">¶</a></h3>
+<p>Below are some of the key <a class="reference external" href="https://github.com/Microsoft/LightGBM/blob/master/docs/Parameters-Tuning.rst">hyper-parameters</a> for training a LightGBM classifier on Spark:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">numLeaves</span></code>: the number of leaves in each tree</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">numIterations</span></code>: the number of iterations to apply boosting</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">learningRate</span></code>: the learning rate for training across trees</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">featureFraction</span></code>: the fraction of features used for training a tree</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">earlyStoppingRound</span></code>: round at which early stopping can be applied to avoid overfitting</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">lgbm</span> <span class="o">=</span> <span class="n">LightGBMClassifier</span><span class="p">(</span>
+    <span class="n">labelCol</span><span class="o">=</span><span class="s2">&quot;label&quot;</span><span class="p">,</span>
+    <span class="n">featuresCol</span><span class="o">=</span><span class="s2">&quot;features&quot;</span><span class="p">,</span>
+    <span class="n">objective</span><span class="o">=</span><span class="s2">&quot;binary&quot;</span><span class="p">,</span>
+    <span class="n">isUnbalance</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">boostingType</span><span class="o">=</span><span class="s2">&quot;gbdt&quot;</span><span class="p">,</span>
+    <span class="n">boostFromAverage</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">baggingSeed</span><span class="o">=</span><span class="mi">42</span><span class="p">,</span>
+    <span class="n">numLeaves</span><span class="o">=</span><span class="n">NUM_LEAVES</span><span class="p">,</span>
+    <span class="n">numIterations</span><span class="o">=</span><span class="n">NUM_ITERATIONS</span><span class="p">,</span>
+    <span class="n">learningRate</span><span class="o">=</span><span class="n">LEARNING_RATE</span><span class="p">,</span>
+    <span class="n">featureFraction</span><span class="o">=</span><span class="n">FEATURE_FRACTION</span><span class="p">,</span>
+    <span class="n">earlyStoppingRound</span><span class="o">=</span><span class="n">EARLY_STOPPING_ROUND</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="model-training-and-evaluation">
+<h3>Model Training and Evaluation<a class="headerlink" href="#model-training-and-evaluation" title="Permalink to this headline">¶</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model</span> <span class="o">=</span> <span class="n">lgbm</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">train</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">predictions</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">test</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">evaluator</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">ComputeModelStatistics</span><span class="p">()</span>
+    <span class="o">.</span><span class="n">setScoredLabelsCol</span><span class="p">(</span><span class="s2">&quot;prediction&quot;</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">setLabelCol</span><span class="p">(</span><span class="s2">&quot;label&quot;</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">setEvaluationMetric</span><span class="p">(</span><span class="s2">&quot;AUC&quot;</span><span class="p">)</span>
+<span class="p">)</span>
+
+<span class="n">result</span> <span class="o">=</span> <span class="n">evaluator</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">predictions</span><span class="p">)</span>
+<span class="n">auc</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="s2">&quot;AUC&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">collect</span><span class="p">()[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">result</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>+---------------+------------------+
+|evaluation_type|               AUC|
++---------------+------------------+
+| Classification|0.6892773832319504|
++---------------+------------------+
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Record results with papermill for tests</span>
+<span class="n">sb</span><span class="o">.</span><span class="n">glue</span><span class="p">(</span><span class="s2">&quot;auc&quot;</span><span class="p">,</span> <span class="n">auc</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="model-saving">
+<h2>Model Saving<a class="headerlink" href="#model-saving" title="Permalink to this headline">¶</a></h2>
+<p>The full pipeline for operating on raw data including feature processing and model prediction can be saved and reloaded for use in another workflow.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># save model</span>
+<span class="n">pipeline</span> <span class="o">=</span> <span class="n">PipelineModel</span><span class="p">(</span><span class="n">stages</span><span class="o">=</span><span class="p">[</span><span class="n">feature_processor</span><span class="p">,</span> <span class="n">model</span><span class="p">])</span>
+<span class="n">pipeline</span><span class="o">.</span><span class="n">write</span><span class="p">()</span><span class="o">.</span><span class="n">overwrite</span><span class="p">()</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">MODEL_NAME</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># cleanup spark instance</span>
+<span class="k">if</span> <span class="ow">not</span> <span class="n">is_databricks</span><span class="p">():</span>
+    <span class="n">spark</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="additional-reading">
+<h2>Additional Reading<a class="headerlink" href="#additional-reading" title="Permalink to this headline">¶</a></h2>
+<p>[1] Guolin Ke, Qi Meng, Thomas Finley, Taifeng Wang, Wei Chen, Weidong Ma, Qiwei Ye, and Tie-Yan Liu. 2017. LightGBM: A highly efficient gradient boosting decision tree. In Advances in Neural Information Processing Systems. 3146–3154. <a class="reference external" href="https://papers.nips.cc/paper/6907-lightgbm-a-highly-efficient-gradient-boosting-decision-tree.pdf">https://papers.nips.cc/paper/6907-lightgbm-a-highly-efficient-gradient-boosting-decision-tree.pdf</a> <br>
+[2] MML Spark: <a class="reference external" href="https://mmlspark.blob.core.windows.net/website/index.html">https://mmlspark.blob.core.windows.net/website/index.html</a> <br></p>
+</div>
+</div>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "conda-env-reco_full-py"
+        },
+        kernelOptions: {
+            kernelName: "conda-env-reco_full-py",
+            path: "./examples/02_model_content_based_filtering"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'conda-env-reco_full-py'</script>
+
+              </div>
+              
+        
+            
+
+
+
+<div class='prev-next-bottom'>
+    
+
+</div>
+        
+        </div>
+    </div>
+    <footer class="footer">
+    <div class="container">
+      <p>
+        
+          By The Jupyter Book community<br/>
+        
+            &copy; Copyright 2021.<br/>
+      </p>
+    </div>
+  </footer>
+</main>
+
+
+      </div>
+    </div>
+  
+  <script src="../../_static/js/index.1c5a1a01449ed65a7b51.js"></script>
+
+  
+  </body>
+</html>

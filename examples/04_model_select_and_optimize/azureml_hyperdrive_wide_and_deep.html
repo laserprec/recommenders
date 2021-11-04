@@ -1,0 +1,1293 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Wide-and-Deep Model Hyperparameter Tuning with AzureML &#8212; &lt;h1 style=&#34;font-size:2em;text-align:center;color:#FF5733&#34;&gt;Recommenders&lt;/h1&gt;</title>
+    
+  <link href="../../_static/css/theme.css" rel="stylesheet" />
+  <link href="../../_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
+
+    
+  <link rel="stylesheet"
+    href="../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+
+    
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-book-theme.css?digest=c3fdc42140077d1ad13ad2f1588a4309" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/tabs.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    
+  <link rel="preload" as="script" href="../../_static/js/index.1c5a1a01449ed65a7b51.js">
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/togglebutton.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <script src="../../_static/tabs.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../../_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script>
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="../../_static/sphinx-thebe.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en" />
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="../../index.html">
+      
+      
+      
+      <h1 class="site-logo" id="site-title"><h1 style="font-size:2em;text-align:center;color:#FF5733">Recommenders</h1></h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="../../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        <p class="caption" role="heading">
+ <span class="caption-text">
+  Getting Started Notebooks
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../00_quick_start/als_movielens.html">
+   Running ALS on MovieLens (PySpark)
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../00_quick_start/ncf_movielens.html">
+   Neural Collaborative Filtering on MovieLens dataset.
+  </a>
+ </li>
+</ul>
+
+    </div>
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="topbar container-xl fixed-top">
+    <div class="topbar-contents row">
+        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
+        <div class="col pl-md-4 topbar-main">
+            
+            <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+                data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+                aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
+                title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+                <i class="fas fa-bars"></i>
+                <i class="fas fa-arrow-left"></i>
+                <i class="fas fa-arrow-up"></i>
+            </button>
+            
+            
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
+            class="fas fa-download"></i></button>
+
+    <div class="dropdown-buttons">
+        <!-- ipynb file if we had a myst markdown file -->
+        
+        <!-- Download raw file -->
+        <a class="dropdown-buttons" href="../../_sources/examples/04_model_select_and_optimize/azureml_hyperdrive_wide_and_deep.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
+                data-placement="left">.ipynb</button></a>
+        <!-- Download PDF via print -->
+        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
+            onClick="window.print()" data-toggle="tooltip" data-placement="left">.pdf</button>
+    </div>
+</div>
+
+            <!-- Source interaction buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
+    <div class="dropdown-buttons sourcebuttons">
+        <a class="repository-button"
+            href="https://github.com/microsoft/genalog"><button type="button" class="btn btn-secondary topbarbtn"
+                data-toggle="tooltip" data-placement="left" title="Source repository"><i
+                    class="fab fa-github"></i>repository</button></a>
+        <a class="issues-button"
+            href="https://github.com/microsoft/genalog/issues/new?title=Issue%20on%20page%20%2Fexamples/04_model_select_and_optimize/azureml_hyperdrive_wide_and_deep.html&body=Your%20issue%20content%20here."><button
+                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
+                title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
+        
+    </div>
+</div>
+
+            <!-- Full screen (wrap in <a> to have style consistency -->
+
+<a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+        data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+        title="Fullscreen mode"><i
+            class="fas fa-expand"></i></button></a>
+
+            <!-- Launch buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Launch interactive content"><i class="fas fa-rocket"></i></button>
+    <div class="dropdown-buttons">
+        
+        <a class="binder-button" href="https://mybinder.org/v2/gh/microsoft/genalog/main?urlpath=tree/docs/genalog_docs/examples/04_model_select_and_optimize/azureml_hyperdrive_wide_and_deep.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Launch Binder" data-toggle="tooltip"
+                data-placement="left"><img class="binder-button-logo"
+                    src="../../_static/images/logo_binder.svg"
+                    alt="Interact on binder">Binder</button></a>
+        
+        
+        
+        
+    </div>
+</div>
+
+        </div>
+
+        <!-- Table of contents -->
+        <div class="d-none d-md-block col-md-2 bd-toc show">
+            
+            <div class="tocsection onthispage pt-5 pb-3">
+                <i class="fas fa-list"></i> Contents
+            </div>
+            <nav id="bd-toc-nav" aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#create-and-configure-azureml-workspace">
+   1. Create and Configure AzureML Workspace
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#create-remote-compute-target">
+   2. Create Remote Compute Target
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#prepare-data">
+   3. Prepare Data
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#prepare-training-scripts">
+   4. Prepare Training Scripts
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#setup-and-run-hyperdrive-experiment">
+   5. Setup and Run Hyperdrive Experiment
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#define-search-space">
+     5.1 Define Search Space
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#create-hyperdrive-experiment">
+     5.2 Create Hyperdrive Experiment
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#run-experiment">
+     5.3 Run Experiment
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#model-import-and-test">
+   6. Model Import and Test
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#wide-and-deep-baseline-comparison">
+     Wide-and-Deep Baseline Comparison
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#concluding-remark">
+   Concluding Remark
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#cleanup">
+     Cleanup
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+        
+              <div>
+                
+  <p><i>Copyright (c) Microsoft Corporation. All rights reserved.<br>
+Licensed under the MIT License.</i>
+<br></p>
+<div class="tex2jax_ignore mathjax_ignore section" id="wide-and-deep-model-hyperparameter-tuning-with-azureml">
+<h1>Wide-and-Deep Model Hyperparameter Tuning with AzureML<a class="headerlink" href="#wide-and-deep-model-hyperparameter-tuning-with-azureml" title="Permalink to this headline">¶</a></h1>
+<p>This notebook shows how to auto-tune hyperparameters of a recommender model by utilizing <strong>Azure Machine Learning service</strong> (<a class="reference external" href="https://azure.microsoft.com/en-us/services/machine-learning-service/">AzureML</a>)<sup><a href="#azureml-search">a</a>, <a href="#azure-subscription">b</a></sup>.</p>
+<p>We present an overall process of utilizing AzureML, specifically <a class="reference external" href="https://docs.microsoft.com/en-us/python/api/azureml-train-core/azureml.train.hyperdrive?view=azure-ml-py"><strong>Hyperdrive</strong></a> component, for the hyperparameter tuning by demonstrating key steps:</p>
+<ol class="simple">
+<li><p>Configure AzureML Workspace</p></li>
+<li><p>Create Remote Compute Target (GPU cluster)</p></li>
+<li><p>Prepare Data</p></li>
+<li><p>Prepare Training Scripts</p></li>
+<li><p>Setup and Run Hyperdrive Experiment</p></li>
+<li><p>Model Import, Re-train and Test</p></li>
+</ol>
+<p>In this notebook, we use <a class="reference external" href="https://ai.googleblog.com/2016/06/wide-deep-learning-better-together-with.html"><strong>Wide-and-Deep model</strong></a> from <strong>TensorFlow high-level Estimator API (v1.12 or higher)</strong> on the movie recommendation scenario. Wide-and-Deep learning jointly trains wide linear model and deep neural networks (DNN) to combine the benefits of memorization and generalization for recommender systems.</p>
+<p>For more details about the <strong>Wide-and-Deep</strong> model:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="../00_quick_start/wide_deep_movielens.html"><span class="doc std std-doc">Wide-and-Deep Quickstart notebook</span></a></p></li>
+<li><p><a class="reference external" href="https://arxiv.org/abs/1606.07792">Original paper</a></p></li>
+<li><p><a class="reference external" href="https://www.tensorflow.org/api_docs/python/tf/estimator/DNNLinearCombinedRegressor">TensorFlow API doc</a></p></li>
+</ul>
+<p>Regarding <strong>AuzreML</strong>, please refer:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://docs.microsoft.com/en-us/azure/machine-learning/service/quickstart-create-workspace-with-python">Quickstart notebook</a></p></li>
+<li><p><a class="reference external" href="https://docs.microsoft.com/en-us/azure/machine-learning/service/how-to-tune-hyperparameters">Hyperdrive</a></p></li>
+<li><p><a class="reference external" href="https://docs.microsoft.com/en-us/azure/machine-learning/service/how-to-train-tensorflow">Tensorflow model tuning with Hyperdrive</a></p></li>
+</ul>
+<hr class="docutils" />
+<p><sub><span id="azureml-search">a. To use AzureML, you will need an Azure subscription.</span><br>
+<span id="azure-subscription">b. When you web-search “Azure Machine Learning”, you will most likely to see mixed results of Azure Machine Learning (AzureML) and Azure Machine Learning <strong>Studio</strong>. Please note they are different services where AzureML’s focuses are on ML model management, tracking and hyperparameter tuning, while the <a class="reference external" href="https://studio.azureml.net/">ML Studio</a>’s is to provide a high-level tool for ‘easy-to-use’ experience of ML designing and experimentation based on GUI.</span></sub></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">reload_ext</span> autoreload
+<span class="o">%</span><span class="k">autoreload</span> 2
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sys</span>
+
+<span class="kn">import</span> <span class="nn">itertools</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">shutil</span>
+<span class="kn">from</span> <span class="nn">tempfile</span> <span class="kn">import</span> <span class="n">TemporaryDirectory</span>
+
+<span class="kn">from</span> <span class="nn">IPython.display</span> <span class="kn">import</span> <span class="n">clear_output</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">papermill</span> <span class="k">as</span> <span class="nn">pm</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">sklearn.preprocessing</span>
+<span class="kn">import</span> <span class="nn">tensorflow</span> <span class="k">as</span> <span class="nn">tf</span>
+
+<span class="kn">import</span> <span class="nn">azureml</span> <span class="k">as</span> <span class="nn">aml</span>
+<span class="kn">import</span> <span class="nn">azureml.widgets</span> <span class="k">as</span> <span class="nn">widgets</span>
+<span class="kn">import</span> <span class="nn">azureml.train.hyperdrive</span> <span class="k">as</span> <span class="nn">hd</span>
+
+<span class="kn">from</span> <span class="nn">recommenders.utils.timer</span> <span class="kn">import</span> <span class="n">Timer</span>
+<span class="kn">from</span> <span class="nn">recommenders.utils.constants</span> <span class="kn">import</span> <span class="n">SEED</span>
+<span class="kn">from</span> <span class="nn">recommenders.utils.tf_utils</span> <span class="kn">import</span> <span class="n">pandas_input_fn_for_saved_model</span>
+<span class="kn">from</span> <span class="nn">recommenders.datasets</span> <span class="kn">import</span> <span class="n">movielens</span>
+<span class="kn">from</span> <span class="nn">recommenders.datasets.pandas_df_utils</span> <span class="kn">import</span> <span class="n">user_item_pairs</span>
+<span class="kn">from</span> <span class="nn">recommenders.datasets.python_splitters</span> <span class="kn">import</span> <span class="n">python_random_split</span>
+<span class="kn">import</span> <span class="nn">recommenders.evaluation.python_evaluation</span> <span class="k">as</span> <span class="nn">evaluator</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Azure ML SDK Version:&quot;</span><span class="p">,</span> <span class="n">aml</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">VERSION</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Tensorflow Version:&quot;</span><span class="p">,</span> <span class="n">tf</span><span class="o">.</span><span class="n">__version__</span><span class="p">)</span>
+
+<span class="c1"># Temp dir to cache temporal files while running this notebook</span>
+<span class="n">tmp_dir</span> <span class="o">=</span> <span class="n">TemporaryDirectory</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Azure ML SDK Version: 1.0.10
+Tensorflow Version: 1.12.0
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="create-and-configure-azureml-workspace">
+<h2>1. Create and Configure AzureML Workspace<a class="headerlink" href="#create-and-configure-azureml-workspace" title="Permalink to this headline">¶</a></h2>
+<p><strong>AzureML workspace</strong> is a foundational block in the cloud that you use to experiment, train, and deploy machine learning models via AzureML service. In this notebook, we 1) create a workspace from <a class="reference external" href="https://portal.azure.com"><strong>Azure portal</strong></a> and 2) configure from this notebook.</p>
+<p>You can find more details about the setup and configure processes from the following links:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://docs.microsoft.com/en-us/azure/machine-learning/service/quickstart-get-started">Quickstart with Azure portal</a></p></li>
+<li><p><a class="reference external" href="https://docs.microsoft.com/en-us/azure/machine-learning/service/quickstart-create-workspace-with-python">Quickstart with Python SDK</a></p></li>
+</ul>
+<p>There are several ways to create an Azure Machine Learning service workspace.</p>
+<ul class="simple">
+<li><p>Option 1: Use Azure portal</p>
+<ol class="simple">
+<li><p>Sign in to the <a class="reference external" href="https://portal.azure.com">Azure portal</a> by using the credentials for the Azure subscription you use.</p></li>
+<li><p>Select <strong>Create a resource</strong> menu, search for <strong>Machine Learning service workspace</strong>, and select <strong>Create</strong> button.</p></li>
+<li><p>In the <strong>ML service workspace</strong> pane, configure your workspace with entering the <em>workspace name</em> and <em>resource group</em> (or <strong>create new</strong> resource group if you don’t have one already), and select <strong>Create</strong>. It can take a few moments to create the workspace.</p></li>
+<li><p>Download <strong>config.json</strong> file from the portal’s AzureML workspace page and place it to <code class="docutils literal notranslate"><span class="pre">&lt;this-notebook-folder&gt;/aml_config/config.json</span></code></p></li>
+</ol>
+</li>
+<li><p>Option 2: Use <a class="reference external" href="https://docs.microsoft.com/en-us/python/api/overview/azure/ml/intro?view=azure-ml-py#workspace">AzureML SDK</a> - Run following cell</p>
+<ul>
+<li><p>To find the full list of supported region, use Azure CLI from <a class="reference external" href="https://docs.microsoft.com/en-us/cli/azure/install-azure-cli?view=azure-cli-latest">your machine</a> or <a class="reference external" href="https://azure.microsoft.com/en-us/features/cloud-shell/">cloud shell</a> to run: <code class="docutils literal notranslate"><span class="pre">az</span> <span class="pre">account</span> <span class="pre">list-locations</span></code></p></li>
+<li><p>To locate your tenant id, use Azure CLI to run: <code class="docutils literal notranslate"><span class="pre">az</span> <span class="pre">account</span> <span class="pre">show</span></code></p></li>
+</ul>
+</li>
+</ul>
+<div class="cell tag_parameters docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># AzureML workspace information. Set them to create a workspace.</span>
+<span class="n">SUBSCRIPTION_ID</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1">#&#39;&lt;subscription-id&gt;&#39;</span>
+<span class="n">RESOURCE_GROUP</span> <span class="o">=</span> <span class="kc">None</span>   <span class="c1">#&#39;&lt;resource-group&gt;&#39;</span>
+<span class="n">WORKSPACE_NAME</span> <span class="o">=</span> <span class="kc">None</span>   <span class="c1">#&#39;&lt;workspace-name&gt;&#39;</span>
+<span class="n">LOCATION</span> <span class="o">=</span> <span class="kc">None</span>         <span class="c1">#&#39;&lt;region-to-deploy-the-workspace&gt;&#39;</span>
+<span class="n">TENANT_ID</span> <span class="o">=</span> <span class="kc">None</span>        <span class="c1">#&#39;&lt;tenant-id&gt;&#39;</span>
+
+<span class="c1"># Remote compute (cluster) configuration. If you want to save the cost more, set these to small.</span>
+<span class="n">VM_SIZE</span> <span class="o">=</span> <span class="s1">&#39;STANDARD_NC6&#39;</span>
+<span class="n">VM_PRIORITY</span> <span class="o">=</span> <span class="s1">&#39;lowpriority&#39;</span>
+<span class="c1"># Cluster nodes</span>
+<span class="n">MIN_NODES</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">MAX_NODES</span> <span class="o">=</span> <span class="mi">8</span>
+<span class="c1"># Hyperdrive experimentation configuration</span>
+<span class="n">MAX_TOTAL_RUNS</span> <span class="o">=</span> <span class="mi">100</span>  <span class="c1"># Number of runs (training-and-evaluation) to search the best hyperparameters. </span>
+<span class="n">MAX_CONCURRENT_RUNS</span> <span class="o">=</span> <span class="mi">8</span>
+
+<span class="c1"># Recommend top k items</span>
+<span class="n">TOP_K</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="c1"># Select MovieLens data size: 100k, 1m, 10m, or 20m</span>
+<span class="n">MOVIELENS_DATA_SIZE</span> <span class="o">=</span> <span class="s1">&#39;100k&#39;</span>
+<span class="n">STEPS</span> <span class="o">=</span> <span class="mi">50000</span>
+<span class="c1"># Metrics to track</span>
+<span class="n">RANKING_METRICS</span> <span class="o">=</span> <span class="p">[</span><span class="n">evaluator</span><span class="o">.</span><span class="n">ndcg_at_k</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span> <span class="n">evaluator</span><span class="o">.</span><span class="n">precision_at_k</span><span class="o">.</span><span class="vm">__name__</span><span class="p">]</span>
+<span class="n">RATING_METRICS</span> <span class="o">=</span> <span class="p">[</span><span class="n">evaluator</span><span class="o">.</span><span class="n">rmse</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span> <span class="n">evaluator</span><span class="o">.</span><span class="n">mae</span><span class="o">.</span><span class="vm">__name__</span><span class="p">]</span>
+<span class="n">PRIMARY_METRIC</span> <span class="o">=</span> <span class="n">evaluator</span><span class="o">.</span><span class="n">rmse</span><span class="o">.</span><span class="vm">__name__</span>
+<span class="c1"># Data column names</span>
+<span class="n">USER_COL</span> <span class="o">=</span> <span class="s1">&#39;UserId&#39;</span>
+<span class="n">ITEM_COL</span> <span class="o">=</span> <span class="s1">&#39;MovieId&#39;</span>
+<span class="n">RATING_COL</span> <span class="o">=</span> <span class="s1">&#39;Rating&#39;</span>
+<span class="n">ITEM_FEAT_COL</span> <span class="o">=</span> <span class="s1">&#39;Genres&#39;</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="n">TENANT_ID</span><span class="p">:</span>
+    <span class="n">auth</span> <span class="o">=</span> <span class="n">aml</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">authentication</span><span class="o">.</span><span class="n">InteractiveLoginAuthentication</span><span class="p">(</span>
+        <span class="n">tenant_id</span><span class="o">=</span><span class="n">TENANT_ID</span>
+    <span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">auth</span> <span class="o">=</span> <span class="kc">None</span>  
+
+<span class="k">if</span> <span class="n">SUBSCRIPTION_ID</span> <span class="ow">and</span> <span class="n">RESOURCE_GROUP</span> <span class="ow">and</span> <span class="n">WORKSPACE_NAME</span> <span class="ow">and</span> <span class="n">LOCATION</span><span class="p">:</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="c1"># Try to get existing workspace by given information</span>
+        <span class="n">ws</span> <span class="o">=</span> <span class="n">aml</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">Workspace</span><span class="p">(</span>
+            <span class="n">workspace_name</span><span class="o">=</span><span class="n">WORKSPACE_NAME</span><span class="p">,</span>
+            <span class="n">subscription_id</span><span class="o">=</span><span class="n">SUBSCRIPTION_ID</span><span class="p">,</span>
+            <span class="n">resource_group</span><span class="o">=</span><span class="n">RESOURCE_GROUP</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Found existing AzureML workspace.&quot;</span><span class="p">)</span>
+    <span class="k">except</span> <span class="n">aml</span><span class="o">.</span><span class="n">exceptions</span><span class="o">.</span><span class="n">AuthenticationException</span><span class="p">:</span>
+        <span class="c1"># Create a new workspace</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Creating new AzureML workspace.&quot;</span><span class="p">)</span>
+        <span class="n">ws</span> <span class="o">=</span> <span class="n">aml</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">Workspace</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="n">WORKSPACE_NAME</span><span class="p">,</span>
+            <span class="n">subscription_id</span><span class="o">=</span><span class="n">SUBSCRIPTION_ID</span><span class="p">,</span>
+            <span class="n">resource_group</span><span class="o">=</span><span class="n">RESOURCE_GROUP</span><span class="p">,</span>
+            <span class="n">create_resource_group</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">location</span><span class="o">=</span><span class="n">LOCATION</span><span class="p">,</span>
+            <span class="n">auth</span><span class="o">=</span><span class="n">auth</span><span class="p">,</span>
+        <span class="p">)</span>
+    <span class="n">ws</span><span class="o">.</span><span class="n">write_config</span><span class="p">()</span>
+<span class="c1"># If you are using an already-configured workspace config.json file</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">ws</span> <span class="o">=</span> <span class="n">aml</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">Workspace</span><span class="o">.</span><span class="n">from_config</span><span class="p">(</span><span class="n">auth</span><span class="o">=</span><span class="n">auth</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Found the config file in: /data/home/jumin/git/reco/notebooks/04_model_select_and_optimize/aml_config/config.json
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Falling back to use azure cli credentials. This fall back to use azure cli credentials will be removed in the next release. 
+Make sure your code doesn&#39;t require &#39;az login&#39; to have happened before using azureml-sdk, except the case when you are specifying AzureCliAuthentication in azureml-sdk.
+</pre></div>
+</div>
+</div>
+</div>
+<p>To verify your workspace, run:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;AzureML workspace name: &quot;</span><span class="p">,</span> <span class="n">ws</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>AzureML workspace name:  junminaml
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="create-remote-compute-target">
+<h2>2. Create Remote Compute Target<a class="headerlink" href="#create-remote-compute-target" title="Permalink to this headline">¶</a></h2>
+<p>We create a GPU cluster as our <strong>remote compute target</strong>. If a cluster with the same name is already exist in your workspace, the script will load it instead. You can see <a class="reference external" href="https://docs.microsoft.com/en-us/azure/machine-learning/service/how-to-set-up-training-targets">this document</a> to learn more about setting up a compute target on different locations.</p>
+<p>This notebook selects <strong>STANDARD_NC6</strong> virtual machine (VM) and sets it’s priority as <em>lowpriority</em> to save the cost.</p>
+<table class="colwidths-auto table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Size</p></th>
+<th class="head"><p>vCPU</p></th>
+<th class="head"><p>Memory (GiB)</p></th>
+<th class="head"><p>Temp storage (SSD, GiB)</p></th>
+<th class="head"><p>GPU</p></th>
+<th class="head"><p>GPU memory (GiB)</p></th>
+<th class="head"><p>Max data disks</p></th>
+<th class="head"><p>Max NICs</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Standard_NC6</p></td>
+<td><p><div align="center">6</div></p></td>
+<td><p><div align="center">56</div></p></td>
+<td><p><div align="center">340</div></p></td>
+<td><p><div align="center">1</div></p></td>
+<td><p><div align="center">8</div></p></td>
+<td><p><div align="center">24</div></p></td>
+<td><p><div align="center">1</div></p></td>
+</tr>
+</tbody>
+</table>
+<p>For more information about Azure virtual machine sizes, see <a class="reference external" href="https://docs.microsoft.com/en-us/azure/virtual-machines/windows/sizes-gpu">here</a>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">CLUSTER_NAME</span> <span class="o">=</span> <span class="s1">&#39;gpu-cluster-nc6&#39;</span>
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="n">compute_target</span> <span class="o">=</span> <span class="n">aml</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">compute</span><span class="o">.</span><span class="n">ComputeTarget</span><span class="p">(</span><span class="n">workspace</span><span class="o">=</span><span class="n">ws</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">CLUSTER_NAME</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Found existing compute target&quot;</span><span class="p">)</span>
+<span class="k">except</span> <span class="n">aml</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">compute_target</span><span class="o">.</span><span class="n">ComputeTargetException</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Creating a new compute target...&quot;</span><span class="p">)</span>
+    <span class="n">compute_config</span> <span class="o">=</span> <span class="n">aml</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">compute</span><span class="o">.</span><span class="n">AmlCompute</span><span class="o">.</span><span class="n">provisioning_configuration</span><span class="p">(</span>
+        <span class="n">vm_size</span><span class="o">=</span><span class="n">VM_SIZE</span><span class="p">,</span>
+        <span class="n">vm_priority</span><span class="o">=</span><span class="n">VM_PRIORITY</span><span class="p">,</span>
+        <span class="n">min_nodes</span><span class="o">=</span><span class="n">MIN_NODES</span><span class="p">,</span>
+        <span class="n">max_nodes</span><span class="o">=</span><span class="n">MAX_NODES</span>
+    <span class="p">)</span>
+    <span class="c1"># create the cluster</span>
+    <span class="n">compute_target</span> <span class="o">=</span> <span class="n">aml</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">compute</span><span class="o">.</span><span class="n">ComputeTarget</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">ws</span><span class="p">,</span> <span class="n">CLUSTER_NAME</span><span class="p">,</span> <span class="n">compute_config</span><span class="p">)</span>
+    <span class="n">compute_target</span><span class="o">.</span><span class="n">wait_for_completion</span><span class="p">(</span><span class="n">show_output</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">min_node_count</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">timeout_in_minutes</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+
+<span class="c1"># Use the &#39;status&#39; property to get a detailed status for the current cluster. </span>
+<span class="nb">print</span><span class="p">(</span><span class="n">compute_target</span><span class="o">.</span><span class="n">status</span><span class="o">.</span><span class="n">serialize</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Found existing compute target
+{&#39;allocationState&#39;: &#39;Steady&#39;, &#39;allocationStateTransitionTime&#39;: &#39;2019-06-28T16:58:16.459000+00:00&#39;, &#39;creationTime&#39;: &#39;2019-06-18T21:09:39.101231+00:00&#39;, &#39;currentNodeCount&#39;: 0, &#39;errors&#39;: None, &#39;modifiedTime&#39;: &#39;2019-06-18T21:09:55.347615+00:00&#39;, &#39;nodeStateCounts&#39;: {&#39;idleNodeCount&#39;: 0, &#39;leavingNodeCount&#39;: 0, &#39;preemptedNodeCount&#39;: 0, &#39;preparingNodeCount&#39;: 0, &#39;runningNodeCount&#39;: 0, &#39;unusableNodeCount&#39;: 0}, &#39;provisioningState&#39;: &#39;Succeeded&#39;, &#39;provisioningStateTransitionTime&#39;: None, &#39;scaleSettings&#39;: {&#39;minNodeCount&#39;: 0, &#39;maxNodeCount&#39;: 8, &#39;nodeIdleTimeBeforeScaleDown&#39;: &#39;PT120S&#39;}, &#39;targetNodeCount&#39;: 0, &#39;vmPriority&#39;: &#39;LowPriority&#39;, &#39;vmSize&#39;: &#39;STANDARD_NC6&#39;}
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="prepare-data">
+<h2>3. Prepare Data<a class="headerlink" href="#prepare-data" title="Permalink to this headline">¶</a></h2>
+<p>For demonstration purpose, we use 100k MovieLens dataset. First, download the data and convert the format (multi-hot encode <em>genres</em>) to make it work for our model. More details about this step is described in our <a class="reference internal" href="../00_quick_start/wide_deep_movielens.html"><span class="doc std std-doc">Wide-Deep Quickstart notebook</span></a>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data</span> <span class="o">=</span> <span class="n">movielens</span><span class="o">.</span><span class="n">load_pandas_df</span><span class="p">(</span>
+    <span class="n">size</span><span class="o">=</span><span class="n">MOVIELENS_DATA_SIZE</span><span class="p">,</span>
+    <span class="n">header</span><span class="o">=</span><span class="p">[</span><span class="n">USER_COL</span><span class="p">,</span> <span class="n">ITEM_COL</span><span class="p">,</span> <span class="n">RATING_COL</span><span class="p">],</span>
+    <span class="n">genres_col</span><span class="o">=</span><span class="n">ITEM_FEAT_COL</span>
+<span class="p">)</span>
+
+<span class="c1"># Encode &#39;genres&#39; into int array (multi-hot representation) to use as item features</span>
+<span class="n">genres_encoder</span> <span class="o">=</span> <span class="n">sklearn</span><span class="o">.</span><span class="n">preprocessing</span><span class="o">.</span><span class="n">MultiLabelBinarizer</span><span class="p">()</span>
+<span class="n">data</span><span class="p">[</span><span class="n">ITEM_FEAT_COL</span><span class="p">]</span> <span class="o">=</span> <span class="n">genres_encoder</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span>
+    <span class="n">data</span><span class="p">[</span><span class="n">ITEM_FEAT_COL</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">s</span><span class="p">:</span> <span class="n">s</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;|&quot;</span><span class="p">))</span>
+<span class="p">)</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+
+<span class="n">data</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>100%|██████████| 4.81k/4.81k [00:00&lt;00:00, 18.1kKB/s]
+</pre></div>
+</div>
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>UserId</th>
+      <th>MovieId</th>
+      <th>Rating</th>
+      <th>Genres</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>196</td>
+      <td>242</td>
+      <td>3.0</td>
+      <td>[0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, ...</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>63</td>
+      <td>242</td>
+      <td>3.0</td>
+      <td>[0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, ...</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>226</td>
+      <td>242</td>
+      <td>5.0</td>
+      <td>[0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, ...</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>154</td>
+      <td>242</td>
+      <td>3.0</td>
+      <td>[0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, ...</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>306</td>
+      <td>242</td>
+      <td>5.0</td>
+      <td>[0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, ...</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>The dataset is split into train, validation, and test sets. The train and validation sets will be used for hyperparameter tuning, and the test set will be used for the final evaluation of the model after we import the best model from AzureML workspace.</p>
+<p>Here, we don’t use multiple-split directly by passing <code class="docutils literal notranslate"><span class="pre">ratio=[0.56,</span> <span class="pre">0.19,</span> <span class="pre">0.25]</span></code>. Instead, we first split the data into train and test sets with the same <code class="docutils literal notranslate"><span class="pre">seed</span></code> we’ve been using in other notebooks to make the train set identical across them. Then, we further split the train set into train and validation sets.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Use the same seed to make the train and test sets identical across other notebooks in the repo.</span>
+<span class="n">train</span><span class="p">,</span> <span class="n">test</span> <span class="o">=</span> <span class="n">python_random_split</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">ratio</span><span class="o">=</span><span class="mf">0.75</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="n">SEED</span><span class="p">)</span>
+<span class="c1"># Further split the train set into train and validation set.</span>
+<span class="n">train</span><span class="p">,</span> <span class="n">valid</span> <span class="o">=</span> <span class="n">python_random_split</span><span class="p">(</span><span class="n">train</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="n">SEED</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span>
+    <span class="s2">&quot;Number of samples:</span><span class="se">\n</span><span class="s2">&quot;</span>
+    <span class="s2">&quot;- Training   = </span><span class="si">{}</span><span class="se">\n</span><span class="s2">&quot;</span>
+    <span class="s2">&quot;- Validation = </span><span class="si">{}</span><span class="se">\n</span><span class="s2">&quot;</span>
+    <span class="s2">&quot;- Testing    = </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">train</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">valid</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">test</span><span class="p">))</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Number of samples:
+- Training   = 56250
+- Validation = 18750
+- Testing    = 25000
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now, upload the train and validation sets to the AzureML workspace. Our Hyperdrivce experiment will use them.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">DATA_DIR</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">tmp_dir</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="s1">&#39;aml_data&#39;</span><span class="p">)</span> 
+
+<span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">DATA_DIR</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="n">TRAIN_FILE_NAME</span> <span class="o">=</span> <span class="s2">&quot;movielens_&quot;</span> <span class="o">+</span> <span class="n">MOVIELENS_DATA_SIZE</span> <span class="o">+</span> <span class="s2">&quot;_train.pkl&quot;</span>
+<span class="n">train</span><span class="o">.</span><span class="n">to_pickle</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">DATA_DIR</span><span class="p">,</span> <span class="n">TRAIN_FILE_NAME</span><span class="p">))</span>
+<span class="n">VALID_FILE_NAME</span> <span class="o">=</span> <span class="s2">&quot;movielens_&quot;</span> <span class="o">+</span> <span class="n">MOVIELENS_DATA_SIZE</span> <span class="o">+</span> <span class="s2">&quot;_valid.pkl&quot;</span>
+<span class="n">valid</span><span class="o">.</span><span class="n">to_pickle</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">DATA_DIR</span><span class="p">,</span> <span class="n">VALID_FILE_NAME</span><span class="p">))</span>
+
+<span class="c1"># Note, all the files under DATA_DIR will be uploaded to the data store</span>
+<span class="n">ds</span> <span class="o">=</span> <span class="n">ws</span><span class="o">.</span><span class="n">get_default_datastore</span><span class="p">()</span>
+<span class="n">ds</span><span class="o">.</span><span class="n">upload</span><span class="p">(</span>
+    <span class="n">src_dir</span><span class="o">=</span><span class="n">DATA_DIR</span><span class="p">,</span>
+    <span class="n">target_path</span><span class="o">=</span><span class="s1">&#39;data&#39;</span><span class="p">,</span>
+    <span class="n">overwrite</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">show_progress</span><span class="o">=</span><span class="kc">True</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Uploading /tmp/tmpwby7dwh4/aml_data/movielens_100k_train.pkl
+Uploading /tmp/tmpwby7dwh4/aml_data/movielens_100k_valid.pkl
+Uploaded /tmp/tmpwby7dwh4/aml_data/movielens_100k_valid.pkl, 1 files out of an estimated total of 2
+Uploaded /tmp/tmpwby7dwh4/aml_data/movielens_100k_train.pkl, 2 files out of an estimated total of 2
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>$AZUREML_DATAREFERENCE_ec1d8219afb44a36adf66ff9ece918f4
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="prepare-training-scripts">
+<h2>4. Prepare Training Scripts<a class="headerlink" href="#prepare-training-scripts" title="Permalink to this headline">¶</a></h2>
+<p>Next step is to prepare scripts that AzureML Hyperdrive will use to train and evaluate models with selected hyperparameters. We re-use our <a class="reference internal" href="../00_quick_start/wide_deep_movielens.html"><span class="doc std std-doc">Wide-Deep Quickstart notebook</span></a> for that. To run the model notebook from the Hyperdrive Run, all we need is to prepare an <span class="xref myst">entry script</span> which parses the hyperparameter arguments, passes them to the notebook, and records the results of the notebook to AzureML Run logs by using <code class="docutils literal notranslate"><span class="pre">papermill</span></code>. Hyperdrive uses the logs to track the performance of each hyperparameter-set and finds the best performed one.</p>
+<p>Here is a code snippet from the entry script:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">...</span>
+<span class="kn">from</span> <span class="nn">azureml.core</span> <span class="kn">import</span> <span class="n">Run</span>
+<span class="n">run</span> <span class="o">=</span> <span class="n">Run</span><span class="o">.</span><span class="n">get_context</span><span class="p">()</span>
+<span class="o">...</span>
+<span class="n">NOTEBOOK_NAME</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+    <span class="s2">&quot;notebooks&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;00_quick_start&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;wide_deep_movielens.ipynb&quot;</span>
+<span class="p">)</span>
+<span class="o">...</span>
+<span class="n">parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">()</span>
+<span class="o">...</span>
+<span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--dnn-optimizer&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s1">&#39;dnn_optimizer&#39;</span><span class="p">,</span> <span class="o">...</span>
+<span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--dnn-optimizer-lr&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">float</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s1">&#39;dnn_optimizer_lr&#39;</span><span class="p">,</span> <span class="o">...</span>
+<span class="o">...</span>
+<span class="n">pm</span><span class="o">.</span><span class="n">execute_notebook</span><span class="p">(</span>
+    <span class="n">NOTEBOOK_NAME</span><span class="p">,</span>
+    <span class="n">OUTPUT_NOTEBOOK</span><span class="p">,</span>
+    <span class="n">parameters</span><span class="o">=</span><span class="n">params</span><span class="p">,</span>
+    <span class="n">kernel_name</span><span class="o">=</span><span class="s1">&#39;python3&#39;</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="o">...</span>
+</pre></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Prepare all the necessary scripts which will be loaded to our Hyperdrive Experiment Run</span>
+<span class="n">SCRIPT_DIR</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">tmp_dir</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="s1">&#39;aml_script&#39;</span><span class="p">)</span>
+
+<span class="c1"># Copy scripts to SCRIPT_DIR temporarly</span>
+<span class="n">shutil</span><span class="o">.</span><span class="n">copytree</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s1">&#39;..&#39;</span><span class="p">,</span> <span class="s1">&#39;..&#39;</span><span class="p">,</span> <span class="s1">&#39;recommenders&#39;</span><span class="p">),</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">SCRIPT_DIR</span><span class="p">,</span> <span class="s1">&#39;recommenders&#39;</span><span class="p">))</span>
+
+<span class="c1"># We re-use our model notebook for training and testing models.</span>
+<span class="n">model_notebook_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s1">&#39;notebooks&#39;</span><span class="p">,</span> <span class="s1">&#39;00_quick_start&#39;</span><span class="p">)</span>
+<span class="n">dest_model_notebook_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">SCRIPT_DIR</span><span class="p">,</span> <span class="n">model_notebook_dir</span><span class="p">)</span>
+<span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">dest_model_notebook_dir</span> <span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">shutil</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s1">&#39;..&#39;</span><span class="p">,</span> <span class="s1">&#39;..&#39;</span><span class="p">,</span> <span class="n">model_notebook_dir</span><span class="p">,</span> <span class="s1">&#39;wide_deep_movielens.ipynb&#39;</span><span class="p">),</span>
+    <span class="n">dest_model_notebook_dir</span>
+<span class="p">)</span>
+
+<span class="c1"># copy training scripts</span>
+<span class="n">shutil</span><span class="o">.</span><span class="n">copytree</span><span class="p">(</span><span class="s1">&#39;train_scripts&#39;</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">SCRIPT_DIR</span><span class="p">,</span> <span class="s1">&#39;train_scripts&#39;</span><span class="p">))</span>
+
+<span class="c1"># This is our entry script for Hyperdrive Run</span>
+<span class="n">ENTRY_SCRIPT_NAME</span> <span class="o">=</span> <span class="s1">&#39;train_scripts/wide_deep_training.py&#39;</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="setup-and-run-hyperdrive-experiment">
+<h2>5. Setup and Run Hyperdrive Experiment<a class="headerlink" href="#setup-and-run-hyperdrive-experiment" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="define-search-space">
+<h3>5.1 Define Search Space<a class="headerlink" href="#define-search-space" title="Permalink to this headline">¶</a></h3>
+<p>We define the search space of hyperparameters. For example, if you want to test different batch sizes of {64, 128, 256}, you can use <code class="docutils literal notranslate"><span class="pre">azureml.train.hyperdrive.choice(64,</span> <span class="pre">128,</span> <span class="pre">256)</span></code>. To search from a continuous space, use <code class="docutils literal notranslate"><span class="pre">uniform(start,</span> <span class="pre">end)</span></code>. For more options, see <a class="reference external" href="https://docs.microsoft.com/en-us/python/api/azureml-train-core/azureml.train.hyperdrive.parameter_expressions?view=azure-ml-py">Hyperdrive parameter expressions</a>.
+In this notebook, we fix the number of training steps to 50000.</p>
+<p>In the search space, we set different linear and DNN optimizers, structures, learning rates and regularization rates. Details about the hyperparameters can be found from our <a class="reference internal" href="../00_quick_start/wide_deep_movielens.html"><span class="doc std std-doc">Wide-Deep Quickstart notebook</span></a>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Script parameters. New AzureML API only accepts string values.</span>
+<span class="n">script_params</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;--datastore&#39;</span><span class="p">:</span> <span class="n">ds</span><span class="o">.</span><span class="n">as_mount</span><span class="p">(),</span>
+    <span class="s1">&#39;--train-datapath&#39;</span><span class="p">:</span> <span class="s2">&quot;data/&quot;</span> <span class="o">+</span> <span class="n">TRAIN_FILE_NAME</span><span class="p">,</span>
+    <span class="s1">&#39;--test-datapath&#39;</span><span class="p">:</span> <span class="s2">&quot;data/&quot;</span> <span class="o">+</span> <span class="n">VALID_FILE_NAME</span><span class="p">,</span>
+    <span class="s1">&#39;--top-k&#39;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">TOP_K</span><span class="p">),</span>
+    <span class="s1">&#39;--user-col&#39;</span><span class="p">:</span> <span class="n">USER_COL</span><span class="p">,</span>
+    <span class="s1">&#39;--item-col&#39;</span><span class="p">:</span> <span class="n">ITEM_COL</span><span class="p">,</span>
+    <span class="s1">&#39;--item-feat-col&#39;</span><span class="p">:</span> <span class="n">ITEM_FEAT_COL</span><span class="p">,</span>
+    <span class="s1">&#39;--rating-col&#39;</span><span class="p">:</span> <span class="n">RATING_COL</span><span class="p">,</span>
+    <span class="s1">&#39;--ranking-metrics&#39;</span><span class="p">:</span> <span class="n">RANKING_METRICS</span><span class="p">,</span>
+    <span class="s1">&#39;--rating-metrics&#39;</span><span class="p">:</span> <span class="n">RATING_METRICS</span><span class="p">,</span>
+    <span class="s1">&#39;--steps&#39;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">STEPS</span><span class="p">),</span>
+<span class="p">}</span>
+
+<span class="c1"># Hyperparameter search space</span>
+<span class="n">params</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;--model-type&#39;</span><span class="p">:</span> <span class="n">hd</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="s1">&#39;wide&#39;</span><span class="p">,</span> <span class="s1">&#39;deep&#39;</span><span class="p">,</span> <span class="s1">&#39;wide_deep&#39;</span><span class="p">),</span>
+    <span class="s1">&#39;--batch-size&#39;</span><span class="p">:</span> <span class="n">hd</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="mi">64</span><span class="p">,</span> <span class="mi">128</span><span class="p">),</span>
+    <span class="c1"># Linear model hyperparameters</span>
+    <span class="s1">&#39;--linear-optimizer&#39;</span><span class="p">:</span> <span class="n">hd</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="s1">&#39;adadelta&#39;</span><span class="p">,</span> <span class="s1">&#39;adagrad&#39;</span><span class="p">,</span> <span class="s1">&#39;adam&#39;</span><span class="p">,</span> <span class="s1">&#39;ftrl&#39;</span><span class="p">,</span> <span class="s1">&#39;momentum&#39;</span><span class="p">,</span> <span class="s1">&#39;sgd&#39;</span><span class="p">),</span>
+    <span class="s1">&#39;--linear-optimizer-lr&#39;</span><span class="p">:</span> <span class="n">hd</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mf">1e-6</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">),</span>
+    <span class="s1">&#39;--linear-l1-reg&#39;</span><span class="p">:</span> <span class="n">hd</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">),</span>
+    <span class="s1">&#39;--linear-l2-reg&#39;</span><span class="p">:</span> <span class="n">hd</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">),</span>
+    <span class="s1">&#39;--linear-momentum&#39;</span><span class="p">:</span> <span class="n">hd</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">),</span>
+    <span class="c1"># Deep model hyperparameters</span>
+    <span class="s1">&#39;--dnn-optimizer&#39;</span><span class="p">:</span> <span class="n">hd</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="s1">&#39;adadelta&#39;</span><span class="p">,</span> <span class="s1">&#39;adagrad&#39;</span><span class="p">,</span> <span class="s1">&#39;adam&#39;</span><span class="p">,</span> <span class="s1">&#39;ftrl&#39;</span><span class="p">,</span> <span class="s1">&#39;momentum&#39;</span><span class="p">,</span> <span class="s1">&#39;sgd&#39;</span><span class="p">),</span>
+    <span class="s1">&#39;--dnn-optimizer-lr&#39;</span><span class="p">:</span> <span class="n">hd</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mf">1e-6</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">),</span>
+    <span class="s1">&#39;--dnn-l1-reg&#39;</span><span class="p">:</span> <span class="n">hd</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">),</span>
+    <span class="s1">&#39;--dnn-l2-reg&#39;</span><span class="p">:</span> <span class="n">hd</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">),</span>
+    <span class="s1">&#39;--dnn-momentum&#39;</span><span class="p">:</span> <span class="n">hd</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">),</span>
+    <span class="s1">&#39;--dnn-user-embedding-dim&#39;</span><span class="p">:</span> <span class="n">hd</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">32</span><span class="p">),</span>
+    <span class="s1">&#39;--dnn-item-embedding-dim&#39;</span><span class="p">:</span> <span class="n">hd</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">32</span><span class="p">),</span>
+    <span class="s1">&#39;--dnn-hidden-layer-1&#39;</span><span class="p">:</span> <span class="n">hd</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">64</span><span class="p">,</span> <span class="mi">128</span><span class="p">,</span> <span class="mi">256</span><span class="p">,</span> <span class="mi">512</span><span class="p">),</span>  <span class="c1"># 0: not using this layer</span>
+    <span class="s1">&#39;--dnn-hidden-layer-2&#39;</span><span class="p">:</span> <span class="n">hd</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">64</span><span class="p">,</span> <span class="mi">128</span><span class="p">,</span> <span class="mi">256</span><span class="p">,</span> <span class="mi">512</span><span class="p">),</span>
+    <span class="s1">&#39;--dnn-hidden-layer-3&#39;</span><span class="p">:</span> <span class="n">hd</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">64</span><span class="p">,</span> <span class="mi">128</span><span class="p">,</span> <span class="mi">256</span><span class="p">,</span> <span class="mi">512</span><span class="p">),</span>
+    <span class="s1">&#39;--dnn-hidden-layer-4&#39;</span><span class="p">:</span> <span class="n">hd</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="mi">64</span><span class="p">,</span> <span class="mi">128</span><span class="p">,</span> <span class="mi">256</span><span class="p">,</span> <span class="mi">512</span><span class="p">,</span> <span class="mi">1024</span><span class="p">),</span>
+    <span class="s1">&#39;--dnn-batch-norm&#39;</span><span class="p">:</span> <span class="n">hd</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+    <span class="s1">&#39;--dnn-dropout&#39;</span><span class="p">:</span> <span class="n">hd</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.8</span><span class="p">)</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="create-hyperdrive-experiment">
+<h3>5.2 Create Hyperdrive Experiment<a class="headerlink" href="#create-hyperdrive-experiment" title="Permalink to this headline">¶</a></h3>
+<p><a class="reference external" href="https://docs.microsoft.com/en-us/azure/machine-learning/service/how-to-tune-hyperparameters">Hyperdrive</a> creates a machine learning experiment <a class="reference external" href="https://docs.microsoft.com/en-us/python/api/azureml-core/azureml.core.run?view=azure-ml-py"><strong>Run</strong></a> on the workspace and utilizes child-runs to search the best set of hyperparameters. <a class="reference external" href="https://docs.microsoft.com/en-us/python/api/azureml-core/azureml.core.experiment(class)?view=azure-ml-py">Experiment</a> is the main entry point into experimenting with AzureML. To create new Experiment or get the existing one, we pass our experimentation name.</p>
+<p><strong>AzureML Estimator</strong> is the building block for training. An Estimator encapsulates the training code and parameters, the compute resources and runtime environment for a particular training scenario (Note, this is not TensorFlow’s Estimator). In the following cell, we create the Estimator with additional dependencies of our model scripts.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">est</span> <span class="o">=</span> <span class="n">aml</span><span class="o">.</span><span class="n">train</span><span class="o">.</span><span class="n">estimator</span><span class="o">.</span><span class="n">Estimator</span><span class="p">(</span>
+    <span class="n">source_directory</span><span class="o">=</span><span class="n">SCRIPT_DIR</span><span class="p">,</span>
+    <span class="n">entry_script</span><span class="o">=</span><span class="n">ENTRY_SCRIPT_NAME</span><span class="p">,</span>
+    <span class="n">script_params</span><span class="o">=</span><span class="n">script_params</span><span class="p">,</span>
+    <span class="n">compute_target</span><span class="o">=</span><span class="n">compute_target</span><span class="p">,</span>
+    <span class="n">use_gpu</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">conda_packages</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;pandas&#39;</span><span class="p">,</span> <span class="s1">&#39;scikit-learn&#39;</span><span class="p">,</span> <span class="s1">&#39;numba&#39;</span><span class="p">,</span> <span class="s1">&#39;matplotlib&#39;</span><span class="p">],</span>
+    <span class="n">pip_packages</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;ipykernel&#39;</span><span class="p">,</span> <span class="s1">&#39;papermill==0.18.2&#39;</span><span class="p">,</span> <span class="s1">&#39;tensorflow-gpu==1.12&#39;</span><span class="p">]</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>We set our primary metric with the goal (hyperparameter search criteria), hyperparameter sampling method, and number of total child-runs to the Hyperdrive Run Config. The bigger the search space, the more number of runs we will need for better results.</p>
+<p>Hyperdrive provides three different parameter sampling methods: <code class="docutils literal notranslate"><span class="pre">RandomParameterSampling</span></code>, <code class="docutils literal notranslate"><span class="pre">GridParameterSampling</span></code>, and <code class="docutils literal notranslate"><span class="pre">BayesianParameterSampling</span></code>. Details about each method can be found from <a class="reference external" href="https://docs.microsoft.com/en-us/azure/machine-learning/service/how-to-tune-hyperparameters">Azure doc</a>. Here, we use the Bayesian sampling.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">hd_run_config</span> <span class="o">=</span> <span class="n">hd</span><span class="o">.</span><span class="n">HyperDriveRunConfig</span><span class="p">(</span>
+    <span class="n">estimator</span><span class="o">=</span><span class="n">est</span><span class="p">,</span> 
+    <span class="n">hyperparameter_sampling</span><span class="o">=</span><span class="n">hd</span><span class="o">.</span><span class="n">BayesianParameterSampling</span><span class="p">(</span><span class="n">params</span><span class="p">),</span>
+    <span class="n">primary_metric_name</span><span class="o">=</span><span class="n">PRIMARY_METRIC</span><span class="p">,</span>
+    <span class="n">primary_metric_goal</span><span class="o">=</span><span class="n">hd</span><span class="o">.</span><span class="n">PrimaryMetricGoal</span><span class="o">.</span><span class="n">MINIMIZE</span><span class="p">,</span> 
+    <span class="n">max_total_runs</span><span class="o">=</span><span class="n">MAX_TOTAL_RUNS</span><span class="p">,</span>
+    <span class="n">max_concurrent_runs</span><span class="o">=</span><span class="n">MAX_CONCURRENT_RUNS</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="run-experiment">
+<h3>5.3 Run Experiment<a class="headerlink" href="#run-experiment" title="Permalink to this headline">¶</a></h3>
+<p>Now we submit the Run to our experiment. You can see the experiment progress from this notebook by using <code class="docutils literal notranslate"><span class="pre">azureml.widgets.RunDetails(hd_run).show()</span></code> or check from the Azure portal with the url link you can get by running <code class="docutils literal notranslate"><span class="pre">hd_run.get_portal_url()</span></code>.</p>
+<img src="https://recodatasets.z20.web.core.windows.net/images/aml_0.png?sanitize=true" width="600"/>
+<img src="https://recodatasets.z20.web.core.windows.net/images/aml_1.png?sanitize=true" width="600"/>
+<center><i>AzureML Hyperdrive Widget</i></center>
+<p>To load an existing Hyperdrive Run instead of start new one, use <code class="docutils literal notranslate"><span class="pre">hd_run</span> <span class="pre">=</span> <span class="pre">hd.HyperDriveRun(exp,</span> <span class="pre">&lt;user-run-id&gt;,</span> <span class="pre">hyperdrive_run_config=hd_run_config)</span></code>. You also can cancel the Run with <code class="docutils literal notranslate"><span class="pre">hd_run.cancel()</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">EXP_NAME</span> <span class="o">=</span> <span class="s2">&quot;movielens_&quot;</span> <span class="o">+</span> <span class="n">MOVIELENS_DATA_SIZE</span> <span class="o">+</span> <span class="s2">&quot;_wide_deep_model&quot;</span>
+<span class="n">exp</span> <span class="o">=</span> <span class="n">aml</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">Experiment</span><span class="p">(</span><span class="n">workspace</span><span class="o">=</span><span class="n">ws</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">EXP_NAME</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create an experiment run. Skip this to load an existing run instead</span>
+<span class="n">hd_run</span> <span class="o">=</span> <span class="n">exp</span><span class="o">.</span><span class="n">submit</span><span class="p">(</span><span class="n">config</span><span class="o">=</span><span class="n">hd_run_config</span><span class="p">)</span>
+
+<span class="c1"># To load an existing run: </span>
+<span class="c1"># hd_run = hd.HyperDriveRun(</span>
+<span class="c1">#     experiment=exp,</span>
+<span class="c1">#     run_id=&lt;run-id-to-load&gt;,</span>
+<span class="c1">#     hyperdrive_run_config=hd_run_config</span>
+<span class="c1"># )</span>
+
+<span class="n">hd_run</span><span class="o">.</span><span class="n">get_details</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Get the list of runs from the experiment:</span>
+<span class="nb">list</span><span class="p">(</span><span class="n">exp</span><span class="o">.</span><span class="n">get_runs</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[Run(Experiment: movielens_100k_wide_deep_model,
+ Id: movielens_100k_wide_deep_model_1561733572398,
+ Type: hyperdrive,
+ Status: Completed), Run(Experiment: movielens_100k_wide_deep_model,
+ Id: movielens_100k_wide_deep_model_1561703444608,
+ Type: hyperdrive,
+ Status: Canceled), Run(Experiment: movielens_100k_wide_deep_model,
+ Id: movielens_100k_wide_deep_model_1560996258088,
+ Type: hyperdrive,
+ Status: Completed), Run(Experiment: movielens_100k_wide_deep_model,
+ Id: movielens_100k_wide_deep_model_1560994940938,
+ Type: hyperdrive,
+ Status: Canceled), Run(Experiment: movielens_100k_wide_deep_model,
+ Id: movielens_100k_wide_deep_model_1560993611286,
+ Type: hyperdrive,
+ Status: Canceled), Run(Experiment: movielens_100k_wide_deep_model,
+ Id: movielens_100k_wide_deep_model_1560892511300,
+ Type: hyperdrive,
+ Status: Canceled), Run(Experiment: movielens_100k_wide_deep_model,
+ Id: movielens_100k_wide_deep_model_1562013419918,
+ Type: hyperdrive,
+ Status: Running)]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Note, widgets don&#39;t work on JupyterLab</span>
+<span class="n">widgets</span><span class="o">.</span><span class="n">RunDetails</span><span class="p">(</span><span class="n">hd_run</span><span class="p">)</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Once all the child-runs are finished, we can get the best run and the metrics.</p>
+<blockquote>
+<div><p>Note, if you run Hyperdrive experiment again, you will see the best metrics and corresponding hyperparameters are not the same. It is because of 1) the random initialization of the model and 2) Hyperdrive sampling (when you use RandomSampling). You will get different results as well if you use different training and validation sets.</p>
+</div></blockquote>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Get best run and printout metrics</span>
+<span class="n">best_run</span> <span class="o">=</span> <span class="n">hd_run</span><span class="o">.</span><span class="n">get_best_run_by_primary_metric</span><span class="p">()</span>
+<span class="n">best_run_metrics</span> <span class="o">=</span> <span class="n">best_run</span><span class="o">.</span><span class="n">get_metrics</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;* Best Run Id:&quot;</span><span class="p">,</span> <span class="n">best_run</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">* Best hyperparameters:&quot;</span><span class="p">)</span>
+<span class="n">model_type</span> <span class="o">=</span> <span class="n">best_run_metrics</span><span class="p">[</span><span class="s1">&#39;MODEL_TYPE&#39;</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Model type =&quot;</span><span class="p">,</span> <span class="n">model_type</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Batch size =&quot;</span><span class="p">,</span> <span class="n">best_run_metrics</span><span class="p">[</span><span class="s1">&#39;BATCH_SIZE&#39;</span><span class="p">])</span>
+
+<span class="k">if</span> <span class="n">model_type</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;wide&#39;</span><span class="p">,</span> <span class="s1">&#39;wide_deep&#39;</span><span class="p">):</span>
+    <span class="n">linear_opt</span> <span class="o">=</span> <span class="n">best_run_metrics</span><span class="p">[</span><span class="s1">&#39;LINEAR_OPTIMIZER&#39;</span><span class="p">]</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Linear optimizer =&quot;</span><span class="p">,</span> <span class="n">linear_opt</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">Learning rate = </span><span class="si">{0:.4f}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">best_run_metrics</span><span class="p">[</span><span class="s1">&#39;LINEAR_OPTIMIZER_LR&#39;</span><span class="p">]))</span>
+    <span class="k">if</span> <span class="n">linear_opt</span> <span class="o">==</span> <span class="s1">&#39;ftrl&#39;</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">L1 regularization = </span><span class="si">{0:.4f}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">best_run_metrics</span><span class="p">[</span><span class="s1">&#39;LINEAR_L1_REG&#39;</span><span class="p">]))</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">L2 regularization = </span><span class="si">{0:.4f}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">best_run_metrics</span><span class="p">[</span><span class="s1">&#39;LINEAR_L2_REG&#39;</span><span class="p">]))</span>
+    <span class="k">elif</span> <span class="n">linear_opt</span> <span class="o">==</span> <span class="s1">&#39;momentum&#39;</span> <span class="ow">or</span> <span class="n">linear_opt</span> <span class="o">==</span> <span class="s1">&#39;rmsprop&#39;</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">Momentum = </span><span class="si">{0:.4f}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">best_run_metrics</span><span class="p">[</span><span class="s1">&#39;LINEAR_MOMENTUM&#39;</span><span class="p">]))</span>
+
+<span class="k">if</span> <span class="n">model_type</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;deep&#39;</span><span class="p">,</span> <span class="s1">&#39;wide_deep&#39;</span><span class="p">):</span>
+    <span class="n">dnn_opt</span> <span class="o">=</span> <span class="n">best_run_metrics</span><span class="p">[</span><span class="s1">&#39;DNN_OPTIMIZER&#39;</span><span class="p">]</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;DNN optimizer =&quot;</span><span class="p">,</span> <span class="n">dnn_opt</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">User embedding dimension =&quot;</span><span class="p">,</span> <span class="n">best_run_metrics</span><span class="p">[</span><span class="s1">&#39;DNN_USER_DIM&#39;</span><span class="p">])</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">Item embedding dimension =&quot;</span><span class="p">,</span> <span class="n">best_run_metrics</span><span class="p">[</span><span class="s1">&#39;DNN_ITEM_DIM&#39;</span><span class="p">])</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">Hidden units =&quot;</span><span class="p">,</span> <span class="p">[</span>
+        <span class="n">best_run_metrics</span><span class="p">[</span><span class="s1">&#39;DNN_HIDDEN_LAYER_</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">)]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+    <span class="p">])</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">Learning rate = </span><span class="si">{0:.4f}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">best_run_metrics</span><span class="p">[</span><span class="s1">&#39;DNN_OPTIMIZER_LR&#39;</span><span class="p">]))</span>
+    <span class="k">if</span> <span class="n">dnn_opt</span> <span class="o">==</span> <span class="s1">&#39;ftrl&#39;</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">L1 regularization = </span><span class="si">{0:.4f}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">best_run_metrics</span><span class="p">[</span><span class="s1">&#39;DNN_L1_REG&#39;</span><span class="p">]))</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">L2 regularization = </span><span class="si">{0:.4f}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">best_run_metrics</span><span class="p">[</span><span class="s1">&#39;DNN_L2_REG&#39;</span><span class="p">]))</span>
+    <span class="k">elif</span> <span class="n">dnn_opt</span> <span class="o">==</span> <span class="s1">&#39;momentum&#39;</span> <span class="ow">or</span> <span class="n">linear_opt</span> <span class="o">==</span> <span class="s1">&#39;rmsprop&#39;</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">Momentum = </span><span class="si">{0:.4f}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">best_run_metrics</span><span class="p">[</span><span class="s1">&#39;DNN_MOMENTUM&#39;</span><span class="p">]))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">Dropout rate = </span><span class="si">{0:.4f}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">best_run_metrics</span><span class="p">[</span><span class="s1">&#39;DNN_DROPOUT&#39;</span><span class="p">]))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">Batch normalization =&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="o">==</span><span class="n">best_run_metrics</span><span class="p">[</span><span class="s1">&#39;DNN_BATCH_NORM&#39;</span><span class="p">])</span>
+    
+<span class="c1"># Metrics evaluated on validation set</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">* Performance metrics:&quot;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">RANKING_METRICS</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\t</span><span class="si">{0}</span><span class="s2"> (top-</span><span class="si">{1}</span><span class="s2">) = </span><span class="si">{2:.4f}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">TOP_K</span><span class="p">,</span> <span class="n">best_run_metrics</span><span class="p">[</span><span class="n">m</span><span class="p">]))</span>
+<span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">RATING_METRICS</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\t</span><span class="si">{0}</span><span class="s2"> = </span><span class="si">{1:.4f}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">best_run_metrics</span><span class="p">[</span><span class="n">m</span><span class="p">]))</span>    
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>* Best Run Id: movielens_100k_wide_deep_model_1561733572398_41
+
+* Best hyperparameters:
+Model type = wide_deep
+Batch size = 32.0
+Linear optimizer = adagrad
+	Learning rate = 0.0621
+DNN optimizer = adadelta
+	User embedding dimension = 32.0
+	Item embedding dimension = 16.0
+	Hidden units = [0.0, 64.0, 128.0, 512.0]
+	Learning rate = 0.1000
+	Dropout rate = 0.8000
+	Batch normalization = True
+
+* Performance metrics:
+	ndcg_at_k (top-10) = 0.0555
+	precision_at_k (top-10) = 0.0534
+	rmse = 0.9552
+	mae = 0.7568
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="model-import-and-test">
+<h2>6. Model Import and Test<a class="headerlink" href="#model-import-and-test" title="Permalink to this headline">¶</a></h2>
+<p><a class="reference internal" href="../00_quick_start/wide_deep_movielens.html"><span class="doc std std-doc">Wide-Deep Quickstart notebook</span></a>, which we’ve used in our Hyperdrive Experiment, exports the trained model to the output folder (the output path is recorded at <code class="docutils literal notranslate"><span class="pre">best_run_metrics['saved_model_dir']</span></code>). We can download a model from the best run and test it.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">MODEL_DIR</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">tmp_dir</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="s1">&#39;aml_model&#39;</span><span class="p">)</span>
+<span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">MODEL_DIR</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="n">model_file_dir</span> <span class="o">=</span> <span class="n">best_run_metrics</span><span class="p">[</span><span class="s1">&#39;saved_model_dir&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39;/&#39;</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">model_file_dir</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">best_run</span><span class="o">.</span><span class="n">get_file_names</span><span class="p">():</span>
+    <span class="k">if</span> <span class="n">f</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="n">model_file_dir</span><span class="p">):</span>
+        <span class="n">output_file_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">MODEL_DIR</span><span class="p">,</span> <span class="n">f</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">model_file_dir</span><span class="p">)[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Downloading </span><span class="si">{}</span><span class="s2">..&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">f</span><span class="p">))</span>
+        <span class="n">best_run</span><span class="o">.</span><span class="n">download_file</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">f</span><span class="p">,</span> <span class="n">output_file_path</span><span class="o">=</span><span class="n">output_file_path</span><span class="p">)</span>
+    
+<span class="n">saved_model</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">contrib</span><span class="o">.</span><span class="n">estimator</span><span class="o">.</span><span class="n">SavedModelEstimator</span><span class="p">(</span><span class="n">MODEL_DIR</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>outputs/model/1561737321/
+Downloading outputs/model/1561737321/saved_model.pb..
+Downloading outputs/model/1561737321/variables/variables.data-00000-of-00002..
+Downloading outputs/model/1561737321/variables/variables.data-00001-of-00002..
+Downloading outputs/model/1561737321/variables/variables.index..
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cols</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;col_user&#39;</span><span class="p">:</span> <span class="n">USER_COL</span><span class="p">,</span>
+    <span class="s1">&#39;col_item&#39;</span><span class="p">:</span> <span class="n">ITEM_COL</span><span class="p">,</span>
+    <span class="s1">&#39;col_rating&#39;</span><span class="p">:</span> <span class="n">RATING_COL</span><span class="p">,</span>
+    <span class="s1">&#39;col_prediction&#39;</span><span class="p">:</span> <span class="s1">&#39;prediction&#39;</span>
+<span class="p">}</span>
+
+<span class="n">tf</span><span class="o">.</span><span class="n">logging</span><span class="o">.</span><span class="n">set_verbosity</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">logging</span><span class="o">.</span><span class="n">ERROR</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Rating prediction set</span>
+<span class="n">X_test</span> <span class="o">=</span> <span class="n">test</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">RATING_COL</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">X_test</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># Rating prediction</span>
+<span class="n">predictions</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">itertools</span><span class="o">.</span><span class="n">islice</span><span class="p">(</span>
+    <span class="n">saved_model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span>
+        <span class="n">pandas_input_fn_for_saved_model</span><span class="p">(</span>
+            <span class="n">df</span><span class="o">=</span><span class="n">X_test</span><span class="p">,</span>
+            <span class="n">feat_name_type</span><span class="o">=</span><span class="p">{</span>
+                <span class="n">USER_COL</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+                <span class="n">ITEM_COL</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+                <span class="n">ITEM_FEAT_COL</span><span class="p">:</span> <span class="nb">list</span>
+            <span class="p">}</span>
+        <span class="p">)</span>
+    <span class="p">),</span>
+    <span class="nb">len</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
+<span class="p">))</span>
+
+<span class="n">prediction_df</span> <span class="o">=</span> <span class="n">X_test</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">prediction_df</span><span class="p">[</span><span class="s1">&#39;prediction&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">p</span><span class="p">[</span><span class="s1">&#39;outputs&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">predictions</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">prediction_df</span><span class="p">[</span><span class="s1">&#39;prediction&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">describe</span><span class="p">(),</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">RATING_METRICS</span><span class="p">:</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">evaluator</span><span class="o">.</span><span class="n">metrics</span><span class="p">[</span><span class="n">m</span><span class="p">](</span><span class="n">test</span><span class="p">,</span> <span class="n">prediction_df</span><span class="p">,</span> <span class="o">**</span><span class="n">cols</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="s2">&quot;=&quot;</span><span class="p">,</span> <span class="n">result</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>count    25000.000000
+mean         3.525522
+std          0.635910
+min          0.140751
+25%          3.129608
+50%          3.576132
+75%          3.973043
+max          5.629328
+Name: prediction, dtype: float64 
+
+rmse = 0.956280219325999
+mae = 0.7553600390541554
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Unique items</span>
+<span class="k">if</span> <span class="n">ITEM_FEAT_COL</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="n">items</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">drop_duplicates</span><span class="p">(</span><span class="n">ITEM_COL</span><span class="p">)[[</span><span class="n">ITEM_COL</span><span class="p">]]</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">items</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">drop_duplicates</span><span class="p">(</span><span class="n">ITEM_COL</span><span class="p">)[[</span><span class="n">ITEM_COL</span><span class="p">,</span> <span class="n">ITEM_FEAT_COL</span><span class="p">]]</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="c1"># Unique users</span>
+<span class="n">users</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">drop_duplicates</span><span class="p">(</span><span class="n">USER_COL</span><span class="p">)[[</span><span class="n">USER_COL</span><span class="p">]]</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># Ranking prediction set</span>
+<span class="n">ranking_pool</span> <span class="o">=</span> <span class="n">user_item_pairs</span><span class="p">(</span>
+    <span class="n">user_df</span><span class="o">=</span><span class="n">users</span><span class="p">,</span>
+    <span class="n">item_df</span><span class="o">=</span><span class="n">items</span><span class="p">,</span>
+    <span class="n">user_col</span><span class="o">=</span><span class="n">USER_COL</span><span class="p">,</span>
+    <span class="n">item_col</span><span class="o">=</span><span class="n">ITEM_COL</span><span class="p">,</span>
+    <span class="n">user_item_filter_df</span><span class="o">=</span><span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">train</span><span class="p">,</span> <span class="n">valid</span><span class="p">]),</span>  <span class="c1"># remove seen items</span>
+    <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">predictions</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="c1"># If we put all ranking_pool into a tensor, we get error (since the content limit is 2GB).</span>
+<span class="c1"># We divide ranking_pool into 5 chunks, make prediction, and concat the results. </span>
+<span class="k">for</span> <span class="n">pool</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">array_split</span><span class="p">(</span><span class="n">ranking_pool</span><span class="p">,</span> <span class="mi">5</span><span class="p">):</span>
+    <span class="n">pool</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="c1"># Rating prediction</span>
+    <span class="n">pred</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">itertools</span><span class="o">.</span><span class="n">islice</span><span class="p">(</span>
+        <span class="n">saved_model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span>
+            <span class="n">pandas_input_fn_for_saved_model</span><span class="p">(</span>
+                <span class="n">df</span><span class="o">=</span><span class="n">X_test</span><span class="p">,</span>
+                <span class="n">feat_name_type</span><span class="o">=</span><span class="p">{</span>
+                    <span class="n">USER_COL</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+                    <span class="n">ITEM_COL</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+                    <span class="n">ITEM_FEAT_COL</span><span class="p">:</span> <span class="nb">list</span>
+                <span class="p">}</span>
+            <span class="p">)</span>
+        <span class="p">),</span>
+        <span class="nb">len</span><span class="p">(</span><span class="n">pool</span><span class="p">)</span>
+    <span class="p">))</span>
+    <span class="n">predictions</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="n">p</span><span class="p">[</span><span class="s1">&#39;outputs&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">pred</span><span class="p">])</span>
+    
+<span class="n">ranking_pool</span><span class="p">[</span><span class="s1">&#39;prediction&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">predictions</span>
+
+<span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">RANKING_METRICS</span><span class="p">:</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">evaluator</span><span class="o">.</span><span class="n">metrics</span><span class="p">[</span><span class="n">m</span><span class="p">](</span><span class="n">test</span><span class="p">,</span> <span class="n">ranking_pool</span><span class="p">,</span> <span class="o">**</span><span class="p">{</span><span class="o">**</span><span class="n">cols</span><span class="p">,</span> <span class="s1">&#39;k&#39;</span><span class="p">:</span> <span class="n">TOP_K</span><span class="p">})</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="s2">&quot;=&quot;</span><span class="p">,</span> <span class="n">result</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>ndcg_at_k = 0.018009288572177713
+precision_at_k = 0.01792152704135737
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="wide-and-deep-baseline-comparison">
+<h3>Wide-and-Deep Baseline Comparison<a class="headerlink" href="#wide-and-deep-baseline-comparison" title="Permalink to this headline">¶</a></h3>
+<p>To see if Hyperdrive found good hyperparameters, we simply compare with the model with known hyperparameters from <a class="reference external" href="https://github.com/tensorflow/models/blob/master/official/wide_deep/movielens_main.py">TensorFlow’s wide-deep learning example</a> which uses only the DNN part from the wide-and-deep model for MovieLens data.</p>
+<blockquote>
+<div><p>Note, this is not ‘apples to apples’ comparison. For example, TensorFlow’s movielens example uses <em>rating-timestamp</em> as a numeric feature, but we did not use that here because we think the timestamps are not relevant to the movies’ ratings. This comparison is more like to show how Hyperdrive can help to find comparable hyperparameters without requiring exhaustive efforts in going over a huge search-space.</p>
+</div></blockquote>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">OUTPUT_NOTEBOOK</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">tmp_dir</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="s2">&quot;output.ipynb&quot;</span><span class="p">)</span>
+<span class="n">OUTPUT_MODEL_DIR</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">tmp_dir</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="s2">&quot;known_hyperparam_model_checkpoints&quot;</span><span class="p">)</span>
+
+<span class="n">params</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;MOVIELENS_DATA_SIZE&#39;</span><span class="p">:</span> <span class="n">MOVIELENS_DATA_SIZE</span><span class="p">,</span>
+    <span class="s1">&#39;TOP_K&#39;</span><span class="p">:</span> <span class="n">TOP_K</span><span class="p">,</span>
+    <span class="s1">&#39;MODEL_TYPE&#39;</span><span class="p">:</span> <span class="s1">&#39;deep&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;STEPS&#39;</span><span class="p">:</span> <span class="n">STEPS</span><span class="p">,</span>
+    <span class="s1">&#39;BATCH_SIZE&#39;</span><span class="p">:</span> <span class="mi">256</span><span class="p">,</span>
+    <span class="s1">&#39;DNN_OPTIMIZER&#39;</span><span class="p">:</span> <span class="s1">&#39;Adam&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;DNN_OPTIMIZER_LR&#39;</span><span class="p">:</span> <span class="mf">0.001</span><span class="p">,</span>
+    <span class="s1">&#39;DNN_HIDDEN_LAYER_1&#39;</span><span class="p">:</span> <span class="mi">256</span><span class="p">,</span>
+    <span class="s1">&#39;DNN_HIDDEN_LAYER_2&#39;</span><span class="p">:</span> <span class="mi">256</span><span class="p">,</span>
+    <span class="s1">&#39;DNN_HIDDEN_LAYER_3&#39;</span><span class="p">:</span> <span class="mi">256</span><span class="p">,</span>
+    <span class="s1">&#39;DNN_HIDDEN_LAYER_4&#39;</span><span class="p">:</span> <span class="mi">128</span><span class="p">,</span>
+    <span class="s1">&#39;DNN_USER_DIM&#39;</span><span class="p">:</span> <span class="mi">16</span><span class="p">,</span>
+    <span class="s1">&#39;DNN_ITEM_DIM&#39;</span><span class="p">:</span> <span class="mi">64</span><span class="p">,</span>
+    <span class="s1">&#39;DNN_DROPOUT&#39;</span><span class="p">:</span> <span class="mf">0.3</span><span class="p">,</span>
+    <span class="s1">&#39;DNN_BATCH_NORM&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="s1">&#39;MODEL_DIR&#39;</span><span class="p">:</span> <span class="n">OUTPUT_MODEL_DIR</span><span class="p">,</span>
+    <span class="s1">&#39;EVALUATE_WHILE_TRAINING&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="s1">&#39;EXPORT_DIR_BASE&#39;</span><span class="p">:</span> <span class="n">OUTPUT_MODEL_DIR</span><span class="p">,</span>
+    <span class="s1">&#39;RANKING_METRICS&#39;</span><span class="p">:</span> <span class="n">RANKING_METRICS</span><span class="p">,</span>
+    <span class="s1">&#39;RATING_METRICS&#39;</span><span class="p">:</span> <span class="n">RATING_METRICS</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="k">with</span> <span class="n">Timer</span><span class="p">()</span> <span class="k">as</span> <span class="n">train_time</span><span class="p">:</span>
+    <span class="n">pm</span><span class="o">.</span><span class="n">execute_notebook</span><span class="p">(</span>
+        <span class="s2">&quot;../00_quick_start/wide_deep_movielens.ipynb&quot;</span><span class="p">,</span>
+        <span class="n">OUTPUT_NOTEBOOK</span><span class="p">,</span>
+        <span class="n">parameters</span><span class="o">=</span><span class="n">params</span><span class="p">,</span>
+        <span class="n">kernel_name</span><span class="o">=</span><span class="s1">&#39;python3&#39;</span>
+    <span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Training and evaluation of Wide-and-Deep model took&quot;</span><span class="p">,</span> <span class="n">train_time</span><span class="o">.</span><span class="n">interval</span><span class="p">,</span> <span class="s2">&quot;secs.&quot;</span><span class="p">)</span>
+
+<span class="n">nb</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">read_notebook</span><span class="p">(</span><span class="n">OUTPUT_NOTEBOOK</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">RANKING_METRICS</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="s2">&quot;=&quot;</span><span class="p">,</span> <span class="n">nb</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">m</span><span class="p">])</span>
+<span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">RATING_METRICS</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="s2">&quot;=&quot;</span><span class="p">,</span> <span class="n">nb</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">m</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<script type="application/vnd.jupyter.widget-view+json">
+{"model_id": "ec87f42770694ffcba842b3fa8e93e2f", "version_major": 2, "version_minor": 0}
+</script><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Training and evaluation of Wide-and-Deep model took 357.3825697898865 secs.
+ndcg_at_k = 0.013269362558705873
+precision_at_k = 0.015482502651113467
+rmse = 1.0421873135289017
+mae = 0.8238318599748612
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/data/anaconda/envs/reco_gpu/lib/python3.6/site-packages/ipykernel_launcher.py:37: DeprecationWarning: Function read_notebook is deprecated and will be removed in verison 1.0.0 (current version 0.19.0). Please see `scrapbook.read_notebook` (nteract-scrapbook) as a replacement for this functionality.
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="concluding-remark">
+<h2>Concluding Remark<a class="headerlink" href="#concluding-remark" title="Permalink to this headline">¶</a></h2>
+<p>We showed how to tune hyperparameters by utilizing Azure Machine Learning service. Complex and powerful models like Wide-and-Deep model often have many number of hyperparameters that affect on the recommendation accuracy, and it is not practical to tune the model without using a GPU cluster. For example, a training and evaluation of a model took around 3 minutes on 100k MovieLens data on a single <em>Standard NC6</em> VM as we tested from the <a class="reference external" href="#Wide-and-Deep-Baseline-Comparison">above cell</a>. When we used 1M MovieLens, it took about 47 minutes. If we want to investigate through 100 different combinations of hyperparameters <strong>manually</strong>, it will take <strong>78 hours</strong> on the VM and we may still wonder if we had tested good candidates of hyperparameters. With AzureML, as we shown in this notebook, we can easily setup different size of GPU cluster fits to our problem and utilize Bayesian sampling to navigate through the huge search space efficiently, and tweak the experiment with different criteria and algorithms for further research.</p>
+<div class="section" id="cleanup">
+<h3>Cleanup<a class="headerlink" href="#cleanup" title="Permalink to this headline">¶</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">tmp_dir</span><span class="o">.</span><span class="n">cleanup</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "reco_gpu"
+        },
+        kernelOptions: {
+            kernelName: "reco_gpu",
+            path: "./examples/04_model_select_and_optimize"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'reco_gpu'</script>
+
+              </div>
+              
+        
+            
+
+
+
+<div class='prev-next-bottom'>
+    
+
+</div>
+        
+        </div>
+    </div>
+    <footer class="footer">
+    <div class="container">
+      <p>
+        
+          By The Jupyter Book community<br/>
+        
+            &copy; Copyright 2021.<br/>
+      </p>
+    </div>
+  </footer>
+</main>
+
+
+      </div>
+    </div>
+  
+  <script src="../../_static/js/index.1c5a1a01449ed65a7b51.js"></script>
+
+  
+  </body>
+</html>

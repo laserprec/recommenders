@@ -1,0 +1,491 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>recommenders.models.rlrmc.RLRMCalgorithm &#8212; &lt;h1 style=&#34;font-size:2em;text-align:center;color:#FF5733&#34;&gt;Recommenders&lt;/h1&gt;</title>
+    
+  <link href="../../../../_static/css/theme.css" rel="stylesheet" />
+  <link href="../../../../_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
+
+    
+  <link rel="stylesheet"
+    href="../../../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+
+    
+    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/sphinx-book-theme.css?digest=c3fdc42140077d1ad13ad2f1588a4309" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/tabs.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    
+  <link rel="preload" as="script" href="../../../../_static/js/index.1c5a1a01449ed65a7b51.js">
+
+    <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
+    <script src="../../../../_static/jquery.js"></script>
+    <script src="../../../../_static/underscore.js"></script>
+    <script src="../../../../_static/doctools.js"></script>
+    <script src="../../../../_static/togglebutton.js"></script>
+    <script src="../../../../_static/clipboard.min.js"></script>
+    <script src="../../../../_static/copybutton.js"></script>
+    <script src="../../../../_static/tabs.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../../../../_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
+    <link rel="canonical" href="https://microsoft.github.io/genalog/_modules/recommenders/models/rlrmc/RLRMCalgorithm.html" />
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en" />
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="../../../../index.html">
+      
+      
+      
+      <h1 class="site-logo" id="site-title"><h1 style="font-size:2em;text-align:center;color:#FF5733">Recommenders</h1></h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="../../../../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        
+    </div>
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="topbar container-xl fixed-top">
+    <div class="topbar-contents row">
+        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
+        <div class="col pl-md-4 topbar-main">
+            
+            <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+                data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+                aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
+                title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+                <i class="fas fa-bars"></i>
+                <i class="fas fa-arrow-left"></i>
+                <i class="fas fa-arrow-up"></i>
+            </button>
+            
+            
+            <!-- Source interaction buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
+    <div class="dropdown-buttons sourcebuttons">
+        <a class="repository-button"
+            href="https://github.com/microsoft/genalog"><button type="button" class="btn btn-secondary topbarbtn"
+                data-toggle="tooltip" data-placement="left" title="Source repository"><i
+                    class="fab fa-github"></i>repository</button></a>
+        <a class="issues-button"
+            href="https://github.com/microsoft/genalog/issues/new?title=Issue%20on%20page%20%2F_modules/recommenders/models/rlrmc/RLRMCalgorithm.html&body=Your%20issue%20content%20here."><button
+                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
+                title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
+        
+    </div>
+</div>
+
+            <!-- Full screen (wrap in <a> to have style consistency -->
+
+<a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+        data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+        title="Fullscreen mode"><i
+            class="fas fa-expand"></i></button></a>
+
+            <!-- Launch buttons -->
+
+        </div>
+
+        <!-- Table of contents -->
+        <div class="d-none d-md-block col-md-2 bd-toc show">
+            
+        </div>
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+        
+              <div>
+                
+  <h1>Source code for recommenders.models.rlrmc.RLRMCalgorithm</h1><div class="highlight"><pre>
+<span></span><span class="c1"># Copyright (c) Microsoft Corporation. All rights reserved.</span>
+<span class="c1"># Licensed under the MIT License.</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+
+<span class="kn">from</span> <span class="nn">pymanopt</span> <span class="kn">import</span> <span class="n">Problem</span>
+<span class="kn">from</span> <span class="nn">recommenders.models.rlrmc.conjugate_gradient_ms</span> <span class="kn">import</span> <span class="n">ConjugateGradientMS</span>
+<span class="kn">from</span> <span class="nn">pymanopt.solvers.linesearch</span> <span class="kn">import</span> <span class="n">LineSearchBackTracking</span>
+<span class="kn">from</span> <span class="nn">pymanopt.manifolds</span> <span class="kn">import</span> <span class="n">Stiefel</span><span class="p">,</span> <span class="n">PositiveDefinite</span><span class="p">,</span> <span class="n">Product</span>
+<span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">sqrt</span>
+<span class="kn">from</span> <span class="nn">scipy.sparse</span> <span class="kn">import</span> <span class="n">csr_matrix</span>
+<span class="kn">from</span> <span class="nn">scipy.sparse.linalg</span> <span class="kn">import</span> <span class="n">svds</span>
+<span class="kn">from</span> <span class="nn">numba</span> <span class="kn">import</span> <span class="n">njit</span><span class="p">,</span> <span class="n">prange</span>
+
+
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="RLRMCalgorithm"><a class="viewcode-back" href="../../../../source/models.html#recommenders.models.rlrmc.RLRMCalgorithm.RLRMCalgorithm">[docs]</a><span class="k">class</span> <span class="nc">RLRMCalgorithm</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;RLRMC algorithm implementation.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">rank</span><span class="p">,</span>
+        <span class="n">C</span><span class="p">,</span>
+        <span class="n">model_param</span><span class="p">,</span>
+        <span class="n">initialize_flag</span><span class="o">=</span><span class="s2">&quot;random&quot;</span><span class="p">,</span>
+        <span class="n">max_time</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span>
+        <span class="n">maxiter</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
+        <span class="n">seed</span><span class="o">=</span><span class="mi">42</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Initialize parameters.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            rank (int): rank of the final model. Should be a positive integer.</span>
+<span class="sd">            C (float): regularization parameter. Should be a positive real number.</span>
+<span class="sd">            model_param (dict): contains model parameters such as number of rows &amp; columns of the matrix as well as</span>
+<span class="sd">                the mean rating in the training dataset.</span>
+<span class="sd">            initialize_flag (str): flag to set the initialization step of the algorithm. Current options are &#39;random&#39;</span>
+<span class="sd">                (which is random initilization) and &#39;svd&#39; (which is a singular value decomposition based initilization).</span>
+<span class="sd">            max_time (int): maximum time (in seconds), for which the algorithm is allowed to execute.</span>
+<span class="sd">            maxiter (int): maximum number of iterations, for which the algorithm is allowed to execute.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model_param</span> <span class="o">=</span> <span class="n">model_param</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">train_mean</span> <span class="o">=</span> <span class="n">model_param</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;train_mean&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">initialize_flag</span> <span class="o">=</span> <span class="n">initialize_flag</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rank</span> <span class="o">=</span> <span class="n">rank</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">C</span> <span class="o">=</span> <span class="n">C</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">max_time</span> <span class="o">=</span> <span class="n">max_time</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">maxiter</span> <span class="o">=</span> <span class="n">maxiter</span>
+
+    <span class="k">def</span> <span class="nf">_init_train</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">entries_train_csr</span><span class="p">):</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Hyper-parameters of the algorithm&quot;</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Rank: </span><span class="si">%i</span><span class="s2">, Regularization parameter: </span><span class="si">%e</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rank</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">C</span><span class="p">))</span>
+        <span class="c1"># Initialization # starting point on the manifold</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">initialize_flag</span> <span class="o">==</span> <span class="s2">&quot;random&quot;</span><span class="p">:</span>  <span class="c1"># rndom</span>
+            <span class="n">W0</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">initialize_flag</span> <span class="o">==</span> <span class="s2">&quot;svd&quot;</span><span class="p">:</span>  <span class="c1"># svd</span>
+            <span class="n">U0</span><span class="p">,</span> <span class="n">B0</span><span class="p">,</span> <span class="n">V0</span> <span class="o">=</span> <span class="n">svds</span><span class="p">(</span><span class="n">entries_train_csr</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">rank</span><span class="p">)</span>
+            <span class="n">W0</span> <span class="o">=</span> <span class="p">[</span><span class="n">U0</span><span class="p">,</span> <span class="n">V0</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">B0</span><span class="p">)]</span>
+        <span class="k">else</span><span class="p">:</span>  <span class="c1"># default option when given incorrect option</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+                <span class="s2">&quot;Initialization flag not recognized. Setting it to random (default).&quot;</span>
+            <span class="p">)</span>
+            <span class="n">W0</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">return</span> <span class="n">W0</span>
+
+<div class="viewcode-block" id="RLRMCalgorithm.fit_and_evaluate"><a class="viewcode-back" href="../../../../source/models.html#recommenders.models.rlrmc.RLRMCalgorithm.RLRMCalgorithm.fit_and_evaluate">[docs]</a>    <span class="k">def</span> <span class="nf">fit_and_evaluate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">RLRMCdata</span><span class="p">,</span> <span class="n">verbosity</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Main fit and evalute method for RLRMC. In addition to fitting the model, it also computes the per</span>
+<span class="sd">        iteration statistics in train (and validation) datasets.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            RLRMCdata (RLRMCdataset): the RLRMCdataset object.</span>
+<span class="sd">            verbosity (int): verbosity of Pymanopt. Possible values are 0 (least verbose), 1, or 2 (most verbose).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># it calls fit method with appropriate arguments</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">RLRMCdata</span><span class="p">,</span> <span class="n">verbosity</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="RLRMCalgorithm.fit"><a class="viewcode-back" href="../../../../source/models.html#recommenders.models.rlrmc.RLRMCalgorithm.RLRMCalgorithm.fit">[docs]</a>    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">RLRMCdata</span><span class="p">,</span> <span class="n">verbosity</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">_evaluate</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;The underlying fit method for RLRMC</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            RLRMCdata (RLRMCdataset): the RLRMCdataset object.</span>
+<span class="sd">            verbosity (int): verbosity of Pymanopt. Possible values are 0 (least verbose), 1, or 2 (most verbose).</span>
+<span class="sd">            _evaluate (bool): flag to compute the per iteration statistics in train (and validation) datasets.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># initialize the model</span>
+        <span class="n">W0</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_init_train</span><span class="p">(</span><span class="n">RLRMCdata</span><span class="o">.</span><span class="n">train</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">user2id</span> <span class="o">=</span> <span class="n">RLRMCdata</span><span class="o">.</span><span class="n">user2id</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">item2id</span> <span class="o">=</span> <span class="n">RLRMCdata</span><span class="o">.</span><span class="n">item2id</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">id2user</span> <span class="o">=</span> <span class="n">RLRMCdata</span><span class="o">.</span><span class="n">id2user</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">id2item</span> <span class="o">=</span> <span class="n">RLRMCdata</span><span class="o">.</span><span class="n">id2item</span>
+
+        <span class="c1"># residual variable</span>
+        <span class="n">residual_global</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">RLRMCdata</span><span class="o">.</span><span class="n">train</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+
+        <span class="c1">####################################</span>
+        <span class="c1"># Riemannian first-order algorithm #</span>
+        <span class="c1">####################################</span>
+
+        <span class="n">solver</span> <span class="o">=</span> <span class="n">ConjugateGradientMS</span><span class="p">(</span>
+            <span class="n">maxtime</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">max_time</span><span class="p">,</span>
+            <span class="n">maxiter</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">maxiter</span><span class="p">,</span>
+            <span class="n">linesearch</span><span class="o">=</span><span class="n">LineSearchBackTracking</span><span class="p">(),</span>
+        <span class="p">)</span>  <span class="c1"># , logverbosity=2)</span>
+        <span class="c1"># construction of manifold</span>
+        <span class="n">manifold</span> <span class="o">=</span> <span class="n">Product</span><span class="p">(</span>
+            <span class="p">[</span>
+                <span class="n">Stiefel</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model_param</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;num_row&quot;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">rank</span><span class="p">),</span>
+                <span class="n">Stiefel</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model_param</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;num_col&quot;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">rank</span><span class="p">),</span>
+                <span class="n">PositiveDefinite</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rank</span><span class="p">),</span>
+            <span class="p">]</span>
+        <span class="p">)</span>
+        <span class="n">problem</span> <span class="o">=</span> <span class="n">Problem</span><span class="p">(</span>
+            <span class="n">manifold</span><span class="o">=</span><span class="n">manifold</span><span class="p">,</span>
+            <span class="n">cost</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cost</span><span class="p">(</span>
+                <span class="n">x</span><span class="p">,</span>
+                <span class="n">RLRMCdata</span><span class="o">.</span><span class="n">train</span><span class="o">.</span><span class="n">data</span><span class="p">,</span>
+                <span class="n">RLRMCdata</span><span class="o">.</span><span class="n">train</span><span class="o">.</span><span class="n">indices</span><span class="p">,</span>
+                <span class="n">RLRMCdata</span><span class="o">.</span><span class="n">train</span><span class="o">.</span><span class="n">indptr</span><span class="p">,</span>
+                <span class="n">residual_global</span><span class="p">,</span>
+            <span class="p">),</span>
+            <span class="n">egrad</span><span class="o">=</span><span class="k">lambda</span> <span class="n">z</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_egrad</span><span class="p">(</span>
+                <span class="n">z</span><span class="p">,</span> <span class="n">RLRMCdata</span><span class="o">.</span><span class="n">train</span><span class="o">.</span><span class="n">indices</span><span class="p">,</span> <span class="n">RLRMCdata</span><span class="o">.</span><span class="n">train</span><span class="o">.</span><span class="n">indptr</span><span class="p">,</span> <span class="n">residual_global</span>
+            <span class="p">),</span>
+            <span class="n">verbosity</span><span class="o">=</span><span class="n">verbosity</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">_evaluate</span><span class="p">:</span>
+            <span class="n">residual_validation_global</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span>
+                <span class="n">RLRMCdata</span><span class="o">.</span><span class="n">validation</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span>
+            <span class="p">)</span>
+            <span class="n">Wopt</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">stats</span> <span class="o">=</span> <span class="n">solver</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span>
+                <span class="n">problem</span><span class="p">,</span>
+                <span class="n">x</span><span class="o">=</span><span class="n">W0</span><span class="p">,</span>
+                <span class="n">compute_stats</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_my_stats</span><span class="p">(</span>
+                    <span class="n">x</span><span class="p">,</span>
+                    <span class="n">y</span><span class="p">,</span>
+                    <span class="n">z</span><span class="p">,</span>
+                    <span class="n">residual_global</span><span class="p">,</span>
+                    <span class="n">RLRMCdata</span><span class="o">.</span><span class="n">validation</span><span class="o">.</span><span class="n">data</span><span class="p">,</span>
+                    <span class="n">RLRMCdata</span><span class="o">.</span><span class="n">validation</span><span class="o">.</span><span class="n">indices</span><span class="p">,</span>
+                    <span class="n">RLRMCdata</span><span class="o">.</span><span class="n">validation</span><span class="o">.</span><span class="n">indptr</span><span class="p">,</span>
+                    <span class="n">residual_validation_global</span><span class="p">,</span>
+                <span class="p">),</span>
+            <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">Wopt</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">stats</span> <span class="o">=</span> <span class="n">solver</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">problem</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="n">W0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">L</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">Wopt</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">Wopt</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">R</span> <span class="o">=</span> <span class="n">Wopt</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span></div>
+
+    <span class="nd">@staticmethod</span>
+    <span class="nd">@njit</span><span class="p">(</span><span class="n">nogil</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">parallel</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">_computeLoss_csrmatrix</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">cd</span><span class="p">,</span> <span class="n">indices</span><span class="p">,</span> <span class="n">indptr</span><span class="p">,</span> <span class="n">residual_global</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;computes residual_global = a*b - cd at given indices in csr_matrix format&quot;&quot;&quot;</span>
+        <span class="n">N</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">M</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">prange</span><span class="p">(</span><span class="n">N</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">prange</span><span class="p">(</span><span class="n">indptr</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">indptr</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]):</span>
+                <span class="n">num</span> <span class="o">=</span> <span class="mf">0.0</span>
+                <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">M</span><span class="p">):</span>
+                    <span class="n">num</span> <span class="o">+=</span> <span class="n">a</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">k</span><span class="p">]</span> <span class="o">*</span> <span class="n">b</span><span class="p">[</span><span class="n">k</span><span class="p">,</span> <span class="n">indices</span><span class="p">[</span><span class="n">j</span><span class="p">]]</span>
+                <span class="n">residual_global</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">num</span> <span class="o">-</span> <span class="n">cd</span><span class="p">[</span><span class="n">j</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">residual_global</span>
+
+    <span class="c1"># computes user-defined statistics per iteration</span>
+    <span class="k">def</span> <span class="nf">_my_stats</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">weights</span><span class="p">,</span>
+        <span class="n">given_stats</span><span class="p">,</span>
+        <span class="n">stats</span><span class="p">,</span>
+        <span class="n">residual_global</span><span class="p">,</span>
+        <span class="n">entries_validation_csr_data</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">entries_validation_csr_indices</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">entries_validation_csr_indptr</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">residual_validation_global</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="n">iteration</span> <span class="o">=</span> <span class="n">given_stats</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">cost</span> <span class="o">=</span> <span class="n">given_stats</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">gradnorm</span> <span class="o">=</span> <span class="n">given_stats</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+        <span class="n">time_iter</span> <span class="o">=</span> <span class="n">given_stats</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span>
+        <span class="n">stats</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s2">&quot;iteration&quot;</span><span class="p">,</span> <span class="p">[])</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">iteration</span><span class="p">)</span>
+        <span class="n">stats</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s2">&quot;time&quot;</span><span class="p">,</span> <span class="p">[])</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">time_iter</span><span class="p">)</span>
+        <span class="n">stats</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s2">&quot;objective&quot;</span><span class="p">,</span> <span class="p">[])</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cost</span><span class="p">)</span>
+        <span class="n">stats</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s2">&quot;gradnorm&quot;</span><span class="p">,</span> <span class="p">[])</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">gradnorm</span><span class="p">)</span>
+        <span class="n">U1</span> <span class="o">=</span> <span class="n">weights</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">U2</span> <span class="o">=</span> <span class="n">weights</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">B</span> <span class="o">=</span> <span class="n">weights</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+        <span class="n">U1_dot_B</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">U1</span><span class="p">,</span> <span class="n">B</span><span class="p">)</span>
+        <span class="n">train_mse</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">residual_global</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="n">train_rmse</span> <span class="o">=</span> <span class="n">sqrt</span><span class="p">(</span><span class="n">train_mse</span><span class="p">)</span>
+        <span class="n">stats</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s2">&quot;trainRMSE&quot;</span><span class="p">,</span> <span class="p">[])</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">train_rmse</span><span class="p">)</span>
+        <span class="c1"># Prediction</span>
+        <span class="k">if</span> <span class="n">entries_validation_csr_data</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">RLRMCalgorithm</span><span class="o">.</span><span class="n">_computeLoss_csrmatrix</span><span class="p">(</span>
+                <span class="n">U1_dot_B</span><span class="p">,</span>
+                <span class="n">U2</span><span class="o">.</span><span class="n">T</span><span class="p">,</span>
+                <span class="n">entries_validation_csr_data</span><span class="p">,</span>
+                <span class="n">entries_validation_csr_indices</span><span class="p">,</span>
+                <span class="n">entries_validation_csr_indptr</span><span class="p">,</span>
+                <span class="n">residual_validation_global</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="n">validation_mse</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">residual_validation_global</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+            <span class="n">validation_rmse</span> <span class="o">=</span> <span class="n">sqrt</span><span class="p">(</span><span class="n">validation_mse</span><span class="p">)</span>
+            <span class="n">stats</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s2">&quot;validationRMSE&quot;</span><span class="p">,</span> <span class="p">[])</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">validation_rmse</span><span class="p">)</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+                <span class="s2">&quot;Train RMSE: </span><span class="si">%.4f</span><span class="s2">, Validation RMSE: </span><span class="si">%.4f</span><span class="s2">, Total time: </span><span class="si">%.2f</span><span class="s2">&quot;</span>
+                <span class="o">%</span> <span class="p">(</span><span class="n">train_rmse</span><span class="p">,</span> <span class="n">validation_rmse</span><span class="p">,</span> <span class="n">time_iter</span><span class="p">)</span>
+            <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Train RMSE: </span><span class="si">%.4f</span><span class="s2">, Total time: </span><span class="si">%.2f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">train_rmse</span><span class="p">,</span> <span class="n">time_iter</span><span class="p">))</span>
+        <span class="k">return</span>
+
+    <span class="c1"># computes the objective function at a given point</span>
+    <span class="k">def</span> <span class="nf">_cost</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">weights</span><span class="p">,</span>
+        <span class="n">entries_train_csr_data</span><span class="p">,</span>
+        <span class="n">entries_train_csr_indices</span><span class="p">,</span>
+        <span class="n">entries_train_csr_indptr</span><span class="p">,</span>
+        <span class="n">residual_global</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="n">U1</span> <span class="o">=</span> <span class="n">weights</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">U2</span> <span class="o">=</span> <span class="n">weights</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">B</span> <span class="o">=</span> <span class="n">weights</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+        <span class="n">U1_dot_B</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">U1</span><span class="p">,</span> <span class="n">B</span><span class="p">)</span>
+        <span class="n">RLRMCalgorithm</span><span class="o">.</span><span class="n">_computeLoss_csrmatrix</span><span class="p">(</span>
+            <span class="n">U1_dot_B</span><span class="p">,</span>
+            <span class="n">U2</span><span class="o">.</span><span class="n">T</span><span class="p">,</span>
+            <span class="n">entries_train_csr_data</span><span class="p">,</span>
+            <span class="n">entries_train_csr_indices</span><span class="p">,</span>
+            <span class="n">entries_train_csr_indptr</span><span class="p">,</span>
+            <span class="n">residual_global</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">objective</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">((</span><span class="n">residual_global</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">C</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">B</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">objective</span>
+
+    <span class="c1"># computes the gradient of the objective function at a given point</span>
+    <span class="k">def</span> <span class="nf">_egrad</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">weights</span><span class="p">,</span>
+        <span class="n">entries_train_csr_indices</span><span class="p">,</span>
+        <span class="n">entries_train_csr_indptr</span><span class="p">,</span>
+        <span class="n">residual_global</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="n">U1</span> <span class="o">=</span> <span class="n">weights</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">U2</span> <span class="o">=</span> <span class="n">weights</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">B</span> <span class="o">=</span> <span class="n">weights</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+        <span class="n">U1_dot_B</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">U1</span><span class="p">,</span> <span class="n">B</span><span class="p">)</span>
+        <span class="n">residual_global_csr</span> <span class="o">=</span> <span class="n">csr_matrix</span><span class="p">(</span>
+            <span class="p">(</span><span class="n">residual_global</span><span class="p">,</span> <span class="n">entries_train_csr_indices</span><span class="p">,</span> <span class="n">entries_train_csr_indptr</span><span class="p">),</span>
+            <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="n">U1</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">U2</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span>
+        <span class="p">)</span>
+        <span class="n">residual_global_csr_dot_U2</span> <span class="o">=</span> <span class="n">residual_global_csr</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">U2</span><span class="p">)</span>
+        <span class="n">gradU1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">residual_global_csr_dot_U2</span><span class="p">,</span> <span class="n">B</span><span class="p">)</span>
+        <span class="n">gradB_asymm</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">U1</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">residual_global_csr_dot_U2</span><span class="p">)</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">C</span> <span class="o">*</span> <span class="n">B</span>
+        <span class="n">gradB</span> <span class="o">=</span> <span class="p">(</span><span class="n">gradB_asymm</span> <span class="o">+</span> <span class="n">gradB_asymm</span><span class="o">.</span><span class="n">T</span><span class="p">)</span> <span class="o">/</span> <span class="mf">2.0</span>
+        <span class="n">gradU2</span> <span class="o">=</span> <span class="n">residual_global_csr</span><span class="o">.</span><span class="n">T</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">U1_dot_B</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">gradU1</span><span class="p">,</span> <span class="n">gradU2</span><span class="p">,</span> <span class="n">gradB</span><span class="p">]</span>
+
+<div class="viewcode-block" id="RLRMCalgorithm.predict"><a class="viewcode-back" href="../../../../source/models.html#recommenders.models.rlrmc.RLRMCalgorithm.RLRMCalgorithm.predict">[docs]</a>    <span class="k">def</span> <span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user_input</span><span class="p">,</span> <span class="n">item_input</span><span class="p">,</span> <span class="n">low_memory</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Predict function of this trained model</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            user_input ( list or element of list ): userID or userID list</span>
+<span class="sd">            item_input ( list or element of list ): itemID or itemID list</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            list or float: list of predicted rating or predicted rating score.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># index converting</span>
+        <span class="n">user_input</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">user2id</span><span class="p">[</span><span class="n">x</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">user_input</span><span class="p">])</span>  <span class="c1"># rows</span>
+        <span class="n">item_input</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">item2id</span><span class="p">[</span><span class="n">x</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">item_input</span><span class="p">])</span>  <span class="c1"># columns</span>
+        <span class="n">num_test</span> <span class="o">=</span> <span class="n">user_input</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">num_test</span> <span class="o">!=</span> <span class="n">item_input</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;ERROR! Dimension mismatch in test data.&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">None</span>
+        <span class="n">output</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">item_input</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+        <span class="n">output</span><span class="o">.</span><span class="n">fill</span><span class="p">(</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">train_mean</span><span class="p">)</span>
+        <span class="n">L</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">L</span>
+        <span class="n">R</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">R</span>
+        <span class="k">if</span> <span class="n">low_memory</span><span class="p">:</span>
+            <span class="c1"># for-loop</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">num_test</span><span class="p">):</span>
+                <span class="n">output</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">L</span><span class="p">[</span><span class="n">user_input</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="p">:],</span> <span class="n">R</span><span class="p">[</span><span class="n">item_input</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="p">:])</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># matrix multiplication</span>
+            <span class="n">d</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_param</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;num_row&quot;</span><span class="p">)</span>
+            <span class="n">T</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_param</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;num_col&quot;</span><span class="p">)</span>
+            <span class="n">test</span> <span class="o">=</span> <span class="n">csr_matrix</span><span class="p">((</span><span class="n">output</span><span class="p">,</span> <span class="p">(</span><span class="n">user_input</span><span class="p">,</span> <span class="n">item_input</span><span class="p">)),</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">T</span><span class="p">))</span>
+            <span class="n">RLRMCalgorithm</span><span class="o">.</span><span class="n">_computeLoss_csrmatrix</span><span class="p">(</span>
+                <span class="n">L</span><span class="p">,</span> <span class="n">R</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">test</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">test</span><span class="o">.</span><span class="n">indices</span><span class="p">,</span> <span class="n">test</span><span class="o">.</span><span class="n">indptr</span><span class="p">,</span> <span class="n">output</span>
+            <span class="p">)</span>
+            <span class="n">lin_index_org</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ravel_multi_index</span><span class="p">(</span>
+                <span class="p">(</span><span class="n">user_input</span><span class="p">,</span> <span class="n">item_input</span><span class="p">),</span> <span class="n">dims</span><span class="o">=</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">T</span><span class="p">),</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;raise&quot;</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="s2">&quot;C&quot;</span>
+            <span class="p">)</span>
+            <span class="n">idx1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">lin_index_org</span><span class="p">)</span>
+            <span class="n">idx2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">idx1</span><span class="p">)</span>
+            <span class="n">output</span> <span class="o">=</span> <span class="n">output</span><span class="p">[</span><span class="n">idx2</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">output</span></div></div>
+</pre></div>
+
+              </div>
+              
+        
+            
+
+
+
+<div class='prev-next-bottom'>
+    
+
+</div>
+        
+        </div>
+    </div>
+    <footer class="footer">
+    <div class="container">
+      <p>
+        
+          By The Jupyter Book community<br/>
+        
+            &copy; Copyright 2021.<br/>
+          <div class="extra_footer">
+            Don't forget to check out <a href= https://arxiv.org/abs/2108.02899>our paper from Document Intelligence Workshop at KDD 2021!</a>
+          </div>
+      </p>
+    </div>
+  </footer>
+</main>
+
+
+      </div>
+    </div>
+  
+  <script src="../../../../_static/js/index.1c5a1a01449ed65a7b51.js"></script>
+
+  
+  </body>
+</html>

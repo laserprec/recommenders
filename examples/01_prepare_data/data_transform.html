@@ -1,0 +1,1637 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Data transformation (collaborative filtering) &#8212; &lt;h1 style=&#34;font-size:2em;text-align:center;color:#FF5733&#34;&gt;Recommenders&lt;/h1&gt;</title>
+    
+  <link href="../../_static/css/theme.css" rel="stylesheet" />
+  <link href="../../_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
+
+    
+  <link rel="stylesheet"
+    href="../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+
+    
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-book-theme.css?digest=c3fdc42140077d1ad13ad2f1588a4309" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/tabs.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    
+  <link rel="preload" as="script" href="../../_static/js/index.1c5a1a01449ed65a7b51.js">
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/togglebutton.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <script src="../../_static/tabs.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../../_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script>
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="../../_static/sphinx-thebe.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en" />
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="../../index.html">
+      
+      
+      
+      <h1 class="site-logo" id="site-title"><h1 style="font-size:2em;text-align:center;color:#FF5733">Recommenders</h1></h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="../../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        <p class="caption" role="heading">
+ <span class="caption-text">
+  Getting Started Notebooks
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../00_quick_start/als_movielens.html">
+   Running ALS on MovieLens (PySpark)
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../00_quick_start/ncf_movielens.html">
+   Neural Collaborative Filtering on MovieLens dataset.
+  </a>
+ </li>
+</ul>
+
+    </div>
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="topbar container-xl fixed-top">
+    <div class="topbar-contents row">
+        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
+        <div class="col pl-md-4 topbar-main">
+            
+            <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+                data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+                aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
+                title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+                <i class="fas fa-bars"></i>
+                <i class="fas fa-arrow-left"></i>
+                <i class="fas fa-arrow-up"></i>
+            </button>
+            
+            
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
+            class="fas fa-download"></i></button>
+
+    <div class="dropdown-buttons">
+        <!-- ipynb file if we had a myst markdown file -->
+        
+        <!-- Download raw file -->
+        <a class="dropdown-buttons" href="../../_sources/examples/01_prepare_data/data_transform.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
+                data-placement="left">.ipynb</button></a>
+        <!-- Download PDF via print -->
+        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
+            onClick="window.print()" data-toggle="tooltip" data-placement="left">.pdf</button>
+    </div>
+</div>
+
+            <!-- Source interaction buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
+    <div class="dropdown-buttons sourcebuttons">
+        <a class="repository-button"
+            href="https://github.com/microsoft/genalog"><button type="button" class="btn btn-secondary topbarbtn"
+                data-toggle="tooltip" data-placement="left" title="Source repository"><i
+                    class="fab fa-github"></i>repository</button></a>
+        <a class="issues-button"
+            href="https://github.com/microsoft/genalog/issues/new?title=Issue%20on%20page%20%2Fexamples/01_prepare_data/data_transform.html&body=Your%20issue%20content%20here."><button
+                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
+                title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
+        
+    </div>
+</div>
+
+            <!-- Full screen (wrap in <a> to have style consistency -->
+
+<a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+        data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+        title="Fullscreen mode"><i
+            class="fas fa-expand"></i></button></a>
+
+            <!-- Launch buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Launch interactive content"><i class="fas fa-rocket"></i></button>
+    <div class="dropdown-buttons">
+        
+        <a class="binder-button" href="https://mybinder.org/v2/gh/microsoft/genalog/main?urlpath=tree/docs/genalog_docs/examples/01_prepare_data/data_transform.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Launch Binder" data-toggle="tooltip"
+                data-placement="left"><img class="binder-button-logo"
+                    src="../../_static/images/logo_binder.svg"
+                    alt="Interact on binder">Binder</button></a>
+        
+        
+        
+        
+    </div>
+</div>
+
+        </div>
+
+        <!-- Table of contents -->
+        <div class="d-none d-md-block col-md-2 bd-toc show">
+            
+            <div class="tocsection onthispage pt-5 pb-3">
+                <i class="fas fa-list"></i> Contents
+            </div>
+            <nav id="bd-toc-nav" aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#">
+   Data transformation (collaborative filtering)
+  </a>
+  <ul class="visible nav section-nav flex-column">
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#global-settings">
+     0 Global settings
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#data-creation">
+     1 Data creation
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h3 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#explicit-feedback">
+       1.1 Explicit feedback
+      </a>
+     </li>
+     <li class="toc-h3 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#implicit-feedback">
+       1.2 Implicit feedback
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#data-transformation">
+     2 Data transformation
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h3 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#data-aggregation">
+       2.1 Data aggregation
+      </a>
+      <ul class="nav section-nav flex-column">
+       <li class="toc-h4 nav-item toc-entry">
+        <a class="reference internal nav-link" href="#count">
+         2.2.1 Count
+        </a>
+       </li>
+       <li class="toc-h4 nav-item toc-entry">
+        <a class="reference internal nav-link" href="#weighted-count">
+         2.2.1 Weighted count
+        </a>
+       </li>
+       <li class="toc-h4 nav-item toc-entry">
+        <a class="reference internal nav-link" href="#time-dependent-count">
+         2.2.2 Time dependent count
+        </a>
+       </li>
+      </ul>
+     </li>
+     <li class="toc-h3 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#negative-sampling">
+       2.2 Negative sampling
+      </a>
+     </li>
+    </ul>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#references">
+   References
+  </a>
+ </li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+        
+              <div>
+                
+  <p><i>Copyright (c) Microsoft Corporation. All rights reserved.</i></p>
+<p><i>Licensed under the MIT License.</i></p>
+<div class="tex2jax_ignore mathjax_ignore section" id="data-transformation-collaborative-filtering">
+<h1>Data transformation (collaborative filtering)<a class="headerlink" href="#data-transformation-collaborative-filtering" title="Permalink to this headline">¶</a></h1>
+<p>It is usually observed in the real-world datasets that users may have different types of interactions with items. In addition, same types of interactions (e.g., click an item on the website, view a movie, etc.) may also appear more than once in the history. Given that this is a typical problem in practical recommendation system design, the notebook shares data transformation techniques that can be used for different scenarios.</p>
+<p>Specifically, the discussion in this notebook is only applicable to collaborative filtering algorithms.</p>
+<div class="section" id="global-settings">
+<h2>0 Global settings<a class="headerlink" href="#global-settings" title="Permalink to this headline">¶</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># set the environment path to find Recommenders</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">datetime</span>
+<span class="kn">import</span> <span class="nn">math</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;System version: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">version</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>System version: 3.6.8 |Anaconda, Inc.| (default, Feb 21 2019, 18:30:04) [MSC v.1916 64 bit (AMD64)]
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="data-creation">
+<h2>1 Data creation<a class="headerlink" href="#data-creation" title="Permalink to this headline">¶</a></h2>
+<p>Two dummy datasets are created to illustrate the ideas in the notebook.</p>
+<div class="section" id="explicit-feedback">
+<h3>1.1 Explicit feedback<a class="headerlink" href="#explicit-feedback" title="Permalink to this headline">¶</a></h3>
+<p>In the “explicit feedback” scenario, interactions between users and items are numerical / ordinal <strong>ratings</strong> or binary preferences such as <strong>like</strong> or <strong>dislike</strong>. These types of interactions are termed as <em>explicit feedback</em>.</p>
+<p>The following shows a dummy data for the explicit rating type of feedback. In the data,</p>
+<ul class="simple">
+<li><p>There are 3 users whose IDs are 1, 2, 3.</p></li>
+<li><p>There are 3 items whose IDs are 1, 2, 3.</p></li>
+<li><p>Items are rated by users only once. So even when users interact with items at different timestamps, the ratings are kept the same. This is seen in some use cases such as movie recommendations, where users’ ratings do not change dramatically over a short period of time.</p></li>
+<li><p>Timestamps of when the ratings are given are also recorded.</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data1</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span>
+    <span class="s2">&quot;UserId&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span>
+    <span class="s2">&quot;ItemId&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
+    <span class="s2">&quot;Rating&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span>
+    <span class="s2">&quot;Timestamp&quot;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="s1">&#39;2000-01-01&#39;</span><span class="p">,</span> <span class="s1">&#39;2000-01-01&#39;</span><span class="p">,</span> <span class="s1">&#39;2000-01-02&#39;</span><span class="p">,</span> <span class="s1">&#39;2000-01-02&#39;</span><span class="p">,</span> <span class="s1">&#39;2000-01-02&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;2000-01-01&#39;</span><span class="p">,</span> <span class="s1">&#39;2000-01-01&#39;</span><span class="p">,</span> <span class="s1">&#39;2000-01-03&#39;</span><span class="p">,</span> <span class="s1">&#39;2000-01-03&#39;</span><span class="p">,</span> <span class="s1">&#39;2000-01-03&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;2000-01-01&#39;</span><span class="p">,</span> <span class="s1">&#39;2000-01-03&#39;</span><span class="p">,</span> <span class="s1">&#39;2000-01-03&#39;</span><span class="p">,</span> <span class="s1">&#39;2000-01-03&#39;</span><span class="p">,</span> <span class="s1">&#39;2000-01-04&#39;</span>
+    <span class="p">]</span>
+<span class="p">})</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data1</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>UserId</th>
+      <th>ItemId</th>
+      <th>Rating</th>
+      <th>Timestamp</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>0</td>
+      <td>1</td>
+      <td>1</td>
+      <td>4</td>
+      <td>2000-01-01</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>4</td>
+      <td>2000-01-01</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>1</td>
+      <td>2</td>
+      <td>3</td>
+      <td>2000-01-02</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>1</td>
+      <td>2</td>
+      <td>3</td>
+      <td>2000-01-02</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>1</td>
+      <td>2</td>
+      <td>3</td>
+      <td>2000-01-02</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>2</td>
+      <td>1</td>
+      <td>4</td>
+      <td>2000-01-01</td>
+    </tr>
+    <tr>
+      <td>6</td>
+      <td>2</td>
+      <td>2</td>
+      <td>5</td>
+      <td>2000-01-01</td>
+    </tr>
+    <tr>
+      <td>7</td>
+      <td>2</td>
+      <td>1</td>
+      <td>4</td>
+      <td>2000-01-03</td>
+    </tr>
+    <tr>
+      <td>8</td>
+      <td>2</td>
+      <td>2</td>
+      <td>5</td>
+      <td>2000-01-03</td>
+    </tr>
+    <tr>
+      <td>9</td>
+      <td>2</td>
+      <td>3</td>
+      <td>5</td>
+      <td>2000-01-03</td>
+    </tr>
+    <tr>
+      <td>10</td>
+      <td>3</td>
+      <td>3</td>
+      <td>5</td>
+      <td>2000-01-01</td>
+    </tr>
+    <tr>
+      <td>11</td>
+      <td>3</td>
+      <td>3</td>
+      <td>5</td>
+      <td>2000-01-03</td>
+    </tr>
+    <tr>
+      <td>12</td>
+      <td>3</td>
+      <td>3</td>
+      <td>5</td>
+      <td>2000-01-03</td>
+    </tr>
+    <tr>
+      <td>13</td>
+      <td>3</td>
+      <td>3</td>
+      <td>5</td>
+      <td>2000-01-03</td>
+    </tr>
+    <tr>
+      <td>14</td>
+      <td>3</td>
+      <td>1</td>
+      <td>4</td>
+      <td>2000-01-04</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+</div>
+<div class="section" id="implicit-feedback">
+<h3>1.2 Implicit feedback<a class="headerlink" href="#implicit-feedback" title="Permalink to this headline">¶</a></h3>
+<p>Many times there are no explicit ratings or preferences given by users, that is, the interactions are usually implicit. For example, a user may puchase something on a website, click an item on a mobile app, or order food from a restaurant. This information may reflect users’ preference towards the items in an <strong>implicit</strong> manner.</p>
+<p>As follows, a data set is created to illustrate the implicit feedback scenario.</p>
+<p>In the data,</p>
+<ul class="simple">
+<li><p>There are 3 users whose IDs are 1, 2, 3.</p></li>
+<li><p>There are 3 items whose IDs are 1, 2, 3.</p></li>
+<li><p>There are no ratings or explicit feedback given by the users. Sometimes there are the types of events. In this dummy dataset, for illustration purposes, there are three types for the interactions between users and items, that is, <strong>click</strong>, <strong>add</strong> and <strong>purchase</strong>, meaning “click on the item”, “add the item into cart” and “purchase the item”, respectively.</p></li>
+<li><p>Sometimes there is other contextual or associative information available for the types of interactions. E.g., “time-spent on visiting a site before clicking” etc. For simplicity, only the type of interactions is considered in this notebook.</p></li>
+<li><p>The timestamp of each interaction is also given.</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data2</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span>
+    <span class="s2">&quot;UserId&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span>
+    <span class="s2">&quot;ItemId&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
+    <span class="s2">&quot;Type&quot;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="s1">&#39;click&#39;</span><span class="p">,</span> <span class="s1">&#39;click&#39;</span><span class="p">,</span> <span class="s1">&#39;click&#39;</span><span class="p">,</span> <span class="s1">&#39;click&#39;</span><span class="p">,</span> <span class="s1">&#39;purchase&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;click&#39;</span><span class="p">,</span> <span class="s1">&#39;purchase&#39;</span><span class="p">,</span> <span class="s1">&#39;add&#39;</span><span class="p">,</span> <span class="s1">&#39;purchase&#39;</span><span class="p">,</span> <span class="s1">&#39;purchase&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;click&#39;</span><span class="p">,</span> <span class="s1">&#39;click&#39;</span><span class="p">,</span> <span class="s1">&#39;add&#39;</span><span class="p">,</span> <span class="s1">&#39;purchase&#39;</span><span class="p">,</span> <span class="s1">&#39;click&#39;</span>
+    <span class="p">],</span>
+    <span class="s2">&quot;Timestamp&quot;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="s1">&#39;2000-01-01&#39;</span><span class="p">,</span> <span class="s1">&#39;2000-01-01&#39;</span><span class="p">,</span> <span class="s1">&#39;2000-01-02&#39;</span><span class="p">,</span> <span class="s1">&#39;2000-01-02&#39;</span><span class="p">,</span> <span class="s1">&#39;2000-01-02&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;2000-01-01&#39;</span><span class="p">,</span> <span class="s1">&#39;2000-01-01&#39;</span><span class="p">,</span> <span class="s1">&#39;2000-01-03&#39;</span><span class="p">,</span> <span class="s1">&#39;2000-01-03&#39;</span><span class="p">,</span> <span class="s1">&#39;2000-01-03&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;2000-01-01&#39;</span><span class="p">,</span> <span class="s1">&#39;2000-01-03&#39;</span><span class="p">,</span> <span class="s1">&#39;2000-01-03&#39;</span><span class="p">,</span> <span class="s1">&#39;2000-01-03&#39;</span><span class="p">,</span> <span class="s1">&#39;2000-01-04&#39;</span>
+    <span class="p">]</span>
+<span class="p">})</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data2</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>UserId</th>
+      <th>ItemId</th>
+      <th>Type</th>
+      <th>Timestamp</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>0</td>
+      <td>1</td>
+      <td>1</td>
+      <td>click</td>
+      <td>2000-01-01</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>click</td>
+      <td>2000-01-01</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>1</td>
+      <td>2</td>
+      <td>click</td>
+      <td>2000-01-02</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>1</td>
+      <td>2</td>
+      <td>click</td>
+      <td>2000-01-02</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>1</td>
+      <td>2</td>
+      <td>purchase</td>
+      <td>2000-01-02</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>2</td>
+      <td>1</td>
+      <td>click</td>
+      <td>2000-01-01</td>
+    </tr>
+    <tr>
+      <td>6</td>
+      <td>2</td>
+      <td>2</td>
+      <td>purchase</td>
+      <td>2000-01-01</td>
+    </tr>
+    <tr>
+      <td>7</td>
+      <td>2</td>
+      <td>1</td>
+      <td>add</td>
+      <td>2000-01-03</td>
+    </tr>
+    <tr>
+      <td>8</td>
+      <td>2</td>
+      <td>2</td>
+      <td>purchase</td>
+      <td>2000-01-03</td>
+    </tr>
+    <tr>
+      <td>9</td>
+      <td>2</td>
+      <td>3</td>
+      <td>purchase</td>
+      <td>2000-01-03</td>
+    </tr>
+    <tr>
+      <td>10</td>
+      <td>3</td>
+      <td>3</td>
+      <td>click</td>
+      <td>2000-01-01</td>
+    </tr>
+    <tr>
+      <td>11</td>
+      <td>3</td>
+      <td>3</td>
+      <td>click</td>
+      <td>2000-01-03</td>
+    </tr>
+    <tr>
+      <td>12</td>
+      <td>3</td>
+      <td>3</td>
+      <td>add</td>
+      <td>2000-01-03</td>
+    </tr>
+    <tr>
+      <td>13</td>
+      <td>3</td>
+      <td>3</td>
+      <td>purchase</td>
+      <td>2000-01-03</td>
+    </tr>
+    <tr>
+      <td>14</td>
+      <td>3</td>
+      <td>1</td>
+      <td>click</td>
+      <td>2000-01-04</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+</div>
+</div>
+<div class="section" id="data-transformation">
+<h2>2 Data transformation<a class="headerlink" href="#data-transformation" title="Permalink to this headline">¶</a></h2>
+<p>Many collaborative filtering algorithms are built on a user-item sparse matrix. This requires that the input data for building the recommender should contain unique user-item pairs.</p>
+<p>For explicit feedback datasets, this can simply be done by deduplicating the repeated user-item-rating tuples.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data1</span> <span class="o">=</span> <span class="n">data1</span><span class="o">.</span><span class="n">drop_duplicates</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data1</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>UserId</th>
+      <th>ItemId</th>
+      <th>Rating</th>
+      <th>Timestamp</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>0</td>
+      <td>1</td>
+      <td>1</td>
+      <td>4</td>
+      <td>2000-01-01</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>1</td>
+      <td>2</td>
+      <td>3</td>
+      <td>2000-01-02</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>2</td>
+      <td>1</td>
+      <td>4</td>
+      <td>2000-01-01</td>
+    </tr>
+    <tr>
+      <td>6</td>
+      <td>2</td>
+      <td>2</td>
+      <td>5</td>
+      <td>2000-01-01</td>
+    </tr>
+    <tr>
+      <td>7</td>
+      <td>2</td>
+      <td>1</td>
+      <td>4</td>
+      <td>2000-01-03</td>
+    </tr>
+    <tr>
+      <td>8</td>
+      <td>2</td>
+      <td>2</td>
+      <td>5</td>
+      <td>2000-01-03</td>
+    </tr>
+    <tr>
+      <td>9</td>
+      <td>2</td>
+      <td>3</td>
+      <td>5</td>
+      <td>2000-01-03</td>
+    </tr>
+    <tr>
+      <td>10</td>
+      <td>3</td>
+      <td>3</td>
+      <td>5</td>
+      <td>2000-01-01</td>
+    </tr>
+    <tr>
+      <td>11</td>
+      <td>3</td>
+      <td>3</td>
+      <td>5</td>
+      <td>2000-01-03</td>
+    </tr>
+    <tr>
+      <td>14</td>
+      <td>3</td>
+      <td>1</td>
+      <td>4</td>
+      <td>2000-01-04</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>In the implicit feedback use cases, there are several methods to perform the deduplication, depending on the requirements of the actual business user cases.</p>
+<div class="section" id="data-aggregation">
+<h3>2.1 Data aggregation<a class="headerlink" href="#data-aggregation" title="Permalink to this headline">¶</a></h3>
+<p>Usually, data is aggregated by user to generate some scores that represent preferences (in some algorithms like SAR, the score is called <em>affinity score</em>, for simplicity reason, hereafter the scores are termed as <em>affinity</em>).</p>
+<p>It is worth mentioning that in such case, the affinity scores are different from the ratings in the explicit data set, in terms of value distribution. This is usually termed as an <a class="reference external" href="https://en.wikipedia.org/wiki/Ordinal_regression">ordinal regression</a> problem, which has been studied in <a class="reference external" href="https://pdfs.semanticscholar.org/934a/729409d6fbd9894a94d4af66bd82222b5515.pdf">Koren’s paper</a>. In this case, the algorithm used for training a recommender should be carefully chosen to consider the distribution of the affinity scores rather than discrete integer values.</p>
+<div class="section" id="count">
+<h4>2.2.1 Count<a class="headerlink" href="#count" title="Permalink to this headline">¶</a></h4>
+<p>The most simple technique is to count times of interactions between user and item for producing affinity scores. The following shows the aggregation of counts of user-item interactions in <code class="docutils literal notranslate"><span class="pre">data2</span></code> regardless the interaction type.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data2_count</span> <span class="o">=</span> <span class="n">data2</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">&#39;UserId&#39;</span><span class="p">,</span> <span class="s1">&#39;ItemId&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">agg</span><span class="p">({</span><span class="s1">&#39;Timestamp&#39;</span><span class="p">:</span> <span class="s1">&#39;count&#39;</span><span class="p">})</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
+<span class="n">data2_count</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;UserId&#39;</span><span class="p">,</span> <span class="s1">&#39;ItemId&#39;</span><span class="p">,</span> <span class="s1">&#39;Affinity&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data2_count</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>UserId</th>
+      <th>ItemId</th>
+      <th>Affinity</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>0</td>
+      <td>1</td>
+      <td>1</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>1</td>
+      <td>2</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>2</td>
+      <td>1</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>2</td>
+      <td>2</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>2</td>
+      <td>3</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>3</td>
+      <td>1</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <td>6</td>
+      <td>3</td>
+      <td>3</td>
+      <td>4</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+</div>
+<div class="section" id="weighted-count">
+<h4>2.2.1 Weighted count<a class="headerlink" href="#weighted-count" title="Permalink to this headline">¶</a></h4>
+<p>It is useful to consider the types of different interactions as weights in the count aggregation. For example, assuming weights of the three differen types, “click”, “add”, and “purchase”, are 1, 2, and 3, respectively. A weighted-count can be done as the following</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Add column of weights</span>
+<span class="n">data2_w</span> <span class="o">=</span> <span class="n">data2</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+<span class="n">conditions</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="n">data2_w</span><span class="p">[</span><span class="s1">&#39;Type&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;click&#39;</span><span class="p">,</span>
+    <span class="n">data2_w</span><span class="p">[</span><span class="s1">&#39;Type&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;add&#39;</span><span class="p">,</span>
+    <span class="n">data2_w</span><span class="p">[</span><span class="s1">&#39;Type&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;purchase&#39;</span>
+<span class="p">]</span>
+
+<span class="n">choices</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
+
+<span class="n">data2_w</span><span class="p">[</span><span class="s1">&#39;Weight&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="n">conditions</span><span class="p">,</span> <span class="n">choices</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">)</span>
+
+<span class="c1"># Convert to numeric type.</span>
+<span class="n">data2_w</span><span class="p">[</span><span class="s1">&#39;Weight&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">data2_w</span><span class="p">[</span><span class="s1">&#39;Weight&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Do count with weight.</span>
+<span class="n">data2_wcount</span> <span class="o">=</span> <span class="n">data2_w</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">&#39;UserId&#39;</span><span class="p">,</span> <span class="s1">&#39;ItemId&#39;</span><span class="p">])[</span><span class="s1">&#39;Weight&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
+<span class="n">data2_wcount</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;UserId&#39;</span><span class="p">,</span> <span class="s1">&#39;ItemId&#39;</span><span class="p">,</span> <span class="s1">&#39;Affinity&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data2_wcount</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>UserId</th>
+      <th>ItemId</th>
+      <th>Affinity</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>0</td>
+      <td>1</td>
+      <td>1</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>1</td>
+      <td>2</td>
+      <td>5</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>2</td>
+      <td>1</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>2</td>
+      <td>2</td>
+      <td>6</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>2</td>
+      <td>3</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>3</td>
+      <td>1</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <td>6</td>
+      <td>3</td>
+      <td>3</td>
+      <td>7</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+</div>
+<div class="section" id="time-dependent-count">
+<h4>2.2.2 Time dependent count<a class="headerlink" href="#time-dependent-count" title="Permalink to this headline">¶</a></h4>
+<p>In many scenarios, time dependency plays a critical role in preparing dataset for building a collaborative filtering model that captures user interests drift over time. One of the common techniques for achieving time dependent count is to add a time decay factor in the counting. This technique is used in <a class="reference external" href="https://github.com/Microsoft/Recommenders/blob/master/notebooks/02_model/sar_deep_dive.ipynb">SAR</a>. Formula for getting affinity score for each user-item pair is</p>
+<div class="math notranslate nohighlight">
+\[a_{ij}=\sum_k w_k \left(\frac{1}{2}\right)^{\frac{t_0-t_k}{T}} \]</div>
+<p>where <span class="math notranslate nohighlight">\(a_{ij}\)</span> is the affinity score, <span class="math notranslate nohighlight">\(w_k\)</span> is the interaction weight, <span class="math notranslate nohighlight">\(t_0\)</span> is a reference time, <span class="math notranslate nohighlight">\(t_k\)</span> is the timestamp for the <span class="math notranslate nohighlight">\(k\)</span>-th interaction, and <span class="math notranslate nohighlight">\(T\)</span> is a hyperparameter that controls the speed of decay.</p>
+<p>The following shows how SAR applies time decay in aggregating counts for the implicit feedback scenario.</p>
+<p>In this case, we use 5 days as the half-life parameter, and use the latest time in the dataset as the time reference.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">T</span> <span class="o">=</span> <span class="mi">5</span>
+
+<span class="n">t_ref</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">data2_w</span><span class="p">[</span><span class="s1">&#39;Timestamp&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Calculate the weighted count with time decay.</span>
+
+<span class="n">data2_w</span><span class="p">[</span><span class="s1">&#39;Timedecay&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">data2_w</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span>
+    <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="s1">&#39;Weight&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">power</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="p">(</span><span class="n">t_ref</span> <span class="o">-</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="s1">&#39;Timestamp&#39;</span><span class="p">]))</span><span class="o">.</span><span class="n">days</span> <span class="o">/</span> <span class="n">T</span><span class="p">),</span> 
+    <span class="n">axis</span><span class="o">=</span><span class="mi">1</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data2_w</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>UserId</th>
+      <th>ItemId</th>
+      <th>Type</th>
+      <th>Timestamp</th>
+      <th>Weight</th>
+      <th>Timedecay</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>0</td>
+      <td>1</td>
+      <td>1</td>
+      <td>click</td>
+      <td>2000-01-01</td>
+      <td>1</td>
+      <td>0.659754</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>click</td>
+      <td>2000-01-01</td>
+      <td>1</td>
+      <td>0.659754</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>1</td>
+      <td>2</td>
+      <td>click</td>
+      <td>2000-01-02</td>
+      <td>1</td>
+      <td>0.757858</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>1</td>
+      <td>2</td>
+      <td>click</td>
+      <td>2000-01-02</td>
+      <td>1</td>
+      <td>0.757858</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>1</td>
+      <td>2</td>
+      <td>purchase</td>
+      <td>2000-01-02</td>
+      <td>3</td>
+      <td>2.273575</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>2</td>
+      <td>1</td>
+      <td>click</td>
+      <td>2000-01-01</td>
+      <td>1</td>
+      <td>0.659754</td>
+    </tr>
+    <tr>
+      <td>6</td>
+      <td>2</td>
+      <td>2</td>
+      <td>purchase</td>
+      <td>2000-01-01</td>
+      <td>3</td>
+      <td>1.979262</td>
+    </tr>
+    <tr>
+      <td>7</td>
+      <td>2</td>
+      <td>1</td>
+      <td>add</td>
+      <td>2000-01-03</td>
+      <td>2</td>
+      <td>1.741101</td>
+    </tr>
+    <tr>
+      <td>8</td>
+      <td>2</td>
+      <td>2</td>
+      <td>purchase</td>
+      <td>2000-01-03</td>
+      <td>3</td>
+      <td>2.611652</td>
+    </tr>
+    <tr>
+      <td>9</td>
+      <td>2</td>
+      <td>3</td>
+      <td>purchase</td>
+      <td>2000-01-03</td>
+      <td>3</td>
+      <td>2.611652</td>
+    </tr>
+    <tr>
+      <td>10</td>
+      <td>3</td>
+      <td>3</td>
+      <td>click</td>
+      <td>2000-01-01</td>
+      <td>1</td>
+      <td>0.659754</td>
+    </tr>
+    <tr>
+      <td>11</td>
+      <td>3</td>
+      <td>3</td>
+      <td>click</td>
+      <td>2000-01-03</td>
+      <td>1</td>
+      <td>0.870551</td>
+    </tr>
+    <tr>
+      <td>12</td>
+      <td>3</td>
+      <td>3</td>
+      <td>add</td>
+      <td>2000-01-03</td>
+      <td>2</td>
+      <td>1.741101</td>
+    </tr>
+    <tr>
+      <td>13</td>
+      <td>3</td>
+      <td>3</td>
+      <td>purchase</td>
+      <td>2000-01-03</td>
+      <td>3</td>
+      <td>2.611652</td>
+    </tr>
+    <tr>
+      <td>14</td>
+      <td>3</td>
+      <td>1</td>
+      <td>click</td>
+      <td>2000-01-04</td>
+      <td>1</td>
+      <td>1.000000</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>Affinity scores of user-item pairs can be calculated then by summing the ‘Timedecay’ column values.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data2_wt</span> <span class="o">=</span> <span class="n">data2_w</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">&#39;UserId&#39;</span><span class="p">,</span> <span class="s1">&#39;ItemId&#39;</span><span class="p">])[</span><span class="s1">&#39;Timedecay&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
+<span class="n">data2_wt</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;UserId&#39;</span><span class="p">,</span> <span class="s1">&#39;ItemId&#39;</span><span class="p">,</span> <span class="s1">&#39;Affinity&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data2_wt</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>UserId</th>
+      <th>ItemId</th>
+      <th>Affinity</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>0</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1.319508</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>1</td>
+      <td>2</td>
+      <td>3.789291</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>2</td>
+      <td>1</td>
+      <td>2.400855</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>2</td>
+      <td>2</td>
+      <td>4.590914</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>2</td>
+      <td>3</td>
+      <td>2.611652</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>3</td>
+      <td>1</td>
+      <td>1.000000</td>
+    </tr>
+    <tr>
+      <td>6</td>
+      <td>3</td>
+      <td>3</td>
+      <td>5.883057</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+</div>
+</div>
+<div class="section" id="negative-sampling">
+<h3>2.2 Negative sampling<a class="headerlink" href="#negative-sampling" title="Permalink to this headline">¶</a></h3>
+<p>The above aggregation is based on assumptions that user-item interactions can be interpreted as preferences by taking the factors like “number of interation times”, “weights”, “time decay”, etc. Sometimes these assumptions are biased, and only the interactions themselves matter. That is, the original dataset with implicit interaction records can be binarized into one that has only 1 or 0, indicating if a user has interacted with an item, respectively.</p>
+<p>For example, the following generates data that contains existing interactions between users and items.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data2_b</span> <span class="o">=</span> <span class="n">data2</span><span class="p">[[</span><span class="s1">&#39;UserId&#39;</span><span class="p">,</span> <span class="s1">&#39;ItemId&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">data2_b</span><span class="p">[</span><span class="s1">&#39;Feedback&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">data2_b</span> <span class="o">=</span> <span class="n">data2_b</span><span class="o">.</span><span class="n">drop_duplicates</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data2_b</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>UserId</th>
+      <th>ItemId</th>
+      <th>Feedback</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>0</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>1</td>
+      <td>2</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>2</td>
+      <td>1</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <td>6</td>
+      <td>2</td>
+      <td>2</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <td>9</td>
+      <td>2</td>
+      <td>3</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <td>10</td>
+      <td>3</td>
+      <td>3</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <td>14</td>
+      <td>3</td>
+      <td>1</td>
+      <td>1</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>“Negative sampling” is a technique that samples negative feedback. Similar to the aggregation techniques, negative feedback cna be defined differently in different scenarios. In this case, for example, we can regard the items that a user has not interacted as those that the user does not like. This may be a strong assumption in many user cases, but it is reasonable to build a model when the interaction times between user and item are not that many.</p>
+<p>The following shows that, on top of <code class="docutils literal notranslate"><span class="pre">data2_b</span></code>, there are another 2 negative samples are generated which are tagged with “0” in the “Feedback” column.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">users</span> <span class="o">=</span> <span class="n">data2</span><span class="p">[</span><span class="s1">&#39;UserId&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">()</span>
+<span class="n">items</span> <span class="o">=</span> <span class="n">data2</span><span class="p">[</span><span class="s1">&#39;ItemId&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">interaction_lst</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">user</span> <span class="ow">in</span> <span class="n">users</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">items</span><span class="p">:</span>
+        <span class="n">interaction_lst</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">user</span><span class="p">,</span> <span class="n">item</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
+
+<span class="n">data_all</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">interaction_lst</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;UserId&quot;</span><span class="p">,</span> <span class="s2">&quot;ItemId&quot;</span><span class="p">,</span> <span class="s2">&quot;FeedbackAll&quot;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data_all</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>UserId</th>
+      <th>ItemId</th>
+      <th>FeedbackAll</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>0</td>
+      <td>1</td>
+      <td>1</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>1</td>
+      <td>2</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>1</td>
+      <td>3</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>2</td>
+      <td>1</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>2</td>
+      <td>2</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>2</td>
+      <td>3</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <td>6</td>
+      <td>3</td>
+      <td>1</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <td>7</td>
+      <td>3</td>
+      <td>2</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <td>8</td>
+      <td>3</td>
+      <td>3</td>
+      <td>0</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data2_ns</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">data_all</span><span class="p">,</span> <span class="n">data2_b</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;UserId&#39;</span><span class="p">,</span> <span class="s1">&#39;ItemId&#39;</span><span class="p">],</span> <span class="n">how</span><span class="o">=</span><span class="s1">&#39;outer&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="s1">&#39;FeedbackAll&#39;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data2_ns</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>UserId</th>
+      <th>ItemId</th>
+      <th>Feedback</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>0</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>1</td>
+      <td>2</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>1</td>
+      <td>3</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>2</td>
+      <td>1</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>2</td>
+      <td>2</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>2</td>
+      <td>3</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <td>6</td>
+      <td>3</td>
+      <td>1</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <td>7</td>
+      <td>3</td>
+      <td>2</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <td>8</td>
+      <td>3</td>
+      <td>3</td>
+      <td>1.0</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>Also note that sometimes the negative sampling may also impact the count-based aggregation scheme. That is, the count may start from 0 instead of 1, and 0 means there is no interaction between the user and item.</p>
+</div>
+</div>
+</div>
+<div class="tex2jax_ignore mathjax_ignore section" id="references">
+<h1>References<a class="headerlink" href="#references" title="Permalink to this headline">¶</a></h1>
+<ol class="simple">
+<li><p>X. He <em>et al</em>, Neural Collaborative Filtering, WWW 2017.</p></li>
+<li><p>Y. Hu <em>et al</em>, Collaborative filtering for implicit feedback datasets, ICDM 2008.</p></li>
+<li><p>Simple Algorithm for Recommendation (SAR). See notebook <a class="reference internal" href="../02_model_collaborative_filtering/sar_deep_dive.html"><span class="doc std std-doc">sar_deep_dive.ipynb</span></a>.</p></li>
+<li><p>Y. Koren and J. Sill, OrdRec: an ordinal model for predicting personalized item rating distributions, RecSys 2011.</p></li>
+</ol>
+</div>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "reco_base"
+        },
+        kernelOptions: {
+            kernelName: "reco_base",
+            path: "./examples/01_prepare_data"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'reco_base'</script>
+
+              </div>
+              
+        
+            
+
+
+
+<div class='prev-next-bottom'>
+    
+
+</div>
+        
+        </div>
+    </div>
+    <footer class="footer">
+    <div class="container">
+      <p>
+        
+          By The Jupyter Book community<br/>
+        
+            &copy; Copyright 2021.<br/>
+      </p>
+    </div>
+  </footer>
+</main>
+
+
+      </div>
+    </div>
+  
+  <script src="../../_static/js/index.1c5a1a01449ed65a7b51.js"></script>
+
+  
+  </body>
+</html>

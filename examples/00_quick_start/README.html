@@ -1,0 +1,379 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Quick Start &#8212; &lt;h1 style=&#34;font-size:2em;text-align:center;color:#FF5733&#34;&gt;Recommenders&lt;/h1&gt;</title>
+    
+  <link href="../../_static/css/theme.css" rel="stylesheet" />
+  <link href="../../_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
+
+    
+  <link rel="stylesheet"
+    href="../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+
+    
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-book-theme.css?digest=c3fdc42140077d1ad13ad2f1588a4309" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/tabs.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    
+  <link rel="preload" as="script" href="../../_static/js/index.1c5a1a01449ed65a7b51.js">
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/togglebutton.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <script src="../../_static/tabs.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../../_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script>
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="../../_static/sphinx-thebe.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en" />
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="../../index.html">
+      
+      
+      
+      <h1 class="site-logo" id="site-title"><h1 style="font-size:2em;text-align:center;color:#FF5733">Recommenders</h1></h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="../../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        <p class="caption" role="heading">
+ <span class="caption-text">
+  Getting Started Notebooks
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="als_movielens.html">
+   Running ALS on MovieLens (PySpark)
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ncf_movielens.html">
+   Neural Collaborative Filtering on MovieLens dataset.
+  </a>
+ </li>
+</ul>
+
+    </div>
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="topbar container-xl fixed-top">
+    <div class="topbar-contents row">
+        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
+        <div class="col pl-md-4 topbar-main">
+            
+            <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+                data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+                aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
+                title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+                <i class="fas fa-bars"></i>
+                <i class="fas fa-arrow-left"></i>
+                <i class="fas fa-arrow-up"></i>
+            </button>
+            
+            
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
+            class="fas fa-download"></i></button>
+
+    <div class="dropdown-buttons">
+        <!-- ipynb file if we had a myst markdown file -->
+        
+        <!-- Download raw file -->
+        <a class="dropdown-buttons" href="../../_sources/examples/00_quick_start/README.md"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
+                data-placement="left">.md</button></a>
+        <!-- Download PDF via print -->
+        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
+            onClick="window.print()" data-toggle="tooltip" data-placement="left">.pdf</button>
+    </div>
+</div>
+
+            <!-- Source interaction buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
+    <div class="dropdown-buttons sourcebuttons">
+        <a class="repository-button"
+            href="https://github.com/microsoft/genalog"><button type="button" class="btn btn-secondary topbarbtn"
+                data-toggle="tooltip" data-placement="left" title="Source repository"><i
+                    class="fab fa-github"></i>repository</button></a>
+        <a class="issues-button"
+            href="https://github.com/microsoft/genalog/issues/new?title=Issue%20on%20page%20%2Fexamples/00_quick_start/README.html&body=Your%20issue%20content%20here."><button
+                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
+                title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
+        
+    </div>
+</div>
+
+            <!-- Full screen (wrap in <a> to have style consistency -->
+
+<a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+        data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+        title="Fullscreen mode"><i
+            class="fas fa-expand"></i></button></a>
+
+            <!-- Launch buttons -->
+
+        </div>
+
+        <!-- Table of contents -->
+        <div class="d-none d-md-block col-md-2 bd-toc show">
+            
+        </div>
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+        
+              <div>
+                
+  <div class="tex2jax_ignore mathjax_ignore section" id="quick-start">
+<h1>Quick Start<a class="headerlink" href="#quick-start" title="Permalink to this headline">¶</a></h1>
+<p>In this directory, notebooks are provided to perform a quick demonstration of different algorithms such as Alternating Least Squares (<a class="reference external" href="https://spark.apache.org/docs/latest/api/python/_modules/pyspark/ml/recommendation.html#ALS">ALS</a>) or Simple Algorithm for Recommendation (<a class="reference external" href="https://github.com/Microsoft/Product-Recommendations/blob/master/doc/sar.md">SAR</a>). The notebooks show how to establish an end-to-end recommendation pipeline that consists of data preparation, model building, and model evaluation by using the utility functions (<span class="xref myst">recommenders</span>).</p>
+<table class="colwidths-auto table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Notebook</p></th>
+<th class="head"><p>Dataset</p></th>
+<th class="head"><p>Environment</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><a class="reference internal" href="als_movielens.html"><span class="doc std std-doc">als</span></a></p></td>
+<td><p>MovieLens</p></td>
+<td><p>PySpark</p></td>
+<td><p>Utilizing ALS algorithm to predict movie ratings in a PySpark environment.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="dkn_MIND.html"><span class="doc std std-doc">dkn</span></a></p></td>
+<td><p>MIND</p></td>
+<td><p>Python CPU, GPU</p></td>
+<td><p>Utilizing the Deep Knowledge-Aware Network (DKN) [2] algorithm for news recommendations using information from a knowledge graph, in a Python+GPU (TensorFlow) environment.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="fastai_movielens.html"><span class="doc std std-doc">fastai</span></a></p></td>
+<td><p>MovieLens</p></td>
+<td><p>Python CPU, GPU</p></td>
+<td><p>Utilizing FastAI recommender to predict movie ratings in a Python+GPU (PyTorch) environment.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="lightgbm_tinycriteo.html"><span class="doc std std-doc">lightgbm</span></a></p></td>
+<td><p>Criteo</p></td>
+<td><p>Python CPU</p></td>
+<td><p>Utilizing LightGBM Boosting Tree to predict whether or not a user has clicked on an e-commerce ad</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="lstur_MIND.html"><span class="doc std std-doc">lstur</span></a></p></td>
+<td><p>MIND</p></td>
+<td><p>Python CPU, GPU</p></td>
+<td><p>Utilizing the Neural News Recommendation with Long- and Short-term User Representations (LSTUR) [9] for news recommendation, in a Python+GPU (Tensorflow) enviroment.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="naml_MIND.html"><span class="doc std std-doc">naml</span></a></p></td>
+<td><p>MIND</p></td>
+<td><p>Python CPU, GPU</p></td>
+<td><p>Utilizing the Neural News Recommendation with Attentive Multi-View Learning (NAML) [7] to algorithm for news recommendation using news verticle, subverticle, title and body information, in a Python+GPU (Tensorflow) environment.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="ncf_movielens.html"><span class="doc std std-doc">ncf</span></a></p></td>
+<td><p>MovieLens</p></td>
+<td><p>Python CPU, GPU</p></td>
+<td><p>Utilizing Neural Collaborative Filtering (NCF) [1] to predict movie ratings in a Python+GPU (TensorFlow) environment.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="npa_MIND.html"><span class="doc std std-doc">npa</span></a></p></td>
+<td><p>MIND</p></td>
+<td><p>Python CPU, GPU</p></td>
+<td><p>Utilizing the Neural News Recommendation with Personalized Attention (NPA) [10] for news recommendation, in a Python+GPU (Tensorflow) environment.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="nrms_MIND.html"><span class="doc std std-doc">nrms</span></a></p></td>
+<td><p>MIND</p></td>
+<td><p>Python CPU, GPU</p></td>
+<td><p>Utilizing the Neural News Recommendation with Multi-Head Self-Attention (NRMS) [8] for news recommendation, in a Python+GPU (Tensorflow) environment.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="rbm_movielens.html"><span class="doc std std-doc">rbm</span></a></p></td>
+<td><p>MovieLens</p></td>
+<td><p>Python CPU, GPU</p></td>
+<td><p>Utilizing the Restricted Boltzmann Machine (rbm) [4] to predict movie ratings in a Python+GPU (TensorFlow) environment.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="rlrmc_movielens.html"><span class="doc std std-doc">rlrmc</span></a></p></td>
+<td><p>Movielens</p></td>
+<td><p>Python CPU</p></td>
+<td><p>Utilizing the Riemannian Low-rank Matrix Completion (RLRMC) [6] to predict movie rating in a Python+CPU environment</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="sar_movielens.html"><span class="doc std std-doc">sar</span></a></p></td>
+<td><p>MovieLens</p></td>
+<td><p>Python CPU</p></td>
+<td><p>Utilizing Simple Algorithm for Recommendation (SAR) algorithm to predict movie ratings in a Python+CPU environment.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="sar_movielens_with_azureml.html"><span class="doc std std-doc">sar_azureml</span></a></p></td>
+<td><p>MovieLens</p></td>
+<td><p>Python CPU</p></td>
+<td><p>An example of how to utilize and evaluate SAR using the <a class="reference external" href="https://docs.microsoft.com/azure/machine-learning/service/overview-what-is-azure-ml">Azure Machine Learning service</a> (AzureML). It takes the content of the <a class="reference internal" href="sar_movielens.html"><span class="doc std std-doc">sar quickstart notebook</span></a> and demonstrates how to use the power of the cloud to manage data, switch to powerful GPU machines, and monitor runs while training a model.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="sar_movieratings_with_azureml_designer.html"><span class="doc std std-doc">sar_azureml_designer</span></a></p></td>
+<td><p>MovieLens</p></td>
+<td><p>Python CPU</p></td>
+<td><p>An example of how to implement SAR on <a class="reference external" href="https://docs.microsoft.com/en-us/azure/machine-learning/concept-designer">AzureML Designer</a>.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="sequential_recsys_amazondataset.html"><span class="doc std std-doc">a2svd</span></a></p></td>
+<td><p>Amazon</p></td>
+<td><p>Python CPU, GPU</p></td>
+<td><p>Use A2SVD [11] to predict a set of movies the user is going to interact in a short time.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="sequential_recsys_amazondataset.html"><span class="doc std std-doc">caser</span></a></p></td>
+<td><p>Amazon</p></td>
+<td><p>Python CPU, GPU</p></td>
+<td><p>Use Caser [12] to predict a set of movies the user is going to interact in a short time.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="sequential_recsys_amazondataset.html"><span class="doc std std-doc">gru4rec</span></a></p></td>
+<td><p>Amazon</p></td>
+<td><p>Python CPU, GPU</p></td>
+<td><p>Use GRU4Rec [13] to predict a set of movies the user is going to interact in a short time.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="sequential_recsys_amazondataset.html"><span class="doc std std-doc">nextitnet</span></a></p></td>
+<td><p>Amazon</p></td>
+<td><p>Python CPU, GPU</p></td>
+<td><p>Use NextItNet [14] to predict a set of movies the user is going to interact in a short time.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="sequential_recsys_amazondataset.html"><span class="doc std std-doc">sli-rec</span></a></p></td>
+<td><p>Amazon</p></td>
+<td><p>Python CPU, GPU</p></td>
+<td><p>Use SLi-Rec [11] to predict a set of movies the user is going to interact in a short time.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="wide_deep_movielens.html"><span class="doc std std-doc">wide-and-deep</span></a></p></td>
+<td><p>MovieLens</p></td>
+<td><p>Python CPU, GPU</p></td>
+<td><p>Utilizing Wide-and-Deep Model (Wide-and-Deep) [5] to predict movie ratings in a Python+GPU (TensorFlow) environment.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="xdeepfm_criteo.html"><span class="doc std std-doc">xdeepfm</span></a></p></td>
+<td><p>Criteo</p></td>
+<td><p>Python CPU, GPU</p></td>
+<td><p>Utilizing the eXtreme Deep Factorization Machine (xDeepFM) [3] to learn both low and high order feature interactions for predicting CTR, in a Python+GPU (TensorFlow) environment.</p></td>
+</tr>
+</tbody>
+</table>
+<p>[1] <em>Neural Collaborative Filtering</em>, Xiangnan He, Lizi Liao, Hanwang Zhang, Liqiang Nie, Xia Hu and Tat-Seng Chua. WWW 2017.<br>
+[2] <em>DKN: Deep Knowledge-Aware Network for News Recommendation</em>, Hongwei Wang, Fuzheng Zhang, Xing Xie and Minyi Guo. WWW 2018.<br>
+[3] <em>xDeepFM: Combining Explicit and Implicit Feature Interactions for Recommender Systems</em>, Jianxun Lian, Xiaohuan Zhou, Fuzheng Zhang, Zhongxia Chen, Xing Xie and Guangzhong Sun. KDD 2018.<br>
+[4] <em>Restricted Boltzmann Machines for Collaborative Filtering</em>, Ruslan Salakhutdinov, Andriy Mnih and Geoffrey Hinton. ICML 2007.<br>
+[5] <em>Wide &amp; Deep Learning for Recommender Systems</em>, Heng-Tze Cheng et al., arXiv:1606.07792 2016. <br>
+[6] <em>A unified framework for structured low-rank matrix learning</em>, Pratik Jawanpuria and Bamdev Mishra, In International Conference on Machine Learning, 2018. <br>
+[7] <em>NAML: Neural News Recommendation with Attentive Multi-View Learning</em>, Chuhan Wu, Fangzhao Wu, Mingxiao An, Jianqiang Huang, Yongfeng Huang and Xing Xie. IJCAI 2019.<br>
+[8] <em>NRMS: Neural News Recommendation with Multi-Head Self-Attention</em>, Chuhan Wu, Fangzhao Wu, Suyu Ge, Tao Qi, Yongfeng Huang, Xing Xie. in Proceedings of the 2019 Conference on Empirical Methods in Natural Language Processing and the 9th International Joint Conference on Natural Language Processing (EMNLP-IJCNLP).<br>
+[9] <em>LSTUR: Neural News Recommendation with Long- and Short-term User Representations</em>, Mingxiao An, Fangzhao Wu, Chuhan Wu, Kun Zhang, Zheng Liu and Xing Xie. ACL 2019.<br>
+[10] <em>NPA: Neural News Recommendation with Personalized Attention</em>, Chuhan Wu, Fangzhao Wu, Mingxiao An, Jianqiang Huang, Yongfeng Huang and Xing Xie. KDD 2019, ADS track.<br>
+[11] <em>Adaptive User Modeling with Long and Short-Term Preferences for Personailzed Recommendation</em>, Zeping Yu, Jianxun Lian, Ahmad Mahmoody, Gongshen Liu and Xing Xie, IJCAI 2019.<br>
+[12] <em>Personalized top-n sequential recommendation via convolutional sequence embedding</em>, Jiaxi Tang and Ke Wang, ACM WSDM 2018.<br>
+[13] <em>Session-based Recommendations with Recurrent Neural Networks</em>, Balazs Hidasi, Alexandros Karatzoglou, Linas Baltrunas and Domonkos Tikk, ICLR 2016.<br>
+[14] <em>A Simple Convolutional Generative Network for Next Item Recommendation</em>, Fajie Yuan, Alexandros Karatzoglou, Ioannis Arapakis, Joemon M. Jose and Xiangnan He, WSDM 2019. <br></p>
+</div>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./examples/00_quick_start"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+              </div>
+              
+        
+            
+
+
+
+<div class='prev-next-bottom'>
+    
+
+</div>
+        
+        </div>
+    </div>
+    <footer class="footer">
+    <div class="container">
+      <p>
+        
+          By The Jupyter Book community<br/>
+        
+            &copy; Copyright 2021.<br/>
+      </p>
+    </div>
+  </footer>
+</main>
+
+
+      </div>
+    </div>
+  
+  <script src="../../_static/js/index.1c5a1a01449ed65a7b51.js"></script>
+
+  
+  </body>
+</html>

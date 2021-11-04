@@ -1,0 +1,910 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Train SAR on MovieLens with Azure Machine Learning (Python, CPU) &#8212; &lt;h1 style=&#34;font-size:2em;text-align:center;color:#FF5733&#34;&gt;Recommenders&lt;/h1&gt;</title>
+    
+  <link href="../../_static/css/theme.css" rel="stylesheet" />
+  <link href="../../_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
+
+    
+  <link rel="stylesheet"
+    href="../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+
+    
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-book-theme.css?digest=c3fdc42140077d1ad13ad2f1588a4309" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/tabs.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    
+  <link rel="preload" as="script" href="../../_static/js/index.1c5a1a01449ed65a7b51.js">
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/togglebutton.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <script src="../../_static/tabs.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../../_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script>
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="../../_static/sphinx-thebe.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en" />
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="../../index.html">
+      
+      
+      
+      <h1 class="site-logo" id="site-title"><h1 style="font-size:2em;text-align:center;color:#FF5733">Recommenders</h1></h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="../../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        <p class="caption" role="heading">
+ <span class="caption-text">
+  Getting Started Notebooks
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="als_movielens.html">
+   Running ALS on MovieLens (PySpark)
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ncf_movielens.html">
+   Neural Collaborative Filtering on MovieLens dataset.
+  </a>
+ </li>
+</ul>
+
+    </div>
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="topbar container-xl fixed-top">
+    <div class="topbar-contents row">
+        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
+        <div class="col pl-md-4 topbar-main">
+            
+            <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+                data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+                aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
+                title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+                <i class="fas fa-bars"></i>
+                <i class="fas fa-arrow-left"></i>
+                <i class="fas fa-arrow-up"></i>
+            </button>
+            
+            
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
+            class="fas fa-download"></i></button>
+
+    <div class="dropdown-buttons">
+        <!-- ipynb file if we had a myst markdown file -->
+        
+        <!-- Download raw file -->
+        <a class="dropdown-buttons" href="../../_sources/examples/00_quick_start/sar_movielens_with_azureml.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
+                data-placement="left">.ipynb</button></a>
+        <!-- Download PDF via print -->
+        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
+            onClick="window.print()" data-toggle="tooltip" data-placement="left">.pdf</button>
+    </div>
+</div>
+
+            <!-- Source interaction buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
+    <div class="dropdown-buttons sourcebuttons">
+        <a class="repository-button"
+            href="https://github.com/microsoft/genalog"><button type="button" class="btn btn-secondary topbarbtn"
+                data-toggle="tooltip" data-placement="left" title="Source repository"><i
+                    class="fab fa-github"></i>repository</button></a>
+        <a class="issues-button"
+            href="https://github.com/microsoft/genalog/issues/new?title=Issue%20on%20page%20%2Fexamples/00_quick_start/sar_movielens_with_azureml.html&body=Your%20issue%20content%20here."><button
+                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
+                title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
+        
+    </div>
+</div>
+
+            <!-- Full screen (wrap in <a> to have style consistency -->
+
+<a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+        data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+        title="Fullscreen mode"><i
+            class="fas fa-expand"></i></button></a>
+
+            <!-- Launch buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Launch interactive content"><i class="fas fa-rocket"></i></button>
+    <div class="dropdown-buttons">
+        
+        <a class="binder-button" href="https://mybinder.org/v2/gh/microsoft/genalog/main?urlpath=tree/docs/genalog_docs/examples/00_quick_start/sar_movielens_with_azureml.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Launch Binder" data-toggle="tooltip"
+                data-placement="left"><img class="binder-button-logo"
+                    src="../../_static/images/logo_binder.svg"
+                    alt="Interact on binder">Binder</button></a>
+        
+        
+        
+        
+    </div>
+</div>
+
+        </div>
+
+        <!-- Table of contents -->
+        <div class="d-none d-md-block col-md-2 bd-toc show">
+            
+            <div class="tocsection onthispage pt-5 pb-3">
+                <i class="fas fa-list"></i> Contents
+            </div>
+            <nav id="bd-toc-nav" aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#">
+   Train SAR on MovieLens with Azure Machine Learning (Python, CPU)
+  </a>
+  <ul class="visible nav section-nav flex-column">
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#introduction-to-azure-machine-learning">
+     Introduction to Azure Machine Learning
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h3 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#advantages-of-using-azureml">
+       Advantages of using AzureML:
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#details-of-sar">
+     Details of SAR
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h3 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#advantages-of-sar">
+       Advantages of SAR:
+      </a>
+     </li>
+     <li class="toc-h3 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#notes-to-use-sar-properly">
+       Notes to use SAR properly:
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#prerequisities">
+     Prerequisities
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h3 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#connect-to-an-azureml-workspace">
+       Connect to an AzureML workspace
+      </a>
+     </li>
+     <li class="toc-h3 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#create-a-temporary-directory">
+       Create a Temporary Directory
+      </a>
+     </li>
+     <li class="toc-h3 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#download-dataset-and-upload-to-datastore">
+       Download dataset and upload to datastore
+      </a>
+     </li>
+     <li class="toc-h3 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#create-or-attach-azure-machine-learning-compute">
+       Create or Attach Azure Machine Learning Compute
+      </a>
+      <ul class="nav section-nav flex-column">
+       <li class="toc-h4 nav-item toc-entry">
+        <a class="reference internal nav-link" href="#learn-more-about-azure-machine-learning-compute">
+         Learn more about Azure Machine Learning Compute
+        </a>
+       </li>
+      </ul>
+     </li>
+    </ul>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#prepare-training-script">
+   Prepare training script
+  </a>
+  <ul class="visible nav section-nav flex-column">
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#create-a-directory">
+     1. Create a directory
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#create-a-training-script">
+     2. Create a training script
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#run-training-script">
+   Run training script
+  </a>
+  <ul class="visible nav section-nav flex-column">
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#create-an-estimator">
+     1. Create an estimator
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#submit-the-job-to-the-cluster">
+     2. Submit the job to the cluster
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#monitor-remote-run">
+     3.  Monitor remote run
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h3 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#jupyter-widget">
+       Jupyter widget
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#viewing-run-results">
+     4. Viewing run results
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#deprovision-compute-resource">
+   Deprovision compute resource
+  </a>
+ </li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+        
+              <div>
+                
+  <p><i>Copyright (c) Microsoft Corporation. All rights reserved.</i></p>
+<p><i>Licensed under the MIT License.</i></p>
+<div class="tex2jax_ignore mathjax_ignore section" id="train-sar-on-movielens-with-azure-machine-learning-python-cpu">
+<h1>Train SAR on MovieLens with Azure Machine Learning (Python, CPU)<a class="headerlink" href="#train-sar-on-movielens-with-azure-machine-learning-python-cpu" title="Permalink to this headline">¶</a></h1>
+<hr class="docutils" />
+<div class="section" id="introduction-to-azure-machine-learning">
+<h2>Introduction to Azure Machine Learning<a class="headerlink" href="#introduction-to-azure-machine-learning" title="Permalink to this headline">¶</a></h2>
+<p>The <strong><a class="reference external" href="https://docs.microsoft.com/azure/machine-learning/service/overview-what-is-azure-ml">Azure Machine Learning service (AzureML)</a></strong> provides a cloud-based environment you can use to prep data, train, test, deploy, manage, and track machine learning models. By using Azure Machine Learning service, you can start training on your local machine and then scale out to the cloud. With many available compute targets, like <a class="reference external" href="https://docs.microsoft.com/en-us/azure/machine-learning/service/how-to-set-up-training-targets#amlcompute">Azure Machine Learning Compute</a> and <a class="reference external" href="https://docs.microsoft.com/en-us/azure/azure-databricks/what-is-azure-databricks">Azure Databricks</a>, and with <a class="reference external" href="https://docs.microsoft.com/en-us/azure/machine-learning/service/how-to-tune-hyperparameters">advanced hyperparameter tuning services</a>, you can build better models faster by using the power of the cloud.</p>
+<p>Data scientists and AI developers use the main <a class="reference external" href="https://docs.microsoft.com/en-us/python/api/overview/azure/ml/intro?view=azure-ml-py">Azure Machine Learning Python SDK</a> to build and run machine learning workflows with the Azure Machine Learning service. You can interact with the service in any Python environment, including Jupyter Notebooks or your favorite Python IDE. The Azure Machine Learning SDK allows you the choice of using local or cloud compute resources, while managing and maintaining the complete data science workflow from the cloud.
+<img alt="AzureML Workflow" src="https://docs.microsoft.com/en-us/azure/machine-learning/service/media/overview-what-is-azure-ml/aml.png" /></p>
+<p>This notebook provides an example of how to utilize and evaluate the Simple Algorithm for Recommendation (SAR) algorithm using the Azure Machine Learning service. It takes the content of the <a class="reference internal" href="sar_movielens.html"><span class="doc std std-doc">SAR quickstart notebook</span></a> and demonstrates how to use the power of the cloud to manage data, switch to powerful GPU machines, and monitor runs while training a model.</p>
+<p>See the hyperparameter tuning notebook for more advanced use cases with AzureML.</p>
+<div class="section" id="advantages-of-using-azureml">
+<h3>Advantages of using AzureML:<a class="headerlink" href="#advantages-of-using-azureml" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>Manage cloud resources for monitoring, logging, and organizing your machine learning experiments.</p></li>
+<li><p>Train models either locally or by using cloud resources, including GPU-accelerated model training.</p></li>
+<li><p>Easy to scale out when dataset grows - by just creating and pointing to new compute target</p></li>
+</ul>
+</div>
+</div>
+<hr class="docutils" />
+<div class="section" id="details-of-sar">
+<h2>Details of SAR<a class="headerlink" href="#details-of-sar" title="Permalink to this headline">¶</a></h2>
+<details>
+    <summary>Click to expand</summary>
+<p>SAR is a fast scalable adaptive algorithm for personalized recommendations based on user transaction history. It produces easily explainable / interpretable recommendations and handles “cold item” and “semi-cold user” scenarios. SAR is a kind of neighborhood based algorithm (as discussed in <a class="reference external" href="https://dl.acm.org/citation.cfm?id=2931100">Recommender Systems by Aggarwal</a>) which is intended for ranking top items for each user.</p>
+<p>SAR recommends items that are most <em><strong>similar</strong></em> to the ones that the user already has an existing <em><strong>affinity</strong></em> for. Two items are <em><strong>similar</strong></em> if the users who have interacted with one item are also likely to have interacted with another. A user has an <em><strong>affinity</strong></em> to an item if they have interacted with it in the past.</p>
+<div class="section" id="advantages-of-sar">
+<h3>Advantages of SAR:<a class="headerlink" href="#advantages-of-sar" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>High accuracy for an easy to train and deploy algorithm</p></li>
+<li><p>Fast training, only requiring simple counting to construct matrices used at prediction time</p></li>
+<li><p>Fast scoring, only involving multiplication of the similarity matric with an affinity vector</p></li>
+</ul>
+</div>
+<div class="section" id="notes-to-use-sar-properly">
+<h3>Notes to use SAR properly:<a class="headerlink" href="#notes-to-use-sar-properly" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>SAR does not use item or user features, so cannot handle cold-start use cases</p></li>
+<li><p>SAR requires the creation of an <span class="math notranslate nohighlight">\(mxm\)</span> dense matrix (where <span class="math notranslate nohighlight">\(m\)</span> is the number of items). So memory consumption can be an issue with large numbers of items.</p></li>
+<li><p>SAR is best used for ranking items per user, as the scale of predicted ratings may be different from the input range and will differ across users.
+For more details see the deep dive notebook on SAR here: <a class="reference internal" href="../02_model_collaborative_filtering/sar_deep_dive.html"><span class="doc std std-doc">SAR Deep Dive Notebook</span></a></details></p></li>
+</ul>
+</div>
+</div>
+<hr class="docutils" />
+<div class="section" id="prerequisities">
+<h2>Prerequisities<a class="headerlink" href="#prerequisities" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p><strong>Azure Subscription</strong></p>
+<ul>
+<li><p>If you don’t have an Azure subscription, create a free account before you begin. Try the <a class="reference external" href="https://azure.microsoft.com/en-us/free/services/machine-learning/">free or paid version of Azure Machine Learning service today</a>.</p></li>
+<li><p>You get credits to spend on Azure services, which will easily cover the cost of running this example notebook. After they’re used up, you can keep the account and use <a class="reference external" href="https://azure.microsoft.com/en-us/free/">free Azure services</a>. Your credit card is never charged unless you explicitly change your settings and ask to be charged. Or <a class="reference external" href="https://azure.microsoft.com/en-us/pricing/member-offers/credit-for-visual-studio-subscribers/">activate MSDN subscriber benefits</a>, which give you credits every month that you can use for paid Azure services.</p></li>
+</ul>
+</li>
+</ul>
+<hr class="docutils" />
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># set the environment path to find Recommenders</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">shutil</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">tempfile</span> <span class="kn">import</span> <span class="n">TemporaryDirectory</span>
+
+<span class="kn">import</span> <span class="nn">azureml</span>
+<span class="kn">from</span> <span class="nn">azureml.core</span> <span class="kn">import</span> <span class="n">Workspace</span><span class="p">,</span> <span class="n">Run</span><span class="p">,</span> <span class="n">Experiment</span>
+<span class="kn">from</span> <span class="nn">azureml.core.compute</span> <span class="kn">import</span> <span class="n">ComputeTarget</span><span class="p">,</span> <span class="n">AmlCompute</span>
+<span class="kn">from</span> <span class="nn">azureml.train.estimator</span> <span class="kn">import</span> <span class="n">Estimator</span>
+<span class="kn">from</span> <span class="nn">azureml.widgets</span> <span class="kn">import</span> <span class="n">RunDetails</span>
+
+<span class="kn">from</span> <span class="nn">recommenders.datasets</span> <span class="kn">import</span> <span class="n">movielens</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;azureml.core version: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">azureml</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">VERSION</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>azureml.core version: 1.0.18
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell tag_parameters docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># top k items to recommend</span>
+<span class="n">TOP_K</span> <span class="o">=</span> <span class="mi">10</span>
+
+<span class="c1"># Select Movielens data size: 100k, 1m, 10m, or 20m</span>
+<span class="n">MOVIELENS_DATA_SIZE</span> <span class="o">=</span> <span class="s1">&#39;100k&#39;</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="connect-to-an-azureml-workspace">
+<h3>Connect to an AzureML workspace<a class="headerlink" href="#connect-to-an-azureml-workspace" title="Permalink to this headline">¶</a></h3>
+<p>An <a class="reference external" href="https://docs.microsoft.com/en-us/python/api/azureml-core/azureml.core.workspace.workspace?view=azure-ml-py">AzureML Workspace</a> is an Azure resource that organizes and coordinates the actions of many other Azure resources to assist in executing and sharing machine learning workflows. In particular, an Azure ML Workspace coordinates storage, databases, and compute resources providing added functionality for machine learning experimentation, deployment, inferencing, and the monitoring of deployed models.</p>
+<p>The function below will get or create an AzureML Workspace and save the configuration to <code class="docutils literal notranslate"><span class="pre">aml_config/config.json</span></code>.</p>
+<p>It defaults to use provided input parameters or environment variables for the Workspace configuration values. Otherwise, it will use an existing configuration file (either at <code class="docutils literal notranslate"><span class="pre">./aml_config/config.json</span></code> or a path specified by the config_path parameter).</p>
+<p>Lastly, if the workspace does not exist, one will be created for you. See <a class="reference external" href="https://docs.microsoft.com/en-us/azure/machine-learning/service/setup-create-workspace#portal">this tutorial</a> to locate information such as subscription id.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ws</span> <span class="o">=</span> <span class="n">Workspace</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;&lt;WORKSPACE_NAME&gt;&quot;</span><span class="p">,</span>
+    <span class="n">subscription_id</span><span class="o">=</span><span class="s2">&quot;&lt;SUBSCRIPTION_ID&gt;&quot;</span><span class="p">,</span>
+    <span class="n">resource_group</span><span class="o">=</span><span class="s2">&quot;&lt;RESOURCE_GROUP&gt;&quot;</span><span class="p">,</span>
+    <span class="n">location</span><span class="o">=</span><span class="s2">&quot;&lt;WORKSPACE_REGION&gt;&quot;</span><span class="p">,</span>
+    <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="create-a-temporary-directory">
+<h3>Create a Temporary Directory<a class="headerlink" href="#create-a-temporary-directory" title="Permalink to this headline">¶</a></h3>
+<p>This directory will house the data and scripts needed by the AzureML Workspace</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">tmp_dir</span> <span class="o">=</span> <span class="n">TemporaryDirectory</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="download-dataset-and-upload-to-datastore">
+<h3>Download dataset and upload to datastore<a class="headerlink" href="#download-dataset-and-upload-to-datastore" title="Permalink to this headline">¶</a></h3>
+<p>Every workspace comes with a default <a class="reference external" href="https://docs.microsoft.com/en-us/azure/machine-learning/service/how-to-access-data">datastore</a> (and you can register more) which is backed by the Azure blob storage account associated with the workspace. We can use it to transfer data from local to the cloud, and access it from the compute target.</p>
+<p>The data files are uploaded into a directory named <code class="docutils literal notranslate"><span class="pre">data</span></code> at the root of the datastore.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">TARGET_DIR</span> <span class="o">=</span> <span class="s1">&#39;movielens&#39;</span>
+
+<span class="c1"># download dataset</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">movielens</span><span class="o">.</span><span class="n">load_pandas_df</span><span class="p">(</span>
+    <span class="n">size</span><span class="o">=</span><span class="n">MOVIELENS_DATA_SIZE</span><span class="p">,</span>
+    <span class="n">header</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;UserId&#39;</span><span class="p">,</span><span class="s1">&#39;MovieId&#39;</span><span class="p">,</span><span class="s1">&#39;Rating&#39;</span><span class="p">,</span><span class="s1">&#39;Timestamp&#39;</span><span class="p">]</span>
+<span class="p">)</span>
+
+<span class="c1"># upload dataset to workspace datastore</span>
+<span class="n">data_file_name</span> <span class="o">=</span> <span class="s2">&quot;movielens_&quot;</span> <span class="o">+</span> <span class="n">MOVIELENS_DATA_SIZE</span> <span class="o">+</span> <span class="s2">&quot;_data.pkl&quot;</span>
+<span class="n">data</span><span class="o">.</span><span class="n">to_pickle</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">tmp_dir</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">data_file_name</span><span class="p">))</span>
+
+<span class="n">ds</span> <span class="o">=</span> <span class="n">ws</span><span class="o">.</span><span class="n">get_default_datastore</span><span class="p">()</span>
+<span class="n">ds</span><span class="o">.</span><span class="n">upload</span><span class="p">(</span><span class="n">src_dir</span><span class="o">=</span><span class="n">tmp_dir</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">target_path</span><span class="o">=</span><span class="n">TARGET_DIR</span><span class="p">,</span> <span class="n">overwrite</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">show_progress</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>100%|██████████| 4.81k/4.81k [00:02&lt;00:00, 1.98kKB/s]
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>$AZUREML_DATAREFERENCE_57dbc7117f67479892135cec2819b78b
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="create-or-attach-azure-machine-learning-compute">
+<h3>Create or Attach Azure Machine Learning Compute<a class="headerlink" href="#create-or-attach-azure-machine-learning-compute" title="Permalink to this headline">¶</a></h3>
+<p>We create a cpu cluster as our <strong>remote compute target</strong>. If a cluster with the same name already exists in your workspace, the script will load it instead. You can read <a class="reference external" href="https://docs.microsoft.com/en-us/azure/machine-learning/service/how-to-set-up-training-targets">Set up compute targets for model training</a> to learn more about setting up compute target on different locations. You can also create GPU machines when larger machines are necessary to train the model.</p>
+<p>According to Azure <a class="reference external" href="https://azure.microsoft.com/en-us/pricing/calculator/">Pricing calculator</a>, with example VM size <code class="docutils literal notranslate"><span class="pre">STANDARD_D2_V2</span></code>, it costs a few dollars to run this notebook, which is well covered by Azure new subscription credit. For billing and pricing questions, please contact <a class="reference external" href="https://azure.microsoft.com/en-us/support/options/">Azure support</a>.</p>
+<p><strong>Note</strong>:</p>
+<ul class="simple">
+<li><p>10m and 20m dataset requires more capacity than <code class="docutils literal notranslate"><span class="pre">STANDARD_D2_V2</span></code>, such as <code class="docutils literal notranslate"><span class="pre">STANDARD_NC6</span></code> or <code class="docutils literal notranslate"><span class="pre">STANDARD_NC12</span></code>. See list of all available VM sizes <a class="reference external" href="https://docs.microsoft.com/en-us/azure/templates/Microsoft.Compute/2018-10-01/virtualMachines?toc=%2Fen-us%2Fazure%2Fazure-resource-manager%2Ftoc.json&amp;bc=%2Fen-us%2Fazure%2Fbread%2Ftoc.json#hardwareprofile-object">here</a>.</p></li>
+<li><p>As with other Azure services, there are limits on certain resources (e.g. AzureML Compute quota) associated with the Azure Machine Learning service. Please read <a class="reference external" href="https://docs.microsoft.com/en-us/azure/azure-supportability/resource-manager-core-quotas-request">these instructions</a> on the default limits and how to request more quota.</p></li>
+</ul>
+<hr class="docutils" />
+<div class="section" id="learn-more-about-azure-machine-learning-compute">
+<h4>Learn more about Azure Machine Learning Compute<a class="headerlink" href="#learn-more-about-azure-machine-learning-compute" title="Permalink to this headline">¶</a></h4>
+<details>
+    <summary>Click to learn more about compute types</summary>
+<p><a class="reference external" href="https://docs.microsoft.com/en-us/azure/machine-learning/service/how-to-set-up-training-targets#amlcompute">Azure Machine Learning Compute</a> is managed compute infrastructure that allows the user to easily create single to multi-node compute of the appropriate VM Family. It is created within your workspace region and is a resource that can be used by other users in your workspace. It autoscales by default to the max_nodes, when a job is submitted, and executes in a containerized environment packaging the dependencies as specified by the user.</p>
+<p>Since it is managed compute, job scheduling and cluster management are handled internally by Azure Machine Learning service.</p>
+<p>You can provision a persistent AzureML Compute resource by simply defining two parameters thanks to smart defaults. By default it autoscales from 0 nodes and provisions dedicated VMs to run your job in a container. This is useful when you want to continously re-use the same target, debug it between jobs or simply share the resource with other users of your workspace.</p>
+<p>In addition to vm_size and max_nodes, you can specify:</p>
+<ul class="simple">
+<li><p><strong>min_nodes</strong>: Minimum nodes (default 0 nodes) to downscale to while running a job on AzureML Compute</p></li>
+<li><p><strong>vm_priority</strong>: Choose between ‘dedicated’ (default) and ‘lowpriority’ VMs when provisioning AzureML Compute. Low Priority VMs use Azure’s excess capacity and are thus cheaper but risk your run being pre-empted</p></li>
+<li><p><strong>idle_seconds_before_scaledown</strong>: Idle time (default 120 seconds) to wait after run completion before auto-scaling to min_nodes</p></li>
+<li><p><strong>vnet_resourcegroup_name</strong>: Resource group of the existing VNet within which Azure MLCompute should be provisioned</p></li>
+<li><p><strong>vnet_name</strong>: Name of VNet</p></li>
+<li><p><strong>subnet_name</strong>: Name of SubNet within the VNet</p></li>
+</ul>
+</details>
+---<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Remote compute (cluster) configuration. If you want to save the cost more, set these to small.</span>
+<span class="n">VM_SIZE</span> <span class="o">=</span> <span class="s1">&#39;STANDARD_D2_V2&#39;</span>
+<span class="c1"># Cluster nodes</span>
+<span class="n">MIN_NODES</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">MAX_NODES</span> <span class="o">=</span> <span class="mi">2</span>
+
+<span class="n">CLUSTER_NAME</span> <span class="o">=</span> <span class="s1">&#39;cpucluster&#39;</span>
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="n">compute_target</span> <span class="o">=</span> <span class="n">ComputeTarget</span><span class="p">(</span><span class="n">workspace</span><span class="o">=</span><span class="n">ws</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">CLUSTER_NAME</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Found existing compute target&quot;</span><span class="p">)</span>
+<span class="k">except</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Creating a new compute target...&quot;</span><span class="p">)</span>
+    <span class="c1"># Specify the configuration for the new cluster</span>
+    <span class="n">compute_config</span> <span class="o">=</span> <span class="n">AmlCompute</span><span class="o">.</span><span class="n">provisioning_configuration</span><span class="p">(</span>
+        <span class="n">vm_size</span><span class="o">=</span><span class="n">VM_SIZE</span><span class="p">,</span>
+        <span class="n">min_nodes</span><span class="o">=</span><span class="n">MIN_NODES</span><span class="p">,</span>
+        <span class="n">max_nodes</span><span class="o">=</span><span class="n">MAX_NODES</span>
+    <span class="p">)</span>
+    <span class="c1"># Create the cluster with the specified name and configuration</span>
+    <span class="n">compute_target</span> <span class="o">=</span> <span class="n">ComputeTarget</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">ws</span><span class="p">,</span> <span class="n">CLUSTER_NAME</span><span class="p">,</span> <span class="n">compute_config</span><span class="p">)</span>
+    <span class="c1"># Wait for the cluster to complete, show the output log</span>
+    <span class="n">compute_target</span><span class="o">.</span><span class="n">wait_for_completion</span><span class="p">(</span><span class="n">show_output</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">min_node_count</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">timeout_in_minutes</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Creating a new compute target...
+Creating
+Succeeded
+AmlCompute wait for completion finished
+Minimum number of nodes requested have been provisioned
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="tex2jax_ignore mathjax_ignore section" id="prepare-training-script">
+<h1>Prepare training script<a class="headerlink" href="#prepare-training-script" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="create-a-directory">
+<h2>1. Create a directory<a class="headerlink" href="#create-a-directory" title="Permalink to this headline">¶</a></h2>
+<p>Create a directory that will contain all the necessary code from your local machine that you will need access to on the remote resource. This includes the training script, and any additional files your training script depends on.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">SCRIPT_DIR</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">tmp_dir</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="s1">&#39;movielens-sar&#39;</span><span class="p">)</span>
+<span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">SCRIPT_DIR</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">TRAIN_FILE</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">SCRIPT_DIR</span><span class="p">,</span> <span class="s1">&#39;train.py&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="create-a-training-script">
+<h2>2. Create a training script<a class="headerlink" href="#create-a-training-script" title="Permalink to this headline">¶</a></h2>
+<p>To submit the job to the cluster, first create a training script. Run the following code to create the training script called <code class="docutils literal notranslate"><span class="pre">train.py</span></code> in temporary directory. This training adds a regularization rate to the training algorithm, so produces a slightly different model than the local version.</p>
+<p>This code takes what is in the local quickstart and convert it to one single training script. We use run.log() to record parameters to the run. We will be able to review and compare these measures in the Azure Portal at a later time.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%writefile</span> $TRAIN_FILE
+
+<span class="kn">import</span> <span class="nn">argparse</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">itertools</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+
+<span class="kn">from</span> <span class="nn">azureml.core</span> <span class="kn">import</span> <span class="n">Run</span>
+<span class="kn">from</span> <span class="nn">sklearn.externals</span> <span class="kn">import</span> <span class="n">joblib</span>
+
+<span class="kn">from</span> <span class="nn">recommenders.utils.timer</span> <span class="kn">import</span> <span class="n">Timer</span>
+<span class="kn">from</span> <span class="nn">recommenders.datasets</span> <span class="kn">import</span> <span class="n">movielens</span>
+<span class="kn">from</span> <span class="nn">recommenders.datasets.python_splitters</span> <span class="kn">import</span> <span class="n">python_stratified_split</span>
+<span class="kn">from</span> <span class="nn">recommenders.evaluation.python_evaluation</span> <span class="kn">import</span> <span class="n">map_at_k</span><span class="p">,</span> <span class="n">ndcg_at_k</span><span class="p">,</span> <span class="n">precision_at_k</span><span class="p">,</span> <span class="n">recall_at_k</span>
+<span class="kn">from</span> <span class="nn">recommenders.models.sar.sar_singlenode</span> <span class="kn">import</span> <span class="n">SARSingleNode</span>
+
+
+<span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">DEBUG</span><span class="p">,</span> 
+                    <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">%(asctime)s</span><span class="s1"> </span><span class="si">%(levelname)-8s</span><span class="s1"> </span><span class="si">%(message)s</span><span class="s1">&#39;</span><span class="p">)</span>
+
+
+<span class="n">TARGET_DIR</span> <span class="o">=</span> <span class="s1">&#39;movielens&#39;</span>
+<span class="n">OUTPUT_FILE_NAME</span> <span class="o">=</span> <span class="s1">&#39;outputs/movielens_sar_model.pkl&#39;</span>
+<span class="n">MODEL_FILE_NAME</span> <span class="o">=</span> <span class="s1">&#39;movielens_sar_model.pkl&#39;</span>
+
+
+<span class="c1"># get hold of the current run</span>
+<span class="n">run</span> <span class="o">=</span> <span class="n">Run</span><span class="o">.</span><span class="n">get_context</span><span class="p">()</span>
+
+<span class="c1"># let user feed in 2 parameters, the location of the data files (from datastore), and the regularization rate of the logistic regression model</span>
+<span class="n">parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">()</span>
+<span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--data-folder&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s1">&#39;data_folder&#39;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;data folder mounting point&#39;</span><span class="p">)</span>
+<span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--data-file&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s1">&#39;data_file&#39;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;data file name&#39;</span><span class="p">)</span>
+<span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--top-k&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s1">&#39;top_k&#39;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;top k items to recommend&#39;</span><span class="p">)</span>
+<span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--data-size&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s1">&#39;data_size&#39;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Movielens data size: 100k, 1m, 10m, or 20m&#39;</span><span class="p">)</span>
+<span class="n">args</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">()</span>
+
+<span class="c1"># set col names</span>
+<span class="n">header</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;col_user&quot;</span><span class="p">:</span> <span class="s2">&quot;UserId&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;col_item&quot;</span><span class="p">:</span> <span class="s2">&quot;MovieId&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;col_rating&quot;</span><span class="p">:</span> <span class="s2">&quot;Rating&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;col_timestamp&quot;</span><span class="p">:</span> <span class="s2">&quot;Timestamp&quot;</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="c1"># read data</span>
+<span class="n">data_pickle_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">data_folder</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">data_file</span><span class="p">)</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_pickle</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="n">data_pickle_path</span><span class="p">)</span>
+
+<span class="c1"># Log arguments to the run for tracking</span>
+<span class="n">run</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="s2">&quot;top-k&quot;</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">top_k</span><span class="p">)</span>
+<span class="n">run</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="s2">&quot;data-size&quot;</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">data_size</span><span class="p">)</span>
+
+<span class="c1"># split dataset into train and test</span>
+<span class="n">train</span><span class="p">,</span> <span class="n">test</span> <span class="o">=</span> <span class="n">python_stratified_split</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">ratio</span><span class="o">=</span><span class="mf">0.75</span><span class="p">,</span> <span class="n">col_user</span><span class="o">=</span><span class="n">header</span><span class="p">[</span><span class="s2">&quot;col_user&quot;</span><span class="p">],</span> <span class="n">col_item</span><span class="o">=</span><span class="n">header</span><span class="p">[</span><span class="s2">&quot;col_item&quot;</span><span class="p">],</span> <span class="n">seed</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
+
+<span class="c1"># instantiate the model</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">SARSingleNode</span><span class="p">(</span>
+    <span class="n">similarity_type</span><span class="o">=</span><span class="s2">&quot;jaccard&quot;</span><span class="p">,</span> 
+    <span class="n">time_decay_coefficient</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> 
+    <span class="n">time_now</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> 
+    <span class="n">timedecay_formula</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> 
+    <span class="o">**</span><span class="n">header</span>
+<span class="p">)</span>
+
+<span class="c1"># train the SAR model</span>
+<span class="k">with</span> <span class="n">Timer</span><span class="p">()</span> <span class="k">as</span> <span class="n">t</span><span class="p">:</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">train</span><span class="p">)</span>
+
+<span class="n">run</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;Training time&quot;</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="n">t</span><span class="o">.</span><span class="n">interval</span><span class="p">)</span>
+
+<span class="c1"># predict top k items</span>
+<span class="k">with</span> <span class="n">Timer</span><span class="p">()</span> <span class="k">as</span> <span class="n">t</span><span class="p">:</span>
+    <span class="n">top_k</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">recommend_k_items</span><span class="p">(</span><span class="n">test</span><span class="p">,</span> <span class="n">remove_seen</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="n">run</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;Prediction time&quot;</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="n">t</span><span class="o">.</span><span class="n">interval</span><span class="p">)</span>
+
+<span class="c1"># compute evaluation metrics</span>
+<span class="n">eval_map</span> <span class="o">=</span> <span class="n">map_at_k</span><span class="p">(</span><span class="n">test</span><span class="p">,</span> <span class="n">top_k</span><span class="p">,</span> <span class="n">col_user</span><span class="o">=</span><span class="s2">&quot;UserId&quot;</span><span class="p">,</span> <span class="n">col_item</span><span class="o">=</span><span class="s2">&quot;MovieId&quot;</span><span class="p">,</span> 
+                    <span class="n">col_rating</span><span class="o">=</span><span class="s2">&quot;Rating&quot;</span><span class="p">,</span> <span class="n">col_prediction</span><span class="o">=</span><span class="s2">&quot;prediction&quot;</span><span class="p">,</span> 
+                    <span class="n">relevancy_method</span><span class="o">=</span><span class="s2">&quot;top_k&quot;</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">top_k</span><span class="p">)</span>
+<span class="n">eval_ndcg</span> <span class="o">=</span> <span class="n">ndcg_at_k</span><span class="p">(</span><span class="n">test</span><span class="p">,</span> <span class="n">top_k</span><span class="p">,</span> <span class="n">col_user</span><span class="o">=</span><span class="s2">&quot;UserId&quot;</span><span class="p">,</span> <span class="n">col_item</span><span class="o">=</span><span class="s2">&quot;MovieId&quot;</span><span class="p">,</span> 
+                      <span class="n">col_rating</span><span class="o">=</span><span class="s2">&quot;Rating&quot;</span><span class="p">,</span> <span class="n">col_prediction</span><span class="o">=</span><span class="s2">&quot;prediction&quot;</span><span class="p">,</span> 
+                      <span class="n">relevancy_method</span><span class="o">=</span><span class="s2">&quot;top_k&quot;</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">top_k</span><span class="p">)</span>
+<span class="n">eval_precision</span> <span class="o">=</span> <span class="n">precision_at_k</span><span class="p">(</span><span class="n">test</span><span class="p">,</span> <span class="n">top_k</span><span class="p">,</span> <span class="n">col_user</span><span class="o">=</span><span class="s2">&quot;UserId&quot;</span><span class="p">,</span> <span class="n">col_item</span><span class="o">=</span><span class="s2">&quot;MovieId&quot;</span><span class="p">,</span> 
+                                <span class="n">col_rating</span><span class="o">=</span><span class="s2">&quot;Rating&quot;</span><span class="p">,</span> <span class="n">col_prediction</span><span class="o">=</span><span class="s2">&quot;prediction&quot;</span><span class="p">,</span> 
+                                <span class="n">relevancy_method</span><span class="o">=</span><span class="s2">&quot;top_k&quot;</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">top_k</span><span class="p">)</span>
+<span class="n">eval_recall</span> <span class="o">=</span> <span class="n">recall_at_k</span><span class="p">(</span><span class="n">test</span><span class="p">,</span> <span class="n">top_k</span><span class="p">,</span> <span class="n">col_user</span><span class="o">=</span><span class="s2">&quot;UserId&quot;</span><span class="p">,</span> <span class="n">col_item</span><span class="o">=</span><span class="s2">&quot;MovieId&quot;</span><span class="p">,</span> 
+                          <span class="n">col_rating</span><span class="o">=</span><span class="s2">&quot;Rating&quot;</span><span class="p">,</span> <span class="n">col_prediction</span><span class="o">=</span><span class="s2">&quot;prediction&quot;</span><span class="p">,</span> 
+                          <span class="n">relevancy_method</span><span class="o">=</span><span class="s2">&quot;top_k&quot;</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">top_k</span><span class="p">)</span>
+
+<span class="n">run</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="s2">&quot;map&quot;</span><span class="p">,</span> <span class="n">eval_map</span><span class="p">)</span>
+<span class="n">run</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="s2">&quot;ndcg&quot;</span><span class="p">,</span> <span class="n">eval_ndcg</span><span class="p">)</span>
+<span class="n">run</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="s2">&quot;precision&quot;</span><span class="p">,</span> <span class="n">eval_precision</span><span class="p">)</span>
+<span class="n">run</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="s2">&quot;recall&quot;</span><span class="p">,</span> <span class="n">eval_recall</span><span class="p">)</span>
+
+<span class="c1"># automatic upload of everything in ./output folder doesn&#39;t work for very large model file</span>
+<span class="c1"># model file has to be saved to a temp location, then uploaded by upload_file function</span>
+<span class="n">joblib</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="n">model</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="n">MODEL_FILE_NAME</span><span class="p">)</span>
+
+<span class="n">run</span><span class="o">.</span><span class="n">upload_file</span><span class="p">(</span><span class="n">OUTPUT_FILE_NAME</span><span class="p">,</span> <span class="n">MODEL_FILE_NAME</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Writing /tmp/tmp6imrlt0z/movielens-sar/train.py
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># copy dependent python files</span>
+<span class="n">UTILS_DIR</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">SCRIPT_DIR</span><span class="p">,</span> <span class="s1">&#39;recommenders&#39;</span><span class="p">)</span>
+<span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">UTILS_DIR</span><span class="p">):</span>
+    <span class="n">shutil</span><span class="o">.</span><span class="n">rmtree</span><span class="p">(</span><span class="n">UTILS_DIR</span><span class="p">)</span>
+<span class="n">shutil</span><span class="o">.</span><span class="n">copytree</span><span class="p">(</span><span class="s1">&#39;../../recommenders/&#39;</span><span class="p">,</span> <span class="n">UTILS_DIR</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;/tmp/tmp6imrlt0z/movielens-sar/recommenders&#39;
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="tex2jax_ignore mathjax_ignore section" id="run-training-script">
+<h1>Run training script<a class="headerlink" href="#run-training-script" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="create-an-estimator">
+<h2>1. Create an estimator<a class="headerlink" href="#create-an-estimator" title="Permalink to this headline">¶</a></h2>
+<p>An <a class="reference external" href="https://docs.microsoft.com/en-us/azure/machine-learning/service/how-to-train-ml-models">estimator</a> object is used to submit the run. You can create and use a generic Estimator to submit a training script using any learning framework you choose (such as scikit-learn) you want to run on any compute target, whether it’s your local machine, a single VM in Azure, or a GPU cluster in Azure.</p>
+<p>Create your estimator by running the following code to define:</p>
+<ul class="simple">
+<li><p>The name of the estimator object, <code class="docutils literal notranslate"><span class="pre">est</span></code></p></li>
+<li><p>The directory that contains your scripts. All the files in this directory are uploaded into the cluster nodes for execution.</p></li>
+<li><p>The compute target.  In this case you will use the AzureML Compute you created</p></li>
+<li><p>The training script name, <a class="reference external" href="http://train.py">train.py</a></p></li>
+<li><p>Parameters required from the training script</p></li>
+<li><p>Python packages needed for training</p></li>
+<li><p>Connect to the data files in the datastore</p></li>
+</ul>
+<p>In this tutorial, this target is AzureML Compute. All files in the script folder are uploaded into the cluster nodes for execution. <code class="docutils literal notranslate"><span class="pre">ds.as_mount()</span></code> mounts a datastore on the remote compute and returns the folder. See documentation <a class="reference external" href="https://docs.microsoft.com/en-us/azure/machine-learning/service/how-to-access-data#access-datastores-during-training">here</a>.</p>
+<div class="cell tag_configure estimator docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">script_params</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;--data-folder&#39;</span><span class="p">:</span> <span class="n">ds</span><span class="o">.</span><span class="n">as_mount</span><span class="p">(),</span>
+    <span class="s1">&#39;--data-file&#39;</span><span class="p">:</span> <span class="s1">&#39;movielens/&#39;</span> <span class="o">+</span> <span class="n">data_file_name</span><span class="p">,</span>
+    <span class="s1">&#39;--top-k&#39;</span><span class="p">:</span> <span class="n">TOP_K</span><span class="p">,</span>
+    <span class="s1">&#39;--data-size&#39;</span><span class="p">:</span> <span class="n">MOVIELENS_DATA_SIZE</span>
+<span class="p">}</span>
+
+<span class="n">est</span> <span class="o">=</span> <span class="n">Estimator</span><span class="p">(</span><span class="n">source_directory</span><span class="o">=</span><span class="n">SCRIPT_DIR</span><span class="p">,</span>
+                <span class="n">script_params</span><span class="o">=</span><span class="n">script_params</span><span class="p">,</span>
+                <span class="n">compute_target</span><span class="o">=</span><span class="n">compute_target</span><span class="p">,</span>
+                <span class="n">entry_script</span><span class="o">=</span><span class="s1">&#39;train.py&#39;</span><span class="p">,</span>
+                <span class="n">conda_packages</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;pandas&#39;</span><span class="p">],</span>
+                <span class="n">pip_packages</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;sklearn&#39;</span><span class="p">,</span> <span class="s1">&#39;tqdm&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="submit-the-job-to-the-cluster">
+<h2>2. Submit the job to the cluster<a class="headerlink" href="#submit-the-job-to-the-cluster" title="Permalink to this headline">¶</a></h2>
+<p>An <a class="reference external" href="https://docs.microsoft.com/en-us/python/api/overview/azure/ml/intro?view=azure-ml-py#experiment">experiment</a> is a logical container in an AzureML Workspace. It hosts run records which can include run metrics and output artifacts from your experiments. We access an experiment from our AzureML workspace by name, which will be created if it doesn’t exist.</p>
+<p>Then, run the experiment by submitting the estimator object.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># create experiment</span>
+<span class="n">EXPERIMENT_NAME</span> <span class="o">=</span> <span class="s1">&#39;movielens-sar&#39;</span>
+<span class="n">exp</span> <span class="o">=</span> <span class="n">Experiment</span><span class="p">(</span><span class="n">workspace</span><span class="o">=</span><span class="n">ws</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">EXPERIMENT_NAME</span><span class="p">)</span>
+
+<span class="n">run</span> <span class="o">=</span> <span class="n">exp</span><span class="o">.</span><span class="n">submit</span><span class="p">(</span><span class="n">config</span><span class="o">=</span><span class="n">est</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="monitor-remote-run">
+<h2>3.  Monitor remote run<a class="headerlink" href="#monitor-remote-run" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="jupyter-widget">
+<h3>Jupyter widget<a class="headerlink" href="#jupyter-widget" title="Permalink to this headline">¶</a></h3>
+<p>Jupyter widget can watch the progress of the run.  Like the run submission, the widget is asynchronous and provides live updates every 10-15 seconds until the job completes.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">RunDetails</span><span class="p">(</span><span class="n">run</span><span class="p">)</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<script type="application/vnd.jupyter.widget-view+json">
+{"model_id": "145080f4fc0e47c8a892ff7db3f3c08b", "version_major": 2, "version_minor": 0}
+</script></div>
+</div>
+</div>
+</div>
+<div class="section" id="viewing-run-results">
+<h2>4. Viewing run results<a class="headerlink" href="#viewing-run-results" title="Permalink to this headline">¶</a></h2>
+<p>Azure Machine Learning stores all the details about the run in the Azure cloud. Let’s access those details by retrieving a link to the run using the default run output. Clicking on the resulting link will take you to an interactive page.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">run</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><table style="width:100%"><tr><th>Experiment</th><th>Id</th><th>Type</th><th>Status</th><th>Details Page</th><th>Docs Page</th></tr><tr><td>movielens-sar</td><td>movielens-sar_1575027796_199dd2c6</td><td>azureml.scriptrun</td><td>Completed</td><td><a href="https://mlworkspace.azure.ai/portal/subscriptions/0ca618d2-22a8-413a-96d0-0f1b531129c3/resourceGroups/recommenders_project_resources/providers/Microsoft.MachineLearningServices/workspaces/reco_azureml/experiments/movielens-sar/runs/movielens-sar_1575027796_199dd2c6" target="_blank" rel="noopener">Link to Azure Portal</a></td><td><a href="https://docs.microsoft.com/en-us/python/api/azureml-core/azureml.core.script_run.ScriptRun?view=azure-ml-py" target="_blank" rel="noopener">Link to Documentation</a></td></tr></table></div></div>
+</div>
+<p>Above cell should output similar table as below.
+<img alt="Experiment submit output" src="https://recodatasets.z20.web.core.windows.net/images/aml_sar_output.jpg" />
+After clicking “Link to Azure Portal”, experiment run details tab looks like this with logged metrics.
+<img alt="Azure Portal Experiment" src="https://recodatasets.z20.web.core.windows.net/images/aml_sar_workspace.jpg" /></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># run below after run is complete, otherwise metrics is empty</span>
+<span class="n">metrics</span> <span class="o">=</span> <span class="n">run</span><span class="o">.</span><span class="n">get_metrics</span><span class="p">()</span>
+<span class="n">metrics</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;top-k&#39;: 10,
+ &#39;data-size&#39;: &#39;100k&#39;,
+ &#39;Training time&#39;: 0.4077951559999633,
+ &#39;Prediction time&#39;: 0.13354294300000902,
+ &#39;map&#39;: 0.11059057578638949,
+ &#39;ndcg&#39;: 0.3824612290501957,
+ &#39;precision&#39;: 0.33075291622481445,
+ &#39;recall&#39;: 0.1763854474342893}
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="tex2jax_ignore mathjax_ignore section" id="deprovision-compute-resource">
+<h1>Deprovision compute resource<a class="headerlink" href="#deprovision-compute-resource" title="Permalink to this headline">¶</a></h1>
+<p>To avoid unnecessary charges, if you created compute target that doesn’t scale down to 0, make sure the compute target is deprovisioned after use.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># delete () is used to deprovision and delete the AzureML Compute target. </span>
+<span class="c1"># do not run below before experiment completes</span>
+
+<span class="c1"># compute_target.delete()</span>
+
+<span class="c1"># deletion will take a few minutes. You can check progress in Azure Portal / Computing tab</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># clean up temporary directory</span>
+<span class="n">tmp_dir</span><span class="o">.</span><span class="n">cleanup</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "reco_base"
+        },
+        kernelOptions: {
+            kernelName: "reco_base",
+            path: "./examples/00_quick_start"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'reco_base'</script>
+
+              </div>
+              
+        
+            
+
+
+
+<div class='prev-next-bottom'>
+    
+
+</div>
+        
+        </div>
+    </div>
+    <footer class="footer">
+    <div class="container">
+      <p>
+        
+          By The Jupyter Book community<br/>
+        
+            &copy; Copyright 2021.<br/>
+      </p>
+    </div>
+  </footer>
+</main>
+
+
+      </div>
+    </div>
+  
+  <script src="../../_static/js/index.1c5a1a01449ed65a7b51.js"></script>
+
+  
+  </body>
+</html>

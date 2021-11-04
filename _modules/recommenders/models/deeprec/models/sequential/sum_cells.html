@@ -1,0 +1,561 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>recommenders.models.deeprec.models.sequential.sum_cells &#8212; &lt;h1 style=&#34;font-size:2em;text-align:center;color:#FF5733&#34;&gt;Recommenders&lt;/h1&gt;</title>
+    
+  <link href="../../../../../../_static/css/theme.css" rel="stylesheet" />
+  <link href="../../../../../../_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
+
+    
+  <link rel="stylesheet"
+    href="../../../../../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../../../../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../../../../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+
+    
+    <link rel="stylesheet" type="text/css" href="../../../../../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../_static/sphinx-book-theme.css?digest=c3fdc42140077d1ad13ad2f1588a4309" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../_static/tabs.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    
+  <link rel="preload" as="script" href="../../../../../../_static/js/index.1c5a1a01449ed65a7b51.js">
+
+    <script data-url_root="../../../../../../" id="documentation_options" src="../../../../../../_static/documentation_options.js"></script>
+    <script src="../../../../../../_static/jquery.js"></script>
+    <script src="../../../../../../_static/underscore.js"></script>
+    <script src="../../../../../../_static/doctools.js"></script>
+    <script src="../../../../../../_static/togglebutton.js"></script>
+    <script src="../../../../../../_static/clipboard.min.js"></script>
+    <script src="../../../../../../_static/copybutton.js"></script>
+    <script src="../../../../../../_static/tabs.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../../../../../../_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
+    <link rel="canonical" href="https://microsoft.github.io/genalog/_modules/recommenders/models/deeprec/models/sequential/sum_cells.html" />
+    <link rel="index" title="Index" href="../../../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../../../search.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en" />
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="../../../../../../index.html">
+      
+      
+      
+      <h1 class="site-logo" id="site-title"><h1 style="font-size:2em;text-align:center;color:#FF5733">Recommenders</h1></h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="../../../../../../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        
+    </div>
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="topbar container-xl fixed-top">
+    <div class="topbar-contents row">
+        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
+        <div class="col pl-md-4 topbar-main">
+            
+            <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+                data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+                aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
+                title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+                <i class="fas fa-bars"></i>
+                <i class="fas fa-arrow-left"></i>
+                <i class="fas fa-arrow-up"></i>
+            </button>
+            
+            
+            <!-- Source interaction buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
+    <div class="dropdown-buttons sourcebuttons">
+        <a class="repository-button"
+            href="https://github.com/microsoft/genalog"><button type="button" class="btn btn-secondary topbarbtn"
+                data-toggle="tooltip" data-placement="left" title="Source repository"><i
+                    class="fab fa-github"></i>repository</button></a>
+        <a class="issues-button"
+            href="https://github.com/microsoft/genalog/issues/new?title=Issue%20on%20page%20%2F_modules/recommenders/models/deeprec/models/sequential/sum_cells.html&body=Your%20issue%20content%20here."><button
+                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
+                title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
+        
+    </div>
+</div>
+
+            <!-- Full screen (wrap in <a> to have style consistency -->
+
+<a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+        data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+        title="Fullscreen mode"><i
+            class="fas fa-expand"></i></button></a>
+
+            <!-- Launch buttons -->
+
+        </div>
+
+        <!-- Table of contents -->
+        <div class="d-none d-md-block col-md-2 bd-toc show">
+            
+        </div>
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+        
+              <div>
+                
+  <h1>Source code for recommenders.models.deeprec.models.sequential.sum_cells</h1><div class="highlight"><pre>
+<span></span><span class="c1"># Copyright (c) Microsoft Corporation. All rights reserved.</span>
+<span class="c1"># Licensed under the MIT License.</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">tensorflow</span> <span class="k">as</span> <span class="nn">tf</span>
+<span class="kn">from</span> <span class="nn">tensorflow.python.eager</span> <span class="kn">import</span> <span class="n">context</span>
+<span class="kn">from</span> <span class="nn">tensorflow.python.keras</span> <span class="kn">import</span> <span class="n">activations</span>
+<span class="kn">from</span> <span class="nn">tensorflow.python.keras</span> <span class="kn">import</span> <span class="n">initializers</span>
+<span class="kn">from</span> <span class="nn">tensorflow.python.keras.utils</span> <span class="kn">import</span> <span class="n">tf_utils</span>
+<span class="kn">from</span> <span class="nn">tensorflow.python.ops</span> <span class="kn">import</span> <span class="n">math_ops</span>
+<span class="kn">from</span> <span class="nn">tensorflow.python.platform</span> <span class="kn">import</span> <span class="n">tf_logging</span> <span class="k">as</span> <span class="n">logging</span>
+<span class="kn">from</span> <span class="nn">tensorflow.contrib.rnn</span> <span class="kn">import</span> <span class="n">LayerRNNCell</span>
+<span class="kn">from</span> <span class="nn">tensorflow.python.ops</span> <span class="kn">import</span> <span class="n">init_ops</span>
+<span class="kn">from</span> <span class="nn">tensorflow.python.framework</span> <span class="kn">import</span> <span class="n">dtypes</span>
+<span class="kn">from</span> <span class="nn">tensorflow.python.util</span> <span class="kn">import</span> <span class="n">nest</span>
+
+
+<span class="n">_BIAS_VARIABLE_NAME</span> <span class="o">=</span> <span class="s2">&quot;bias&quot;</span>
+<span class="n">_WEIGHTS_VARIABLE_NAME</span> <span class="o">=</span> <span class="s2">&quot;kernel&quot;</span>
+
+
+<div class="viewcode-block" id="SUMCell"><a class="viewcode-back" href="../../../../../../source/models.html#recommenders.models.deeprec.models.sequential.sum_cells.SUMCell">[docs]</a><span class="k">class</span> <span class="nc">SUMCell</span><span class="p">(</span><span class="n">LayerRNNCell</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Cell for Sequential User Matrix&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">num_units</span><span class="p">,</span>
+        <span class="n">slots</span><span class="p">,</span>
+        <span class="n">attention_size</span><span class="p">,</span>
+        <span class="n">input_size</span><span class="p">,</span>
+        <span class="n">activation</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">reuse</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">kernel_initializer</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">bias_initializer</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">dtype</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">kwargs</span>
+    <span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">SUMCell</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">_reuse</span><span class="o">=</span><span class="n">reuse</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="n">_check_supported_dtypes</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">context</span><span class="o">.</span><span class="n">executing_eagerly</span><span class="p">()</span> <span class="ow">and</span> <span class="n">context</span><span class="o">.</span><span class="n">num_gpus</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+                <span class="s2">&quot;</span><span class="si">%s</span><span class="s2">: Note that this cell is not optimized for performance. &quot;</span>
+                <span class="s2">&quot;Please use tf.contrib.cudnn_rnn.CudnnGRU for better &quot;</span>
+                <span class="s2">&quot;performance on GPU.&quot;</span><span class="p">,</span>
+                <span class="bp">self</span><span class="p">,</span>
+            <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_input_size</span> <span class="o">=</span> <span class="n">input_size</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_slots</span> <span class="o">=</span> <span class="n">slots</span> <span class="o">-</span> <span class="mi">1</span>  <span class="c1"># the last channel is reserved for the highway slot</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_num_units</span> <span class="o">=</span> <span class="n">num_units</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_real_units</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_num_units</span> <span class="o">-</span> <span class="n">input_size</span><span class="p">)</span> <span class="o">//</span> <span class="n">slots</span>
+        <span class="k">if</span> <span class="n">activation</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_activation</span> <span class="o">=</span> <span class="n">activations</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">activation</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_activation</span> <span class="o">=</span> <span class="n">math_ops</span><span class="o">.</span><span class="n">tanh</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_kernel_initializer</span> <span class="o">=</span> <span class="n">initializers</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">kernel_initializer</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_bias_initializer</span> <span class="o">=</span> <span class="n">initializers</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">bias_initializer</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">state_size</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_num_units</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">output_size</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_num_units</span>
+
+    <span class="k">def</span> <span class="nf">_basic_build</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inputs_shape</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Common initialization operations for SUM cell and its variants.</span>
+<span class="sd">        This function creates parameters for the cell.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">d</span> <span class="o">=</span> <span class="n">inputs_shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">h</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_real_units</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_slots</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_erase_W</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">add_variable</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;_erase_W&quot;</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">[</span><span class="n">d</span> <span class="o">+</span> <span class="n">h</span><span class="p">,</span> <span class="n">h</span><span class="p">],</span> <span class="n">initializer</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_kernel_initializer</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_erase_b</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">add_variable</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;_erase_b&quot;</span><span class="p">,</span>
+            <span class="n">shape</span><span class="o">=</span><span class="p">[</span><span class="n">h</span><span class="p">],</span>
+            <span class="n">initializer</span><span class="o">=</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_bias_initializer</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bias_initializer</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+                <span class="k">else</span> <span class="n">init_ops</span><span class="o">.</span><span class="n">constant_initializer</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
+            <span class="p">),</span>
+        <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_reset_W</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">add_variable</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;_reset_W&quot;</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">[</span><span class="n">d</span> <span class="o">+</span> <span class="n">h</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">initializer</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_kernel_initializer</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_reset_b</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">add_variable</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;_reset_b&quot;</span><span class="p">,</span>
+            <span class="n">shape</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+            <span class="n">initializer</span><span class="o">=</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_bias_initializer</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bias_initializer</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+                <span class="k">else</span> <span class="n">init_ops</span><span class="o">.</span><span class="n">constant_initializer</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
+            <span class="p">),</span>
+        <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_add_W</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">add_variable</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;_add_W&quot;</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">[</span><span class="n">d</span> <span class="o">+</span> <span class="n">h</span><span class="p">,</span> <span class="n">h</span><span class="p">],</span> <span class="n">initializer</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_kernel_initializer</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_add_b</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">add_variable</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;_add_b&quot;</span><span class="p">,</span>
+            <span class="n">shape</span><span class="o">=</span><span class="p">[</span><span class="n">h</span><span class="p">],</span>
+            <span class="n">initializer</span><span class="o">=</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_bias_initializer</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bias_initializer</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+                <span class="k">else</span> <span class="n">init_ops</span><span class="o">.</span><span class="n">constant_initializer</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
+            <span class="p">),</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">heads</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">add_variable</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;_heads&quot;</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">[</span><span class="n">s</span><span class="p">,</span> <span class="n">d</span><span class="p">],</span> <span class="n">initializer</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_kernel_initializer</span>
+        <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_beta</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">add_variable</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;_beta_no_reg&quot;</span><span class="p">,</span>
+            <span class="n">shape</span><span class="o">=</span><span class="p">(),</span>
+            <span class="n">initializer</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">constant_initializer</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">1.02</span><span class="p">]),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">),</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_alpha</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">add_variable</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;_alpha_no_reg&quot;</span><span class="p">,</span>
+            <span class="n">shape</span><span class="o">=</span><span class="p">(),</span>
+            <span class="n">initializer</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">constant_initializer</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.98</span><span class="p">]),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">),</span>
+        <span class="p">)</span>
+
+    <span class="nd">@tf_utils</span><span class="o">.</span><span class="n">shape_type_conversion</span>
+    <span class="k">def</span> <span class="nf">build</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inputs_shape</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Initialization operations for SUM cell.</span>
+<span class="sd">        this function creates all the parameters for the cell.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">inputs_shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">&quot;Expected inputs.shape[-1] to be known, saw shape: </span><span class="si">%s</span><span class="s2">&quot;</span>
+                <span class="o">%</span> <span class="nb">str</span><span class="p">(</span><span class="n">inputs_shape</span><span class="p">)</span>
+            <span class="p">)</span>
+        <span class="n">_check_supported_dtypes</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="n">inputs_shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>  <span class="c1"># noqa: F841</span>
+        <span class="n">h</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_real_units</span>  <span class="c1"># noqa: F841</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_slots</span>       <span class="c1"># noqa: F841</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_basic_build</span><span class="p">(</span><span class="n">inputs_shape</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">parameter_set</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_erase_W</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_erase_b</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_reset_W</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_reset_b</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_add_W</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_add_b</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">heads</span><span class="p">,</span>
+        <span class="p">]</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">built</span> <span class="o">=</span> <span class="kc">True</span>
+
+<div class="viewcode-block" id="SUMCell.call"><a class="viewcode-back" href="../../../../../../source/models.html#recommenders.models.deeprec.models.sequential.sum_cells.SUMCell.call">[docs]</a>    <span class="k">def</span> <span class="nf">call</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inputs</span><span class="p">,</span> <span class="n">state</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;The real operations for SUM cell to process user behaviors.</span>
+
+<span class="sd">        params:</span>
+<span class="sd">            inputs: (a batch of) user behaviors at time T</span>
+<span class="sd">            state:  (a batch of) user states at time T-1</span>
+
+<span class="sd">        returns:</span>
+<span class="sd">            state, state:</span>
+<span class="sd">            - after process the user behavior at time T, returns (a batch of) new user states at time T</span>
+<span class="sd">            - after process the user behavior at time T, returns (a batch of) new user states at time T</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">_check_rnn_cell_input_dtypes</span><span class="p">([</span><span class="n">inputs</span><span class="p">,</span> <span class="n">state</span><span class="p">])</span>
+
+        <span class="n">h</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_real_units</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_slots</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="n">state</span><span class="p">,</span> <span class="n">last</span> <span class="o">=</span> <span class="n">state</span><span class="p">[:,</span> <span class="p">:</span> <span class="n">s</span> <span class="o">*</span> <span class="n">h</span><span class="p">],</span> <span class="n">state</span><span class="p">[:,</span> <span class="n">s</span> <span class="o">*</span> <span class="n">h</span> <span class="p">:]</span>
+        <span class="n">state</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">h</span><span class="p">])</span>
+
+        <span class="n">att_logit_mat</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">inputs</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">heads</span><span class="p">,</span> <span class="n">transpose_b</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="n">att_weights</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">softmax</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_beta</span> <span class="o">*</span> <span class="n">att_logit_mat</span><span class="p">,</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">att_weights</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">expand_dims</span><span class="p">(</span><span class="n">att_weights</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+
+        <span class="n">h_hat</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">reduce_sum</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">multiply</span><span class="p">(</span><span class="n">state</span><span class="p">[:,</span> <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_slots</span><span class="p">,</span> <span class="p">:],</span> <span class="n">att_weights</span><span class="p">),</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">h_hat</span> <span class="o">=</span> <span class="p">(</span><span class="n">h_hat</span> <span class="o">+</span> <span class="n">state</span><span class="p">[:,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_slots</span><span class="p">,</span> <span class="p">:])</span> <span class="o">/</span> <span class="mi">2</span>
+
+        <span class="n">n_a</span><span class="p">,</span> <span class="n">n_b</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">l2_normalize</span><span class="p">(</span><span class="n">last</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">tf</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">l2_normalize</span><span class="p">(</span><span class="n">inputs</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">dist</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">expand_dims</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">reduce_sum</span><span class="p">(</span><span class="n">n_a</span> <span class="o">*</span> <span class="n">n_b</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">dist</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">math</span><span class="o">.</span><span class="n">pow</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_alpha</span><span class="p">,</span> <span class="n">dist</span><span class="p">)</span>
+
+        <span class="n">att_weights</span> <span class="o">=</span> <span class="n">att_weights</span> <span class="o">*</span> <span class="n">tf</span><span class="o">.</span><span class="n">expand_dims</span><span class="p">(</span><span class="n">dist</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
+        <span class="n">reset</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">sigmoid</span><span class="p">(</span>
+            <span class="n">tf</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">xw_plus_b</span><span class="p">(</span>
+                <span class="n">tf</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">inputs</span><span class="p">,</span> <span class="n">h_hat</span><span class="p">],</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_reset_W</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_reset_b</span>
+            <span class="p">)</span>
+        <span class="p">)</span>
+        <span class="n">erase</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">sigmoid</span><span class="p">(</span>
+            <span class="n">tf</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">xw_plus_b</span><span class="p">(</span>
+                <span class="n">tf</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">inputs</span><span class="p">,</span> <span class="n">h_hat</span><span class="p">],</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_erase_W</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_erase_b</span>
+            <span class="p">)</span>
+        <span class="p">)</span>
+        <span class="n">add</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">tanh</span><span class="p">(</span>
+            <span class="n">tf</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">xw_plus_b</span><span class="p">(</span>
+                <span class="n">tf</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">inputs</span><span class="p">,</span> <span class="n">reset</span> <span class="o">*</span> <span class="n">h_hat</span><span class="p">],</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_add_W</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_add_b</span>
+            <span class="p">)</span>
+        <span class="p">)</span>
+
+        <span class="n">start_part01</span> <span class="o">=</span> <span class="n">state</span><span class="p">[:,</span> <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_slots</span><span class="p">,</span> <span class="p">:]</span>
+        <span class="n">state01</span> <span class="o">=</span> <span class="n">start_part01</span> <span class="o">*</span> <span class="p">(</span>
+            <span class="n">tf</span><span class="o">.</span><span class="n">ones_like</span><span class="p">(</span><span class="n">start_part01</span><span class="p">)</span> <span class="o">-</span> <span class="n">att_weights</span> <span class="o">*</span> <span class="n">tf</span><span class="o">.</span><span class="n">expand_dims</span><span class="p">(</span><span class="n">erase</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="p">)</span>
+        <span class="n">state01</span> <span class="o">=</span> <span class="n">state01</span> <span class="o">+</span> <span class="n">att_weights</span> <span class="o">*</span> <span class="n">tf</span><span class="o">.</span><span class="n">expand_dims</span><span class="p">(</span><span class="n">erase</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">tf</span><span class="o">.</span><span class="n">expand_dims</span><span class="p">(</span>
+            <span class="n">add</span><span class="p">,</span> <span class="mi">1</span>
+        <span class="p">)</span>
+        <span class="n">state01</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">state01</span><span class="p">,</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_slots</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_real_units</span><span class="p">])</span>
+
+        <span class="n">start_part02</span> <span class="o">=</span> <span class="n">state</span><span class="p">[:,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_slots</span><span class="p">,</span> <span class="p">:]</span>
+        <span class="n">state02</span> <span class="o">=</span> <span class="n">start_part02</span> <span class="o">*</span> <span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">ones_like</span><span class="p">(</span><span class="n">start_part02</span><span class="p">)</span> <span class="o">-</span> <span class="n">dist</span> <span class="o">*</span> <span class="n">erase</span><span class="p">)</span>
+        <span class="n">state02</span> <span class="o">=</span> <span class="n">state02</span> <span class="o">+</span> <span class="n">dist</span> <span class="o">*</span> <span class="n">erase</span> <span class="o">*</span> <span class="n">add</span>
+        <span class="n">state</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">state01</span><span class="p">,</span> <span class="n">state02</span><span class="p">,</span> <span class="n">inputs</span><span class="p">],</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">state</span><span class="p">,</span> <span class="n">state</span></div>
+
+<div class="viewcode-block" id="SUMCell.get_config"><a class="viewcode-back" href="../../../../../../source/models.html#recommenders.models.deeprec.models.sequential.sum_cells.SUMCell.get_config">[docs]</a>    <span class="k">def</span> <span class="nf">get_config</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">config</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;num_units&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_num_units</span><span class="p">,</span>
+            <span class="s2">&quot;kernel_initializer&quot;</span><span class="p">:</span> <span class="n">initializers</span><span class="o">.</span><span class="n">serialize</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_kernel_initializer</span><span class="p">),</span>
+            <span class="s2">&quot;bias_initializer&quot;</span><span class="p">:</span> <span class="n">initializers</span><span class="o">.</span><span class="n">serialize</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_bias_initializer</span><span class="p">),</span>
+            <span class="s2">&quot;activation&quot;</span><span class="p">:</span> <span class="n">activations</span><span class="o">.</span><span class="n">serialize</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_activation</span><span class="p">),</span>
+            <span class="s2">&quot;reuse&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_reuse</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="n">base_config</span> <span class="o">=</span> <span class="nb">super</span><span class="p">(</span><span class="n">SUMCell</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">get_config</span><span class="p">()</span>
+        <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">base_config</span><span class="o">.</span><span class="n">items</span><span class="p">())</span> <span class="o">+</span> <span class="nb">list</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">items</span><span class="p">()))</span></div></div>
+
+
+<div class="viewcode-block" id="SUMV2Cell"><a class="viewcode-back" href="../../../../../../source/models.html#recommenders.models.deeprec.models.sequential.sum_cells.SUMV2Cell">[docs]</a><span class="k">class</span> <span class="nc">SUMV2Cell</span><span class="p">(</span><span class="n">SUMCell</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;A variant of SUM cell, which upgrades the writing attention&quot;&quot;&quot;</span>
+
+    <span class="nd">@tf_utils</span><span class="o">.</span><span class="n">shape_type_conversion</span>
+    <span class="k">def</span> <span class="nf">build</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inputs_shape</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Initialization operations for SUMV2 cell.</span>
+<span class="sd">        this function creates all the parameters for the cell.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">inputs_shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">&quot;Expected inputs.shape[-1] to be known, saw shape: </span><span class="si">%s</span><span class="s2">&quot;</span>
+                <span class="o">%</span> <span class="nb">str</span><span class="p">(</span><span class="n">inputs_shape</span><span class="p">)</span>
+            <span class="p">)</span>
+        <span class="n">_check_supported_dtypes</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="n">inputs_shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">h</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_real_units</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_slots</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_basic_build</span><span class="p">(</span><span class="n">inputs_shape</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_writing_W</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">add_variable</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;_writing_W&quot;</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">[</span><span class="n">d</span> <span class="o">+</span> <span class="n">h</span><span class="p">,</span> <span class="n">h</span><span class="p">],</span> <span class="n">initializer</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_kernel_initializer</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_writing_b</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">add_variable</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;_writing_b&quot;</span><span class="p">,</span>
+            <span class="n">shape</span><span class="o">=</span><span class="p">[</span><span class="n">h</span><span class="p">],</span>
+            <span class="n">initializer</span><span class="o">=</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_bias_initializer</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bias_initializer</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+                <span class="k">else</span> <span class="n">init_ops</span><span class="o">.</span><span class="n">constant_initializer</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
+            <span class="p">),</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_writing_W02</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">add_variable</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;_writing_W02&quot;</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">[</span><span class="n">h</span><span class="p">,</span> <span class="n">s</span><span class="p">],</span> <span class="n">initializer</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_kernel_initializer</span>
+        <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">parameter_set</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_erase_W</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_erase_b</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_reset_W</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_reset_b</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_add_W</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_add_b</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">heads</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_writing_W</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_writing_W02</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_writing_b</span><span class="p">,</span>
+        <span class="p">]</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">built</span> <span class="o">=</span> <span class="kc">True</span>
+
+<div class="viewcode-block" id="SUMV2Cell.call"><a class="viewcode-back" href="../../../../../../source/models.html#recommenders.models.deeprec.models.sequential.sum_cells.SUMV2Cell.call">[docs]</a>    <span class="k">def</span> <span class="nf">call</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inputs</span><span class="p">,</span> <span class="n">state</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;The real operations for SUMV2 cell to process user behaviors.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            inputs: (a batch of) user behaviors at time T</span>
+<span class="sd">            state:  (a batch of) user states at time T-1</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            state: after process the user behavior at time T, returns (a batch of) new user states at time T</span>
+<span class="sd">            state: after process the user behavior at time T, returns (a batch of) new user states at time T</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">_check_rnn_cell_input_dtypes</span><span class="p">([</span><span class="n">inputs</span><span class="p">,</span> <span class="n">state</span><span class="p">])</span>
+
+        <span class="n">h</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_real_units</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_slots</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="n">state</span><span class="p">,</span> <span class="n">last</span> <span class="o">=</span> <span class="n">state</span><span class="p">[:,</span> <span class="p">:</span> <span class="n">s</span> <span class="o">*</span> <span class="n">h</span><span class="p">],</span> <span class="n">state</span><span class="p">[:,</span> <span class="n">s</span> <span class="o">*</span> <span class="n">h</span> <span class="p">:]</span>
+        <span class="n">state</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">h</span><span class="p">])</span>
+
+        <span class="n">att_logit_mat</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">inputs</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">heads</span><span class="p">,</span> <span class="n">transpose_b</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="n">att_weights</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">softmax</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_beta</span> <span class="o">*</span> <span class="n">att_logit_mat</span><span class="p">,</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">att_weights</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">expand_dims</span><span class="p">(</span><span class="n">att_weights</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+
+        <span class="n">h_hat</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">reduce_sum</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">multiply</span><span class="p">(</span><span class="n">state</span><span class="p">[:,</span> <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_slots</span><span class="p">,</span> <span class="p">:],</span> <span class="n">att_weights</span><span class="p">),</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">h_hat</span> <span class="o">=</span> <span class="p">(</span><span class="n">h_hat</span> <span class="o">+</span> <span class="n">state</span><span class="p">[:,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_slots</span><span class="p">,</span> <span class="p">:])</span> <span class="o">/</span> <span class="mi">2</span>
+
+        <span class="c1"># get the true writing attentions</span>
+        <span class="n">writing_input</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">inputs</span><span class="p">,</span> <span class="n">h_hat</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">att_weights</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">xw_plus_b</span><span class="p">(</span><span class="n">writing_input</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_writing_W</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_writing_b</span><span class="p">)</span>
+        <span class="n">att_weights</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">relu</span><span class="p">(</span><span class="n">att_weights</span><span class="p">)</span>
+        <span class="n">att_weights</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">att_weights</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_writing_W02</span><span class="p">)</span>
+        <span class="n">att_weights</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">softmax</span><span class="p">(</span><span class="n">att_weights</span><span class="p">,</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">att_weights</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">expand_dims</span><span class="p">(</span><span class="n">att_weights</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+
+        <span class="n">n_a</span><span class="p">,</span> <span class="n">n_b</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">l2_normalize</span><span class="p">(</span><span class="n">last</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">tf</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">l2_normalize</span><span class="p">(</span><span class="n">inputs</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">dist</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">expand_dims</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">reduce_sum</span><span class="p">(</span><span class="n">n_a</span> <span class="o">*</span> <span class="n">n_b</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">dist</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">math</span><span class="o">.</span><span class="n">pow</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_alpha</span><span class="p">,</span> <span class="n">dist</span><span class="p">)</span>
+
+        <span class="n">att_weights</span> <span class="o">=</span> <span class="n">att_weights</span> <span class="o">*</span> <span class="n">tf</span><span class="o">.</span><span class="n">expand_dims</span><span class="p">(</span><span class="n">dist</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
+        <span class="n">reset</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">sigmoid</span><span class="p">(</span>
+            <span class="n">tf</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">xw_plus_b</span><span class="p">(</span>
+                <span class="n">tf</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">inputs</span><span class="p">,</span> <span class="n">h_hat</span><span class="p">],</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_reset_W</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_reset_b</span>
+            <span class="p">)</span>
+        <span class="p">)</span>
+        <span class="n">erase</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">sigmoid</span><span class="p">(</span>
+            <span class="n">tf</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">xw_plus_b</span><span class="p">(</span>
+                <span class="n">tf</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">inputs</span><span class="p">,</span> <span class="n">h_hat</span><span class="p">],</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_erase_W</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_erase_b</span>
+            <span class="p">)</span>
+        <span class="p">)</span>
+        <span class="n">add</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">tanh</span><span class="p">(</span>
+            <span class="n">tf</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">xw_plus_b</span><span class="p">(</span>
+                <span class="n">tf</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">inputs</span><span class="p">,</span> <span class="n">reset</span> <span class="o">*</span> <span class="n">h_hat</span><span class="p">],</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_add_W</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_add_b</span>
+            <span class="p">)</span>
+        <span class="p">)</span>
+
+        <span class="n">start_part01</span> <span class="o">=</span> <span class="n">state</span><span class="p">[:,</span> <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_slots</span><span class="p">,</span> <span class="p">:]</span>
+        <span class="n">state01</span> <span class="o">=</span> <span class="n">start_part01</span> <span class="o">*</span> <span class="p">(</span>
+            <span class="n">tf</span><span class="o">.</span><span class="n">ones_like</span><span class="p">(</span><span class="n">start_part01</span><span class="p">)</span> <span class="o">-</span> <span class="n">att_weights</span> <span class="o">*</span> <span class="n">tf</span><span class="o">.</span><span class="n">expand_dims</span><span class="p">(</span><span class="n">erase</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="p">)</span>
+        <span class="n">state01</span> <span class="o">=</span> <span class="n">state01</span> <span class="o">+</span> <span class="n">att_weights</span> <span class="o">*</span> <span class="n">tf</span><span class="o">.</span><span class="n">expand_dims</span><span class="p">(</span><span class="n">erase</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">tf</span><span class="o">.</span><span class="n">expand_dims</span><span class="p">(</span>
+            <span class="n">add</span><span class="p">,</span> <span class="mi">1</span>
+        <span class="p">)</span>
+        <span class="n">state01</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">state01</span><span class="p">,</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_slots</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_real_units</span><span class="p">])</span>
+
+        <span class="n">start_part02</span> <span class="o">=</span> <span class="n">state</span><span class="p">[:,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_slots</span><span class="p">,</span> <span class="p">:]</span>
+        <span class="n">state02</span> <span class="o">=</span> <span class="n">start_part02</span> <span class="o">*</span> <span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">ones_like</span><span class="p">(</span><span class="n">start_part02</span><span class="p">)</span> <span class="o">-</span> <span class="n">dist</span> <span class="o">*</span> <span class="n">erase</span><span class="p">)</span>
+        <span class="n">state02</span> <span class="o">=</span> <span class="n">state02</span> <span class="o">+</span> <span class="n">dist</span> <span class="o">*</span> <span class="n">erase</span> <span class="o">*</span> <span class="n">add</span>
+        <span class="n">state</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">state01</span><span class="p">,</span> <span class="n">state02</span><span class="p">,</span> <span class="n">inputs</span><span class="p">],</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">state</span><span class="p">,</span> <span class="n">state</span></div></div>
+
+
+<span class="k">def</span> <span class="nf">_check_rnn_cell_input_dtypes</span><span class="p">(</span><span class="n">inputs</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">nest</span><span class="o">.</span><span class="n">flatten</span><span class="p">(</span><span class="n">inputs</span><span class="p">):</span>
+        <span class="n">_check_supported_dtypes</span><span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">_check_supported_dtypes</span><span class="p">(</span><span class="n">dtype</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">dtype</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span>
+    <span class="n">dtype</span> <span class="o">=</span> <span class="n">dtypes</span><span class="o">.</span><span class="n">as_dtype</span><span class="p">(</span><span class="n">dtype</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="n">dtype</span><span class="o">.</span><span class="n">is_floating</span> <span class="ow">or</span> <span class="n">dtype</span><span class="o">.</span><span class="n">is_complex</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="s2">&quot;RNN cell only supports floating point inputs, &quot;</span> <span class="s2">&quot;but saw dtype: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">dtype</span>
+        <span class="p">)</span>
+</pre></div>
+
+              </div>
+              
+        
+            
+
+
+
+<div class='prev-next-bottom'>
+    
+
+</div>
+        
+        </div>
+    </div>
+    <footer class="footer">
+    <div class="container">
+      <p>
+        
+          By The Jupyter Book community<br/>
+        
+            &copy; Copyright 2021.<br/>
+          <div class="extra_footer">
+            Don't forget to check out <a href= https://arxiv.org/abs/2108.02899>our paper from Document Intelligence Workshop at KDD 2021!</a>
+          </div>
+      </p>
+    </div>
+  </footer>
+</main>
+
+
+      </div>
+    </div>
+  
+  <script src="../../../../../../_static/js/index.1c5a1a01449ed65a7b51.js"></script>
+
+  
+  </body>
+</html>

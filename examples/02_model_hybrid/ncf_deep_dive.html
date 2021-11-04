@@ -1,0 +1,1061 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Neural Collaborative Filtering (NCF) &#8212; &lt;h1 style=&#34;font-size:2em;text-align:center;color:#FF5733&#34;&gt;Recommenders&lt;/h1&gt;</title>
+    
+  <link href="../../_static/css/theme.css" rel="stylesheet" />
+  <link href="../../_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
+
+    
+  <link rel="stylesheet"
+    href="../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+
+    
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-book-theme.css?digest=c3fdc42140077d1ad13ad2f1588a4309" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/tabs.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    
+  <link rel="preload" as="script" href="../../_static/js/index.1c5a1a01449ed65a7b51.js">
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/togglebutton.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <script src="../../_static/tabs.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../../_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script>
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="../../_static/sphinx-thebe.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en" />
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="../../index.html">
+      
+      
+      
+      <h1 class="site-logo" id="site-title"><h1 style="font-size:2em;text-align:center;color:#FF5733">Recommenders</h1></h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="../../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        <p class="caption" role="heading">
+ <span class="caption-text">
+  Getting Started Notebooks
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../00_quick_start/als_movielens.html">
+   Running ALS on MovieLens (PySpark)
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../00_quick_start/ncf_movielens.html">
+   Neural Collaborative Filtering on MovieLens dataset.
+  </a>
+ </li>
+</ul>
+
+    </div>
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="topbar container-xl fixed-top">
+    <div class="topbar-contents row">
+        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
+        <div class="col pl-md-4 topbar-main">
+            
+            <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+                data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+                aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
+                title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+                <i class="fas fa-bars"></i>
+                <i class="fas fa-arrow-left"></i>
+                <i class="fas fa-arrow-up"></i>
+            </button>
+            
+            
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
+            class="fas fa-download"></i></button>
+
+    <div class="dropdown-buttons">
+        <!-- ipynb file if we had a myst markdown file -->
+        
+        <!-- Download raw file -->
+        <a class="dropdown-buttons" href="../../_sources/examples/02_model_hybrid/ncf_deep_dive.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
+                data-placement="left">.ipynb</button></a>
+        <!-- Download PDF via print -->
+        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
+            onClick="window.print()" data-toggle="tooltip" data-placement="left">.pdf</button>
+    </div>
+</div>
+
+            <!-- Source interaction buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
+    <div class="dropdown-buttons sourcebuttons">
+        <a class="repository-button"
+            href="https://github.com/microsoft/genalog"><button type="button" class="btn btn-secondary topbarbtn"
+                data-toggle="tooltip" data-placement="left" title="Source repository"><i
+                    class="fab fa-github"></i>repository</button></a>
+        <a class="issues-button"
+            href="https://github.com/microsoft/genalog/issues/new?title=Issue%20on%20page%20%2Fexamples/02_model_hybrid/ncf_deep_dive.html&body=Your%20issue%20content%20here."><button
+                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
+                title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
+        
+    </div>
+</div>
+
+            <!-- Full screen (wrap in <a> to have style consistency -->
+
+<a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+        data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+        title="Fullscreen mode"><i
+            class="fas fa-expand"></i></button></a>
+
+            <!-- Launch buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Launch interactive content"><i class="fas fa-rocket"></i></button>
+    <div class="dropdown-buttons">
+        
+        <a class="binder-button" href="https://mybinder.org/v2/gh/microsoft/genalog/main?urlpath=tree/docs/genalog_docs/examples/02_model_hybrid/ncf_deep_dive.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Launch Binder" data-toggle="tooltip"
+                data-placement="left"><img class="binder-button-logo"
+                    src="../../_static/images/logo_binder.svg"
+                    alt="Interact on binder">Binder</button></a>
+        
+        
+        
+        
+    </div>
+</div>
+
+        </div>
+
+        <!-- Table of contents -->
+        <div class="d-none d-md-block col-md-2 bd-toc show">
+            
+            <div class="tocsection onthispage pt-5 pb-3">
+                <i class="fas fa-list"></i> Contents
+            </div>
+            <nav id="bd-toc-nav" aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#global-settings-and-imports">
+   0 Global Settings and Imports
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#matrix-factorization-algorithm">
+   1 Matrix factorization algorithm
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#the-gmf-model">
+     1.1 The GMF model
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#the-mlp-model">
+     1.2 The MLP model
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#fusion-of-gmf-and-mlp">
+     1.3 Fusion of GMF and MLP
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#objective-function">
+     1.4 Objective Function
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#tensorflow-implementation-of-ncf">
+   2 TensorFlow implementation of NCF
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#tensorflow-ncf-movie-recommender">
+   3 TensorFlow NCF movie recommender
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#load-and-split-data">
+     3.1 Load and split data
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#functions-of-ncf-dataset">
+     3.2 Functions of NCF Dataset
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#train-ncf-based-on-tensorflow">
+     3.3 Train NCF based on TensorFlow
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#prediction-and-evaluation">
+   3.4 Prediction and Evaluation
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#prediction">
+     3.4.1 Prediction
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#generic-evaluation">
+     3.4.2 Generic Evaluation
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#leave-one-out-evaluation">
+     3.4.3 “Leave-one-out” Evaluation
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#pre-training">
+   3.5 Pre-training
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#training-gmf-and-mlp-model">
+     3.5.1 Training GMF and MLP model
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#load-pre-trained-gmf-and-mlp-model-for-neumf">
+     3.5.2 Load pre-trained GMF and MLP model for NeuMF
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#compare-with-not-pre-trained-neumf">
+     3.5.3 Compare with not pre-trained NeuMF
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#delete-pre-trained-directory">
+     3.5.4 Delete pre-trained directory
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#reference">
+     Reference:
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+        
+              <div>
+                
+  <p><i>Copyright (c) Microsoft Corporation. All rights reserved.</i></p>
+<p><i>Licensed under the MIT License.</i></p>
+<div class="tex2jax_ignore mathjax_ignore section" id="neural-collaborative-filtering-ncf">
+<h1>Neural Collaborative Filtering (NCF)<a class="headerlink" href="#neural-collaborative-filtering-ncf" title="Permalink to this headline">¶</a></h1>
+<p>This notebook serves as an introduction to Neural Collaborative Filtering (NCF), which is an innovative algorithm based on deep neural networks to tackle the key problem in recommendation — collaborative filtering — on the basis of implicit feedback.</p>
+<div class="section" id="global-settings-and-imports">
+<h2>0 Global Settings and Imports<a class="headerlink" href="#global-settings-and-imports" title="Permalink to this headline">¶</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">shutil</span>
+<span class="kn">import</span> <span class="nn">papermill</span> <span class="k">as</span> <span class="nn">pm</span>
+<span class="kn">import</span> <span class="nn">scrapbook</span> <span class="k">as</span> <span class="nn">sb</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">tensorflow</span> <span class="k">as</span> <span class="nn">tf</span>
+<span class="n">tf</span><span class="o">.</span><span class="n">get_logger</span><span class="p">()</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="s1">&#39;ERROR&#39;</span><span class="p">)</span> <span class="c1"># only show error messages</span>
+
+<span class="kn">from</span> <span class="nn">recommenders.utils.timer</span> <span class="kn">import</span> <span class="n">Timer</span>
+<span class="kn">from</span> <span class="nn">recommenders.models.ncf.ncf_singlenode</span> <span class="kn">import</span> <span class="n">NCF</span>
+<span class="kn">from</span> <span class="nn">recommenders.models.ncf.dataset</span> <span class="kn">import</span> <span class="n">Dataset</span> <span class="k">as</span> <span class="n">NCFDataset</span>
+<span class="kn">from</span> <span class="nn">recommenders.datasets</span> <span class="kn">import</span> <span class="n">movielens</span>
+<span class="kn">from</span> <span class="nn">recommenders.datasets.python_splitters</span> <span class="kn">import</span> <span class="n">python_chrono_split</span>
+<span class="kn">from</span> <span class="nn">recommenders.evaluation.python_evaluation</span> <span class="kn">import</span> <span class="p">(</span><span class="n">rmse</span><span class="p">,</span> <span class="n">mae</span><span class="p">,</span> <span class="n">rsquared</span><span class="p">,</span> <span class="n">exp_var</span><span class="p">,</span> <span class="n">map_at_k</span><span class="p">,</span> <span class="n">ndcg_at_k</span><span class="p">,</span> <span class="n">precision_at_k</span><span class="p">,</span> 
+                                                     <span class="n">recall_at_k</span><span class="p">,</span> <span class="n">get_top_k_items</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">recommenders.utils.constants</span> <span class="kn">import</span> <span class="n">SEED</span> <span class="k">as</span> <span class="n">DEFAULT_SEED</span>
+
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;System version: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">version</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Pandas version: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">__version__</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Tensorflow version: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">__version__</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>System version: 3.6.10 |Anaconda, Inc.| (default, Mar 25 2020, 23:51:54) 
+[GCC 7.3.0]
+Pandas version: 0.25.3
+Tensorflow version: 1.15.2
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell tag_parameters docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># top k items to recommend</span>
+<span class="n">TOP_K</span> <span class="o">=</span> <span class="mi">10</span>
+
+<span class="c1"># Select MovieLens data size: 100k, 1m, 10m, or 20m</span>
+<span class="n">MOVIELENS_DATA_SIZE</span> <span class="o">=</span> <span class="s1">&#39;100k&#39;</span>
+
+<span class="c1"># Model parameters</span>
+<span class="n">EPOCHS</span> <span class="o">=</span> <span class="mi">100</span>
+<span class="n">BATCH_SIZE</span> <span class="o">=</span> <span class="mi">256</span>
+
+<span class="n">SEED</span> <span class="o">=</span> <span class="n">DEFAULT_SEED</span>  <span class="c1"># Set None for non-deterministic results</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="matrix-factorization-algorithm">
+<h2>1 Matrix factorization algorithm<a class="headerlink" href="#matrix-factorization-algorithm" title="Permalink to this headline">¶</a></h2>
+<p>NCF is new neural matrix factorization model, which ensembles Generalized Matrix Factorization (GMF) and Multi-Layer Perceptron (MLP) to unify the strengths of linearity of MF and non-linearity of MLP for modelling the user–item latent structures. NCF can be demonstrated as a framework for GMF and MLP, which is illustrated as below:</p>
+<img src="https://recodatasets.z20.web.core.windows.net/images/NCF.svg?sanitize=true">
+<p>This figure shows how to utilize latent vectors of items and users, and then how to fuse outputs from GMF Layer (left) and MLP Layer (right). We will introduce this framework and show how to learn the model parameters in following sections.</p>
+<div class="section" id="the-gmf-model">
+<h3>1.1 The GMF model<a class="headerlink" href="#the-gmf-model" title="Permalink to this headline">¶</a></h3>
+<p>In ALS, the ratings are modeled as follows:</p>
+<div class="math notranslate nohighlight">
+\[\hat { r } _ { u , i } = q _ { i } ^ { T } p _ { u }\]</div>
+<p>GMF introduces neural CF layer as the output layer of standard MF. In this way, MF can be easily generalized
+and extended. For example, if we allow the edge weights of this output layer to be learnt from data without the uniform constraint, it will result in a variant of MF that allows varying importance of latent dimensions. And if we use a non-linear function for activation, it will generalize MF to a non-linear setting which might be more expressive than the linear MF model. GMF can be shown as follows:</p>
+<div class="math notranslate nohighlight">
+\[\hat { r } _ { u , i } = a _ { o u t } \left( h ^ { T } \left( q _ { i } \odot p _ { u } \right) \right)\]</div>
+<p>where <span class="math notranslate nohighlight">\(\odot\)</span> is element-wise product of vectors. Additionally, <span class="math notranslate nohighlight">\({a}_{out}\)</span> and <span class="math notranslate nohighlight">\({h}\)</span> denote the activation function and edge weights of the output layer respectively. MF can be interpreted as a special case of GMF. Intuitively, if we use an identity function for aout and enforce h to be a uniform vector of 1, we can exactly recover the MF model.</p>
+</div>
+<div class="section" id="the-mlp-model">
+<h3>1.2 The MLP model<a class="headerlink" href="#the-mlp-model" title="Permalink to this headline">¶</a></h3>
+<p>NCF adopts two pathways to model users and items: 1) element-wise product of vectors, 2) concatenation of vectors. To learn interactions after concatenating of users and items latent features, the standard MLP model is applied. In this sense, we can endow the model a large level of flexibility and non-linearity to learn the interactions between <span class="math notranslate nohighlight">\(p_{u}\)</span> and <span class="math notranslate nohighlight">\(q_{i}\)</span>. The details of MLP model are:</p>
+<p>For the input layer, there is concatention of user and item vectors:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}z _ { 1 } = \phi _ { 1 } \left( p _ { u } , q _ { i } \right) = \left[ \begin{array} { c } { p _ { u } } \\ { q _ { i } } \end{array} \right]\end{split}\]</div>
+<p>So for the hidden layers and output layer of MLP, the details are:</p>
+<div class="math notranslate nohighlight">
+\[
+\phi _ { l } \left( z _ { l } \right) = a _ { o u t } \left( W _ { l } ^ { T } z _ { l } + b _ { l } \right) , ( l = 2,3 , \ldots , L - 1 )
+\]</div>
+<p>and:</p>
+<div class="math notranslate nohighlight">
+\[
+\hat { r } _ { u , i } = \sigma \left( h ^ { T } \phi \left( z _ { L - 1 } \right) \right)
+\]</div>
+<p>where <span class="math notranslate nohighlight">\({ W }_{ l }\)</span>, <span class="math notranslate nohighlight">\({ b }_{ l }\)</span>, and <span class="math notranslate nohighlight">\({ a }_{ out }\)</span> denote the weight matrix, bias vector, and activation function for the <span class="math notranslate nohighlight">\(l\)</span>-th layer’s perceptron, respectively. For activation functions of MLP layers, one can freely choose sigmoid, hyperbolic tangent (tanh), and Rectifier (ReLU), among others. Because of binary data task, the activation function of the output layer is defined as sigmoid <span class="math notranslate nohighlight">\(\sigma(x)=\frac{1}{1+e^{-x}}\)</span> to restrict the predicted score to be in (0,1).</p>
+</div>
+<div class="section" id="fusion-of-gmf-and-mlp">
+<h3>1.3 Fusion of GMF and MLP<a class="headerlink" href="#fusion-of-gmf-and-mlp" title="Permalink to this headline">¶</a></h3>
+<p>To provide more flexibility to the fused model, we allow GMF and MLP to learn separate embeddings, and combine the two models by concatenating their last hidden layer. We get <span class="math notranslate nohighlight">\(\phi^{GMF}\)</span> from GMF:</p>
+<div class="math notranslate nohighlight">
+\[\phi _ { u , i } ^ { G M F } = p _ { u } ^ { G M F } \odot q _ { i } ^ { G M F }\]</div>
+<p>and obtain <span class="math notranslate nohighlight">\(\phi^{MLP}\)</span> from MLP:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\phi _ { u , i } ^ { M L P } = a _ { o u t } \left( W _ { L } ^ { T } \left( a _ { o u t } \left( \ldots a _ { o u t } \left( W _ { 2 } ^ { T } \left[ \begin{array} { c } { p _ { u } ^ { M L P } } \\ { q _ { i } ^ { M L P } } \end{array} \right] + b _ { 2 } \right) \ldots \right) \right) + b _ { L }\right.\end{split}\]</div>
+<p>Lastly, we fuse output from GMF and MLP:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\hat { r } _ { u , i } = \sigma \left( h ^ { T } \left[ \begin{array} { l } { \phi ^ { G M F } } \\ { \phi ^ { M L P } } \end{array} \right] \right)\end{split}\]</div>
+<p>This model combines the linearity of MF and non-linearity of DNNs for modelling user–item latent structures.</p>
+</div>
+<div class="section" id="objective-function">
+<h3>1.4 Objective Function<a class="headerlink" href="#objective-function" title="Permalink to this headline">¶</a></h3>
+<p>We define the likelihood function as:</p>
+<div class="math notranslate nohighlight">
+\[P \left( \mathcal { R } , \mathcal { R } ^ { - } | \mathbf { P } , \mathbf { Q } , \Theta \right) = \prod _ { ( u , i ) \in \mathcal { R } } \hat { r } _ { u , i } \prod _ { ( u , j ) \in \mathcal { R } ^{ - } } \left( 1 - \hat { r } _ { u , j } \right)\]</div>
+<p>Where <span class="math notranslate nohighlight">\(\mathcal{R}\)</span> denotes the set of observed interactions, and <span class="math notranslate nohighlight">\(\mathcal{ R } ^ { - }\)</span> denotes the set of negative instances. <span class="math notranslate nohighlight">\(\mathbf{P}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{Q}\)</span> denotes the latent factor matrix for users and items, respectively; and <span class="math notranslate nohighlight">\(\Theta\)</span> denotes the model parameters. Taking the negative logarithm of the likelihood, we obatain the objective function to minimize for NCF method, which is known as <a class="reference external" href="https://en.wikipedia.org/wiki/Cross_entropy">binary cross-entropy loss</a>:</p>
+<div class="math notranslate nohighlight">
+\[L = - \sum _ { ( u , i ) \in \mathcal { R } \cup { \mathcal { R } } ^ { - } } r _ { u , i } \log \hat { r } _ { u , i } + \left( 1 - r _ { u , i } \right) \log \left( 1 - \hat { r } _ { u , i } \right)\]</div>
+<p>The optimization can be done by performing Stochastic Gradient Descent (SGD), which is described in the <span class="xref myst">Surprise SVD deep dive notebook</span>. Our SGD method is very similar to the SVD algorithm’s.</p>
+</div>
+</div>
+<div class="section" id="tensorflow-implementation-of-ncf">
+<h2>2 TensorFlow implementation of NCF<a class="headerlink" href="#tensorflow-implementation-of-ncf" title="Permalink to this headline">¶</a></h2>
+<p>We will use the MovieLens dataset, which is composed of integer ratings from 1 to 5.</p>
+<p>We convert MovieLens into implicit feedback, and evaluate under our <em>leave-one-out</em> evaluation protocol.</p>
+<p>You can check the details of implementation in <code class="docutils literal notranslate"><span class="pre">recommenders/models/ncf</span></code></p>
+</div>
+<div class="section" id="tensorflow-ncf-movie-recommender">
+<h2>3 TensorFlow NCF movie recommender<a class="headerlink" href="#tensorflow-ncf-movie-recommender" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="load-and-split-data">
+<h3>3.1 Load and split data<a class="headerlink" href="#load-and-split-data" title="Permalink to this headline">¶</a></h3>
+<p>To evaluate the performance of item recommendation, we adopted the leave-one-out evaluation.</p>
+<p>For each user, we held out his/her latest interaction as the test set and utilized the remaining data for training. We use <code class="docutils literal notranslate"><span class="pre">python_chrono_split</span></code> to achieve this. And since it is too time-consuming to rank all items for every user during evaluation, we followed the common strategy that randomly samples 100 items that are not interacted by the user, ranking the test item among the 100 items. Our test samples will be constructed by <code class="docutils literal notranslate"><span class="pre">NCFDataset</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">movielens</span><span class="o">.</span><span class="n">load_pandas_df</span><span class="p">(</span>
+    <span class="n">size</span><span class="o">=</span><span class="n">MOVIELENS_DATA_SIZE</span><span class="p">,</span>
+    <span class="n">header</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;userID&quot;</span><span class="p">,</span> <span class="s2">&quot;itemID&quot;</span><span class="p">,</span> <span class="s2">&quot;rating&quot;</span><span class="p">,</span> <span class="s2">&quot;timestamp&quot;</span><span class="p">]</span>
+<span class="p">)</span>
+
+<span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>100%|██████████| 4.81k/4.81k [00:00&lt;00:00, 10.6kKB/s]
+</pre></div>
+</div>
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>userID</th>
+      <th>itemID</th>
+      <th>rating</th>
+      <th>timestamp</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>196</td>
+      <td>242</td>
+      <td>3.0</td>
+      <td>881250949</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>186</td>
+      <td>302</td>
+      <td>3.0</td>
+      <td>891717742</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>22</td>
+      <td>377</td>
+      <td>1.0</td>
+      <td>878887116</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>244</td>
+      <td>51</td>
+      <td>2.0</td>
+      <td>880606923</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>166</td>
+      <td>346</td>
+      <td>1.0</td>
+      <td>886397596</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">train</span><span class="p">,</span> <span class="n">test</span> <span class="o">=</span> <span class="n">python_chrono_split</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="mf">0.75</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="functions-of-ncf-dataset">
+<h3>3.2 Functions of NCF Dataset<a class="headerlink" href="#functions-of-ncf-dataset" title="Permalink to this headline">¶</a></h3>
+<p>Dataset Class for NCF, where important functions are:</p>
+<p><code class="docutils literal notranslate"><span class="pre">negative_sampling()</span></code>, sample negative user &amp; item pair for every positive instances, with parameter <code class="docutils literal notranslate"><span class="pre">n_neg</span></code>.</p>
+<p><code class="docutils literal notranslate"><span class="pre">train_loader(batch_size,</span> <span class="pre">shuffle=True)</span></code>, generate training batch with <code class="docutils literal notranslate"><span class="pre">batch_size</span></code>, also we can set whether <code class="docutils literal notranslate"><span class="pre">shuffle</span></code> this training set.</p>
+<p><code class="docutils literal notranslate"><span class="pre">test_loader()</span></code>, generate test batch by every positive test instance, (eg. [1, 2, 1] is a positive user &amp; item pair in test set ([userID, itemID, rating] for this tuple). This function returns like [[1, 2, 1], [1, 3, 0], [1,6, 0], …], ie. following our <em>leave-one-out</em> evaluation protocol.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data</span> <span class="o">=</span> <span class="n">NCFDataset</span><span class="p">(</span><span class="n">train</span><span class="o">=</span><span class="n">train</span><span class="p">,</span> <span class="n">test</span><span class="o">=</span><span class="n">test</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="n">SEED</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="train-ncf-based-on-tensorflow">
+<h3>3.3 Train NCF based on TensorFlow<a class="headerlink" href="#train-ncf-based-on-tensorflow" title="Permalink to this headline">¶</a></h3>
+<p>The NCF has a lot of parameters. The most important ones are:</p>
+<p><code class="docutils literal notranslate"><span class="pre">n_factors</span></code>, which controls the dimension of the latent space. Usually, the quality of the training set predictions grows with as n_factors gets higher.</p>
+<p><code class="docutils literal notranslate"><span class="pre">layer_sizes</span></code>, sizes of input layer (and hidden layers) of MLP, input type is list.</p>
+<p><code class="docutils literal notranslate"><span class="pre">n_epochs</span></code>, which defines the number of iteration of the SGD procedure.
+Note that both parameter also affect the training time.</p>
+<p><code class="docutils literal notranslate"><span class="pre">model_type</span></code>, we can train single <code class="docutils literal notranslate"><span class="pre">&quot;MLP&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;GMF&quot;</span></code> or combined model <code class="docutils literal notranslate"><span class="pre">&quot;NCF&quot;</span></code> by changing the type of model.</p>
+<p>We will here set <code class="docutils literal notranslate"><span class="pre">n_factors</span></code> to <code class="docutils literal notranslate"><span class="pre">4</span></code>, <code class="docutils literal notranslate"><span class="pre">layer_sizes</span></code> to <code class="docutils literal notranslate"><span class="pre">[16,8,4]</span></code>,  <code class="docutils literal notranslate"><span class="pre">n_epochs</span></code> to <code class="docutils literal notranslate"><span class="pre">100</span></code>, <code class="docutils literal notranslate"><span class="pre">batch_size</span></code> to 256. To train the model, we simply need to call the <code class="docutils literal notranslate"><span class="pre">fit()</span></code> method.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model</span> <span class="o">=</span> <span class="n">NCF</span> <span class="p">(</span>
+    <span class="n">n_users</span><span class="o">=</span><span class="n">data</span><span class="o">.</span><span class="n">n_users</span><span class="p">,</span> 
+    <span class="n">n_items</span><span class="o">=</span><span class="n">data</span><span class="o">.</span><span class="n">n_items</span><span class="p">,</span>
+    <span class="n">model_type</span><span class="o">=</span><span class="s2">&quot;NeuMF&quot;</span><span class="p">,</span>
+    <span class="n">n_factors</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
+    <span class="n">layer_sizes</span><span class="o">=</span><span class="p">[</span><span class="mi">16</span><span class="p">,</span><span class="mi">8</span><span class="p">,</span><span class="mi">4</span><span class="p">],</span>
+    <span class="n">n_epochs</span><span class="o">=</span><span class="n">EPOCHS</span><span class="p">,</span>
+    <span class="n">batch_size</span><span class="o">=</span><span class="n">BATCH_SIZE</span><span class="p">,</span>
+    <span class="n">learning_rate</span><span class="o">=</span><span class="mf">1e-3</span><span class="p">,</span>
+    <span class="n">verbose</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+    <span class="n">seed</span><span class="o">=</span><span class="n">SEED</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">Timer</span><span class="p">()</span> <span class="k">as</span> <span class="n">train_time</span><span class="p">:</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Took </span><span class="si">{}</span><span class="s2"> seconds for training.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">train_time</span><span class="o">.</span><span class="n">interval</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Took 663.2377220259996 seconds for training.
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="prediction-and-evaluation">
+<h2>3.4 Prediction and Evaluation<a class="headerlink" href="#prediction-and-evaluation" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="prediction">
+<h3>3.4.1 Prediction<a class="headerlink" href="#prediction" title="Permalink to this headline">¶</a></h3>
+<p>Now that our model is fitted, we can call <code class="docutils literal notranslate"><span class="pre">predict</span></code> to get some <code class="docutils literal notranslate"><span class="pre">predictions</span></code>. <code class="docutils literal notranslate"><span class="pre">predict</span></code> returns an internal object Prediction which can be easily converted back to a dataframe:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">predictions</span> <span class="o">=</span> <span class="p">[[</span><span class="n">row</span><span class="o">.</span><span class="n">userID</span><span class="p">,</span> <span class="n">row</span><span class="o">.</span><span class="n">itemID</span><span class="p">,</span> <span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">row</span><span class="o">.</span><span class="n">userID</span><span class="p">,</span> <span class="n">row</span><span class="o">.</span><span class="n">itemID</span><span class="p">)]</span>
+               <span class="k">for</span> <span class="p">(</span><span class="n">_</span><span class="p">,</span> <span class="n">row</span><span class="p">)</span> <span class="ow">in</span> <span class="n">test</span><span class="o">.</span><span class="n">iterrows</span><span class="p">()]</span>
+
+
+<span class="n">predictions</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">predictions</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;userID&#39;</span><span class="p">,</span> <span class="s1">&#39;itemID&#39;</span><span class="p">,</span> <span class="s1">&#39;prediction&#39;</span><span class="p">])</span>
+<span class="n">predictions</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>userID</th>
+      <th>itemID</th>
+      <th>prediction</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1.0</td>
+      <td>149.0</td>
+      <td>0.029076</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>1.0</td>
+      <td>88.0</td>
+      <td>0.632505</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>1.0</td>
+      <td>101.0</td>
+      <td>0.492521</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>1.0</td>
+      <td>110.0</td>
+      <td>0.081617</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>1.0</td>
+      <td>103.0</td>
+      <td>0.004513</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+</div>
+<div class="section" id="generic-evaluation">
+<h3>3.4.2 Generic Evaluation<a class="headerlink" href="#generic-evaluation" title="Permalink to this headline">¶</a></h3>
+<p>We remove rated movies in the top k recommendations
+To compute ranking metrics, we need predictions on all user, item pairs. We remove though the items already watched by the user, since we choose not to recommend them again.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">Timer</span><span class="p">()</span> <span class="k">as</span> <span class="n">test_time</span><span class="p">:</span>
+
+    <span class="n">users</span><span class="p">,</span> <span class="n">items</span><span class="p">,</span> <span class="n">preds</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[],</span> <span class="p">[]</span>
+    <span class="n">item</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">train</span><span class="o">.</span><span class="n">itemID</span><span class="o">.</span><span class="n">unique</span><span class="p">())</span>
+    <span class="k">for</span> <span class="n">user</span> <span class="ow">in</span> <span class="n">train</span><span class="o">.</span><span class="n">userID</span><span class="o">.</span><span class="n">unique</span><span class="p">():</span>
+        <span class="n">user</span> <span class="o">=</span> <span class="p">[</span><span class="n">user</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">item</span><span class="p">)</span> 
+        <span class="n">users</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">user</span><span class="p">)</span>
+        <span class="n">items</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+        <span class="n">preds</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">user</span><span class="p">,</span> <span class="n">item</span><span class="p">,</span> <span class="n">is_list</span><span class="o">=</span><span class="kc">True</span><span class="p">)))</span>
+
+    <span class="n">all_predictions</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;userID&quot;</span><span class="p">:</span> <span class="n">users</span><span class="p">,</span> <span class="s2">&quot;itemID&quot;</span><span class="p">:</span><span class="n">items</span><span class="p">,</span> <span class="s2">&quot;prediction&quot;</span><span class="p">:</span><span class="n">preds</span><span class="p">})</span>
+
+    <span class="n">merged</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">train</span><span class="p">,</span> <span class="n">all_predictions</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;userID&quot;</span><span class="p">,</span> <span class="s2">&quot;itemID&quot;</span><span class="p">],</span> <span class="n">how</span><span class="o">=</span><span class="s2">&quot;outer&quot;</span><span class="p">)</span>
+    <span class="n">all_predictions</span> <span class="o">=</span> <span class="n">merged</span><span class="p">[</span><span class="n">merged</span><span class="o">.</span><span class="n">rating</span><span class="o">.</span><span class="n">isnull</span><span class="p">()]</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="s1">&#39;rating&#39;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Took </span><span class="si">{}</span><span class="s2"> seconds for prediction.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">test_time</span><span class="o">.</span><span class="n">interval</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Took 3.0358772649997263 seconds for prediction.
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">eval_map</span> <span class="o">=</span> <span class="n">map_at_k</span><span class="p">(</span><span class="n">test</span><span class="p">,</span> <span class="n">all_predictions</span><span class="p">,</span> <span class="n">col_prediction</span><span class="o">=</span><span class="s1">&#39;prediction&#39;</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="n">TOP_K</span><span class="p">)</span>
+<span class="n">eval_ndcg</span> <span class="o">=</span> <span class="n">ndcg_at_k</span><span class="p">(</span><span class="n">test</span><span class="p">,</span> <span class="n">all_predictions</span><span class="p">,</span> <span class="n">col_prediction</span><span class="o">=</span><span class="s1">&#39;prediction&#39;</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="n">TOP_K</span><span class="p">)</span>
+<span class="n">eval_precision</span> <span class="o">=</span> <span class="n">precision_at_k</span><span class="p">(</span><span class="n">test</span><span class="p">,</span> <span class="n">all_predictions</span><span class="p">,</span> <span class="n">col_prediction</span><span class="o">=</span><span class="s1">&#39;prediction&#39;</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="n">TOP_K</span><span class="p">)</span>
+<span class="n">eval_recall</span> <span class="o">=</span> <span class="n">recall_at_k</span><span class="p">(</span><span class="n">test</span><span class="p">,</span> <span class="n">all_predictions</span><span class="p">,</span> <span class="n">col_prediction</span><span class="o">=</span><span class="s1">&#39;prediction&#39;</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="n">TOP_K</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;MAP:</span><span class="se">\t</span><span class="si">%f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">eval_map</span><span class="p">,</span>
+      <span class="s2">&quot;NDCG:</span><span class="se">\t</span><span class="si">%f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">eval_ndcg</span><span class="p">,</span>
+      <span class="s2">&quot;Precision@K:</span><span class="se">\t</span><span class="si">%f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">eval_precision</span><span class="p">,</span>
+      <span class="s2">&quot;Recall@K:</span><span class="se">\t</span><span class="si">%f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">eval_recall</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>MAP:	0.046273
+NDCG:	0.190750
+Precision@K:	0.173277
+Recall@K:	0.096688
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="leave-one-out-evaluation">
+<h3>3.4.3 “Leave-one-out” Evaluation<a class="headerlink" href="#leave-one-out-evaluation" title="Permalink to this headline">¶</a></h3>
+<p>We implement the functions to repoduce the leave-one-out evaluation protocol mentioned in original NCF paper.</p>
+<p>For each item in test data, we randomly samples 100 items that are not interacted by the user, ranking the test item among the 101 items (1 positive item and 100 negative items). The performance of a ranked list is judged by <strong>Hit Ratio (HR)</strong> and <strong>Normalized Discounted Cumulative Gain (NDCG)</strong>. Finally, we average the values of those ranked lists to obtain the overall HR and NDCG on test data.</p>
+<p>We truncated the ranked list at 10 for both metrics. As such, the HR intuitively measures whether the test item is present on the top-10 list, and the NDCG accounts for the position of the hit by assigning higher scores to hits at top ranks.</p>
+<p><strong>Note 1:</strong> In exact leave-one-out evaluation protocol, we select only one of the latest items interacted with a user as test data for each user. But in this notebook, to compare with other algorithms, we select latest 25% dataset as test data. So this is an artificial “leave-one-out” evaluation only showing how to use <code class="docutils literal notranslate"><span class="pre">test_loader</span></code> and how to calculate metrics like the original paper. You can reproduce the real leave-one-out evaluation by changing the way of splitting data.</p>
+<p><strong>Note 2:</strong> Because of sampling 100 negative items for each positive test item,</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">k</span> <span class="o">=</span> <span class="n">TOP_K</span>
+
+<span class="n">ndcgs</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">hit_ratio</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">test_loader</span><span class="p">():</span>
+    <span class="n">user_input</span><span class="p">,</span> <span class="n">item_input</span><span class="p">,</span> <span class="n">labels</span> <span class="o">=</span> <span class="n">b</span>
+    <span class="n">output</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">user_input</span><span class="p">,</span> <span class="n">item_input</span><span class="p">,</span> <span class="n">is_list</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="n">output</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(</span><span class="n">output</span><span class="p">)</span>
+    <span class="n">rank</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">output</span> <span class="o">&gt;=</span> <span class="n">output</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="k">if</span> <span class="n">rank</span> <span class="o">&lt;=</span> <span class="n">k</span><span class="p">:</span>
+        <span class="n">ndcgs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">rank</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span>
+        <span class="n">hit_ratio</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">ndcgs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">hit_ratio</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="n">eval_ndcg</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">ndcgs</span><span class="p">)</span>
+<span class="n">eval_hr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">hit_ratio</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;HR:</span><span class="se">\t</span><span class="si">%f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">eval_hr</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;NDCG:</span><span class="se">\t</span><span class="si">%f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">eval_ndcg</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>HR:	0.488564
+NDCG:	0.383339
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="pre-training">
+<h2>3.5 Pre-training<a class="headerlink" href="#pre-training" title="Permalink to this headline">¶</a></h2>
+<p>To get better performance of NeuMF, we can adopt pre-training strategy. We first train GMF and MLP with random initializations until convergence. Then use their model parameters as the initialization for the corresponding parts of NeuMF’s parameters.  Please pay attention to the output layer, where we concatenate weights of the two models with</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}h ^ { N C F } \leftarrow \left[ \begin{array} { c } { \alpha h ^ { G M F } } \\ { ( 1 - \alpha ) h ^ { M L P } } \end{array} \right]\end{split}\]</div>
+<p>where <span class="math notranslate nohighlight">\(h^{GMF}\)</span> and <span class="math notranslate nohighlight">\(h^{MLP}\)</span> denote the <span class="math notranslate nohighlight">\(h\)</span> vector of the pretrained GMF and MLP model, respectively; and <span class="math notranslate nohighlight">\(\alpha\)</span> is a
+hyper-parameter determining the trade-off between the two pre-trained models. We set <span class="math notranslate nohighlight">\(\alpha\)</span> = 0.5.</p>
+<div class="section" id="training-gmf-and-mlp-model">
+<h3>3.5.1 Training GMF and MLP model<a class="headerlink" href="#training-gmf-and-mlp-model" title="Permalink to this headline">¶</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">model.save</span></code>, we can set the <code class="docutils literal notranslate"><span class="pre">dir_name</span></code> to store the parameters of GMF and MLP</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model</span> <span class="o">=</span> <span class="n">NCF</span> <span class="p">(</span>
+    <span class="n">n_users</span><span class="o">=</span><span class="n">data</span><span class="o">.</span><span class="n">n_users</span><span class="p">,</span> 
+    <span class="n">n_items</span><span class="o">=</span><span class="n">data</span><span class="o">.</span><span class="n">n_items</span><span class="p">,</span>
+    <span class="n">model_type</span><span class="o">=</span><span class="s2">&quot;GMF&quot;</span><span class="p">,</span>
+    <span class="n">n_factors</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
+    <span class="n">layer_sizes</span><span class="o">=</span><span class="p">[</span><span class="mi">16</span><span class="p">,</span><span class="mi">8</span><span class="p">,</span><span class="mi">4</span><span class="p">],</span>
+    <span class="n">n_epochs</span><span class="o">=</span><span class="n">EPOCHS</span><span class="p">,</span>
+    <span class="n">batch_size</span><span class="o">=</span><span class="n">BATCH_SIZE</span><span class="p">,</span>
+    <span class="n">learning_rate</span><span class="o">=</span><span class="mf">1e-3</span><span class="p">,</span>
+    <span class="n">verbose</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+    <span class="n">seed</span><span class="o">=</span><span class="n">SEED</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">Timer</span><span class="p">()</span> <span class="k">as</span> <span class="n">train_time</span><span class="p">:</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Took </span><span class="si">{}</span><span class="s2"> seconds for training.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">train_time</span><span class="o">.</span><span class="n">interval</span><span class="p">))</span>
+
+<span class="n">model</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">dir_name</span><span class="o">=</span><span class="s2">&quot;.pretrain/GMF&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Took 513.9623115730001 seconds for training.
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model</span> <span class="o">=</span> <span class="n">NCF</span> <span class="p">(</span>
+    <span class="n">n_users</span><span class="o">=</span><span class="n">data</span><span class="o">.</span><span class="n">n_users</span><span class="p">,</span> 
+    <span class="n">n_items</span><span class="o">=</span><span class="n">data</span><span class="o">.</span><span class="n">n_items</span><span class="p">,</span>
+    <span class="n">model_type</span><span class="o">=</span><span class="s2">&quot;MLP&quot;</span><span class="p">,</span>
+    <span class="n">n_factors</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
+    <span class="n">layer_sizes</span><span class="o">=</span><span class="p">[</span><span class="mi">16</span><span class="p">,</span><span class="mi">8</span><span class="p">,</span><span class="mi">4</span><span class="p">],</span>
+    <span class="n">n_epochs</span><span class="o">=</span><span class="n">EPOCHS</span><span class="p">,</span>
+    <span class="n">batch_size</span><span class="o">=</span><span class="n">BATCH_SIZE</span><span class="p">,</span>
+    <span class="n">learning_rate</span><span class="o">=</span><span class="mf">1e-3</span><span class="p">,</span>
+    <span class="n">verbose</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+    <span class="n">seed</span><span class="o">=</span><span class="n">SEED</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">Timer</span><span class="p">()</span> <span class="k">as</span> <span class="n">train_time</span><span class="p">:</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Took </span><span class="si">{}</span><span class="s2"> seconds for training.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">train_time</span><span class="o">.</span><span class="n">interval</span><span class="p">))</span>
+
+<span class="n">model</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">dir_name</span><span class="o">=</span><span class="s2">&quot;.pretrain/MLP&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Took 566.8783325639997 seconds for training.
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="load-pre-trained-gmf-and-mlp-model-for-neumf">
+<h3>3.5.2 Load pre-trained GMF and MLP model for NeuMF<a class="headerlink" href="#load-pre-trained-gmf-and-mlp-model-for-neumf" title="Permalink to this headline">¶</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">model.load</span></code>, we can set the <code class="docutils literal notranslate"><span class="pre">gmf_dir</span></code> and <code class="docutils literal notranslate"><span class="pre">mlp_dir</span></code> to store the parameters for NeuMF.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model</span> <span class="o">=</span> <span class="n">NCF</span> <span class="p">(</span>
+    <span class="n">n_users</span><span class="o">=</span><span class="n">data</span><span class="o">.</span><span class="n">n_users</span><span class="p">,</span> 
+    <span class="n">n_items</span><span class="o">=</span><span class="n">data</span><span class="o">.</span><span class="n">n_items</span><span class="p">,</span>
+    <span class="n">model_type</span><span class="o">=</span><span class="s2">&quot;NeuMF&quot;</span><span class="p">,</span>
+    <span class="n">n_factors</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
+    <span class="n">layer_sizes</span><span class="o">=</span><span class="p">[</span><span class="mi">16</span><span class="p">,</span><span class="mi">8</span><span class="p">,</span><span class="mi">4</span><span class="p">],</span>
+    <span class="n">n_epochs</span><span class="o">=</span><span class="n">EPOCHS</span><span class="p">,</span>
+    <span class="n">batch_size</span><span class="o">=</span><span class="n">BATCH_SIZE</span><span class="p">,</span>
+    <span class="n">learning_rate</span><span class="o">=</span><span class="mf">1e-3</span><span class="p">,</span>
+    <span class="n">verbose</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+    <span class="n">seed</span><span class="o">=</span><span class="n">SEED</span>
+<span class="p">)</span>
+
+<span class="n">model</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">gmf_dir</span><span class="o">=</span><span class="s2">&quot;.pretrain/GMF&quot;</span><span class="p">,</span> <span class="n">mlp_dir</span><span class="o">=</span><span class="s2">&quot;.pretrain/MLP&quot;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:tensorflow:Restoring parameters from .pretrain/GMF/model.ckpt
+INFO:tensorflow:Restoring parameters from .pretrain/MLP/model.ckpt
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">Timer</span><span class="p">()</span> <span class="k">as</span> <span class="n">train_time</span><span class="p">:</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Took </span><span class="si">{}</span><span class="s2"> seconds for training.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">train_time</span><span class="o">.</span><span class="n">interval</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Took 655.1110815689999 seconds for training.
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="compare-with-not-pre-trained-neumf">
+<h3>3.5.3 Compare with not pre-trained NeuMF<a class="headerlink" href="#compare-with-not-pre-trained-neumf" title="Permalink to this headline">¶</a></h3>
+<p>You can use beforementioned evaluation methods to evaluate the pre-trained <code class="docutils literal notranslate"><span class="pre">NCF</span></code> Model. Usually, we will find the performance of pre-trained NCF is better than the not pre-trained.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">Timer</span><span class="p">()</span> <span class="k">as</span> <span class="n">test_time</span><span class="p">:</span>
+
+    <span class="n">users</span><span class="p">,</span> <span class="n">items</span><span class="p">,</span> <span class="n">preds</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[],</span> <span class="p">[]</span>
+    <span class="n">item</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">train</span><span class="o">.</span><span class="n">itemID</span><span class="o">.</span><span class="n">unique</span><span class="p">())</span>
+    <span class="k">for</span> <span class="n">user</span> <span class="ow">in</span> <span class="n">train</span><span class="o">.</span><span class="n">userID</span><span class="o">.</span><span class="n">unique</span><span class="p">():</span>
+        <span class="n">user</span> <span class="o">=</span> <span class="p">[</span><span class="n">user</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">item</span><span class="p">)</span> 
+        <span class="n">users</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">user</span><span class="p">)</span>
+        <span class="n">items</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+        <span class="n">preds</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">user</span><span class="p">,</span> <span class="n">item</span><span class="p">,</span> <span class="n">is_list</span><span class="o">=</span><span class="kc">True</span><span class="p">)))</span>
+
+    <span class="n">all_predictions</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;userID&quot;</span><span class="p">:</span> <span class="n">users</span><span class="p">,</span> <span class="s2">&quot;itemID&quot;</span><span class="p">:</span><span class="n">items</span><span class="p">,</span> <span class="s2">&quot;prediction&quot;</span><span class="p">:</span><span class="n">preds</span><span class="p">})</span>
+
+    <span class="n">merged</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">train</span><span class="p">,</span> <span class="n">all_predictions</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;userID&quot;</span><span class="p">,</span> <span class="s2">&quot;itemID&quot;</span><span class="p">],</span> <span class="n">how</span><span class="o">=</span><span class="s2">&quot;outer&quot;</span><span class="p">)</span>
+    <span class="n">all_predictions</span> <span class="o">=</span> <span class="n">merged</span><span class="p">[</span><span class="n">merged</span><span class="o">.</span><span class="n">rating</span><span class="o">.</span><span class="n">isnull</span><span class="p">()]</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="s1">&#39;rating&#39;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Took </span><span class="si">{}</span><span class="s2"> seconds for prediction.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">test_time</span><span class="o">.</span><span class="n">interval</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Took 3.083744528999887 seconds for prediction.
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">eval_map2</span> <span class="o">=</span> <span class="n">map_at_k</span><span class="p">(</span><span class="n">test</span><span class="p">,</span> <span class="n">all_predictions</span><span class="p">,</span> <span class="n">col_prediction</span><span class="o">=</span><span class="s1">&#39;prediction&#39;</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="n">TOP_K</span><span class="p">)</span>
+<span class="n">eval_ndcg2</span> <span class="o">=</span> <span class="n">ndcg_at_k</span><span class="p">(</span><span class="n">test</span><span class="p">,</span> <span class="n">all_predictions</span><span class="p">,</span> <span class="n">col_prediction</span><span class="o">=</span><span class="s1">&#39;prediction&#39;</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="n">TOP_K</span><span class="p">)</span>
+<span class="n">eval_precision2</span> <span class="o">=</span> <span class="n">precision_at_k</span><span class="p">(</span><span class="n">test</span><span class="p">,</span> <span class="n">all_predictions</span><span class="p">,</span> <span class="n">col_prediction</span><span class="o">=</span><span class="s1">&#39;prediction&#39;</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="n">TOP_K</span><span class="p">)</span>
+<span class="n">eval_recall2</span> <span class="o">=</span> <span class="n">recall_at_k</span><span class="p">(</span><span class="n">test</span><span class="p">,</span> <span class="n">all_predictions</span><span class="p">,</span> <span class="n">col_prediction</span><span class="o">=</span><span class="s1">&#39;prediction&#39;</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="n">TOP_K</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;MAP:</span><span class="se">\t</span><span class="si">%f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">eval_map2</span><span class="p">,</span>
+      <span class="s2">&quot;NDCG:</span><span class="se">\t</span><span class="si">%f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">eval_ndcg2</span><span class="p">,</span>
+      <span class="s2">&quot;Precision@K:</span><span class="se">\t</span><span class="si">%f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">eval_precision2</span><span class="p">,</span>
+      <span class="s2">&quot;Recall@K:</span><span class="se">\t</span><span class="si">%f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">eval_recall2</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>MAP:	0.043232
+NDCG:	0.181301
+Precision@K:	0.165111
+Recall@K:	0.094437
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Record results with papermill for tests</span>
+<span class="n">sb</span><span class="o">.</span><span class="n">glue</span><span class="p">(</span><span class="s2">&quot;map&quot;</span><span class="p">,</span> <span class="n">eval_map</span><span class="p">)</span>
+<span class="n">sb</span><span class="o">.</span><span class="n">glue</span><span class="p">(</span><span class="s2">&quot;ndcg&quot;</span><span class="p">,</span> <span class="n">eval_ndcg</span><span class="p">)</span>
+<span class="n">sb</span><span class="o">.</span><span class="n">glue</span><span class="p">(</span><span class="s2">&quot;precision&quot;</span><span class="p">,</span> <span class="n">eval_precision</span><span class="p">)</span>
+<span class="n">sb</span><span class="o">.</span><span class="n">glue</span><span class="p">(</span><span class="s2">&quot;recall&quot;</span><span class="p">,</span> <span class="n">eval_recall</span><span class="p">)</span>
+<span class="n">sb</span><span class="o">.</span><span class="n">glue</span><span class="p">(</span><span class="s2">&quot;map2&quot;</span><span class="p">,</span> <span class="n">eval_map2</span><span class="p">)</span>
+<span class="n">sb</span><span class="o">.</span><span class="n">glue</span><span class="p">(</span><span class="s2">&quot;ndcg2&quot;</span><span class="p">,</span> <span class="n">eval_ndcg2</span><span class="p">)</span>
+<span class="n">sb</span><span class="o">.</span><span class="n">glue</span><span class="p">(</span><span class="s2">&quot;precision2&quot;</span><span class="p">,</span> <span class="n">eval_precision2</span><span class="p">)</span>
+<span class="n">sb</span><span class="o">.</span><span class="n">glue</span><span class="p">(</span><span class="s2">&quot;recall2&quot;</span><span class="p">,</span> <span class="n">eval_recall2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="delete-pre-trained-directory">
+<h3>3.5.4 Delete pre-trained directory<a class="headerlink" href="#delete-pre-trained-directory" title="Permalink to this headline">¶</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">save_dir</span> <span class="o">=</span> <span class="s2">&quot;.pretrain&quot;</span>
+<span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">save_dir</span><span class="p">):</span>
+    <span class="n">shutil</span><span class="o">.</span><span class="n">rmtree</span><span class="p">(</span><span class="n">save_dir</span><span class="p">)</span>
+    
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Did </span><span class="se">\&#39;</span><span class="si">%s</span><span class="se">\&#39;</span><span class="s2"> exist?: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">save_dir</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">save_dir</span><span class="p">)))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Did &#39;.pretrain&#39; exist?: False
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="reference">
+<h3>Reference:<a class="headerlink" href="#reference" title="Permalink to this headline">¶</a></h3>
+<ol class="simple">
+<li><p>Xiangnan He, Lizi Liao, Hanwang Zhang, Liqiang Nie, Xia Hu &amp; Tat-Seng Chua, Neural Collaborative Filtering, 2017, <a class="reference external" href="https://arxiv.org/abs/1708.05031">https://arxiv.org/abs/1708.05031</a></p></li>
+<li><p>Official NCF implementation [Keras with Theano]: <a class="reference external" href="https://github.com/hexiangnan/neural_collaborative_filtering">https://github.com/hexiangnan/neural_collaborative_filtering</a></p></li>
+<li><p>Other nice NCF implementation [Pytorch]: <a class="reference external" href="https://github.com/LaceyChen17/neural-collaborative-filtering">https://github.com/LaceyChen17/neural-collaborative-filtering</a></p></li>
+</ol>
+</div>
+</div>
+</div>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "reco_gpu"
+        },
+        kernelOptions: {
+            kernelName: "reco_gpu",
+            path: "./examples/02_model_hybrid"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'reco_gpu'</script>
+
+              </div>
+              
+        
+            
+
+
+
+<div class='prev-next-bottom'>
+    
+
+</div>
+        
+        </div>
+    </div>
+    <footer class="footer">
+    <div class="container">
+      <p>
+        
+          By The Jupyter Book community<br/>
+        
+            &copy; Copyright 2021.<br/>
+      </p>
+    </div>
+  </footer>
+</main>
+
+
+      </div>
+    </div>
+  
+  <script src="../../_static/js/index.1c5a1a01449ed65a7b51.js"></script>
+
+  
+  </body>
+</html>

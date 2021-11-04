@@ -1,0 +1,816 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FastAI Recommender &#8212; &lt;h1 style=&#34;font-size:2em;text-align:center;color:#FF5733&#34;&gt;Recommenders&lt;/h1&gt;</title>
+    
+  <link href="../../_static/css/theme.css" rel="stylesheet" />
+  <link href="../../_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
+
+    
+  <link rel="stylesheet"
+    href="../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+
+    
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-book-theme.css?digest=c3fdc42140077d1ad13ad2f1588a4309" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/tabs.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    
+  <link rel="preload" as="script" href="../../_static/js/index.1c5a1a01449ed65a7b51.js">
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/togglebutton.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <script src="../../_static/tabs.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../../_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script>
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="../../_static/sphinx-thebe.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en" />
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="../../index.html">
+      
+      
+      
+      <h1 class="site-logo" id="site-title"><h1 style="font-size:2em;text-align:center;color:#FF5733">Recommenders</h1></h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="../../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        <p class="caption" role="heading">
+ <span class="caption-text">
+  Getting Started Notebooks
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="als_movielens.html">
+   Running ALS on MovieLens (PySpark)
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ncf_movielens.html">
+   Neural Collaborative Filtering on MovieLens dataset.
+  </a>
+ </li>
+</ul>
+
+    </div>
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="topbar container-xl fixed-top">
+    <div class="topbar-contents row">
+        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
+        <div class="col pl-md-4 topbar-main">
+            
+            <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+                data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+                aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
+                title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+                <i class="fas fa-bars"></i>
+                <i class="fas fa-arrow-left"></i>
+                <i class="fas fa-arrow-up"></i>
+            </button>
+            
+            
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
+            class="fas fa-download"></i></button>
+
+    <div class="dropdown-buttons">
+        <!-- ipynb file if we had a myst markdown file -->
+        
+        <!-- Download raw file -->
+        <a class="dropdown-buttons" href="../../_sources/examples/00_quick_start/fastai_movielens.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
+                data-placement="left">.ipynb</button></a>
+        <!-- Download PDF via print -->
+        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
+            onClick="window.print()" data-toggle="tooltip" data-placement="left">.pdf</button>
+    </div>
+</div>
+
+            <!-- Source interaction buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
+    <div class="dropdown-buttons sourcebuttons">
+        <a class="repository-button"
+            href="https://github.com/microsoft/genalog"><button type="button" class="btn btn-secondary topbarbtn"
+                data-toggle="tooltip" data-placement="left" title="Source repository"><i
+                    class="fab fa-github"></i>repository</button></a>
+        <a class="issues-button"
+            href="https://github.com/microsoft/genalog/issues/new?title=Issue%20on%20page%20%2Fexamples/00_quick_start/fastai_movielens.html&body=Your%20issue%20content%20here."><button
+                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
+                title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
+        
+    </div>
+</div>
+
+            <!-- Full screen (wrap in <a> to have style consistency -->
+
+<a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+        data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+        title="Fullscreen mode"><i
+            class="fas fa-expand"></i></button></a>
+
+            <!-- Launch buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Launch interactive content"><i class="fas fa-rocket"></i></button>
+    <div class="dropdown-buttons">
+        
+        <a class="binder-button" href="https://mybinder.org/v2/gh/microsoft/genalog/main?urlpath=tree/docs/genalog_docs/examples/00_quick_start/fastai_movielens.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Launch Binder" data-toggle="tooltip"
+                data-placement="left"><img class="binder-button-logo"
+                    src="../../_static/images/logo_binder.svg"
+                    alt="Interact on binder">Binder</button></a>
+        
+        
+        
+        
+    </div>
+</div>
+
+        </div>
+
+        <!-- Table of contents -->
+        <div class="d-none d-md-block col-md-2 bd-toc show">
+            
+            <div class="tocsection onthispage pt-5 pb-3">
+                <i class="fas fa-list"></i> Contents
+            </div>
+            <nav id="bd-toc-nav" aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#">
+   FastAI Recommender
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#training">
+   Training
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#generating-recommendations">
+   Generating Recommendations
+  </a>
+  <ul class="visible nav section-nav flex-column">
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#score-the-model-to-find-the-top-k-recommendation">
+     Score the model to find the top K recommendation
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+        
+              <div>
+                
+  <p><i>Copyright (c) Microsoft Corporation. All rights reserved.</i></p>
+<p><i>Licensed under the MIT License.</i></p>
+<div class="section" id="fastai-recommender">
+<h1>FastAI Recommender<a class="headerlink" href="#fastai-recommender" title="Permalink to this headline">¶</a></h1>
+<p>This notebook shows how to use the <a class="reference external" href="https://fast.ai">FastAI</a> recommender which is using <a class="reference external" href="https://pytorch.org/">Pytorch</a> under the hood.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># set the environment path to find Recommenders</span>
+<span class="kn">from</span> <span class="nn">tempfile</span> <span class="kn">import</span> <span class="n">TemporaryDirectory</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">itertools</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">scrapbook</span> <span class="k">as</span> <span class="nn">sb</span>
+<span class="kn">import</span> <span class="nn">torch</span><span class="o">,</span> <span class="nn">fastai</span>
+<span class="kn">from</span> <span class="nn">fastai.collab</span> <span class="kn">import</span> <span class="n">EmbeddingDotBias</span><span class="p">,</span> <span class="n">collab_learner</span><span class="p">,</span> <span class="n">CollabDataBunch</span><span class="p">,</span> <span class="n">load_learner</span>
+
+<span class="kn">from</span> <span class="nn">recommenders.utils.timer</span> <span class="kn">import</span> <span class="n">Timer</span>
+<span class="kn">from</span> <span class="nn">recommenders.datasets</span> <span class="kn">import</span> <span class="n">movielens</span>
+<span class="kn">from</span> <span class="nn">recommenders.datasets.python_splitters</span> <span class="kn">import</span> <span class="n">python_stratified_split</span>
+<span class="kn">from</span> <span class="nn">recommenders.models.fastai.fastai_utils</span> <span class="kn">import</span> <span class="n">cartesian_product</span><span class="p">,</span> <span class="n">score</span>
+<span class="kn">from</span> <span class="nn">recommenders.evaluation.python_evaluation</span> <span class="kn">import</span> <span class="n">map_at_k</span><span class="p">,</span> <span class="n">ndcg_at_k</span><span class="p">,</span> <span class="n">precision_at_k</span><span class="p">,</span> <span class="n">recall_at_k</span>
+<span class="kn">from</span> <span class="nn">recommenders.evaluation.python_evaluation</span> <span class="kn">import</span> <span class="n">rmse</span><span class="p">,</span> <span class="n">mae</span><span class="p">,</span> <span class="n">rsquared</span><span class="p">,</span> <span class="n">exp_var</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;System version: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">version</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Pandas version: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">__version__</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Fast AI version: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">fastai</span><span class="o">.</span><span class="n">__version__</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Torch version: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">__version__</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Cuda Available: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">is_available</span><span class="p">()))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;CuDNN Enabled: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">backends</span><span class="o">.</span><span class="n">cudnn</span><span class="o">.</span><span class="n">enabled</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>System version: 3.6.11 | packaged by conda-forge | (default, Aug  5 2020, 20:09:42) 
+[GCC 7.5.0]
+Pandas version: 0.25.3
+Fast AI version: 1.0.46
+Torch version: 1.4.0
+Cuda Available: False
+CuDNN Enabled: True
+</pre></div>
+</div>
+</div>
+</div>
+<p>Defining some constants to refer to the different columns of our dataset.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">USER</span><span class="p">,</span> <span class="n">ITEM</span><span class="p">,</span> <span class="n">RATING</span><span class="p">,</span> <span class="n">TIMESTAMP</span><span class="p">,</span> <span class="n">PREDICTION</span><span class="p">,</span> <span class="n">TITLE</span> <span class="o">=</span> <span class="s1">&#39;UserId&#39;</span><span class="p">,</span> <span class="s1">&#39;MovieId&#39;</span><span class="p">,</span> <span class="s1">&#39;Rating&#39;</span><span class="p">,</span> <span class="s1">&#39;Timestamp&#39;</span><span class="p">,</span> <span class="s1">&#39;Prediction&#39;</span><span class="p">,</span> <span class="s1">&#39;Title&#39;</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell tag_parameters docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># top k items to recommend</span>
+<span class="n">TOP_K</span> <span class="o">=</span> <span class="mi">10</span>
+
+<span class="c1"># Select MovieLens data size: 100k, 1m, 10m, or 20m</span>
+<span class="n">MOVIELENS_DATA_SIZE</span> <span class="o">=</span> <span class="s1">&#39;100k&#39;</span>
+
+<span class="c1"># Model parameters</span>
+<span class="n">N_FACTORS</span> <span class="o">=</span> <span class="mi">40</span>
+<span class="n">EPOCHS</span> <span class="o">=</span> <span class="mi">5</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ratings_df</span> <span class="o">=</span> <span class="n">movielens</span><span class="o">.</span><span class="n">load_pandas_df</span><span class="p">(</span>
+    <span class="n">size</span><span class="o">=</span><span class="n">MOVIELENS_DATA_SIZE</span><span class="p">,</span>
+    <span class="n">header</span><span class="o">=</span><span class="p">[</span><span class="n">USER</span><span class="p">,</span><span class="n">ITEM</span><span class="p">,</span><span class="n">RATING</span><span class="p">,</span><span class="n">TIMESTAMP</span><span class="p">]</span>
+<span class="p">)</span>
+
+<span class="c1"># make sure the IDs are loaded as strings to better prevent confusion with embedding ids</span>
+<span class="n">ratings_df</span><span class="p">[</span><span class="n">USER</span><span class="p">]</span> <span class="o">=</span> <span class="n">ratings_df</span><span class="p">[</span><span class="n">USER</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;str&#39;</span><span class="p">)</span>
+<span class="n">ratings_df</span><span class="p">[</span><span class="n">ITEM</span><span class="p">]</span> <span class="o">=</span> <span class="n">ratings_df</span><span class="p">[</span><span class="n">ITEM</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;str&#39;</span><span class="p">)</span>
+
+<span class="n">ratings_df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>100%|██████████| 4.81k/4.81k [00:01&lt;00:00, 4.49kKB/s]
+</pre></div>
+</div>
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>UserId</th>
+      <th>MovieId</th>
+      <th>Rating</th>
+      <th>Timestamp</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>196</td>
+      <td>242</td>
+      <td>3.0</td>
+      <td>881250949</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>186</td>
+      <td>302</td>
+      <td>3.0</td>
+      <td>891717742</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>22</td>
+      <td>377</td>
+      <td>1.0</td>
+      <td>878887116</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>244</td>
+      <td>51</td>
+      <td>2.0</td>
+      <td>880606923</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>166</td>
+      <td>346</td>
+      <td>1.0</td>
+      <td>886397596</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Split the dataset</span>
+<span class="n">train_valid_df</span><span class="p">,</span> <span class="n">test_df</span> <span class="o">=</span> <span class="n">python_stratified_split</span><span class="p">(</span>
+    <span class="n">ratings_df</span><span class="p">,</span> 
+    <span class="n">ratio</span><span class="o">=</span><span class="mf">0.75</span><span class="p">,</span> 
+    <span class="n">min_rating</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> 
+    <span class="n">filter_by</span><span class="o">=</span><span class="s2">&quot;item&quot;</span><span class="p">,</span> 
+    <span class="n">col_user</span><span class="o">=</span><span class="n">USER</span><span class="p">,</span> 
+    <span class="n">col_item</span><span class="o">=</span><span class="n">ITEM</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="training">
+<h1>Training<a class="headerlink" href="#training" title="Permalink to this headline">¶</a></h1>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># fix random seeds to make sure our runs are reproducible</span>
+<span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">101</span><span class="p">)</span>
+<span class="n">torch</span><span class="o">.</span><span class="n">manual_seed</span><span class="p">(</span><span class="mi">101</span><span class="p">)</span>
+<span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">manual_seed_all</span><span class="p">(</span><span class="mi">101</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">Timer</span><span class="p">()</span> <span class="k">as</span> <span class="n">preprocess_time</span><span class="p">:</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">CollabDataBunch</span><span class="o">.</span><span class="n">from_df</span><span class="p">(</span><span class="n">train_valid_df</span><span class="p">,</span> 
+                                   <span class="n">user_name</span><span class="o">=</span><span class="n">USER</span><span class="p">,</span> 
+                                   <span class="n">item_name</span><span class="o">=</span><span class="n">ITEM</span><span class="p">,</span> 
+                                   <span class="n">rating_name</span><span class="o">=</span><span class="n">RATING</span><span class="p">,</span> 
+                                   <span class="n">valid_pct</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data</span><span class="o">.</span><span class="n">show_batch</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th>UserId</th>
+      <th>MovieId</th>
+      <th>target</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>543</td>
+      <td>1555</td>
+      <td>3.0</td>
+    </tr>
+    <tr>
+      <td>90</td>
+      <td>945</td>
+      <td>5.0</td>
+    </tr>
+    <tr>
+      <td>292</td>
+      <td>515</td>
+      <td>4.0</td>
+    </tr>
+    <tr>
+      <td>303</td>
+      <td>1092</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <td>497</td>
+      <td>946</td>
+      <td>4.0</td>
+    </tr>
+  </tbody>
+</table></div></div>
+</div>
+<p>Now we will create a <code class="docutils literal notranslate"><span class="pre">collab_learner</span></code> for the data, which by default uses the <a class="reference external" href="https://docs.fast.ai/collab.html#EmbeddingDotBias">EmbeddingDotBias</a> model. We will be using 40 latent factors. This will create an embedding for the users and the items that will map each of these to 40 floats as can be seen below. Note that the embedding parameters are not predefined, but are learned by the model.</p>
+<p>Although ratings can only range from 1-5, we are setting the range of possible ratings to a range from 0 to 5.5 – that will allow the model to predict values around 1 and 5, which improves accuracy. Lastly, we set a value for weight-decay for regularization.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">learn</span> <span class="o">=</span> <span class="n">collab_learner</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">n_factors</span><span class="o">=</span><span class="n">N_FACTORS</span><span class="p">,</span> <span class="n">y_range</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mf">5.5</span><span class="p">],</span> <span class="n">wd</span><span class="o">=</span><span class="mf">1e-1</span><span class="p">)</span>
+<span class="n">learn</span><span class="o">.</span><span class="n">model</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>EmbeddingDotBias(
+  (u_weight): Embedding(944, 40)
+  (i_weight): Embedding(1683, 40)
+  (u_bias): Embedding(944, 1)
+  (i_bias): Embedding(1683, 1)
+)
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now train the model for 5 epochs setting the maximal learning rate. The learner will reduce the learning rate with each epoch using cosine annealing.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">Timer</span><span class="p">()</span> <span class="k">as</span> <span class="n">train_time</span><span class="p">:</span>
+    <span class="n">learn</span><span class="o">.</span><span class="n">fit_one_cycle</span><span class="p">(</span><span class="n">EPOCHS</span><span class="p">,</span> <span class="n">max_lr</span><span class="o">=</span><span class="mf">5e-3</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Took </span><span class="si">{}</span><span class="s2"> seconds for training.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">train_time</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: left;">
+      <th>epoch</th>
+      <th>train_loss</th>
+      <th>valid_loss</th>
+      <th>time</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>1</td>
+      <td>0.985993</td>
+      <td></td>
+      <td>00:05</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>0.885496</td>
+      <td></td>
+      <td>00:05</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>0.777637</td>
+      <td></td>
+      <td>00:05</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>0.628971</td>
+      <td></td>
+      <td>00:05</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>0.532328</td>
+      <td></td>
+      <td>00:06</td>
+    </tr>
+  </tbody>
+</table></div><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Took 29.5549 seconds for training.
+</pre></div>
+</div>
+</div>
+</div>
+<p>Save the learner so it can be loaded back later for inferencing / generating recommendations</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">tmp</span> <span class="o">=</span> <span class="n">TemporaryDirectory</span><span class="p">()</span>
+<span class="n">model_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">tmp</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="s2">&quot;movielens_model.pkl&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">learn</span><span class="o">.</span><span class="n">export</span><span class="p">(</span><span class="n">model_path</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="generating-recommendations">
+<h1>Generating Recommendations<a class="headerlink" href="#generating-recommendations" title="Permalink to this headline">¶</a></h1>
+<p>Load the learner from disk.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">learner</span> <span class="o">=</span> <span class="n">load_learner</span><span class="p">(</span><span class="n">tmp</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="s2">&quot;movielens_model.pkl&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Get all users and items that the model knows</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">total_users</span><span class="p">,</span> <span class="n">total_items</span> <span class="o">=</span> <span class="n">learner</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">train_ds</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">classes</span><span class="o">.</span><span class="n">values</span><span class="p">()</span>
+<span class="n">total_items</span> <span class="o">=</span> <span class="n">total_items</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
+<span class="n">total_users</span> <span class="o">=</span> <span class="n">total_users</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Get all users from the test set and remove any users that were know in the training set</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">test_users</span> <span class="o">=</span> <span class="n">test_df</span><span class="p">[</span><span class="n">USER</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">()</span>
+<span class="n">test_users</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">intersect1d</span><span class="p">(</span><span class="n">test_users</span><span class="p">,</span> <span class="n">total_users</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Build the cartesian product of test set users and all items known to the model</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">users_items</span> <span class="o">=</span> <span class="n">cartesian_product</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">test_users</span><span class="p">),</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">total_items</span><span class="p">))</span>
+<span class="n">users_items</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">users_items</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="n">USER</span><span class="p">,</span><span class="n">ITEM</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Lastly, remove the user/items combinations that are in the training set – we don’t want to propose a movie that the user has already watched.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">training_removed</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">users_items</span><span class="p">,</span> <span class="n">train_valid_df</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">),</span> <span class="n">on</span><span class="o">=</span><span class="p">[</span><span class="n">USER</span><span class="p">,</span> <span class="n">ITEM</span><span class="p">],</span> <span class="n">how</span><span class="o">=</span><span class="s1">&#39;left&#39;</span><span class="p">)</span>
+<span class="n">training_removed</span> <span class="o">=</span> <span class="n">training_removed</span><span class="p">[</span><span class="n">training_removed</span><span class="p">[</span><span class="n">RATING</span><span class="p">]</span><span class="o">.</span><span class="n">isna</span><span class="p">()][[</span><span class="n">USER</span><span class="p">,</span> <span class="n">ITEM</span><span class="p">]]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="score-the-model-to-find-the-top-k-recommendation">
+<h2>Score the model to find the top K recommendation<a class="headerlink" href="#score-the-model-to-find-the-top-k-recommendation" title="Permalink to this headline">¶</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">Timer</span><span class="p">()</span> <span class="k">as</span> <span class="n">test_time</span><span class="p">:</span>
+    <span class="n">top_k_scores</span> <span class="o">=</span> <span class="n">score</span><span class="p">(</span><span class="n">learner</span><span class="p">,</span> 
+                         <span class="n">test_df</span><span class="o">=</span><span class="n">training_removed</span><span class="p">,</span>
+                         <span class="n">user_col</span><span class="o">=</span><span class="n">USER</span><span class="p">,</span> 
+                         <span class="n">item_col</span><span class="o">=</span><span class="n">ITEM</span><span class="p">,</span> 
+                         <span class="n">prediction_col</span><span class="o">=</span><span class="n">PREDICTION</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Took </span><span class="si">{}</span><span class="s2"> seconds for </span><span class="si">{}</span><span class="s2"> predictions.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">test_time</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">training_removed</span><span class="p">)))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Took 1.9734 seconds for 1511060 predictions.
+</pre></div>
+</div>
+</div>
+</div>
+<p>Calculate some metrics for our model</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">eval_map</span> <span class="o">=</span> <span class="n">map_at_k</span><span class="p">(</span><span class="n">test_df</span><span class="p">,</span> <span class="n">top_k_scores</span><span class="p">,</span> <span class="n">col_user</span><span class="o">=</span><span class="n">USER</span><span class="p">,</span> <span class="n">col_item</span><span class="o">=</span><span class="n">ITEM</span><span class="p">,</span> 
+                    <span class="n">col_rating</span><span class="o">=</span><span class="n">RATING</span><span class="p">,</span> <span class="n">col_prediction</span><span class="o">=</span><span class="n">PREDICTION</span><span class="p">,</span> 
+                    <span class="n">relevancy_method</span><span class="o">=</span><span class="s2">&quot;top_k&quot;</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="n">TOP_K</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">eval_ndcg</span> <span class="o">=</span> <span class="n">ndcg_at_k</span><span class="p">(</span><span class="n">test_df</span><span class="p">,</span> <span class="n">top_k_scores</span><span class="p">,</span> <span class="n">col_user</span><span class="o">=</span><span class="n">USER</span><span class="p">,</span> <span class="n">col_item</span><span class="o">=</span><span class="n">ITEM</span><span class="p">,</span> 
+                      <span class="n">col_rating</span><span class="o">=</span><span class="n">RATING</span><span class="p">,</span> <span class="n">col_prediction</span><span class="o">=</span><span class="n">PREDICTION</span><span class="p">,</span> 
+                      <span class="n">relevancy_method</span><span class="o">=</span><span class="s2">&quot;top_k&quot;</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="n">TOP_K</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">eval_precision</span> <span class="o">=</span> <span class="n">precision_at_k</span><span class="p">(</span><span class="n">test_df</span><span class="p">,</span> <span class="n">top_k_scores</span><span class="p">,</span> <span class="n">col_user</span><span class="o">=</span><span class="n">USER</span><span class="p">,</span> <span class="n">col_item</span><span class="o">=</span><span class="n">ITEM</span><span class="p">,</span> 
+                                <span class="n">col_rating</span><span class="o">=</span><span class="n">RATING</span><span class="p">,</span> <span class="n">col_prediction</span><span class="o">=</span><span class="n">PREDICTION</span><span class="p">,</span> 
+                                <span class="n">relevancy_method</span><span class="o">=</span><span class="s2">&quot;top_k&quot;</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="n">TOP_K</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">eval_recall</span> <span class="o">=</span> <span class="n">recall_at_k</span><span class="p">(</span><span class="n">test_df</span><span class="p">,</span> <span class="n">top_k_scores</span><span class="p">,</span> <span class="n">col_user</span><span class="o">=</span><span class="n">USER</span><span class="p">,</span> <span class="n">col_item</span><span class="o">=</span><span class="n">ITEM</span><span class="p">,</span> 
+                          <span class="n">col_rating</span><span class="o">=</span><span class="n">RATING</span><span class="p">,</span> <span class="n">col_prediction</span><span class="o">=</span><span class="n">PREDICTION</span><span class="p">,</span> 
+                          <span class="n">relevancy_method</span><span class="o">=</span><span class="s2">&quot;top_k&quot;</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="n">TOP_K</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Model:</span><span class="se">\t</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="n">learn</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span>
+      <span class="s2">&quot;Top K:</span><span class="se">\t</span><span class="si">%d</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">TOP_K</span><span class="p">,</span>
+      <span class="s2">&quot;MAP:</span><span class="se">\t</span><span class="si">%f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">eval_map</span><span class="p">,</span>
+      <span class="s2">&quot;NDCG:</span><span class="se">\t</span><span class="si">%f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">eval_ndcg</span><span class="p">,</span>
+      <span class="s2">&quot;Precision@K:</span><span class="se">\t</span><span class="si">%f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">eval_precision</span><span class="p">,</span>
+      <span class="s2">&quot;Recall@K:</span><span class="se">\t</span><span class="si">%f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">eval_recall</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Model:	CollabLearner
+Top K:	10
+MAP:	0.026115
+NDCG:	0.155065
+Precision@K:	0.136691
+Recall@K:	0.054940
+</pre></div>
+</div>
+</div>
+</div>
+<p>The above numbers are lower than <span class="xref myst">SAR</span>, but expected, since the model is explicitly trying to generalize the users and items to the latent factors. Next look at how well the model predicts how the user would rate the movie. Need to score <code class="docutils literal notranslate"><span class="pre">test_df</span></code> user-items only.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">scores</span> <span class="o">=</span> <span class="n">score</span><span class="p">(</span><span class="n">learner</span><span class="p">,</span> 
+               <span class="n">test_df</span><span class="o">=</span><span class="n">test_df</span><span class="o">.</span><span class="n">copy</span><span class="p">(),</span> 
+               <span class="n">user_col</span><span class="o">=</span><span class="n">USER</span><span class="p">,</span> 
+               <span class="n">item_col</span><span class="o">=</span><span class="n">ITEM</span><span class="p">,</span> 
+               <span class="n">prediction_col</span><span class="o">=</span><span class="n">PREDICTION</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now calculate some regression metrics</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">eval_r2</span> <span class="o">=</span> <span class="n">rsquared</span><span class="p">(</span><span class="n">test_df</span><span class="p">,</span> <span class="n">scores</span><span class="p">,</span> <span class="n">col_user</span><span class="o">=</span><span class="n">USER</span><span class="p">,</span> <span class="n">col_item</span><span class="o">=</span><span class="n">ITEM</span><span class="p">,</span> <span class="n">col_rating</span><span class="o">=</span><span class="n">RATING</span><span class="p">,</span> <span class="n">col_prediction</span><span class="o">=</span><span class="n">PREDICTION</span><span class="p">)</span>
+<span class="n">eval_rmse</span> <span class="o">=</span> <span class="n">rmse</span><span class="p">(</span><span class="n">test_df</span><span class="p">,</span> <span class="n">scores</span><span class="p">,</span> <span class="n">col_user</span><span class="o">=</span><span class="n">USER</span><span class="p">,</span> <span class="n">col_item</span><span class="o">=</span><span class="n">ITEM</span><span class="p">,</span> <span class="n">col_rating</span><span class="o">=</span><span class="n">RATING</span><span class="p">,</span> <span class="n">col_prediction</span><span class="o">=</span><span class="n">PREDICTION</span><span class="p">)</span>
+<span class="n">eval_mae</span> <span class="o">=</span> <span class="n">mae</span><span class="p">(</span><span class="n">test_df</span><span class="p">,</span> <span class="n">scores</span><span class="p">,</span> <span class="n">col_user</span><span class="o">=</span><span class="n">USER</span><span class="p">,</span> <span class="n">col_item</span><span class="o">=</span><span class="n">ITEM</span><span class="p">,</span> <span class="n">col_rating</span><span class="o">=</span><span class="n">RATING</span><span class="p">,</span> <span class="n">col_prediction</span><span class="o">=</span><span class="n">PREDICTION</span><span class="p">)</span>
+<span class="n">eval_exp_var</span> <span class="o">=</span> <span class="n">exp_var</span><span class="p">(</span><span class="n">test_df</span><span class="p">,</span> <span class="n">scores</span><span class="p">,</span> <span class="n">col_user</span><span class="o">=</span><span class="n">USER</span><span class="p">,</span> <span class="n">col_item</span><span class="o">=</span><span class="n">ITEM</span><span class="p">,</span> <span class="n">col_rating</span><span class="o">=</span><span class="n">RATING</span><span class="p">,</span> <span class="n">col_prediction</span><span class="o">=</span><span class="n">PREDICTION</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Model:</span><span class="se">\t</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="n">learn</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span>
+      <span class="s2">&quot;RMSE:</span><span class="se">\t</span><span class="si">%f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">eval_rmse</span><span class="p">,</span>
+      <span class="s2">&quot;MAE:</span><span class="se">\t</span><span class="si">%f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">eval_mae</span><span class="p">,</span>
+      <span class="s2">&quot;Explained variance:</span><span class="se">\t</span><span class="si">%f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">eval_exp_var</span><span class="p">,</span>
+      <span class="s2">&quot;R squared:</span><span class="se">\t</span><span class="si">%f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">eval_r2</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Model:	CollabLearner
+RMSE:	0.902379
+MAE:	0.712163
+Explained variance:	0.346523
+R squared:	0.345672
+</pre></div>
+</div>
+</div>
+</div>
+<p>That RMSE is actually quite good when compared to these benchmarks: <a class="reference external" href="https://www.librec.net/release/v1.3/example.html">https://www.librec.net/release/v1.3/example.html</a></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Record results with papermill for tests</span>
+<span class="n">sb</span><span class="o">.</span><span class="n">glue</span><span class="p">(</span><span class="s2">&quot;map&quot;</span><span class="p">,</span> <span class="n">eval_map</span><span class="p">)</span>
+<span class="n">sb</span><span class="o">.</span><span class="n">glue</span><span class="p">(</span><span class="s2">&quot;ndcg&quot;</span><span class="p">,</span> <span class="n">eval_ndcg</span><span class="p">)</span>
+<span class="n">sb</span><span class="o">.</span><span class="n">glue</span><span class="p">(</span><span class="s2">&quot;precision&quot;</span><span class="p">,</span> <span class="n">eval_precision</span><span class="p">)</span>
+<span class="n">sb</span><span class="o">.</span><span class="n">glue</span><span class="p">(</span><span class="s2">&quot;recall&quot;</span><span class="p">,</span> <span class="n">eval_recall</span><span class="p">)</span>
+<span class="n">sb</span><span class="o">.</span><span class="n">glue</span><span class="p">(</span><span class="s2">&quot;rmse&quot;</span><span class="p">,</span> <span class="n">eval_rmse</span><span class="p">)</span>
+<span class="n">sb</span><span class="o">.</span><span class="n">glue</span><span class="p">(</span><span class="s2">&quot;mae&quot;</span><span class="p">,</span> <span class="n">eval_mae</span><span class="p">)</span>
+<span class="n">sb</span><span class="o">.</span><span class="n">glue</span><span class="p">(</span><span class="s2">&quot;exp_var&quot;</span><span class="p">,</span> <span class="n">eval_exp_var</span><span class="p">)</span>
+<span class="n">sb</span><span class="o">.</span><span class="n">glue</span><span class="p">(</span><span class="s2">&quot;rsquared&quot;</span><span class="p">,</span> <span class="n">eval_r2</span><span class="p">)</span>
+<span class="n">sb</span><span class="o">.</span><span class="n">glue</span><span class="p">(</span><span class="s2">&quot;train_time&quot;</span><span class="p">,</span> <span class="n">train_time</span><span class="o">.</span><span class="n">interval</span><span class="p">)</span>
+<span class="n">sb</span><span class="o">.</span><span class="n">glue</span><span class="p">(</span><span class="s2">&quot;test_time&quot;</span><span class="p">,</span> <span class="n">test_time</span><span class="o">.</span><span class="n">interval</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">tmp</span><span class="o">.</span><span class="n">cleanup</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "reco_gpu"
+        },
+        kernelOptions: {
+            kernelName: "reco_gpu",
+            path: "./examples/00_quick_start"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'reco_gpu'</script>
+
+              </div>
+              
+        
+            
+
+
+
+<div class='prev-next-bottom'>
+    
+
+</div>
+        
+        </div>
+    </div>
+    <footer class="footer">
+    <div class="container">
+      <p>
+        
+          By The Jupyter Book community<br/>
+        
+            &copy; Copyright 2021.<br/>
+      </p>
+    </div>
+  </footer>
+</main>
+
+
+      </div>
+    </div>
+  
+  <script src="../../_static/js/index.1c5a1a01449ed65a7b51.js"></script>
+
+  
+  </body>
+</html>

@@ -1,0 +1,1220 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Benchmark with Movielens dataset &#8212; &lt;h1 style=&#34;font-size:2em;text-align:center;color:#FF5733&#34;&gt;Recommenders&lt;/h1&gt;</title>
+    
+  <link href="../../_static/css/theme.css" rel="stylesheet" />
+  <link href="../../_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
+
+    
+  <link rel="stylesheet"
+    href="../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+
+    
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-book-theme.css?digest=c3fdc42140077d1ad13ad2f1588a4309" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/tabs.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    
+  <link rel="preload" as="script" href="../../_static/js/index.1c5a1a01449ed65a7b51.js">
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/togglebutton.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <script src="../../_static/tabs.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../../_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script>
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="../../_static/sphinx-thebe.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en" />
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="../../index.html">
+      
+      
+      
+      <h1 class="site-logo" id="site-title"><h1 style="font-size:2em;text-align:center;color:#FF5733">Recommenders</h1></h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="../../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        <p class="caption" role="heading">
+ <span class="caption-text">
+  Getting Started Notebooks
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../00_quick_start/als_movielens.html">
+   Running ALS on MovieLens (PySpark)
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../00_quick_start/ncf_movielens.html">
+   Neural Collaborative Filtering on MovieLens dataset.
+  </a>
+ </li>
+</ul>
+
+    </div>
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="topbar container-xl fixed-top">
+    <div class="topbar-contents row">
+        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
+        <div class="col pl-md-4 topbar-main">
+            
+            <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+                data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+                aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
+                title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+                <i class="fas fa-bars"></i>
+                <i class="fas fa-arrow-left"></i>
+                <i class="fas fa-arrow-up"></i>
+            </button>
+            
+            
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
+            class="fas fa-download"></i></button>
+
+    <div class="dropdown-buttons">
+        <!-- ipynb file if we had a myst markdown file -->
+        
+        <!-- Download raw file -->
+        <a class="dropdown-buttons" href="../../_sources/examples/06_benchmarks/movielens.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
+                data-placement="left">.ipynb</button></a>
+        <!-- Download PDF via print -->
+        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
+            onClick="window.print()" data-toggle="tooltip" data-placement="left">.pdf</button>
+    </div>
+</div>
+
+            <!-- Source interaction buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
+    <div class="dropdown-buttons sourcebuttons">
+        <a class="repository-button"
+            href="https://github.com/microsoft/genalog"><button type="button" class="btn btn-secondary topbarbtn"
+                data-toggle="tooltip" data-placement="left" title="Source repository"><i
+                    class="fab fa-github"></i>repository</button></a>
+        <a class="issues-button"
+            href="https://github.com/microsoft/genalog/issues/new?title=Issue%20on%20page%20%2Fexamples/06_benchmarks/movielens.html&body=Your%20issue%20content%20here."><button
+                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
+                title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
+        
+    </div>
+</div>
+
+            <!-- Full screen (wrap in <a> to have style consistency -->
+
+<a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+        data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+        title="Fullscreen mode"><i
+            class="fas fa-expand"></i></button></a>
+
+            <!-- Launch buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Launch interactive content"><i class="fas fa-rocket"></i></button>
+    <div class="dropdown-buttons">
+        
+        <a class="binder-button" href="https://mybinder.org/v2/gh/microsoft/genalog/main?urlpath=tree/docs/genalog_docs/examples/06_benchmarks/movielens.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Launch Binder" data-toggle="tooltip"
+                data-placement="left"><img class="binder-button-logo"
+                    src="../../_static/images/logo_binder.svg"
+                    alt="Interact on binder">Binder</button></a>
+        
+        
+        
+        
+    </div>
+</div>
+
+        </div>
+
+        <!-- Table of contents -->
+        <div class="d-none d-md-block col-md-2 bd-toc show">
+            
+            <div class="tocsection onthispage pt-5 pb-3">
+                <i class="fas fa-list"></i> Contents
+            </div>
+            <nav id="bd-toc-nav" aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#experimentation-setup">
+   Experimentation setup:
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#globals-settings">
+   Globals settings
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#parameters">
+   Parameters
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#benchmark-loop">
+   Benchmark loop
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#results">
+   Results
+  </a>
+ </li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+        
+              <div>
+                
+  <p><i>Copyright (c) Microsoft Corporation. All rights reserved.</i></p>
+<p><i>Licensed under the MIT License.</i></p>
+<div class="tex2jax_ignore mathjax_ignore section" id="benchmark-with-movielens-dataset">
+<h1>Benchmark with Movielens dataset<a class="headerlink" href="#benchmark-with-movielens-dataset" title="Permalink to this headline">¶</a></h1>
+<p>This illustrative comparison applies to collaborative filtering algorithms available in this repository such as Spark ALS, Surprise SVD, SAR and others using the Movielens dataset. These algorithms are usable in a variety of recommendation tasks, including product or news recommendations.</p>
+<p>The main purpose of this notebook is not to produce comprehensive benchmarking results on multiple datasets. Rather, it is intended to illustrate on how one could evaluate different recommender algorithms using tools in this repository.</p>
+<div class="section" id="experimentation-setup">
+<h2>Experimentation setup:<a class="headerlink" href="#experimentation-setup" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>Objective</p>
+<ul>
+<li><p>To compare how each collaborative filtering algorithm perform in predicting ratings and recommending relevant items.</p></li>
+</ul>
+</li>
+<li><p>Environment</p>
+<ul>
+<li><p>The comparison is run on a <a class="reference external" href="https://azure.microsoft.com/en-us/services/virtual-machines/data-science-virtual-machines/">Azure Data Science Virtual Machine</a>.</p></li>
+<li><p>The virtual machine size is Standard NC6 (6 vcpus, 55 GB memory, 1K80 GPU).</p></li>
+<li><p>It should be noted that the single node DSVM is not supposed to run scalable benchmarking analysis. Either scaling up or out the computing instances is necessary to run the benchmarking in an run-time efficient way without any memory issue.</p></li>
+<li><p><strong>NOTE ABOUT THE DEPENDENCIES TO INSTALL</strong>: This notebook uses CPU, GPU and PySpark algorithms, so make sure you install the <code class="docutils literal notranslate"><span class="pre">full</span> <span class="pre">environment</span></code> as detailed in the <span class="xref myst">SETUP.md</span>.</p></li>
+</ul>
+</li>
+<li><p>Datasets</p>
+<ul>
+<li><p><a class="reference external" href="https://grouplens.org/datasets/movielens/100k/">Movielens 100K</a>.</p></li>
+<li><p><a class="reference external" href="https://grouplens.org/datasets/movielens/1m/">Movielens 1M</a>.</p></li>
+</ul>
+</li>
+<li><p>Data split</p>
+<ul>
+<li><p>The data is split into train and test sets.</p></li>
+<li><p>The split ratios are 75-25 for train and test datasets.</p></li>
+<li><p>The splitting is stratified based on items.</p></li>
+</ul>
+</li>
+<li><p>Model training</p>
+<ul>
+<li><p>A recommendation model is trained by using each of the collaborative filtering algorithms.</p></li>
+<li><p>Empirical parameter values reported <a class="reference external" href="http://mymedialite.net/examples/datasets.html">here</a> are used in this notebook.  More exhaustive hyper parameter tuning would be required to further optimize results.</p></li>
+</ul>
+</li>
+<li><p>Evaluation metrics</p>
+<ul>
+<li><p>Ranking metrics:</p>
+<ul>
+<li><p>Precision&#64;k.</p></li>
+<li><p>Recall&#64;k.</p></li>
+<li><p>Normalized discounted cumulative gain&#64;k (NDCG&#64;k).</p></li>
+<li><p>Mean-average-precision (MAP).</p></li>
+<li><p>In the evaluation metrics above, k = 10.</p></li>
+</ul>
+</li>
+<li><p>Rating metrics:</p>
+<ul>
+<li><p>Root mean squared error (RMSE).</p></li>
+<li><p>Mean average error (MAE).</p></li>
+<li><p>R squared.</p></li>
+<li><p>Explained variance.</p></li>
+</ul>
+</li>
+<li><p>Run time performance</p>
+<ul>
+<li><p>Elapsed for training a model and using a model for predicting/recommending k items.</p></li>
+<li><p>The time may vary across different machines.</p></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="globals-settings">
+<h2>Globals settings<a class="headerlink" href="#globals-settings" title="Permalink to this headline">¶</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
+<span class="kn">import</span> <span class="nn">pyspark</span>
+<span class="kn">import</span> <span class="nn">torch</span>
+<span class="kn">import</span> <span class="nn">fastai</span>
+<span class="kn">import</span> <span class="nn">tensorflow</span> <span class="k">as</span> <span class="nn">tf</span>
+<span class="n">tf</span><span class="o">.</span><span class="n">get_logger</span><span class="p">()</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="s1">&#39;ERROR&#39;</span><span class="p">)</span> <span class="c1"># only show error messages</span>
+<span class="kn">import</span> <span class="nn">surprise</span>
+
+<span class="kn">from</span> <span class="nn">recommenders.utils.general_utils</span> <span class="kn">import</span> <span class="n">get_number_processors</span>
+<span class="kn">from</span> <span class="nn">recommenders.utils.gpu_utils</span> <span class="kn">import</span> <span class="n">get_cuda_version</span><span class="p">,</span> <span class="n">get_cudnn_version</span>
+<span class="kn">from</span> <span class="nn">recommenders.datasets</span> <span class="kn">import</span> <span class="n">movielens</span>
+<span class="kn">from</span> <span class="nn">recommenders.datasets.python_splitters</span> <span class="kn">import</span> <span class="n">python_stratified_split</span>
+
+<span class="kn">from</span> <span class="nn">benchmark_utils</span> <span class="kn">import</span> <span class="o">*</span> 
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;System version: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">version</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Pandas version: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">__version__</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;PySpark version: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">pyspark</span><span class="o">.</span><span class="n">__version__</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Surprise version: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">surprise</span><span class="o">.</span><span class="n">__version__</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;PyTorch version: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">__version__</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Fast AI version: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">fastai</span><span class="o">.</span><span class="n">__version__</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Cornac version: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">cornac</span><span class="o">.</span><span class="n">__version__</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Tensorflow version: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">__version__</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;CUDA version: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">get_cuda_version</span><span class="p">()))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;CuDNN version: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">get_cudnn_version</span><span class="p">()))</span>
+<span class="n">n_cores</span> <span class="o">=</span> <span class="n">get_number_processors</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Number of cores: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">n_cores</span><span class="p">))</span>
+
+<span class="o">%</span><span class="k">load_ext</span> autoreload
+<span class="o">%</span><span class="k">autoreload</span> 2
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>System version: 3.6.11 | packaged by conda-forge | (default, Nov 27 2020, 18:57:37) 
+[GCC 9.3.0]
+Pandas version: 1.1.5
+PySpark version: 2.4.5
+Surprise version: 1.1.1
+PyTorch version: 1.4.0
+Fast AI version: 1.0.46
+Cornac version: 1.12.0
+Tensorflow version: 1.15.4
+CUDA version: CUDA Version 10.2.89
+CuDNN version: No CUDNN in this machine
+Number of cores: 48
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="parameters">
+<h2>Parameters<a class="headerlink" href="#parameters" title="Permalink to this headline">¶</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Hide fastai progress bar</span>
+<span class="n">hide_fastai_progress_bar</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># fix random seeds to make sure out runs are reproducible</span>
+<span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="n">SEED</span><span class="p">)</span>
+<span class="n">torch</span><span class="o">.</span><span class="n">manual_seed</span><span class="p">(</span><span class="n">SEED</span><span class="p">)</span>
+<span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">manual_seed_all</span><span class="p">(</span><span class="n">SEED</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">environments</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;als&quot;</span><span class="p">:</span> <span class="s2">&quot;pyspark&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;sar&quot;</span><span class="p">:</span> <span class="s2">&quot;python_cpu&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;svd&quot;</span><span class="p">:</span> <span class="s2">&quot;python_cpu&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;fastai&quot;</span><span class="p">:</span> <span class="s2">&quot;python_gpu&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;ncf&quot;</span><span class="p">:</span> <span class="s2">&quot;python_gpu&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;bpr&quot;</span><span class="p">:</span> <span class="s2">&quot;python_cpu&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;bivae&quot;</span><span class="p">:</span> <span class="s2">&quot;python_gpu&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;lightgcn&quot;</span><span class="p">:</span> <span class="s2">&quot;python_gpu&quot;</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="n">metrics</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;als&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;rating&quot;</span><span class="p">,</span> <span class="s2">&quot;ranking&quot;</span><span class="p">],</span>
+    <span class="s2">&quot;sar&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;ranking&quot;</span><span class="p">],</span>
+    <span class="s2">&quot;svd&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;rating&quot;</span><span class="p">,</span> <span class="s2">&quot;ranking&quot;</span><span class="p">],</span>
+    <span class="s2">&quot;fastai&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;rating&quot;</span><span class="p">,</span> <span class="s2">&quot;ranking&quot;</span><span class="p">],</span>
+    <span class="s2">&quot;ncf&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;ranking&quot;</span><span class="p">],</span>
+    <span class="s2">&quot;bpr&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;ranking&quot;</span><span class="p">],</span>
+    <span class="s2">&quot;bivae&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;ranking&quot;</span><span class="p">],</span>
+    <span class="s2">&quot;lightgcn&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;ranking&quot;</span><span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Algorithm parameters</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">als_params</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;rank&quot;</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span>
+    <span class="s2">&quot;maxIter&quot;</span><span class="p">:</span> <span class="mi">15</span><span class="p">,</span>
+    <span class="s2">&quot;implicitPrefs&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="s2">&quot;alpha&quot;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span>
+    <span class="s2">&quot;regParam&quot;</span><span class="p">:</span> <span class="mf">0.05</span><span class="p">,</span>
+    <span class="s2">&quot;coldStartStrategy&quot;</span><span class="p">:</span> <span class="s2">&quot;drop&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;nonnegative&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="s2">&quot;userCol&quot;</span><span class="p">:</span> <span class="n">DEFAULT_USER_COL</span><span class="p">,</span>
+    <span class="s2">&quot;itemCol&quot;</span><span class="p">:</span> <span class="n">DEFAULT_ITEM_COL</span><span class="p">,</span>
+    <span class="s2">&quot;ratingCol&quot;</span><span class="p">:</span> <span class="n">DEFAULT_RATING_COL</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="n">sar_params</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;similarity_type&quot;</span><span class="p">:</span> <span class="s2">&quot;jaccard&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;time_decay_coefficient&quot;</span><span class="p">:</span> <span class="mi">30</span><span class="p">,</span>
+    <span class="s2">&quot;time_now&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="s2">&quot;timedecay_formula&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="s2">&quot;col_user&quot;</span><span class="p">:</span> <span class="n">DEFAULT_USER_COL</span><span class="p">,</span>
+    <span class="s2">&quot;col_item&quot;</span><span class="p">:</span> <span class="n">DEFAULT_ITEM_COL</span><span class="p">,</span>
+    <span class="s2">&quot;col_rating&quot;</span><span class="p">:</span> <span class="n">DEFAULT_RATING_COL</span><span class="p">,</span>
+    <span class="s2">&quot;col_timestamp&quot;</span><span class="p">:</span> <span class="n">DEFAULT_TIMESTAMP_COL</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="n">svd_params</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;n_factors&quot;</span><span class="p">:</span> <span class="mi">150</span><span class="p">,</span>
+    <span class="s2">&quot;n_epochs&quot;</span><span class="p">:</span> <span class="mi">15</span><span class="p">,</span>
+    <span class="s2">&quot;lr_all&quot;</span><span class="p">:</span> <span class="mf">0.005</span><span class="p">,</span>
+    <span class="s2">&quot;reg_all&quot;</span><span class="p">:</span> <span class="mf">0.02</span><span class="p">,</span>
+    <span class="s2">&quot;random_state&quot;</span><span class="p">:</span> <span class="n">SEED</span><span class="p">,</span>
+    <span class="s2">&quot;verbose&quot;</span><span class="p">:</span> <span class="kc">False</span>
+<span class="p">}</span>
+
+<span class="n">fastai_params</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;n_factors&quot;</span><span class="p">:</span> <span class="mi">40</span><span class="p">,</span> 
+    <span class="s2">&quot;y_range&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mf">5.5</span><span class="p">],</span> 
+    <span class="s2">&quot;wd&quot;</span><span class="p">:</span> <span class="mf">1e-1</span><span class="p">,</span>
+    <span class="s2">&quot;max_lr&quot;</span><span class="p">:</span> <span class="mf">5e-3</span><span class="p">,</span>
+    <span class="s2">&quot;epochs&quot;</span><span class="p">:</span> <span class="mi">15</span>
+<span class="p">}</span>
+
+<span class="n">ncf_params</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;model_type&quot;</span><span class="p">:</span> <span class="s2">&quot;NeuMF&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;n_factors&quot;</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span>
+    <span class="s2">&quot;layer_sizes&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">16</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span>
+    <span class="s2">&quot;n_epochs&quot;</span><span class="p">:</span> <span class="mi">15</span><span class="p">,</span>
+    <span class="s2">&quot;batch_size&quot;</span><span class="p">:</span> <span class="mi">1024</span><span class="p">,</span>
+    <span class="s2">&quot;learning_rate&quot;</span><span class="p">:</span> <span class="mf">1e-3</span><span class="p">,</span>
+    <span class="s2">&quot;verbose&quot;</span><span class="p">:</span> <span class="mi">10</span>
+<span class="p">}</span>
+
+<span class="n">bpr_params</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;k&quot;</span><span class="p">:</span> <span class="mi">200</span><span class="p">,</span>
+    <span class="s2">&quot;max_iter&quot;</span><span class="p">:</span> <span class="mi">200</span><span class="p">,</span>
+    <span class="s2">&quot;learning_rate&quot;</span><span class="p">:</span> <span class="mf">0.01</span><span class="p">,</span>
+    <span class="s2">&quot;lambda_reg&quot;</span><span class="p">:</span> <span class="mf">1e-3</span><span class="p">,</span>
+    <span class="s2">&quot;seed&quot;</span><span class="p">:</span> <span class="n">SEED</span><span class="p">,</span>
+    <span class="s2">&quot;verbose&quot;</span><span class="p">:</span> <span class="kc">False</span>
+<span class="p">}</span>
+
+<span class="n">bivae_params</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;k&quot;</span><span class="p">:</span> <span class="mi">100</span><span class="p">,</span>
+    <span class="s2">&quot;encoder_structure&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">200</span><span class="p">],</span>
+    <span class="s2">&quot;act_fn&quot;</span><span class="p">:</span> <span class="s2">&quot;tanh&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;likelihood&quot;</span><span class="p">:</span> <span class="s2">&quot;pois&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;n_epochs&quot;</span><span class="p">:</span> <span class="mi">500</span><span class="p">,</span>
+    <span class="s2">&quot;batch_size&quot;</span><span class="p">:</span> <span class="mi">1024</span><span class="p">,</span>
+    <span class="s2">&quot;learning_rate&quot;</span><span class="p">:</span> <span class="mf">0.001</span><span class="p">,</span>
+    <span class="s2">&quot;seed&quot;</span><span class="p">:</span> <span class="n">SEED</span><span class="p">,</span>
+    <span class="s2">&quot;use_gpu&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="s2">&quot;verbose&quot;</span><span class="p">:</span> <span class="kc">False</span>
+<span class="p">}</span>
+
+<span class="n">lightgcn_param</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;yaml_file&quot;</span><span class="p">:</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s2">&quot;..&quot;</span><span class="p">,</span><span class="s2">&quot;..&quot;</span><span class="p">,</span><span class="s2">&quot;recommenders&quot;</span><span class="p">,</span> <span class="s2">&quot;recommender&quot;</span><span class="p">,</span> <span class="s2">&quot;deeprec&quot;</span><span class="p">,</span> <span class="s2">&quot;config&quot;</span><span class="p">,</span> <span class="s2">&quot;lightgcn.yaml&quot;</span><span class="p">),</span>
+    <span class="s2">&quot;n_layers&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+    <span class="s2">&quot;batch_size&quot;</span><span class="p">:</span> <span class="mi">1024</span><span class="p">,</span>
+    <span class="s2">&quot;epochs&quot;</span><span class="p">:</span> <span class="mi">15</span><span class="p">,</span>
+    <span class="s2">&quot;learning_rate&quot;</span><span class="p">:</span> <span class="mf">0.005</span><span class="p">,</span>
+    <span class="s2">&quot;eval_epoch&quot;</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span>
+    <span class="s2">&quot;top_k&quot;</span><span class="p">:</span> <span class="n">DEFAULT_K</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="n">params</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;als&quot;</span><span class="p">:</span> <span class="n">als_params</span><span class="p">,</span>
+    <span class="s2">&quot;sar&quot;</span><span class="p">:</span> <span class="n">sar_params</span><span class="p">,</span>
+    <span class="s2">&quot;svd&quot;</span><span class="p">:</span> <span class="n">svd_params</span><span class="p">,</span>
+    <span class="s2">&quot;fastai&quot;</span><span class="p">:</span> <span class="n">fastai_params</span><span class="p">,</span>
+    <span class="s2">&quot;ncf&quot;</span><span class="p">:</span> <span class="n">ncf_params</span><span class="p">,</span>
+    <span class="s2">&quot;bpr&quot;</span><span class="p">:</span> <span class="n">bpr_params</span><span class="p">,</span>
+    <span class="s2">&quot;bivae&quot;</span><span class="p">:</span> <span class="n">bivae_params</span><span class="p">,</span>
+    <span class="s2">&quot;lightgcn&quot;</span><span class="p">:</span> <span class="n">lightgcn_param</span><span class="p">,</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">prepare_training_data</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;als&quot;</span><span class="p">:</span> <span class="n">prepare_training_als</span><span class="p">,</span>
+    <span class="s2">&quot;sar&quot;</span><span class="p">:</span> <span class="n">prepare_training_sar</span><span class="p">,</span>
+    <span class="s2">&quot;svd&quot;</span><span class="p">:</span> <span class="n">prepare_training_svd</span><span class="p">,</span>
+    <span class="s2">&quot;fastai&quot;</span><span class="p">:</span> <span class="n">prepare_training_fastai</span><span class="p">,</span>
+    <span class="s2">&quot;ncf&quot;</span><span class="p">:</span> <span class="n">prepare_training_ncf</span><span class="p">,</span>
+    <span class="s2">&quot;bpr&quot;</span><span class="p">:</span> <span class="n">prepare_training_cornac</span><span class="p">,</span>
+    <span class="s2">&quot;bivae&quot;</span><span class="p">:</span> <span class="n">prepare_training_cornac</span><span class="p">,</span>
+    <span class="s2">&quot;lightgcn&quot;</span><span class="p">:</span> <span class="n">prepare_training_lightgcn</span><span class="p">,</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">prepare_metrics_data</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;als&quot;</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">train</span><span class="p">,</span> <span class="n">test</span><span class="p">:</span> <span class="n">prepare_metrics_als</span><span class="p">(</span><span class="n">train</span><span class="p">,</span> <span class="n">test</span><span class="p">),</span>
+    <span class="s2">&quot;fastai&quot;</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">train</span><span class="p">,</span> <span class="n">test</span><span class="p">:</span> <span class="n">prepare_metrics_fastai</span><span class="p">(</span><span class="n">train</span><span class="p">,</span> <span class="n">test</span><span class="p">),</span>    
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">trainer</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;als&quot;</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">params</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">train_als</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">data</span><span class="p">),</span>
+    <span class="s2">&quot;svd&quot;</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">params</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">train_svd</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">data</span><span class="p">),</span>
+    <span class="s2">&quot;sar&quot;</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">params</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">train_sar</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">data</span><span class="p">),</span> 
+    <span class="s2">&quot;fastai&quot;</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">params</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">train_fastai</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">data</span><span class="p">),</span>
+    <span class="s2">&quot;ncf&quot;</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">params</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">train_ncf</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">data</span><span class="p">),</span>
+    <span class="s2">&quot;bpr&quot;</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">params</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">train_bpr</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">data</span><span class="p">),</span>
+    <span class="s2">&quot;bivae&quot;</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">params</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">train_bivae</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">data</span><span class="p">),</span>
+    <span class="s2">&quot;lightgcn&quot;</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">params</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">train_lightgcn</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">data</span><span class="p">),</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">rating_predictor</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;als&quot;</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">model</span><span class="p">,</span> <span class="n">test</span><span class="p">:</span> <span class="n">predict_als</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">test</span><span class="p">),</span>
+    <span class="s2">&quot;svd&quot;</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">model</span><span class="p">,</span> <span class="n">test</span><span class="p">:</span> <span class="n">predict_svd</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">test</span><span class="p">),</span>
+    <span class="s2">&quot;fastai&quot;</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">model</span><span class="p">,</span> <span class="n">test</span><span class="p">:</span> <span class="n">predict_fastai</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">test</span><span class="p">),</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ranking_predictor</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;als&quot;</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">model</span><span class="p">,</span> <span class="n">test</span><span class="p">,</span> <span class="n">train</span><span class="p">:</span> <span class="n">recommend_k_als</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">test</span><span class="p">,</span> <span class="n">train</span><span class="p">),</span>
+    <span class="s2">&quot;sar&quot;</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">model</span><span class="p">,</span> <span class="n">test</span><span class="p">,</span> <span class="n">train</span><span class="p">:</span> <span class="n">recommend_k_sar</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">test</span><span class="p">,</span> <span class="n">train</span><span class="p">),</span>
+    <span class="s2">&quot;svd&quot;</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">model</span><span class="p">,</span> <span class="n">test</span><span class="p">,</span> <span class="n">train</span><span class="p">:</span> <span class="n">recommend_k_svd</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">test</span><span class="p">,</span> <span class="n">train</span><span class="p">),</span>
+    <span class="s2">&quot;fastai&quot;</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">model</span><span class="p">,</span> <span class="n">test</span><span class="p">,</span> <span class="n">train</span><span class="p">:</span> <span class="n">recommend_k_fastai</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">test</span><span class="p">,</span> <span class="n">train</span><span class="p">),</span>
+    <span class="s2">&quot;ncf&quot;</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">model</span><span class="p">,</span> <span class="n">test</span><span class="p">,</span> <span class="n">train</span><span class="p">:</span> <span class="n">recommend_k_ncf</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">test</span><span class="p">,</span> <span class="n">train</span><span class="p">),</span>
+    <span class="s2">&quot;bpr&quot;</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">model</span><span class="p">,</span> <span class="n">test</span><span class="p">,</span> <span class="n">train</span><span class="p">:</span> <span class="n">recommend_k_cornac</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">test</span><span class="p">,</span> <span class="n">train</span><span class="p">),</span>
+    <span class="s2">&quot;bivae&quot;</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">model</span><span class="p">,</span> <span class="n">test</span><span class="p">,</span> <span class="n">train</span><span class="p">:</span> <span class="n">recommend_k_cornac</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">test</span><span class="p">,</span> <span class="n">train</span><span class="p">),</span>
+    <span class="s2">&quot;lightgcn&quot;</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">model</span><span class="p">,</span> <span class="n">test</span><span class="p">,</span> <span class="n">train</span><span class="p">:</span> <span class="n">recommend_k_lightgcn</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">test</span><span class="p">,</span> <span class="n">train</span><span class="p">),</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">rating_evaluator</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;als&quot;</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">test</span><span class="p">,</span> <span class="n">predictions</span><span class="p">:</span> <span class="n">rating_metrics_pyspark</span><span class="p">(</span><span class="n">test</span><span class="p">,</span> <span class="n">predictions</span><span class="p">),</span>
+    <span class="s2">&quot;svd&quot;</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">test</span><span class="p">,</span> <span class="n">predictions</span><span class="p">:</span> <span class="n">rating_metrics_python</span><span class="p">(</span><span class="n">test</span><span class="p">,</span> <span class="n">predictions</span><span class="p">),</span>
+    <span class="s2">&quot;fastai&quot;</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">test</span><span class="p">,</span> <span class="n">predictions</span><span class="p">:</span> <span class="n">rating_metrics_python</span><span class="p">(</span><span class="n">test</span><span class="p">,</span> <span class="n">predictions</span><span class="p">)</span>
+<span class="p">}</span>
+    
+    
+<span class="n">ranking_evaluator</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;als&quot;</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">test</span><span class="p">,</span> <span class="n">predictions</span><span class="p">,</span> <span class="n">k</span><span class="p">:</span> <span class="n">ranking_metrics_pyspark</span><span class="p">(</span><span class="n">test</span><span class="p">,</span> <span class="n">predictions</span><span class="p">,</span> <span class="n">k</span><span class="p">),</span>
+    <span class="s2">&quot;sar&quot;</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">test</span><span class="p">,</span> <span class="n">predictions</span><span class="p">,</span> <span class="n">k</span><span class="p">:</span> <span class="n">ranking_metrics_python</span><span class="p">(</span><span class="n">test</span><span class="p">,</span> <span class="n">predictions</span><span class="p">,</span> <span class="n">k</span><span class="p">),</span>
+    <span class="s2">&quot;svd&quot;</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">test</span><span class="p">,</span> <span class="n">predictions</span><span class="p">,</span> <span class="n">k</span><span class="p">:</span> <span class="n">ranking_metrics_python</span><span class="p">(</span><span class="n">test</span><span class="p">,</span> <span class="n">predictions</span><span class="p">,</span> <span class="n">k</span><span class="p">),</span>
+    <span class="s2">&quot;fastai&quot;</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">test</span><span class="p">,</span> <span class="n">predictions</span><span class="p">,</span> <span class="n">k</span><span class="p">:</span> <span class="n">ranking_metrics_python</span><span class="p">(</span><span class="n">test</span><span class="p">,</span> <span class="n">predictions</span><span class="p">,</span> <span class="n">k</span><span class="p">),</span>
+    <span class="s2">&quot;ncf&quot;</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">test</span><span class="p">,</span> <span class="n">predictions</span><span class="p">,</span> <span class="n">k</span><span class="p">:</span> <span class="n">ranking_metrics_python</span><span class="p">(</span><span class="n">test</span><span class="p">,</span> <span class="n">predictions</span><span class="p">,</span> <span class="n">k</span><span class="p">),</span>
+    <span class="s2">&quot;bpr&quot;</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">test</span><span class="p">,</span> <span class="n">predictions</span><span class="p">,</span> <span class="n">k</span><span class="p">:</span> <span class="n">ranking_metrics_python</span><span class="p">(</span><span class="n">test</span><span class="p">,</span> <span class="n">predictions</span><span class="p">,</span> <span class="n">k</span><span class="p">),</span>
+    <span class="s2">&quot;bivae&quot;</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">test</span><span class="p">,</span> <span class="n">predictions</span><span class="p">,</span> <span class="n">k</span><span class="p">:</span> <span class="n">ranking_metrics_python</span><span class="p">(</span><span class="n">test</span><span class="p">,</span> <span class="n">predictions</span><span class="p">,</span> <span class="n">k</span><span class="p">),</span>
+    <span class="s2">&quot;lightgcn&quot;</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">test</span><span class="p">,</span> <span class="n">predictions</span><span class="p">,</span> <span class="n">k</span><span class="p">:</span> <span class="n">ranking_metrics_python</span><span class="p">(</span><span class="n">test</span><span class="p">,</span> <span class="n">predictions</span><span class="p">,</span> <span class="n">k</span><span class="p">),</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">generate_summary</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">algo</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">train_time</span><span class="p">,</span> <span class="n">time_rating</span><span class="p">,</span> <span class="n">rating_metrics</span><span class="p">,</span> <span class="n">time_ranking</span><span class="p">,</span> <span class="n">ranking_metrics</span><span class="p">):</span>
+    <span class="n">summary</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;Data&quot;</span><span class="p">:</span> <span class="n">data</span><span class="p">,</span> <span class="s2">&quot;Algo&quot;</span><span class="p">:</span> <span class="n">algo</span><span class="p">,</span> <span class="s2">&quot;K&quot;</span><span class="p">:</span> <span class="n">k</span><span class="p">,</span> <span class="s2">&quot;Train time (s)&quot;</span><span class="p">:</span> <span class="n">train_time</span><span class="p">,</span> <span class="s2">&quot;Predicting time (s)&quot;</span><span class="p">:</span> <span class="n">time_rating</span><span class="p">,</span> <span class="s2">&quot;Recommending time (s)&quot;</span><span class="p">:</span> <span class="n">time_ranking</span><span class="p">}</span>
+    <span class="k">if</span> <span class="n">rating_metrics</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">rating_metrics</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;RMSE&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span>
+            <span class="s2">&quot;MAE&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span>
+            <span class="s2">&quot;R2&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span>
+            <span class="s2">&quot;Explained Variance&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span>
+        <span class="p">}</span>
+    <span class="k">if</span> <span class="n">ranking_metrics</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">ranking_metrics</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;MAP&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span>
+            <span class="s2">&quot;nDCG@k&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span>
+            <span class="s2">&quot;Precision@k&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span>
+            <span class="s2">&quot;Recall@k&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span>
+        <span class="p">}</span>
+    <span class="n">summary</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">rating_metrics</span><span class="p">)</span>
+    <span class="n">summary</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">ranking_metrics</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">summary</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="benchmark-loop">
+<h2>Benchmark loop<a class="headerlink" href="#benchmark-loop" title="Permalink to this headline">¶</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data_sizes</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;100k&quot;</span><span class="p">,</span> <span class="s2">&quot;1m&quot;</span><span class="p">]</span> <span class="c1"># Movielens data size: 100k, 1m, 10m, or 20m</span>
+<span class="n">algorithms</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;als&quot;</span><span class="p">,</span> <span class="s2">&quot;svd&quot;</span><span class="p">,</span> <span class="s2">&quot;sar&quot;</span><span class="p">,</span> <span class="s2">&quot;ncf&quot;</span><span class="p">,</span> <span class="s2">&quot;fastai&quot;</span><span class="p">,</span> <span class="s2">&quot;bpr&quot;</span><span class="p">,</span> <span class="s2">&quot;bivae&quot;</span><span class="p">,</span> <span class="s2">&quot;lightgcn&quot;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%time</span>
+
+<span class="c1"># For each data size and each algorithm, a recommender is evaluated. </span>
+<span class="n">cols</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Data&quot;</span><span class="p">,</span> <span class="s2">&quot;Algo&quot;</span><span class="p">,</span> <span class="s2">&quot;K&quot;</span><span class="p">,</span> <span class="s2">&quot;Train time (s)&quot;</span><span class="p">,</span> <span class="s2">&quot;Predicting time (s)&quot;</span><span class="p">,</span> <span class="s2">&quot;RMSE&quot;</span><span class="p">,</span> <span class="s2">&quot;MAE&quot;</span><span class="p">,</span> <span class="s2">&quot;R2&quot;</span><span class="p">,</span> <span class="s2">&quot;Explained Variance&quot;</span><span class="p">,</span> <span class="s2">&quot;Recommending time (s)&quot;</span><span class="p">,</span> <span class="s2">&quot;MAP&quot;</span><span class="p">,</span> <span class="s2">&quot;nDCG@k&quot;</span><span class="p">,</span> <span class="s2">&quot;Precision@k&quot;</span><span class="p">,</span> <span class="s2">&quot;Recall@k&quot;</span><span class="p">]</span>
+<span class="n">df_results</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="n">cols</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">data_size</span> <span class="ow">in</span> <span class="n">data_sizes</span><span class="p">:</span>
+    <span class="c1"># Load the dataset</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">movielens</span><span class="o">.</span><span class="n">load_pandas_df</span><span class="p">(</span>
+        <span class="n">size</span><span class="o">=</span><span class="n">data_size</span><span class="p">,</span>
+        <span class="n">header</span><span class="o">=</span><span class="p">[</span><span class="n">DEFAULT_USER_COL</span><span class="p">,</span> <span class="n">DEFAULT_ITEM_COL</span><span class="p">,</span> <span class="n">DEFAULT_RATING_COL</span><span class="p">,</span> <span class="n">DEFAULT_TIMESTAMP_COL</span><span class="p">]</span>
+    <span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Size of Movielens </span><span class="si">{}</span><span class="s2">: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">data_size</span><span class="p">,</span> <span class="n">df</span><span class="o">.</span><span class="n">shape</span><span class="p">))</span>
+    
+    <span class="c1"># Split the dataset</span>
+    <span class="n">df_train</span><span class="p">,</span> <span class="n">df_test</span> <span class="o">=</span> <span class="n">python_stratified_split</span><span class="p">(</span><span class="n">df</span><span class="p">,</span>
+                                                <span class="n">ratio</span><span class="o">=</span><span class="mf">0.75</span><span class="p">,</span> 
+                                                <span class="n">min_rating</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> 
+                                                <span class="n">filter_by</span><span class="o">=</span><span class="s2">&quot;item&quot;</span><span class="p">,</span> 
+                                                <span class="n">col_user</span><span class="o">=</span><span class="n">DEFAULT_USER_COL</span><span class="p">,</span> 
+                                                <span class="n">col_item</span><span class="o">=</span><span class="n">DEFAULT_ITEM_COL</span>
+                                                <span class="p">)</span>
+   
+    <span class="c1"># Loop through the algos</span>
+    <span class="k">for</span> <span class="n">algo</span> <span class="ow">in</span> <span class="n">algorithms</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Computing </span><span class="si">{</span><span class="n">algo</span><span class="si">}</span><span class="s2"> algorithm on Movielens </span><span class="si">{</span><span class="n">data_size</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+          
+        <span class="c1"># Data prep for training set</span>
+        <span class="n">train</span> <span class="o">=</span> <span class="n">prepare_training_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">algo</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">:(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">))(</span><span class="n">df_train</span><span class="p">,</span> <span class="n">df_test</span><span class="p">)</span>
+        
+        <span class="c1"># Get model parameters</span>
+        <span class="n">model_params</span> <span class="o">=</span> <span class="n">params</span><span class="p">[</span><span class="n">algo</span><span class="p">]</span>
+          
+        <span class="c1"># Train the model</span>
+        <span class="n">model</span><span class="p">,</span> <span class="n">time_train</span> <span class="o">=</span> <span class="n">trainer</span><span class="p">[</span><span class="n">algo</span><span class="p">](</span><span class="n">model_params</span><span class="p">,</span> <span class="n">train</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Training time: </span><span class="si">{</span><span class="n">time_train</span><span class="si">}</span><span class="s2">s&quot;</span><span class="p">)</span>
+                
+        <span class="c1"># Predict and evaluate</span>
+        <span class="n">train</span><span class="p">,</span> <span class="n">test</span> <span class="o">=</span> <span class="n">prepare_metrics_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">algo</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">:(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">))(</span><span class="n">df_train</span><span class="p">,</span> <span class="n">df_test</span><span class="p">)</span>
+        
+        <span class="k">if</span> <span class="s2">&quot;rating&quot;</span> <span class="ow">in</span> <span class="n">metrics</span><span class="p">[</span><span class="n">algo</span><span class="p">]:</span>   
+            <span class="c1"># Predict for rating</span>
+            <span class="n">preds</span><span class="p">,</span> <span class="n">time_rating</span> <span class="o">=</span> <span class="n">rating_predictor</span><span class="p">[</span><span class="n">algo</span><span class="p">](</span><span class="n">model</span><span class="p">,</span> <span class="n">test</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Rating prediction time: </span><span class="si">{</span><span class="n">time_rating</span><span class="si">}</span><span class="s2">s&quot;</span><span class="p">)</span>
+            
+            <span class="c1"># Evaluate for rating</span>
+            <span class="n">ratings</span> <span class="o">=</span> <span class="n">rating_evaluator</span><span class="p">[</span><span class="n">algo</span><span class="p">](</span><span class="n">test</span><span class="p">,</span> <span class="n">preds</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">ratings</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="n">time_rating</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+        
+        <span class="k">if</span> <span class="s2">&quot;ranking&quot;</span> <span class="ow">in</span> <span class="n">metrics</span><span class="p">[</span><span class="n">algo</span><span class="p">]:</span>
+            <span class="c1"># Predict for ranking</span>
+            <span class="n">top_k_scores</span><span class="p">,</span> <span class="n">time_ranking</span> <span class="o">=</span> <span class="n">ranking_predictor</span><span class="p">[</span><span class="n">algo</span><span class="p">](</span><span class="n">model</span><span class="p">,</span> <span class="n">test</span><span class="p">,</span> <span class="n">train</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Ranking prediction time: </span><span class="si">{</span><span class="n">time_ranking</span><span class="si">}</span><span class="s2">s&quot;</span><span class="p">)</span>
+            
+            <span class="c1"># Evaluate for rating</span>
+            <span class="n">rankings</span> <span class="o">=</span> <span class="n">ranking_evaluator</span><span class="p">[</span><span class="n">algo</span><span class="p">](</span><span class="n">test</span><span class="p">,</span> <span class="n">top_k_scores</span><span class="p">,</span> <span class="n">DEFAULT_K</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">rankings</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="n">time_ranking</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+            
+        <span class="c1"># Record results</span>
+        <span class="n">summary</span> <span class="o">=</span> <span class="n">generate_summary</span><span class="p">(</span><span class="n">data_size</span><span class="p">,</span> <span class="n">algo</span><span class="p">,</span> <span class="n">DEFAULT_K</span><span class="p">,</span> <span class="n">time_train</span><span class="p">,</span> <span class="n">time_rating</span><span class="p">,</span> <span class="n">ratings</span><span class="p">,</span> <span class="n">time_ranking</span><span class="p">,</span> <span class="n">rankings</span><span class="p">)</span>
+        <span class="n">df_results</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">df_results</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">summary</span>
+        
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Computation finished&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>100%|██████████| 4.81k/4.81k [00:01&lt;00:00, 2.41kKB/s]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Size of Movielens 100k: (100000, 4)
+
+Computing als algorithm on Movielens 100k
+Training time: 6.6739s
+Rating prediction time: 0.0716s
+Ranking prediction time: 0.0910s
+
+Computing svd algorithm on Movielens 100k
+Training time: 4.2722s
+Rating prediction time: 0.2882s
+Ranking prediction time: 14.9461s
+
+Computing sar algorithm on Movielens 100k
+Training time: 0.3608s
+Ranking prediction time: 0.0853s
+
+Computing ncf algorithm on Movielens 100k
+Training time: 63.8578s
+Ranking prediction time: 4.8731s
+
+Computing fastai algorithm on Movielens 100k
+Training time: 96.2693s
+Rating prediction time: 0.0533s
+Ranking prediction time: 3.2034s
+
+Computing bpr algorithm on Movielens 100k
+Training time: 6.6029s
+Ranking prediction time: 1.5408s
+
+Computing bivae algorithm on Movielens 100k
+Training time: 10.4133s
+Ranking prediction time: 1.5687s
+
+Computing lightgcn algorithm on Movielens 100k
+Already create adjacency matrix.
+Already normalize adjacency matrix.
+Using xavier initialization.
+Epoch 1 (train)1.5s: train loss = 0.47708 = (mf)0.47684 + (embed)0.00024
+Epoch 2 (train)0.9s: train loss = 0.28938 = (mf)0.28875 + (embed)0.00063
+Epoch 3 (train)0.9s: train loss = 0.25478 = (mf)0.25398 + (embed)0.00080
+Epoch 4 (train)0.9s: train loss = 0.23985 = (mf)0.23888 + (embed)0.00097
+Epoch 5 (train)0.8s + (eval)0.2s: train loss = 0.23025 = (mf)0.22914 + (embed)0.00110, recall = 0.16051, ndcg = 0.34891, precision = 0.30297, map = 0.09295
+Epoch 6 (train)0.9s: train loss = 0.22287 = (mf)0.22165 + (embed)0.00122
+Epoch 7 (train)0.9s: train loss = 0.21368 = (mf)0.21236 + (embed)0.00132
+Epoch 8 (train)0.9s: train loss = 0.20252 = (mf)0.20107 + (embed)0.00145
+Epoch 9 (train)0.9s: train loss = 0.19008 = (mf)0.18847 + (embed)0.00161
+Epoch 10 (train)0.9s + (eval)0.2s: train loss = 0.18022 = (mf)0.17844 + (embed)0.00178, recall = 0.18071, ndcg = 0.39217, precision = 0.34019, map = 0.10928
+Epoch 11 (train)0.9s: train loss = 0.17680 = (mf)0.17487 + (embed)0.00194
+Epoch 12 (train)1.0s: train loss = 0.17439 = (mf)0.17233 + (embed)0.00206
+Epoch 13 (train)0.9s: train loss = 0.16669 = (mf)0.16450 + (embed)0.00219
+Epoch 14 (train)0.9s: train loss = 0.16579 = (mf)0.16349 + (embed)0.00230
+Epoch 15 (train)0.9s + (eval)0.2s: train loss = 0.16282 = (mf)0.16041 + (embed)0.00241, recall = 0.19053, ndcg = 0.40763, precision = 0.35292, map = 0.11737
+Training time: 14.7697s
+Ranking prediction time: 0.0577s
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>100%|██████████| 5.78k/5.78k [00:01&lt;00:00, 2.89kKB/s]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Size of Movielens 1m: (1000209, 4)
+
+Computing als algorithm on Movielens 1m
+Training time: 3.3558s
+Rating prediction time: 0.0262s
+Ranking prediction time: 0.0547s
+
+Computing svd algorithm on Movielens 1m
+Training time: 43.4842s
+Rating prediction time: 3.4605s
+Ranking prediction time: 210.9069s
+
+Computing sar algorithm on Movielens 1m
+Training time: 3.3966s
+Ranking prediction time: 2.1385s
+
+Computing ncf algorithm on Movielens 1m
+Training time: 818.8540s
+Ranking prediction time: 52.5052s
+
+Computing fastai algorithm on Movielens 1m
+Training time: 800.6882s
+Rating prediction time: 0.4382s
+Ranking prediction time: 54.6923s
+
+Computing bpr algorithm on Movielens 1m
+Training time: 70.1201s
+Ranking prediction time: 30.3135s
+
+Computing bivae algorithm on Movielens 1m
+Training time: 157.1440s
+Ranking prediction time: 29.6179s
+
+Computing lightgcn algorithm on Movielens 1m
+Already create adjacency matrix.
+Already normalize adjacency matrix.
+Using xavier initialization.
+Epoch 1 (train)33.9s: train loss = 0.34573 = (mf)0.34513 + (embed)0.00060
+Epoch 2 (train)27.2s: train loss = 0.26890 = (mf)0.26748 + (embed)0.00142
+Epoch 3 (train)27.2s: train loss = 0.22710 = (mf)0.22481 + (embed)0.00228
+Epoch 4 (train)27.2s: train loss = 0.20468 = (mf)0.20173 + (embed)0.00295
+Epoch 5 (train)28.2s + (eval)2.3s: train loss = 0.18749 = (mf)0.18387 + (embed)0.00362, recall = 0.12346, ndcg = 0.37514, precision = 0.33876, map = 0.07333
+Epoch 6 (train)28.0s: train loss = 0.17191 = (mf)0.16761 + (embed)0.00430
+Epoch 7 (train)27.3s: train loss = 0.16209 = (mf)0.15716 + (embed)0.00493
+Epoch 8 (train)28.0s: train loss = 0.15376 = (mf)0.14825 + (embed)0.00551
+Epoch 9 (train)27.6s: train loss = 0.14711 = (mf)0.14105 + (embed)0.00606
+Epoch 10 (train)25.7s + (eval)2.0s: train loss = 0.14080 = (mf)0.13424 + (embed)0.00657, recall = 0.13965, ndcg = 0.40881, precision = 0.37071, map = 0.08435
+Epoch 11 (train)25.5s: train loss = 0.13659 = (mf)0.12955 + (embed)0.00704
+Epoch 12 (train)26.1s: train loss = 0.13223 = (mf)0.12474 + (embed)0.00749
+Epoch 13 (train)26.4s: train loss = 0.12833 = (mf)0.12039 + (embed)0.00794
+Epoch 14 (train)25.7s: train loss = 0.12402 = (mf)0.11564 + (embed)0.00838
+Epoch 15 (train)27.1s + (eval)2.0s: train loss = 0.12167 = (mf)0.11285 + (embed)0.00882, recall = 0.14387, ndcg = 0.41690, precision = 0.37853, map = 0.08785
+Training time: 417.1986s
+Ranking prediction time: 0.5851s
+
+Computation finished
+CPU times: user 58min 40s, sys: 8min 2s, total: 1h 6min 43s
+Wall time: 1h 3min 3s
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="results">
+<h2>Results<a class="headerlink" href="#results" title="Permalink to this headline">¶</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df_results</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Data</th>
+      <th>Algo</th>
+      <th>K</th>
+      <th>Train time (s)</th>
+      <th>Predicting time (s)</th>
+      <th>RMSE</th>
+      <th>MAE</th>
+      <th>R2</th>
+      <th>Explained Variance</th>
+      <th>Recommending time (s)</th>
+      <th>MAP</th>
+      <th>nDCG@k</th>
+      <th>Precision@k</th>
+      <th>Recall@k</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>1</th>
+      <td>100k</td>
+      <td>als</td>
+      <td>10</td>
+      <td>6.6739</td>
+      <td>0.0716</td>
+      <td>0.963173</td>
+      <td>0.752521</td>
+      <td>0.258453</td>
+      <td>0.254536</td>
+      <td>0.0910</td>
+      <td>0.004091</td>
+      <td>0.041346</td>
+      <td>0.045387</td>
+      <td>0.015172</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>100k</td>
+      <td>svd</td>
+      <td>10</td>
+      <td>4.2722</td>
+      <td>0.2882</td>
+      <td>0.938681</td>
+      <td>0.742690</td>
+      <td>0.291967</td>
+      <td>0.291971</td>
+      <td>14.9461</td>
+      <td>0.012873</td>
+      <td>0.095930</td>
+      <td>0.091198</td>
+      <td>0.032783</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>100k</td>
+      <td>sar</td>
+      <td>10</td>
+      <td>0.3608</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>0.0853</td>
+      <td>0.113028</td>
+      <td>0.388321</td>
+      <td>0.333828</td>
+      <td>0.183179</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>100k</td>
+      <td>ncf</td>
+      <td>10</td>
+      <td>63.8578</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>4.8731</td>
+      <td>0.094349</td>
+      <td>0.369862</td>
+      <td>0.330117</td>
+      <td>0.165953</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>100k</td>
+      <td>fastai</td>
+      <td>10</td>
+      <td>96.2693</td>
+      <td>0.0533</td>
+      <td>0.943093</td>
+      <td>0.744332</td>
+      <td>0.285296</td>
+      <td>0.287658</td>
+      <td>3.2034</td>
+      <td>0.025590</td>
+      <td>0.148119</td>
+      <td>0.130541</td>
+      <td>0.053903</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>100k</td>
+      <td>bpr</td>
+      <td>10</td>
+      <td>6.6029</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>1.5408</td>
+      <td>0.132478</td>
+      <td>0.441997</td>
+      <td>0.388229</td>
+      <td>0.212522</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>100k</td>
+      <td>bivae</td>
+      <td>10</td>
+      <td>10.4133</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>1.5687</td>
+      <td>0.146126</td>
+      <td>0.475077</td>
+      <td>0.411771</td>
+      <td>0.219145</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>100k</td>
+      <td>lightgcn</td>
+      <td>10</td>
+      <td>14.7697</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>0.0577</td>
+      <td>0.117371</td>
+      <td>0.407634</td>
+      <td>0.352916</td>
+      <td>0.190530</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>1m</td>
+      <td>als</td>
+      <td>10</td>
+      <td>3.3558</td>
+      <td>0.0262</td>
+      <td>0.860522</td>
+      <td>0.679683</td>
+      <td>0.412199</td>
+      <td>0.406352</td>
+      <td>0.0547</td>
+      <td>0.002039</td>
+      <td>0.025166</td>
+      <td>0.031373</td>
+      <td>0.009830</td>
+    </tr>
+    <tr>
+      <th>10</th>
+      <td>1m</td>
+      <td>svd</td>
+      <td>10</td>
+      <td>43.4842</td>
+      <td>3.4605</td>
+      <td>0.883017</td>
+      <td>0.695366</td>
+      <td>0.374910</td>
+      <td>0.374911</td>
+      <td>210.9069</td>
+      <td>0.008828</td>
+      <td>0.089320</td>
+      <td>0.082856</td>
+      <td>0.021582</td>
+    </tr>
+    <tr>
+      <th>11</th>
+      <td>1m</td>
+      <td>sar</td>
+      <td>10</td>
+      <td>3.3966</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>2.1385</td>
+      <td>0.066214</td>
+      <td>0.313502</td>
+      <td>0.279692</td>
+      <td>0.111135</td>
+    </tr>
+    <tr>
+      <th>12</th>
+      <td>1m</td>
+      <td>ncf</td>
+      <td>10</td>
+      <td>818.8540</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>52.5052</td>
+      <td>0.063974</td>
+      <td>0.348130</td>
+      <td>0.318900</td>
+      <td>0.109476</td>
+    </tr>
+    <tr>
+      <th>13</th>
+      <td>1m</td>
+      <td>fastai</td>
+      <td>10</td>
+      <td>800.6882</td>
+      <td>0.4382</td>
+      <td>0.874729</td>
+      <td>0.695722</td>
+      <td>0.386589</td>
+      <td>0.389092</td>
+      <td>54.6923</td>
+      <td>0.026299</td>
+      <td>0.183996</td>
+      <td>0.167550</td>
+      <td>0.055682</td>
+    </tr>
+    <tr>
+      <th>14</th>
+      <td>1m</td>
+      <td>bpr</td>
+      <td>10</td>
+      <td>70.1201</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>30.3135</td>
+      <td>0.083546</td>
+      <td>0.390911</td>
+      <td>0.357777</td>
+      <td>0.142510</td>
+    </tr>
+    <tr>
+      <th>15</th>
+      <td>1m</td>
+      <td>bivae</td>
+      <td>10</td>
+      <td>157.1440</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>29.6179</td>
+      <td>0.092682</td>
+      <td>0.433709</td>
+      <td>0.396058</td>
+      <td>0.148564</td>
+    </tr>
+    <tr>
+      <th>16</th>
+      <td>1m</td>
+      <td>lightgcn</td>
+      <td>10</td>
+      <td>417.1986</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>0.5851</td>
+      <td>0.087846</td>
+      <td>0.416899</td>
+      <td>0.378532</td>
+      <td>0.143865</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+</div>
+</div>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "reco_full"
+        },
+        kernelOptions: {
+            kernelName: "reco_full",
+            path: "./examples/06_benchmarks"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'reco_full'</script>
+
+              </div>
+              
+        
+            
+
+
+
+<div class='prev-next-bottom'>
+    
+
+</div>
+        
+        </div>
+    </div>
+    <footer class="footer">
+    <div class="container">
+      <p>
+        
+          By The Jupyter Book community<br/>
+        
+            &copy; Copyright 2021.<br/>
+      </p>
+    </div>
+  </footer>
+</main>
+
+
+      </div>
+    </div>
+  
+  <script src="../../_static/js/index.1c5a1a01449ed65a7b51.js"></script>
+
+  
+  </body>
+</html>

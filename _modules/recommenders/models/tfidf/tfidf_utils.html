@@ -1,0 +1,586 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>recommenders.models.tfidf.tfidf_utils &#8212; &lt;h1 style=&#34;font-size:2em;text-align:center;color:#FF5733&#34;&gt;Recommenders&lt;/h1&gt;</title>
+    
+  <link href="../../../../_static/css/theme.css" rel="stylesheet" />
+  <link href="../../../../_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
+
+    
+  <link rel="stylesheet"
+    href="../../../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+
+    
+    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/sphinx-book-theme.css?digest=c3fdc42140077d1ad13ad2f1588a4309" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/tabs.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    
+  <link rel="preload" as="script" href="../../../../_static/js/index.1c5a1a01449ed65a7b51.js">
+
+    <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
+    <script src="../../../../_static/jquery.js"></script>
+    <script src="../../../../_static/underscore.js"></script>
+    <script src="../../../../_static/doctools.js"></script>
+    <script src="../../../../_static/togglebutton.js"></script>
+    <script src="../../../../_static/clipboard.min.js"></script>
+    <script src="../../../../_static/copybutton.js"></script>
+    <script src="../../../../_static/tabs.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../../../../_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
+    <link rel="canonical" href="https://microsoft.github.io/genalog/_modules/recommenders/models/tfidf/tfidf_utils.html" />
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en" />
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="../../../../index.html">
+      
+      
+      
+      <h1 class="site-logo" id="site-title"><h1 style="font-size:2em;text-align:center;color:#FF5733">Recommenders</h1></h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="../../../../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        
+    </div>
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="topbar container-xl fixed-top">
+    <div class="topbar-contents row">
+        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
+        <div class="col pl-md-4 topbar-main">
+            
+            <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+                data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+                aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
+                title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+                <i class="fas fa-bars"></i>
+                <i class="fas fa-arrow-left"></i>
+                <i class="fas fa-arrow-up"></i>
+            </button>
+            
+            
+            <!-- Source interaction buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
+    <div class="dropdown-buttons sourcebuttons">
+        <a class="repository-button"
+            href="https://github.com/microsoft/genalog"><button type="button" class="btn btn-secondary topbarbtn"
+                data-toggle="tooltip" data-placement="left" title="Source repository"><i
+                    class="fab fa-github"></i>repository</button></a>
+        <a class="issues-button"
+            href="https://github.com/microsoft/genalog/issues/new?title=Issue%20on%20page%20%2F_modules/recommenders/models/tfidf/tfidf_utils.html&body=Your%20issue%20content%20here."><button
+                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
+                title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
+        
+    </div>
+</div>
+
+            <!-- Full screen (wrap in <a> to have style consistency -->
+
+<a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+        data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+        title="Fullscreen mode"><i
+            class="fas fa-expand"></i></button></a>
+
+            <!-- Launch buttons -->
+
+        </div>
+
+        <!-- Table of contents -->
+        <div class="d-none d-md-block col-md-2 bd-toc show">
+            
+        </div>
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+        
+              <div>
+                
+  <h1>Source code for recommenders.models.tfidf.tfidf_utils</h1><div class="highlight"><pre>
+<span></span><span class="c1"># Copyright (c) Microsoft Corporation. All rights reserved.</span>
+<span class="c1"># Licensed under the MIT License.</span>
+
+
+<span class="kn">from</span> <span class="nn">sklearn.feature_extraction.text</span> <span class="kn">import</span> <span class="n">TfidfVectorizer</span>
+<span class="kn">from</span> <span class="nn">sklearn.metrics.pairwise</span> <span class="kn">import</span> <span class="n">linear_kernel</span>
+<span class="kn">from</span> <span class="nn">transformers</span> <span class="kn">import</span> <span class="n">BertTokenizer</span>
+<span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">import</span> <span class="nn">unicodedata</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="kn">import</span> <span class="nn">nltk</span>
+<span class="kn">from</span> <span class="nn">nltk.stem.porter</span> <span class="kn">import</span> <span class="n">PorterStemmer</span>
+
+
+<div class="viewcode-block" id="TfidfRecommender"><a class="viewcode-back" href="../../../../source/models.html#recommenders.models.tfidf.tfidf_utils.TfidfRecommender">[docs]</a><span class="k">class</span> <span class="nc">TfidfRecommender</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Term Frequency - Inverse Document Frequency (TF-IDF) Recommender</span>
+
+<span class="sd">    This class provides content-based recommendations using TF-IDF vectorization in combination with cosine similarity.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">id_col</span><span class="p">,</span> <span class="n">tokenization_method</span><span class="o">=</span><span class="s2">&quot;scibert&quot;</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Initialize model parameters</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            id_col (str): Name of column containing item IDs.</span>
+<span class="sd">            tokenization_method (str): [&#39;none&#39;,&#39;nltk&#39;,&#39;bert&#39;,&#39;scibert&#39;] option for tokenization method.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">id_col</span> <span class="o">=</span> <span class="n">id_col</span>
+        <span class="k">if</span> <span class="n">tokenization_method</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;none&quot;</span><span class="p">,</span> <span class="s2">&quot;nltk&quot;</span><span class="p">,</span> <span class="s2">&quot;bert&quot;</span><span class="p">,</span> <span class="s2">&quot;scibert&quot;</span><span class="p">]:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s1">&#39;Tokenization method must be one of [&quot;none&quot; | &quot;nltk&quot; | &quot;bert&quot; | &quot;scibert&quot;]&#39;</span>
+            <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tokenization_method</span> <span class="o">=</span> <span class="n">tokenization_method</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+
+        <span class="c1"># Initialize other variables used in this class</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tf</span> <span class="o">=</span> <span class="n">TfidfVectorizer</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tfidf_matrix</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tokens</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">stop_words</span> <span class="o">=</span> <span class="nb">frozenset</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">recommendations</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">top_k_recommendations</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">__clean_text</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">for_BERT</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Clean text by removing HTML tags, symbols, and punctuation.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            text (str): Text to clean.</span>
+<span class="sd">            for_BERT (boolean): True or False for if this text is being cleaned for a BERT word tokenization method.</span>
+<span class="sd">            verbose (boolean): True or False for whether to print.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            str: Cleaned version of text.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="c1"># Normalize unicode</span>
+            <span class="n">text_norm</span> <span class="o">=</span> <span class="n">unicodedata</span><span class="o">.</span><span class="n">normalize</span><span class="p">(</span><span class="s2">&quot;NFC&quot;</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
+
+            <span class="c1"># Remove HTML tags</span>
+            <span class="n">clean</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s2">&quot;&lt;.*?&gt;&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">text_norm</span><span class="p">)</span>
+
+            <span class="c1"># Remove new line and tabs</span>
+            <span class="n">clean</span> <span class="o">=</span> <span class="n">clean</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">)</span>
+            <span class="n">clean</span> <span class="o">=</span> <span class="n">clean</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">)</span>
+            <span class="n">clean</span> <span class="o">=</span> <span class="n">clean</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\r</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">)</span>
+            <span class="n">clean</span> <span class="o">=</span> <span class="n">clean</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;Â</span><span class="se">\xa0</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>  <span class="c1"># non-breaking space</span>
+
+            <span class="c1"># Remove all punctuation and special characters</span>
+            <span class="n">clean</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s2">&quot;([^\s\w]|_)+&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">clean</span><span class="p">)</span>  <span class="c1"># noqa W695 invalid escape sequence &#39;\s&#39;</span>
+
+            <span class="c1"># If you want to keep some punctuation, see below commented out example</span>
+            <span class="c1"># clean = re.sub(&#39;([^\s\w\-\_\(\)]|_)+&#39;,&#39;&#39;, clean)</span>
+
+            <span class="c1"># Skip further processing if the text will be used in BERT tokenization</span>
+            <span class="k">if</span> <span class="n">for_BERT</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
+                <span class="c1"># Lower case</span>
+                <span class="n">clean</span> <span class="o">=</span> <span class="n">clean</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">verbose</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Cannot clean non-existent text&quot;</span><span class="p">)</span>
+            <span class="n">clean</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="n">clean</span>
+
+<div class="viewcode-block" id="TfidfRecommender.clean_dataframe"><a class="viewcode-back" href="../../../../source/models.html#recommenders.models.tfidf.tfidf_utils.TfidfRecommender.clean_dataframe">[docs]</a>    <span class="k">def</span> <span class="nf">clean_dataframe</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">df</span><span class="p">,</span> <span class="n">cols_to_clean</span><span class="p">,</span> <span class="n">new_col_name</span><span class="o">=</span><span class="s2">&quot;cleaned_text&quot;</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Clean the text within the columns of interest and return a dataframe with cleaned and combined text.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            df (pandas.DataFrame): Dataframe containing the text content to clean.</span>
+<span class="sd">            cols_to_clean (list of str): List of columns to clean by name (e.g., [&#39;abstract&#39;,&#39;full_text&#39;]).</span>
+<span class="sd">            new_col_name (str): Name of the new column that will contain the cleaned text.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            pandas.DataFrame: Dataframe with cleaned text in the new column.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Collapse the table such that all descriptive text is just in a single column</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">regex</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">df</span><span class="p">[</span><span class="n">new_col_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">cols_to_clean</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">cols</span><span class="p">:</span> <span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">cols</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+        <span class="c1"># Check if for BERT tokenization</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">tokenization_method</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;bert&quot;</span><span class="p">,</span> <span class="s2">&quot;scibert&quot;</span><span class="p">]:</span>
+            <span class="n">for_BERT</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">for_BERT</span> <span class="o">=</span> <span class="kc">False</span>
+
+        <span class="c1"># Clean the text in the dataframe</span>
+        <span class="n">df</span><span class="p">[</span><span class="n">new_col_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">new_col_name</span><span class="p">]</span><span class="o">.</span><span class="n">map</span><span class="p">(</span>
+            <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">__clean_text</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">for_BERT</span><span class="p">)</span>
+        <span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">df</span></div>
+
+<div class="viewcode-block" id="TfidfRecommender.tokenize_text"><a class="viewcode-back" href="../../../../source/models.html#recommenders.models.tfidf.tfidf_utils.TfidfRecommender.tokenize_text">[docs]</a>    <span class="k">def</span> <span class="nf">tokenize_text</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">df_clean</span><span class="p">,</span> <span class="n">text_col</span><span class="o">=</span><span class="s2">&quot;cleaned_text&quot;</span><span class="p">,</span> <span class="n">ngram_range</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="n">min_df</span><span class="o">=</span><span class="mi">0</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Tokenize the input text.</span>
+<span class="sd">        For more details on the TfidfVectorizer, see https://scikit-learn.org/stable/modules/generated/sklearn.feature_extraction.text.TfidfVectorizer.html</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            df_clean (pandas.DataFrame): Dataframe with cleaned text in the new column.</span>
+<span class="sd">            text_col (str): Name of column containing the cleaned text.</span>
+<span class="sd">            ngram_range (tuple of int): The lower and upper boundary of the range of n-values for different n-grams to be extracted.</span>
+<span class="sd">            min_df (int): When building the vocabulary ignore terms that have a document frequency strictly lower than the given threshold.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            TfidfVectorizer, pandas.Series:</span>
+<span class="sd">            - Scikit-learn TfidfVectorizer object defined in `.tokenize_text()`.</span>
+<span class="sd">            - Each row contains tokens for respective documents separated by spaces.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">vectors</span> <span class="o">=</span> <span class="n">df_clean</span><span class="p">[</span><span class="n">text_col</span><span class="p">]</span>
+
+        <span class="c1"># If a HuggingFace BERT word tokenization method</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">tokenization_method</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;bert&quot;</span><span class="p">,</span> <span class="s2">&quot;scibert&quot;</span><span class="p">]:</span>
+            <span class="c1"># Set vectorizer</span>
+            <span class="n">tf</span> <span class="o">=</span> <span class="n">TfidfVectorizer</span><span class="p">(</span>
+                <span class="n">analyzer</span><span class="o">=</span><span class="s2">&quot;word&quot;</span><span class="p">,</span>
+                <span class="n">ngram_range</span><span class="o">=</span><span class="n">ngram_range</span><span class="p">,</span>
+                <span class="n">min_df</span><span class="o">=</span><span class="n">min_df</span><span class="p">,</span>
+                <span class="n">stop_words</span><span class="o">=</span><span class="s2">&quot;english&quot;</span><span class="p">,</span>
+            <span class="p">)</span>
+
+            <span class="c1"># Get appropriate transformer name</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">tokenization_method</span> <span class="o">==</span> <span class="s2">&quot;bert&quot;</span><span class="p">:</span>
+                <span class="n">bert_method</span> <span class="o">=</span> <span class="s2">&quot;bert-base-cased&quot;</span>
+            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">tokenization_method</span> <span class="o">==</span> <span class="s2">&quot;scibert&quot;</span><span class="p">:</span>
+                <span class="n">bert_method</span> <span class="o">=</span> <span class="s2">&quot;allenai/scibert_scivocab_cased&quot;</span>
+
+            <span class="c1"># Load pre-trained model tokenizer (vocabulary)</span>
+            <span class="n">tokenizer</span> <span class="o">=</span> <span class="n">BertTokenizer</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span><span class="n">bert_method</span><span class="p">)</span>
+
+            <span class="c1"># Loop through each item</span>
+            <span class="n">vectors_tokenized</span> <span class="o">=</span> <span class="n">vectors</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">vectors</span><span class="p">)):</span>
+                <span class="n">vectors_tokenized</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">tokenizer</span><span class="o">.</span><span class="n">tokenize</span><span class="p">(</span><span class="n">vectors</span><span class="p">[</span><span class="n">i</span><span class="p">]))</span>
+
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">tokenization_method</span> <span class="o">==</span> <span class="s2">&quot;nltk&quot;</span><span class="p">:</span>
+            <span class="c1"># NLTK Stemming</span>
+            <span class="n">token_dict</span> <span class="o">=</span> <span class="p">{}</span>  <span class="c1"># noqa: F841</span>
+            <span class="n">stemmer</span> <span class="o">=</span> <span class="n">PorterStemmer</span><span class="p">()</span>
+
+            <span class="k">def</span> <span class="nf">stem_tokens</span><span class="p">(</span><span class="n">tokens</span><span class="p">,</span> <span class="n">stemmer</span><span class="p">):</span>
+                <span class="n">stemmed</span> <span class="o">=</span> <span class="p">[]</span>
+                <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">tokens</span><span class="p">:</span>
+                    <span class="n">stemmed</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">stemmer</span><span class="o">.</span><span class="n">stem</span><span class="p">(</span><span class="n">item</span><span class="p">))</span>
+                <span class="k">return</span> <span class="n">stemmed</span>
+
+            <span class="k">def</span> <span class="nf">tokenize</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+                <span class="n">tokens</span> <span class="o">=</span> <span class="n">nltk</span><span class="o">.</span><span class="n">word_tokenize</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+                <span class="n">stems</span> <span class="o">=</span> <span class="n">stem_tokens</span><span class="p">(</span><span class="n">tokens</span><span class="p">,</span> <span class="n">stemmer</span><span class="p">)</span>
+                <span class="k">return</span> <span class="n">stems</span>
+
+            <span class="c1"># When defining a custome tokenizer with TfidfVectorizer, the tokenization is applied in the fit function</span>
+            <span class="n">tf</span> <span class="o">=</span> <span class="n">TfidfVectorizer</span><span class="p">(</span>
+                <span class="n">tokenizer</span><span class="o">=</span><span class="n">tokenize</span><span class="p">,</span>
+                <span class="n">analyzer</span><span class="o">=</span><span class="s2">&quot;word&quot;</span><span class="p">,</span>
+                <span class="n">ngram_range</span><span class="o">=</span><span class="n">ngram_range</span><span class="p">,</span>
+                <span class="n">min_df</span><span class="o">=</span><span class="n">min_df</span><span class="p">,</span>
+                <span class="n">stop_words</span><span class="o">=</span><span class="s2">&quot;english&quot;</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="n">vectors_tokenized</span> <span class="o">=</span> <span class="n">vectors</span>
+
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">tokenization_method</span> <span class="o">==</span> <span class="s2">&quot;none&quot;</span><span class="p">:</span>
+            <span class="c1"># No tokenization applied</span>
+            <span class="n">tf</span> <span class="o">=</span> <span class="n">TfidfVectorizer</span><span class="p">(</span>
+                <span class="n">analyzer</span><span class="o">=</span><span class="s2">&quot;word&quot;</span><span class="p">,</span>
+                <span class="n">ngram_range</span><span class="o">=</span><span class="n">ngram_range</span><span class="p">,</span>
+                <span class="n">min_df</span><span class="o">=</span><span class="n">min_df</span><span class="p">,</span>
+                <span class="n">stop_words</span><span class="o">=</span><span class="s2">&quot;english&quot;</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="n">vectors_tokenized</span> <span class="o">=</span> <span class="n">vectors</span>
+
+        <span class="c1"># Save to class variable</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tf</span> <span class="o">=</span> <span class="n">tf</span>
+
+        <span class="k">return</span> <span class="n">tf</span><span class="p">,</span> <span class="n">vectors_tokenized</span></div>
+
+<div class="viewcode-block" id="TfidfRecommender.fit"><a class="viewcode-back" href="../../../../source/models.html#recommenders.models.tfidf.tfidf_utils.TfidfRecommender.fit">[docs]</a>    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tf</span><span class="p">,</span> <span class="n">vectors_tokenized</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Fit TF-IDF vectorizer to the cleaned and tokenized text.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            tf (TfidfVectorizer): sklearn.feature_extraction.text.TfidfVectorizer object defined in .tokenize_text().</span>
+<span class="sd">            vectors_tokenized (pandas.Series): Each row contains tokens for respective documents separated by spaces.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tfidf_matrix</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">vectors_tokenized</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="TfidfRecommender.get_tokens"><a class="viewcode-back" href="../../../../source/models.html#recommenders.models.tfidf.tfidf_utils.TfidfRecommender.get_tokens">[docs]</a>    <span class="k">def</span> <span class="nf">get_tokens</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the tokens generated by the TF-IDF vectorizer.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            dict: Dictionary of tokens generated by the TF-IDF vectorizer.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">tokens</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tf</span><span class="o">.</span><span class="n">vocabulary_</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">tokens</span> <span class="o">=</span> <span class="s2">&quot;Run .tokenize_text() and .fit_tfidf() first&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">tokens</span></div>
+
+<div class="viewcode-block" id="TfidfRecommender.get_stop_words"><a class="viewcode-back" href="../../../../source/models.html#recommenders.models.tfidf.tfidf_utils.TfidfRecommender.get_stop_words">[docs]</a>    <span class="k">def</span> <span class="nf">get_stop_words</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the stop words excluded in the TF-IDF vectorizer.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            list: Frozenset of stop words used by the TF-IDF vectorizer (can be converted to list).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">stop_words</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tf</span><span class="o">.</span><span class="n">get_stop_words</span><span class="p">()</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">stop_words</span> <span class="o">=</span> <span class="s2">&quot;Run .tokenize_text() and .fit_tfidf() first&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">stop_words</span></div>
+
+    <span class="k">def</span> <span class="nf">__create_full_recommendation_dictionary</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">df_clean</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Create the full recommendation dictionary containing all recommendations for all items.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            pandas.DataFrame: Dataframe with cleaned text.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># Similarity measure</span>
+        <span class="n">cosine_sim</span> <span class="o">=</span> <span class="n">linear_kernel</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tfidf_matrix</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">tfidf_matrix</span><span class="p">)</span>
+
+        <span class="n">results</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">df_clean</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
+            <span class="n">similar_indices</span> <span class="o">=</span> <span class="n">cosine_sim</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span><span class="o">.</span><span class="n">argsort</span><span class="p">()[:</span> <span class="o">-</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">df_clean</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="p">:</span> <span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+            <span class="n">similar_items</span> <span class="o">=</span> <span class="p">[</span>
+                <span class="p">(</span><span class="n">cosine_sim</span><span class="p">[</span><span class="n">idx</span><span class="p">][</span><span class="n">i</span><span class="p">],</span> <span class="n">df_clean</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">id_col</span><span class="p">][</span><span class="n">i</span><span class="p">])</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">similar_indices</span>
+            <span class="p">]</span>
+            <span class="n">results</span><span class="p">[</span><span class="n">row</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">id_col</span><span class="p">]]</span> <span class="o">=</span> <span class="n">similar_items</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
+
+        <span class="c1"># Save to class</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">recommendations</span> <span class="o">=</span> <span class="n">results</span>
+
+    <span class="k">def</span> <span class="nf">__organize_results_as_tabular</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">df_clean</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Restructures results dictionary into a table containing only the top k recommendations per item.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            df_clean (pandas.DataFrame): Dataframe with cleaned text.</span>
+<span class="sd">            k (int): Number of recommendations to return.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Initialize new dataframe to hold recommendation output</span>
+        <span class="n">item_id</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+        <span class="n">rec_rank</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+        <span class="n">rec_score</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+        <span class="n">rec_item_id</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+
+        <span class="c1"># For each item</span>
+        <span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">recommendations</span><span class="p">)):</span>
+            <span class="c1"># Information about the item we are basing recommendations off of</span>
+            <span class="n">rec_based_on</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">recommendations</span><span class="o">.</span><span class="n">keys</span><span class="p">())[</span><span class="n">idx</span><span class="p">]</span>
+            <span class="n">tmp_item_id</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span>
+                <span class="n">df_clean</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">df_clean</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">id_col</span><span class="p">]</span> <span class="o">==</span> <span class="n">rec_based_on</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">id_col</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">[</span>
+                    <span class="mi">0</span>
+                <span class="p">]</span>
+            <span class="p">)</span>
+
+            <span class="c1"># Get all scores and IDs for items recommended for this current item</span>
+            <span class="n">rec_array</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">recommendations</span><span class="p">[</span><span class="n">rec_based_on</span><span class="p">]</span>
+            <span class="n">tmp_rec_score</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">rec_array</span><span class="p">))</span>
+            <span class="n">tmp_rec_id</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">rec_array</span><span class="p">))</span>
+
+            <span class="c1"># Append multiple values at a time to list</span>
+            <span class="n">item_id</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="n">tmp_item_id</span><span class="p">]</span> <span class="o">*</span> <span class="n">k</span><span class="p">)</span>
+            <span class="n">rec_rank</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">k</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)))</span>
+            <span class="n">rec_score</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">tmp_rec_score</span><span class="p">[:</span><span class="n">k</span><span class="p">])</span>
+            <span class="n">rec_item_id</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">tmp_rec_id</span><span class="p">[:</span><span class="n">k</span><span class="p">])</span>
+
+        <span class="c1"># Save the output</span>
+        <span class="n">output_dict</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">id_col</span><span class="p">:</span> <span class="n">item_id</span><span class="p">,</span>
+            <span class="s2">&quot;rec_rank&quot;</span><span class="p">:</span> <span class="n">rec_rank</span><span class="p">,</span>
+            <span class="s2">&quot;rec_score&quot;</span><span class="p">:</span> <span class="n">rec_score</span><span class="p">,</span>
+            <span class="s2">&quot;rec_&quot;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">id_col</span><span class="p">:</span> <span class="n">rec_item_id</span><span class="p">,</span>
+        <span class="p">}</span>
+
+        <span class="c1"># Convert to dataframe</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">top_k_recommendations</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">output_dict</span><span class="p">)</span>
+
+<div class="viewcode-block" id="TfidfRecommender.recommend_top_k_items"><a class="viewcode-back" href="../../../../source/models.html#recommenders.models.tfidf.tfidf_utils.TfidfRecommender.recommend_top_k_items">[docs]</a>    <span class="k">def</span> <span class="nf">recommend_top_k_items</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">df_clean</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mi">5</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Recommend k number of items similar to the item of interest.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            df_clean (pandas.DataFrame): Dataframe with cleaned text.</span>
+<span class="sd">            k (int): Number of recommendations to return.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            pandas.DataFrame: Dataframe containing id of top k recommendations for all items.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">k</span> <span class="o">&gt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">df_clean</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">&quot;Cannot get more recommendations than there are items. Set k lower.&quot;</span>
+            <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__create_full_recommendation_dictionary</span><span class="p">(</span><span class="n">df_clean</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__organize_results_as_tabular</span><span class="p">(</span><span class="n">df_clean</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">top_k_recommendations</span></div>
+
+    <span class="k">def</span> <span class="nf">__get_single_item_info</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">metadata</span><span class="p">,</span> <span class="n">rec_id</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get full information for a single recommended item.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            metadata (pandas.DataFrame): Dataframe containing item info.</span>
+<span class="sd">            rec_id (str): Identifier for recommended item.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            pandas.Series: Single row from dataframe containing recommended item info.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># Return row</span>
+        <span class="n">rec_info</span> <span class="o">=</span> <span class="n">metadata</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">metadata</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">id_col</span><span class="p">]</span> <span class="o">==</span> <span class="n">rec_id</span><span class="p">)[</span><span class="mi">0</span><span class="p">])]</span>
+
+        <span class="k">return</span> <span class="n">rec_info</span>
+
+    <span class="k">def</span> <span class="nf">__make_clickable</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">address</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Make URL clickable.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            address (str): URL address to make clickable.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="s1">&#39;&lt;a href=&quot;</span><span class="si">{0}</span><span class="s1">&quot;&gt;</span><span class="si">{0}</span><span class="s1">&lt;/a&gt;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">address</span><span class="p">)</span>
+
+<div class="viewcode-block" id="TfidfRecommender.get_top_k_recommendations"><a class="viewcode-back" href="../../../../source/models.html#recommenders.models.tfidf.tfidf_utils.TfidfRecommender.get_top_k_recommendations">[docs]</a>    <span class="k">def</span> <span class="nf">get_top_k_recommendations</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">metadata</span><span class="p">,</span> <span class="n">query_id</span><span class="p">,</span> <span class="n">cols_to_keep</span><span class="o">=</span><span class="p">[],</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the top k recommendations with useful metadata for each recommendation.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            metadata (pandas.DataFrame): Dataframe holding metadata for all public domain papers.</span>
+<span class="sd">            query_id (str): ID of item of interest.</span>
+<span class="sd">            cols_to_keep (list of str): List of columns from the metadata dataframe to include</span>
+<span class="sd">                (e.g., [&#39;title&#39;,&#39;authors&#39;,&#39;journal&#39;,&#39;publish_time&#39;,&#39;url&#39;]).</span>
+<span class="sd">                By default, all columns are kept.</span>
+<span class="sd">            verbose (boolean): Set to True if you want to print the table.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            pandas.Styler: Stylized dataframe holding recommendations and associated metadata just for the item of interest (can access as normal dataframe by using df.data).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># Create subset of dataframe with just recommendations for the item of interest</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">top_k_recommendations</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">top_k_recommendations</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">id_col</span><span class="p">]</span> <span class="o">==</span> <span class="n">query_id</span>
+        <span class="p">]</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
+
+        <span class="c1"># Remove id_col of query item</span>
+        <span class="n">df</span><span class="o">.</span><span class="n">drop</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">id_col</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="c1"># Add metadata for each recommended item (rec_&lt;id_col&gt;)</span>
+        <span class="n">metadata_cols</span> <span class="o">=</span> <span class="n">metadata</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">values</span>
+        <span class="n">df</span><span class="p">[</span><span class="n">metadata_cols</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span>
+            <span class="k">lambda</span> <span class="n">row</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">__get_single_item_info</span><span class="p">(</span>
+                <span class="n">metadata</span><span class="p">,</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;rec_&quot;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">id_col</span><span class="p">]</span>
+            <span class="p">),</span>
+            <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="c1"># Remove id col added from metadata (already present from self.top_k_recommendations)</span>
+        <span class="n">df</span><span class="o">.</span><span class="n">drop</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">id_col</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="c1"># Rename columns such that rec_ is no longer appended, for simplicity</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;rec_rank&quot;</span><span class="p">:</span> <span class="s2">&quot;rank&quot;</span><span class="p">,</span> <span class="s2">&quot;rec_score&quot;</span><span class="p">:</span> <span class="s2">&quot;similarity_score&quot;</span><span class="p">})</span>
+
+        <span class="c1"># Only keep columns of interest</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">cols_to_keep</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="c1"># Insert our recommendation scoring/ranking columns</span>
+            <span class="n">cols_to_keep</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;similarity_score&quot;</span><span class="p">)</span>
+            <span class="n">cols_to_keep</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;rank&quot;</span><span class="p">)</span>
+            <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">cols_to_keep</span><span class="p">]</span>
+
+        <span class="c1"># Make URLs clickable if they exist</span>
+        <span class="k">if</span> <span class="s2">&quot;url&quot;</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">lower</span><span class="p">(),</span> <span class="n">metadata_cols</span><span class="p">)):</span>
+            <span class="n">format_</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;url&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">__make_clickable</span><span class="p">}</span>
+            <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">format_</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+            <span class="n">df</span>
+
+        <span class="k">return</span> <span class="n">df</span></div></div>
+</pre></div>
+
+              </div>
+              
+        
+            
+
+
+
+<div class='prev-next-bottom'>
+    
+
+</div>
+        
+        </div>
+    </div>
+    <footer class="footer">
+    <div class="container">
+      <p>
+        
+          By The Jupyter Book community<br/>
+        
+            &copy; Copyright 2021.<br/>
+          <div class="extra_footer">
+            Don't forget to check out <a href= https://arxiv.org/abs/2108.02899>our paper from Document Intelligence Workshop at KDD 2021!</a>
+          </div>
+      </p>
+    </div>
+  </footer>
+</main>
+
+
+      </div>
+    </div>
+  
+  <script src="../../../../_static/js/index.1c5a1a01449ed65a7b51.js"></script>
+
+  
+  </body>
+</html>

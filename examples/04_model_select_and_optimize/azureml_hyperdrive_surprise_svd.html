@@ -1,0 +1,861 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SVD Hyperparameter Tuning with Azure Machine Learning &#8212; &lt;h1 style=&#34;font-size:2em;text-align:center;color:#FF5733&#34;&gt;Recommenders&lt;/h1&gt;</title>
+    
+  <link href="../../_static/css/theme.css" rel="stylesheet" />
+  <link href="../../_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
+
+    
+  <link rel="stylesheet"
+    href="../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+
+    
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-book-theme.css?digest=c3fdc42140077d1ad13ad2f1588a4309" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/tabs.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    
+  <link rel="preload" as="script" href="../../_static/js/index.1c5a1a01449ed65a7b51.js">
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/togglebutton.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <script src="../../_static/tabs.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../../_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script>
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="../../_static/sphinx-thebe.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en" />
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="../../index.html">
+      
+      
+      
+      <h1 class="site-logo" id="site-title"><h1 style="font-size:2em;text-align:center;color:#FF5733">Recommenders</h1></h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="../../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        <p class="caption" role="heading">
+ <span class="caption-text">
+  Getting Started Notebooks
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../00_quick_start/als_movielens.html">
+   Running ALS on MovieLens (PySpark)
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../00_quick_start/ncf_movielens.html">
+   Neural Collaborative Filtering on MovieLens dataset.
+  </a>
+ </li>
+</ul>
+
+    </div>
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="topbar container-xl fixed-top">
+    <div class="topbar-contents row">
+        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
+        <div class="col pl-md-4 topbar-main">
+            
+            <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+                data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+                aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
+                title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+                <i class="fas fa-bars"></i>
+                <i class="fas fa-arrow-left"></i>
+                <i class="fas fa-arrow-up"></i>
+            </button>
+            
+            
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
+            class="fas fa-download"></i></button>
+
+    <div class="dropdown-buttons">
+        <!-- ipynb file if we had a myst markdown file -->
+        
+        <!-- Download raw file -->
+        <a class="dropdown-buttons" href="../../_sources/examples/04_model_select_and_optimize/azureml_hyperdrive_surprise_svd.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
+                data-placement="left">.ipynb</button></a>
+        <!-- Download PDF via print -->
+        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
+            onClick="window.print()" data-toggle="tooltip" data-placement="left">.pdf</button>
+    </div>
+</div>
+
+            <!-- Source interaction buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
+    <div class="dropdown-buttons sourcebuttons">
+        <a class="repository-button"
+            href="https://github.com/microsoft/genalog"><button type="button" class="btn btn-secondary topbarbtn"
+                data-toggle="tooltip" data-placement="left" title="Source repository"><i
+                    class="fab fa-github"></i>repository</button></a>
+        <a class="issues-button"
+            href="https://github.com/microsoft/genalog/issues/new?title=Issue%20on%20page%20%2Fexamples/04_model_select_and_optimize/azureml_hyperdrive_surprise_svd.html&body=Your%20issue%20content%20here."><button
+                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
+                title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
+        
+    </div>
+</div>
+
+            <!-- Full screen (wrap in <a> to have style consistency -->
+
+<a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+        data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+        title="Fullscreen mode"><i
+            class="fas fa-expand"></i></button></a>
+
+            <!-- Launch buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Launch interactive content"><i class="fas fa-rocket"></i></button>
+    <div class="dropdown-buttons">
+        
+        <a class="binder-button" href="https://mybinder.org/v2/gh/microsoft/genalog/main?urlpath=tree/docs/genalog_docs/examples/04_model_select_and_optimize/azureml_hyperdrive_surprise_svd.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Launch Binder" data-toggle="tooltip"
+                data-placement="left"><img class="binder-button-logo"
+                    src="../../_static/images/logo_binder.svg"
+                    alt="Interact on binder">Binder</button></a>
+        
+        
+        
+        
+    </div>
+</div>
+
+        </div>
+
+        <!-- Table of contents -->
+        <div class="d-none d-md-block col-md-2 bd-toc show">
+            
+            <div class="tocsection onthispage pt-5 pb-3">
+                <i class="fas fa-list"></i> Contents
+            </div>
+            <nav id="bd-toc-nav" aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#global-settings">
+   1. Global Settings
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#create-a-remote-compute-target">
+   2. Create a Remote Compute Target
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#prepare-dataset">
+   3. Prepare Dataset
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#prepare-hyperparameter-tuning">
+   4. Prepare Hyperparameter Tuning
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#execute-runs-in-azureml">
+   5. Execute Runs in AzureML
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#show-results">
+   6. Show Results
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#concluding-remarks">
+   7. Concluding Remarks
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#references">
+   References
+  </a>
+ </li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+        
+              <div>
+                
+  <p><i>Copyright (c) Microsoft Corporation. All rights reserved.<br>
+Licensed under the MIT License.</i>
+<br><br></p>
+<div class="tex2jax_ignore mathjax_ignore section" id="svd-hyperparameter-tuning-with-azure-machine-learning">
+<h1>SVD Hyperparameter Tuning with Azure Machine Learning<a class="headerlink" href="#svd-hyperparameter-tuning-with-azure-machine-learning" title="Permalink to this headline">¶</a></h1>
+<p>In this notebook, we show how to tune the hyperparameters of a matrix factorization algorithm by utilizing <strong>Azure Machine Learning service</strong> (<a class="reference external" href="https://azure.microsoft.com/en-us/services/machine-learning-service/">AzureML</a>) in the context of movie recommendations. To use AzureML you will need an Azure subscription. We use the SVD algorithm from the Surprise library.</p>
+<p>We present the overall process of utilizing AzureML by demonstrating some key steps while avoiding too much detail.</p>
+<p>For more details about the <strong>SVD</strong> algorithm:</p>
+<ul class="simple">
+<li><p><span class="xref myst">Surprise SVD deep-dive notebook</span></p></li>
+<li><p><a class="reference external" href="http://papers.nips.cc/paper/3208-probabilistic-matrix-factorization.pdf">Original paper</a></p></li>
+<li><p><a class="reference external" href="https://surprise.readthedocs.io/en/stable/">Surprise homepage</a></p></li>
+</ul>
+<p>Regarding <strong>AzureML</strong>, please refer to:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://docs.microsoft.com/en-us/azure/machine-learning/service/quickstart-create-workspace-with-python">Quickstart notebook</a></p></li>
+<li><p><a class="reference external" href="https://docs.microsoft.com/en-us/azure/machine-learning/service/how-to-tune-hyperparameters">Hyperdrive</a></p></li>
+</ul>
+<div class="section" id="global-settings">
+<h2>1. Global Settings<a class="headerlink" href="#global-settings" title="Permalink to this headline">¶</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">surprise</span>
+<span class="kn">import</span> <span class="nn">papermill</span> <span class="k">as</span> <span class="nn">pm</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">shutil</span>
+<span class="kn">from</span> <span class="nn">tempfile</span> <span class="kn">import</span> <span class="n">TemporaryDirectory</span>
+
+<span class="kn">import</span> <span class="nn">azureml</span> <span class="k">as</span> <span class="nn">aml</span>
+<span class="kn">import</span> <span class="nn">azureml.widgets</span>
+<span class="kn">import</span> <span class="nn">azureml.train.hyperdrive</span> <span class="k">as</span> <span class="nn">hd</span>
+
+<span class="kn">from</span> <span class="nn">recommenders.datasets</span> <span class="kn">import</span> <span class="n">movielens</span>
+<span class="kn">from</span> <span class="nn">recommenders.datasets.python_splitters</span> <span class="kn">import</span> <span class="n">python_random_split</span>
+<span class="kn">from</span> <span class="nn">recommenders.evaluation.python_evaluation</span> <span class="kn">import</span> <span class="n">rmse</span><span class="p">,</span> <span class="n">precision_at_k</span><span class="p">,</span> <span class="n">ndcg_at_k</span>
+<span class="kn">from</span> <span class="nn">recommenders.models.surprise.surprise_utils</span> <span class="kn">import</span> <span class="n">predict</span><span class="p">,</span> <span class="n">compute_ranking_predictions</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;System version: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">version</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Surprise version: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">surprise</span><span class="o">.</span><span class="n">__version__</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Azure ML SDK Version:&quot;</span><span class="p">,</span> <span class="n">aml</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">VERSION</span><span class="p">)</span>
+
+<span class="c1"># Temp dir to cache temporal files while running this notebook</span>
+<span class="n">tmp_dir</span> <span class="o">=</span> <span class="n">TemporaryDirectory</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>System version: 3.6.8 |Anaconda, Inc.| (default, Feb 21 2019, 18:30:04) [MSC v.1916 64 bit (AMD64)]
+Surprise version: 1.0.6
+Azure ML SDK Version: 1.0.10
+</pre></div>
+</div>
+</div>
+</div>
+<p>We assume that an AzureML workspace has already been created. For instructions how to do this, see <a class="reference internal" href="README.html"><span class="doc std std-doc">here</span></a>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># AzureML workspace info. Note, will look up &quot;aml_config\config.json&quot; first, then fall back to using this</span>
+<span class="n">SUBSCRIPTION_ID</span> <span class="o">=</span> <span class="s1">&#39;&lt;subscription-id&gt;&#39;</span>
+<span class="n">RESOURCE_GROUP</span>  <span class="o">=</span> <span class="s1">&#39;&lt;resource-group&gt;&#39;</span>
+<span class="n">WORKSPACE_NAME</span>  <span class="o">=</span> <span class="s1">&#39;&lt;workspace-name&gt;&#39;</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Connect to a workspace</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="n">ws</span> <span class="o">=</span> <span class="n">aml</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">Workspace</span><span class="o">.</span><span class="n">from_config</span><span class="p">()</span>
+<span class="k">except</span> <span class="n">aml</span><span class="o">.</span><span class="n">exceptions</span><span class="o">.</span><span class="n">UserErrorException</span><span class="p">:</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">ws</span> <span class="o">=</span> <span class="n">aml</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">Workspace</span><span class="p">(</span>
+            <span class="n">subscription_id</span><span class="o">=</span><span class="n">SUBSCRIPTION_ID</span><span class="p">,</span>
+            <span class="n">resource_group</span><span class="o">=</span><span class="n">RESOURCE_GROUP</span><span class="p">,</span>
+            <span class="n">workspace_name</span><span class="o">=</span><span class="n">WORKSPACE_NAME</span>
+        <span class="p">)</span>
+        <span class="n">ws</span><span class="o">.</span><span class="n">write_config</span><span class="p">()</span>
+    <span class="k">except</span> <span class="n">aml</span><span class="o">.</span><span class="n">exceptions</span><span class="o">.</span><span class="n">AuthenticationException</span><span class="p">:</span>
+        <span class="n">ws</span> <span class="o">=</span> <span class="kc">None</span>
+
+<span class="k">if</span> <span class="n">ws</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+        <span class="sd">&quot;&quot;&quot;Cannot access the AzureML workspace w/ the config info provided.</span>
+<span class="sd">        Please check if you entered the correct id, group name and workspace name&quot;&quot;&quot;</span>
+    <span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;AzureML workspace name: &quot;</span><span class="p">,</span> <span class="n">ws</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Found the config file in: C:\Users\anargyri\aml_config\config.json
+AzureML workspace name:  anargyri
+</pre></div>
+</div>
+</div>
+</div>
+<p>From the following cells, we</p>
+<ol class="simple">
+<li><p>Create a <em>remote compute target</em> (cpu_cluster) if it does not exist already,</p></li>
+<li><p>Mount a <em>data store</em> and upload the data set, and</p></li>
+<li><p>Run a hyperparameter tuning experiment.</p></li>
+</ol>
+</div>
+<div class="section" id="create-a-remote-compute-target">
+<h2>2. Create a Remote Compute Target<a class="headerlink" href="#create-a-remote-compute-target" title="Permalink to this headline">¶</a></h2>
+<p>We create an AI Compute for our remote compute target. The script will load the cluster if it already exists. You can look at <a class="reference external" href="https://docs.microsoft.com/en-us/azure/machine-learning/service/how-to-set-up-training-targets">this document</a> to learn more about setting up a <em>compute target</em>.</p>
+<blockquote>
+<div><p>Note: we create a low priority cluster to save costs.</p>
+</div></blockquote>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Remote compute (cluster) configuration. If you want to save costs decrease these.</span>
+<span class="c1"># Each standard_D2_V2 VM has 2 vCPUs, 7GB memory, 100GB SSD storage</span>
+
+<span class="n">VM_SIZE</span> <span class="o">=</span> <span class="s1">&#39;STANDARD_D2_V2&#39;</span>
+<span class="n">VM_PRIORITY</span> <span class="o">=</span> <span class="s1">&#39;lowpriority&#39;</span>
+<span class="c1"># Cluster nodes</span>
+<span class="n">MIN_NODES</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">MAX_NODES</span> <span class="o">=</span> <span class="mi">8</span>
+
+<span class="c1"># Choose a name for your CPU cluster</span>
+<span class="n">cpu_cluster_name</span> <span class="o">=</span> <span class="s2">&quot;cpuclustersvd&quot;</span>
+
+<span class="c1"># Verify that cluster does not exist already</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="n">cpu_cluster</span> <span class="o">=</span> <span class="n">ComputeTarget</span><span class="p">(</span><span class="n">workspace</span><span class="o">=</span><span class="n">ws</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">cpu_cluster_name</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Found existing cluster, use it.&#39;</span><span class="p">)</span>
+<span class="k">except</span> <span class="n">ComputeTargetException</span><span class="p">:</span>
+    <span class="n">compute_config</span> <span class="o">=</span> <span class="n">AmlCompute</span><span class="o">.</span><span class="n">provisioning_configuration</span><span class="p">(</span><span class="n">vm_size</span><span class="o">=</span><span class="n">VM_SIZE</span><span class="p">,</span> 
+                                                           <span class="n">min_nodes</span><span class="o">=</span><span class="n">MIN_NODES</span><span class="p">,</span> 
+                                                           <span class="n">vm_priority</span><span class="o">=</span><span class="n">VM_PRIORITY</span><span class="p">,</span>
+                                                           <span class="n">max_nodes</span><span class="o">=</span><span class="n">MAX_NODES</span><span class="p">)</span>
+    <span class="n">cpu_cluster</span> <span class="o">=</span> <span class="n">ComputeTarget</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">ws</span><span class="p">,</span> <span class="n">cpu_cluster_name</span><span class="p">,</span> <span class="n">compute_config</span><span class="p">)</span>
+
+<span class="n">cpu_cluster</span><span class="o">.</span><span class="n">wait_for_completion</span><span class="p">(</span><span class="n">show_output</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># Use the &#39;status&#39; property to get a detailed status for the current cluster. </span>
+<span class="nb">print</span><span class="p">(</span><span class="n">cpu_cluster</span><span class="o">.</span><span class="n">status</span><span class="o">.</span><span class="n">serialize</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Found existing cluster, use it.
+Succeeded
+AmlCompute wait for completion finished
+Minimum number of nodes requested have been provisioned
+{&#39;allocationState&#39;: &#39;Steady&#39;, &#39;allocationStateTransitionTime&#39;: &#39;2019-03-05T14:25:20.509000+00:00&#39;, &#39;creationTime&#39;: &#39;2019-02-06T15:20:44.924560+00:00&#39;, &#39;currentNodeCount&#39;: 0, &#39;errors&#39;: None, &#39;modifiedTime&#39;: &#39;2019-02-06T15:21:35.653142+00:00&#39;, &#39;nodeStateCounts&#39;: {&#39;idleNodeCount&#39;: 0, &#39;leavingNodeCount&#39;: 0, &#39;preemptedNodeCount&#39;: 0, &#39;preparingNodeCount&#39;: 0, &#39;runningNodeCount&#39;: 0, &#39;unusableNodeCount&#39;: 0}, &#39;provisioningState&#39;: &#39;Succeeded&#39;, &#39;provisioningStateTransitionTime&#39;: None, &#39;scaleSettings&#39;: {&#39;minNodeCount&#39;: 0, &#39;maxNodeCount&#39;: 4, &#39;nodeIdleTimeBeforeScaleDown&#39;: &#39;PT120S&#39;}, &#39;targetNodeCount&#39;: 0, &#39;vmPriority&#39;: &#39;Dedicated&#39;, &#39;vmSize&#39;: &#39;STANDARD_D2_V2&#39;}
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="prepare-dataset">
+<h2>3. Prepare Dataset<a class="headerlink" href="#prepare-dataset" title="Permalink to this headline">¶</a></h2>
+<ol class="simple">
+<li><p>Download data and split into training, validation and testing sets. The metric used for tuning the hyperparameters is evaluated on the valdation set and the final reported results are evaluated on the test set.</p></li>
+<li><p>Upload the data set to the default <strong>blob storage</strong> of the workspace.</p></li>
+</ol>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Select MovieLens data size: 100k, 1m, 10m, or 20m</span>
+<span class="n">MOVIELENS_DATA_SIZE</span> <span class="o">=</span> <span class="s1">&#39;100k&#39;</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data</span> <span class="o">=</span> <span class="n">movielens</span><span class="o">.</span><span class="n">load_pandas_df</span><span class="p">(</span>
+    <span class="n">size</span><span class="o">=</span><span class="n">MOVIELENS_DATA_SIZE</span><span class="p">,</span>
+    <span class="n">header</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;userID&quot;</span><span class="p">,</span> <span class="s2">&quot;itemID&quot;</span><span class="p">,</span> <span class="s2">&quot;rating&quot;</span><span class="p">]</span>
+<span class="p">)</span>
+
+<span class="n">data</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>userID</th>
+      <th>itemID</th>
+      <th>rating</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>196</td>
+      <td>242</td>
+      <td>3.0</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>186</td>
+      <td>302</td>
+      <td>3.0</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>22</td>
+      <td>377</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>244</td>
+      <td>51</td>
+      <td>2.0</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>166</td>
+      <td>346</td>
+      <td>1.0</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">train</span><span class="p">,</span> <span class="n">validation</span><span class="p">,</span> <span class="n">test</span> <span class="o">=</span> <span class="n">python_random_split</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="p">[</span><span class="mf">0.7</span><span class="p">,</span> <span class="mf">0.15</span><span class="p">,</span> <span class="mf">0.15</span><span class="p">],</span> <span class="n">seed</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">DATA_DIR</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">tmp_dir</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="s1">&#39;aml_data&#39;</span><span class="p">)</span>
+<span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">DATA_DIR</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="n">TRAIN_FILE_NAME</span> <span class="o">=</span> <span class="s2">&quot;movielens_&quot;</span> <span class="o">+</span> <span class="n">MOVIELENS_DATA_SIZE</span> <span class="o">+</span> <span class="s2">&quot;_train.pkl&quot;</span>
+<span class="n">train</span><span class="o">.</span><span class="n">to_pickle</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">DATA_DIR</span><span class="p">,</span> <span class="n">TRAIN_FILE_NAME</span><span class="p">))</span>
+
+<span class="n">VAL_FILE_NAME</span> <span class="o">=</span> <span class="s2">&quot;movielens_&quot;</span> <span class="o">+</span> <span class="n">MOVIELENS_DATA_SIZE</span> <span class="o">+</span> <span class="s2">&quot;_val.pkl&quot;</span>
+<span class="n">validation</span><span class="o">.</span><span class="n">to_pickle</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">DATA_DIR</span><span class="p">,</span> <span class="n">VAL_FILE_NAME</span><span class="p">))</span>
+
+<span class="n">TEST_FILE_NAME</span> <span class="o">=</span> <span class="s2">&quot;movielens_&quot;</span> <span class="o">+</span> <span class="n">MOVIELENS_DATA_SIZE</span> <span class="o">+</span> <span class="s2">&quot;_test.pkl&quot;</span>
+<span class="n">test</span><span class="o">.</span><span class="n">to_pickle</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">DATA_DIR</span><span class="p">,</span> <span class="n">TEST_FILE_NAME</span><span class="p">))</span>
+
+<span class="c1"># Note, all the files under DATA_DIR will be uploaded to the data store</span>
+<span class="n">ds</span> <span class="o">=</span> <span class="n">ws</span><span class="o">.</span><span class="n">get_default_datastore</span><span class="p">()</span>
+<span class="n">ds</span><span class="o">.</span><span class="n">upload</span><span class="p">(</span>
+    <span class="n">src_dir</span><span class="o">=</span><span class="n">DATA_DIR</span><span class="p">,</span>
+    <span class="n">target_path</span><span class="o">=</span><span class="s1">&#39;data&#39;</span><span class="p">,</span>
+    <span class="n">overwrite</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">show_progress</span><span class="o">=</span><span class="kc">True</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Uploading aml_data\movielens_100k_test.pkl
+Uploading aml_data\movielens_100k_train.pkl
+Uploading aml_data\movielens_100k_val.pkl
+Uploaded aml_data\movielens_100k_test.pkl, 1 files out of an estimated total of 3
+Uploaded aml_data\movielens_100k_val.pkl, 2 files out of an estimated total of 3
+Uploaded aml_data\movielens_100k_train.pkl, 3 files out of an estimated total of 3
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>$AZUREML_DATAREFERENCE_a19c6926d4734c98bf63a762190f454f
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="prepare-hyperparameter-tuning">
+<h2>4. Prepare Hyperparameter Tuning<a class="headerlink" href="#prepare-hyperparameter-tuning" title="Permalink to this headline">¶</a></h2>
+<p>We also prepare a training script <span class="xref myst">svd_training.py</span> for the hyperparameter tuning, which will log our target metrics such as <a class="reference external" href="https://en.wikipedia.org/wiki/Root-mean-square_deviation">RMSE</a> and/or <a class="reference external" href="https://en.wikipedia.org/wiki/Discounted_cumulative_gain">NDCG</a> to AzureML experiment so that we can track the metrics and optimize the primary metric via <strong>hyperdrive</strong>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">SCRIPT_DIR</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">tmp_dir</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="s1">&#39;aml_script&#39;</span><span class="p">)</span>
+
+<span class="c1"># Clean-up scripts if already exists</span>
+<span class="n">shutil</span><span class="o">.</span><span class="n">rmtree</span><span class="p">(</span><span class="n">SCRIPT_DIR</span><span class="p">,</span> <span class="n">ignore_errors</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># Copy scripts to SCRIPT_DIR temporarly</span>
+<span class="n">shutil</span><span class="o">.</span><span class="n">copytree</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s1">&#39;..&#39;</span><span class="p">,</span> <span class="s1">&#39;..&#39;</span><span class="p">,</span> <span class="s1">&#39;recommenders&#39;</span><span class="p">),</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">SCRIPT_DIR</span><span class="p">,</span> <span class="s1">&#39;recommenders&#39;</span><span class="p">))</span>
+
+<span class="c1"># add training script examples</span>
+<span class="n">shutil</span><span class="o">.</span><span class="n">copytree</span><span class="p">(</span><span class="s2">&quot;train_scripts&quot;</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">SCRIPT_DIR</span><span class="p">,</span> <span class="s1">&#39;train_scripts&#39;</span><span class="p">))</span>
+
+<span class="n">ENTRY_SCRIPT_NAME</span> <span class="o">=</span> <span class="s1">&#39;train_scripts/svd_training.py&#39;</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now we define a search space for the hyperparameters. All the parameter values will be passed to our training script.</p>
+<p>We specify the output directory as ./outputs. The outputs directory is specially treated by Azure ML in that all the content in this directory gets uploaded to the workspace as part of the run history. The files written to this directory are therefore accessible even once the remote run is over. In the training script (svd_training.py), we use the output directory for saving the trained models.</p>
+<p>AzureML hyperdrive provides <code class="docutils literal notranslate"><span class="pre">RandomParameterSampling</span></code>, <code class="docutils literal notranslate"><span class="pre">GridParameterSampling</span></code>, and <code class="docutils literal notranslate"><span class="pre">BayesianParameterSampling</span></code>. Details about each approach are beyond the scope of this notebook and can be found in <a class="reference external" href="https://docs.microsoft.com/en-us/azure/machine-learning/service/how-to-tune-hyperparameters">Azure doc</a>. Here, we use the Bayesian sampling.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">EXP_NAME</span> <span class="o">=</span> <span class="s2">&quot;movielens_&quot;</span> <span class="o">+</span> <span class="n">MOVIELENS_DATA_SIZE</span> <span class="o">+</span> <span class="s2">&quot;_svd_model&quot;</span>
+<span class="n">PRIMARY_METRIC</span> <span class="o">=</span> <span class="s1">&#39;precision_at_k&#39;</span>
+<span class="n">RATING_METRICS</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;rmse&#39;</span><span class="p">]</span>
+<span class="n">RANKING_METRICS</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;precision_at_k&#39;</span><span class="p">,</span> <span class="s1">&#39;ndcg_at_k&#39;</span><span class="p">]</span>  
+<span class="n">USERCOL</span> <span class="o">=</span> <span class="s1">&#39;userID&#39;</span>
+<span class="n">ITEMCOL</span> <span class="o">=</span> <span class="s1">&#39;itemID&#39;</span>
+<span class="n">REMOVE_SEEN</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">K</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="n">RANDOM_STATE</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">VERBOSE</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">NUM_EPOCHS</span> <span class="o">=</span> <span class="mi">30</span>
+<span class="n">BIASED</span> <span class="o">=</span> <span class="kc">True</span>
+
+<span class="n">script_params</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;--datastore&#39;</span><span class="p">:</span> <span class="n">ds</span><span class="o">.</span><span class="n">as_mount</span><span class="p">(),</span>
+    <span class="s1">&#39;--train-datapath&#39;</span><span class="p">:</span> <span class="s2">&quot;data/&quot;</span> <span class="o">+</span> <span class="n">TRAIN_FILE_NAME</span><span class="p">,</span>
+    <span class="s1">&#39;--validation-datapath&#39;</span><span class="p">:</span> <span class="s2">&quot;data/&quot;</span> <span class="o">+</span> <span class="n">VAL_FILE_NAME</span><span class="p">,</span>
+    <span class="s1">&#39;--output_dir&#39;</span><span class="p">:</span> <span class="s1">&#39;./outputs&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;--surprise-reader&#39;</span><span class="p">:</span> <span class="s1">&#39;ml-100k&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;--rating-metrics&#39;</span><span class="p">:</span> <span class="n">RATING_METRICS</span><span class="p">,</span>
+    <span class="s1">&#39;--ranking-metrics&#39;</span><span class="p">:</span> <span class="n">RANKING_METRICS</span><span class="p">,</span>
+    <span class="s1">&#39;--usercol&#39;</span><span class="p">:</span> <span class="n">USERCOL</span><span class="p">,</span>
+    <span class="s1">&#39;--itemcol&#39;</span><span class="p">:</span> <span class="n">ITEMCOL</span><span class="p">,</span>
+    <span class="s1">&#39;--k&#39;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">K</span><span class="p">),</span>
+    <span class="s1">&#39;--random-state&#39;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">RANDOM_STATE</span><span class="p">),</span>
+    <span class="s1">&#39;--epochs&#39;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">NUM_EPOCHS</span><span class="p">),</span>
+<span class="p">}</span>
+
+<span class="k">if</span> <span class="n">BIASED</span><span class="p">:</span>
+    <span class="n">script_params</span><span class="p">[</span><span class="s1">&#39;--biased&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+<span class="k">if</span> <span class="n">VERBOSE</span><span class="p">:</span>
+    <span class="n">script_params</span><span class="p">[</span><span class="s1">&#39;--verbose&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+<span class="k">if</span> <span class="n">REMOVE_SEEN</span><span class="p">:</span>
+    <span class="n">script_params</span><span class="p">[</span><span class="s1">&#39;--remove-seen&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+    
+<span class="c1"># hyperparameters search space</span>
+<span class="c1"># We do not set &#39;lr_all&#39; and &#39;reg_all&#39; because they will be overwritten by the other lr_ and reg_ parameters</span>
+
+<span class="n">hyper_params</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;n_factors&#39;</span><span class="p">:</span> <span class="n">hd</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">150</span><span class="p">,</span> <span class="mi">200</span><span class="p">),</span>
+    <span class="s1">&#39;init_mean&#39;</span><span class="p">:</span> <span class="n">hd</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="o">-</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">),</span>
+    <span class="s1">&#39;init_std_dev&#39;</span><span class="p">:</span> <span class="n">hd</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mf">0.01</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">),</span>
+    <span class="s1">&#39;lr_bu&#39;</span><span class="p">:</span> <span class="n">hd</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mf">1e-6</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">),</span> 
+    <span class="s1">&#39;lr_bi&#39;</span><span class="p">:</span> <span class="n">hd</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mf">1e-6</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">),</span> 
+    <span class="s1">&#39;lr_pu&#39;</span><span class="p">:</span> <span class="n">hd</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mf">1e-6</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">),</span> 
+    <span class="s1">&#39;lr_qi&#39;</span><span class="p">:</span> <span class="n">hd</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mf">1e-6</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">),</span> 
+    <span class="s1">&#39;reg_bu&#39;</span><span class="p">:</span> <span class="n">hd</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mf">1e-6</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+    <span class="s1">&#39;reg_bi&#39;</span><span class="p">:</span> <span class="n">hd</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mf">1e-6</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> 
+    <span class="s1">&#39;reg_pu&#39;</span><span class="p">:</span> <span class="n">hd</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mf">1e-6</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> 
+    <span class="s1">&#39;reg_qi&#39;</span><span class="p">:</span> <span class="n">hd</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mf">1e-6</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="p">}</span>
+
+<span class="c1"># Note, BayesianParameterSampling only support choice, uniform, and quniform</span>
+<span class="n">ps</span> <span class="o">=</span> <span class="n">hd</span><span class="o">.</span><span class="n">BayesianParameterSampling</span><span class="p">(</span><span class="n">hyper_params</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Once you submit the experiment, you can see the progress from the notebook by using <code class="docutils literal notranslate"><span class="pre">azureml.widgets.RunDetails</span></code>. You can directly check the details from the Azure portal as well. To get the link, run <code class="docutils literal notranslate"><span class="pre">run.get_portal_url()</span></code>.</p>
+<p>For RandomSampling, you can use early termnination policy</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">policy</span> <span class="o">=</span> <span class="n">hd</span><span class="o">.</span><span class="n">BanditPolicy</span><span class="p">(</span><span class="n">evaluation_interval</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">slack_factor</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">delay_evaluation</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+</pre></div>
+</div>
+<blockquote>
+<div><p>Since we will do hyperparameter tuning, we create a <code class="docutils literal notranslate"><span class="pre">HyperDriveRunConfig</span></code> and pass it to the experiment object. If you already know what hyperparameters to use and still want to utilize AzureML for other purposes (e.g. model management), you can set the hyperparameter values directly to <code class="docutils literal notranslate"><span class="pre">script_params</span></code> and run the experiment, <code class="docutils literal notranslate"><span class="pre">run</span> <span class="pre">=</span> <span class="pre">exp.submit(est)</span></code>, instead.</p>
+</div></blockquote>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Hyperdrive experimentation configuration</span>
+<span class="n">MAX_TOTAL_RUNS</span> <span class="o">=</span> <span class="mi">100</span>  <span class="c1"># Number of runs (training-and-evaluation) to search for the best hyperparameters. </span>
+<span class="n">MAX_CONCURRENT_RUNS</span> <span class="o">=</span> <span class="mi">8</span>
+
+<span class="n">est</span> <span class="o">=</span> <span class="n">azureml</span><span class="o">.</span><span class="n">train</span><span class="o">.</span><span class="n">estimator</span><span class="o">.</span><span class="n">Estimator</span><span class="p">(</span>
+    <span class="n">source_directory</span><span class="o">=</span><span class="n">SCRIPT_DIR</span><span class="p">,</span>
+    <span class="n">entry_script</span><span class="o">=</span><span class="n">ENTRY_SCRIPT_NAME</span><span class="p">,</span>
+    <span class="n">script_params</span><span class="o">=</span><span class="n">script_params</span><span class="p">,</span>
+    <span class="n">compute_target</span><span class="o">=</span><span class="n">cpu_cluster</span><span class="p">,</span>
+    <span class="n">conda_packages</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;pandas&#39;</span><span class="p">,</span> <span class="s1">&#39;scikit-learn&#39;</span><span class="p">],</span>
+    <span class="n">pip_packages</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;scikit-surprise&#39;</span><span class="p">,</span> <span class="s1">&#39;psutil&#39;</span><span class="p">]</span>
+<span class="p">)</span>
+
+<span class="n">hd_config</span> <span class="o">=</span> <span class="n">hd</span><span class="o">.</span><span class="n">HyperDriveRunConfig</span><span class="p">(</span>
+    <span class="n">estimator</span><span class="o">=</span><span class="n">est</span><span class="p">,</span> 
+    <span class="n">hyperparameter_sampling</span><span class="o">=</span><span class="n">ps</span><span class="p">,</span>
+    <span class="n">primary_metric_name</span><span class="o">=</span><span class="n">PRIMARY_METRIC</span><span class="p">,</span>
+    <span class="n">primary_metric_goal</span><span class="o">=</span><span class="n">hd</span><span class="o">.</span><span class="n">PrimaryMetricGoal</span><span class="o">.</span><span class="n">MAXIMIZE</span><span class="p">,</span> 
+    <span class="n">max_total_runs</span><span class="o">=</span><span class="n">MAX_TOTAL_RUNS</span><span class="p">,</span>
+    <span class="n">max_concurrent_runs</span><span class="o">=</span><span class="n">MAX_CONCURRENT_RUNS</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="execute-runs-in-azureml">
+<h2>5. Execute Runs in AzureML<a class="headerlink" href="#execute-runs-in-azureml" title="Permalink to this headline">¶</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create an experiment to track the runs in the workspace</span>
+<span class="n">exp</span> <span class="o">=</span> <span class="n">aml</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">Experiment</span><span class="p">(</span><span class="n">workspace</span><span class="o">=</span><span class="n">ws</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">EXP_NAME</span><span class="p">)</span>
+<span class="n">run</span> <span class="o">=</span> <span class="n">exp</span><span class="o">.</span><span class="n">submit</span><span class="p">(</span><span class="n">config</span><span class="o">=</span><span class="n">hd_config</span><span class="p">)</span>
+
+<span class="n">azureml</span><span class="o">.</span><span class="n">widgets</span><span class="o">.</span><span class="n">RunDetails</span><span class="p">(</span><span class="n">run</span><span class="p">)</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<span class="n">run</span><span class="o">.</span><span class="n">wait_for_completion</span><span class="p">(</span><span class="n">show_output</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<script type="application/vnd.jupyter.widget-view+json">
+{"model_id": "61cd3c66d91f433888ffffc6e45b46fb", "version_major": 2, "version_minor": 0}
+</script><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>RunId: movielens_100k_svd_model_1551957798853
+
+Execution Summary
+=================
+RunId: movielens_100k_svd_model_1551957798853
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;runId&#39;: &#39;movielens_100k_svd_model_1551957798853&#39;,
+ &#39;target&#39;: &#39;cpuclustersvd&#39;,
+ &#39;status&#39;: &#39;Completed&#39;,
+ &#39;endTimeUtc&#39;: &#39;2019-03-07T11:57:23.000Z&#39;,
+ &#39;properties&#39;: {&#39;primary_metric_config&#39;: &#39;{&quot;name&quot;: &quot;precision_at_k&quot;, &quot;goal&quot;: &quot;maximize&quot;}&#39;,
+  &#39;runTemplate&#39;: &#39;HyperDrive&#39;,
+  &#39;azureml.runsource&#39;: &#39;hyperdrive&#39;},
+ &#39;logFiles&#39;: {&#39;azureml-logs/hyperdrive.txt&#39;: &#39;https://anargyri6699545766.blob.core.windows.net/azureml/ExperimentRun/dcid.movielens_100k_svd_model_1551957798853/azureml-logs/hyperdrive.txt?sv=2018-03-28&amp;sr=b&amp;sig=5vpEl9OQZvTgU4v%2BiIAKATIHBJg8UyBw8e3jD0xtAz4%3D&amp;st=2019-03-07T11%3A47%3A26Z&amp;se=2019-03-07T19%3A57%3A26Z&amp;sp=r&#39;}}
+</pre></div>
+</div>
+<script type="application/vnd.jupyter.widget-view+json">
+{"model_id": "313732b33930494d8245cf305ffd99f0", "version_major": 2, "version_minor": 0}
+</script></div>
+</div>
+<p>You can see the experiment progress from this notebook by using <code class="docutils literal notranslate"><span class="pre">azureml.widgets.RunDetails(hd_run).show()</span></code> or check from the Azure portal with the url link you can get by running <code class="docutils literal notranslate"><span class="pre">hd_run.get_portal_url()</span></code>.
+To load an existing Hyperdrive run, use <code class="docutils literal notranslate"><span class="pre">hd_run</span> <span class="pre">=</span> <span class="pre">hd.HyperDriveRun(exp,</span> <span class="pre">&lt;user-run-id&gt;,</span> <span class="pre">hyperdrive_run_config=hd_run_config)</span></code>. You also can cancel a run with <code class="docutils literal notranslate"><span class="pre">hd_run.cancel()</span></code>.
+<img alt="" src="https://recodatasets.z20.web.core.windows.net/images/svd_hyperdrive1.PNG" />
+<img alt="" src="https://recodatasets.z20.web.core.windows.net/images/svd_hyperdrive2.PNG" /></p>
+</div>
+<div class="section" id="show-results">
+<h2>6. Show Results<a class="headerlink" href="#show-results" title="Permalink to this headline">¶</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Get best run and printout metrics</span>
+<span class="n">best_run</span> <span class="o">=</span> <span class="n">run</span><span class="o">.</span><span class="n">get_best_run_by_primary_metric</span><span class="p">()</span>
+
+<span class="n">best_run_metrics</span> <span class="o">=</span> <span class="n">best_run</span><span class="o">.</span><span class="n">get_metrics</span><span class="p">()</span>
+<span class="n">parameter_values</span> <span class="o">=</span> <span class="n">best_run</span><span class="o">.</span><span class="n">get_details</span><span class="p">()[</span><span class="s1">&#39;runDefinition&#39;</span><span class="p">][</span><span class="s1">&#39;arguments&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">best_run_metrics</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;Number of epochs&#39;: 30,
+ &#39;rmse&#39;: 1.0343498081373697,
+ &#39;precision_at_k&#39;: 0.10000000000000002,
+ &#39;ndcg_at_k&#39;: 0.11498322243961594}
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">parameter_values</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>--datastore $AZUREML_DATAREFERENCE_workspaceblobstore --train-datapath data/movielens_100k_train.pkl --validation-datapath data/movielens_100k_val.pkl --output_dir ./outputs --surprise-reader ml-100k --rating-metrics rmse --ranking-metrics precision_at_k ndcg_at_k --usercol userID --itemcol itemID --k 10 --random-state 0 --epochs 30 --biased --verbose --n_factors 150 --init_mean -0.4163305768968 --init_std_dev 0.159711436379793 --lr_bu 0.0386753983834255 --lr_bi 4.48660045721016E-05 --lr_pu 0.0119378772073106 --lr_qi 0.0936873305814469 --reg_bu 0.385400397115581 --reg_bi 0.975251474623207 --reg_pu 0.906537637834819 --reg_qi 0.801240951271603
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now evaluate the metrics on the test data. To do this, get the SVD model that was saved as model.dump in the training script.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">MODEL_DIR</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">tmp_dir</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="s1">&#39;aml_model&#39;</span><span class="p">)</span> 
+<span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">MODEL_DIR</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">best_run</span><span class="o">.</span><span class="n">download_file</span><span class="p">(</span><span class="s1">&#39;outputs/model.dump&#39;</span><span class="p">,</span> <span class="n">output_file_path</span><span class="o">=</span><span class="n">MODEL_DIR</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">svd</span> <span class="o">=</span> <span class="n">surprise</span><span class="o">.</span><span class="n">dump</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">MODEL_DIR</span><span class="p">,</span> <span class="s1">&#39;model.dump&#39;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">test_results</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="n">predictions</span> <span class="o">=</span> <span class="n">predict</span><span class="p">(</span><span class="n">svd</span><span class="p">,</span> <span class="n">test</span><span class="p">,</span> <span class="n">usercol</span><span class="o">=</span><span class="n">USERCOL</span><span class="p">,</span> <span class="n">itemcol</span><span class="o">=</span><span class="n">ITEMCOL</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">metric</span> <span class="ow">in</span> <span class="n">RATING_METRICS</span><span class="p">:</span>
+    <span class="n">test_results</span><span class="p">[</span><span class="n">metric</span><span class="p">]</span> <span class="o">=</span> <span class="nb">eval</span><span class="p">(</span><span class="n">metric</span><span class="p">)(</span><span class="n">test</span><span class="p">,</span> <span class="n">predictions</span><span class="p">,</span> <span class="n">col_user</span><span class="o">=</span><span class="n">USERCOL</span><span class="p">,</span> <span class="n">col_item</span><span class="o">=</span><span class="n">ITEMCOL</span><span class="p">)</span>
+
+<span class="n">all_predictions</span> <span class="o">=</span> <span class="n">compute_ranking_predictions</span><span class="p">(</span><span class="n">svd</span><span class="p">,</span> <span class="n">train</span><span class="p">,</span> <span class="n">usercol</span><span class="o">=</span><span class="n">USERCOL</span><span class="p">,</span> <span class="n">itemcol</span><span class="o">=</span><span class="n">ITEMCOL</span><span class="p">,</span> <span class="n">remove_seen</span><span class="o">=</span><span class="n">REMOVE_SEEN</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">metric</span> <span class="ow">in</span> <span class="n">RANKING_METRICS</span><span class="p">:</span>
+    <span class="n">test_results</span><span class="p">[</span><span class="n">metric</span><span class="p">]</span> <span class="o">=</span> <span class="nb">eval</span><span class="p">(</span><span class="n">metric</span><span class="p">)(</span><span class="n">test</span><span class="p">,</span> <span class="n">all_predictions</span><span class="p">,</span> <span class="n">col_prediction</span><span class="o">=</span><span class="s1">&#39;prediction&#39;</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="n">K</span><span class="p">,</span> <span class="n">col_user</span><span class="o">=</span><span class="n">USERCOL</span><span class="p">,</span> <span class="n">col_item</span><span class="o">=</span><span class="n">ITEMCOL</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">test_results</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;rmse&#39;: 1.0331492610799313, &#39;precision_at_k&#39;: 0.09968017057569298, &#39;ndcg_at_k&#39;: 0.1160964958978592}
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Cleanup files</span>
+<span class="n">tmp_dir</span><span class="o">.</span><span class="n">cleanup</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="concluding-remarks">
+<h2>7. Concluding Remarks<a class="headerlink" href="#concluding-remarks" title="Permalink to this headline">¶</a></h2>
+<p>We showed how to tune <strong>all</strong> the hyperparameters accepted by Surprise SVD simultaneously, by utilizing the Azure Machine Learning service.
+For example, training and evaluation of a single SVD model takes about 50 seconds on the 100k MovieLens data on a Standard D2_V2 VM. Searching through 100 different combinations of hyperparameters sequentially would take about 80 minutes whereas this notebook took less than half that. With AzureML, one can easily specify the size of the cluster according to the problem at hand and use Bayesian sampling to navigate efficiently through a large space of hyperparameters.</p>
+</div>
+<div class="section" id="references">
+<h2>References<a class="headerlink" href="#references" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p><a class="reference external" href="https://surprise.readthedocs.io/en/stable/matrix_factorization.html">Matrix factorization algorithms in Surprise</a></p></li>
+<li><p><span class="xref myst">Surprise SVD deep-dive notebook</span></p></li>
+<li><p><a class="reference external" href="https://azure.microsoft.com/en-us/blog/fine-tune-natural-language-processing-models-using-azure-machine-learning-service/">Fine-tune natural language processing models using Azure Machine Learning service</a></p></li>
+<li><p><a class="reference external" href="https://github.com/Azure/MachineLearningNotebooks/blob/master/how-to-use-azureml/training-with-deep-learning/train-hyperparameter-tune-deploy-with-tensorflow/train-hyperparameter-tune-deploy-with-tensorflow.ipynb">Training, hyperparameter tune, and deploy with TensorFlow</a></p></li>
+</ul>
+</div>
+</div>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "reco_base"
+        },
+        kernelOptions: {
+            kernelName: "reco_base",
+            path: "./examples/04_model_select_and_optimize"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'reco_base'</script>
+
+              </div>
+              
+        
+            
+
+
+
+<div class='prev-next-bottom'>
+    
+
+</div>
+        
+        </div>
+    </div>
+    <footer class="footer">
+    <div class="container">
+      <p>
+        
+          By The Jupyter Book community<br/>
+        
+            &copy; Copyright 2021.<br/>
+      </p>
+    </div>
+  </footer>
+</main>
+
+
+      </div>
+    </div>
+  
+  <script src="../../_static/js/index.1c5a1a01449ed65a7b51.js"></script>
+
+  
+  </body>
+</html>

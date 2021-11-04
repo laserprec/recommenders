@@ -1,0 +1,375 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>recommenders.datasets.sparse &#8212; &lt;h1 style=&#34;font-size:2em;text-align:center;color:#FF5733&#34;&gt;Recommenders&lt;/h1&gt;</title>
+    
+  <link href="../../../_static/css/theme.css" rel="stylesheet" />
+  <link href="../../../_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
+
+    
+  <link rel="stylesheet"
+    href="../../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+
+    
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-book-theme.css?digest=c3fdc42140077d1ad13ad2f1588a4309" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/tabs.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    
+  <link rel="preload" as="script" href="../../../_static/js/index.1c5a1a01449ed65a7b51.js">
+
+    <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/jquery.js"></script>
+    <script src="../../../_static/underscore.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/togglebutton.js"></script>
+    <script src="../../../_static/clipboard.min.js"></script>
+    <script src="../../../_static/copybutton.js"></script>
+    <script src="../../../_static/tabs.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../../../_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
+    <link rel="canonical" href="https://microsoft.github.io/genalog/_modules/recommenders/datasets/sparse.html" />
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en" />
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="../../../index.html">
+      
+      
+      
+      <h1 class="site-logo" id="site-title"><h1 style="font-size:2em;text-align:center;color:#FF5733">Recommenders</h1></h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="../../../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        
+    </div>
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="topbar container-xl fixed-top">
+    <div class="topbar-contents row">
+        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
+        <div class="col pl-md-4 topbar-main">
+            
+            <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+                data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+                aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
+                title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+                <i class="fas fa-bars"></i>
+                <i class="fas fa-arrow-left"></i>
+                <i class="fas fa-arrow-up"></i>
+            </button>
+            
+            
+            <!-- Source interaction buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
+    <div class="dropdown-buttons sourcebuttons">
+        <a class="repository-button"
+            href="https://github.com/microsoft/genalog"><button type="button" class="btn btn-secondary topbarbtn"
+                data-toggle="tooltip" data-placement="left" title="Source repository"><i
+                    class="fab fa-github"></i>repository</button></a>
+        <a class="issues-button"
+            href="https://github.com/microsoft/genalog/issues/new?title=Issue%20on%20page%20%2F_modules/recommenders/datasets/sparse.html&body=Your%20issue%20content%20here."><button
+                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
+                title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
+        
+    </div>
+</div>
+
+            <!-- Full screen (wrap in <a> to have style consistency -->
+
+<a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+        data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+        title="Fullscreen mode"><i
+            class="fas fa-expand"></i></button></a>
+
+            <!-- Launch buttons -->
+
+        </div>
+
+        <!-- Table of contents -->
+        <div class="d-none d-md-block col-md-2 bd-toc show">
+            
+        </div>
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+        
+              <div>
+                
+  <h1>Source code for recommenders.datasets.sparse</h1><div class="highlight"><pre>
+<span></span><span class="c1"># Copyright (c) Microsoft Corporation. All rights reserved.</span>
+<span class="c1"># Licensed under the MIT License.</span>
+
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">itertools</span>
+
+<span class="kn">from</span> <span class="nn">scipy.sparse</span> <span class="kn">import</span> <span class="n">coo_matrix</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+
+<span class="c1"># import default parameters</span>
+<span class="kn">from</span> <span class="nn">recommenders.utils.constants</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">DEFAULT_USER_COL</span><span class="p">,</span>
+    <span class="n">DEFAULT_ITEM_COL</span><span class="p">,</span>
+    <span class="n">DEFAULT_RATING_COL</span><span class="p">,</span>
+    <span class="n">DEFAULT_PREDICTION_COL</span><span class="p">,</span>
+<span class="p">)</span>
+
+
+<span class="n">log</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="AffinityMatrix"><a class="viewcode-back" href="../../../source/datasets.html#recommenders.datasets.sparse.AffinityMatrix">[docs]</a><span class="k">class</span> <span class="nc">AffinityMatrix</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Generate the user/item affinity matrix from a pandas dataframe and vice versa&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">df</span><span class="p">,</span>
+        <span class="n">items_list</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">col_user</span><span class="o">=</span><span class="n">DEFAULT_USER_COL</span><span class="p">,</span>
+        <span class="n">col_item</span><span class="o">=</span><span class="n">DEFAULT_ITEM_COL</span><span class="p">,</span>
+        <span class="n">col_rating</span><span class="o">=</span><span class="n">DEFAULT_RATING_COL</span><span class="p">,</span>
+        <span class="n">col_pred</span><span class="o">=</span><span class="n">DEFAULT_PREDICTION_COL</span><span class="p">,</span>
+        <span class="n">save_path</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Initialize class parameters</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            df (pandas.DataFrame): a dataframe containing the data</span>
+<span class="sd">            items_list (numpy.ndarray): a list of unique items to use (if provided)</span>
+<span class="sd">            col_user (str): default name for user column</span>
+<span class="sd">            col_item (str): default name for item column</span>
+<span class="sd">            col_rating (str): default name for rating columns</span>
+<span class="sd">            save_path (str): default path to save item/user maps</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">df</span> <span class="o">=</span> <span class="n">df</span>  <span class="c1"># dataframe</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">items_list</span> <span class="o">=</span> <span class="n">items_list</span>  <span class="c1"># list of unique items</span>
+
+        <span class="c1"># pandas DF parameters</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">col_item</span> <span class="o">=</span> <span class="n">col_item</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">col_user</span> <span class="o">=</span> <span class="n">col_user</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">col_rating</span> <span class="o">=</span> <span class="n">col_rating</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">col_pred</span> <span class="o">=</span> <span class="n">col_pred</span>
+
+        <span class="c1"># Options to save the model for future use</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">save_path</span> <span class="o">=</span> <span class="n">save_path</span>
+
+    <span class="k">def</span> <span class="nf">_gen_index</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Generate the user/item index:</span>
+<span class="sd">        map_users, map_items: dictionaries mapping the original user/item index to matrix indices</span>
+<span class="sd">        map_back_users, map_back_items: dictionaries to map back the matrix elements to the original</span>
+<span class="sd">        dataframe indices</span>
+
+<span class="sd">        Basic mechanics:</span>
+<span class="sd">        As a first step we retieve the unique elements in the dataset. In this way we can take care</span>
+<span class="sd">        of either completely missing rows (a user with no ratings) or completely missing columns</span>
+<span class="sd">        (an item that has not being reviewed by anyone). The original indices in the dataframe are</span>
+<span class="sd">        then mapped to an ordered, contiguous integer series to generate a compact matrix representation.</span>
+<span class="sd">        Functions to map back to the original indices are also provided and can be saved in order to use</span>
+<span class="sd">        a pretrained model.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># sort entries by user index</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">df_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">df</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">col_user</span><span class="p">])</span>
+
+        <span class="c1"># find unique user and item index</span>
+        <span class="n">unique_users</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">df_</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">col_user</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">items_list</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">unique_items</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">items_list</span>  <span class="c1"># use this list if provided</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">unique_items</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">df_</span><span class="p">[</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">col_item</span>
+            <span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">()</span>  <span class="c1"># otherwise use unique items from DF</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">Nusers</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">unique_users</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Nitems</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">unique_items</span><span class="p">)</span>
+
+        <span class="c1"># create a dictionary to map unique users/items to hashed values to generate the matrix</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">map_users</span> <span class="o">=</span> <span class="p">{</span><span class="n">x</span><span class="p">:</span> <span class="n">i</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">unique_users</span><span class="p">)}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">map_items</span> <span class="o">=</span> <span class="p">{</span><span class="n">x</span><span class="p">:</span> <span class="n">i</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">unique_items</span><span class="p">)}</span>
+
+        <span class="c1"># map back functions used to get back the original dataframe</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">map_back_users</span> <span class="o">=</span> <span class="p">{</span><span class="n">i</span><span class="p">:</span> <span class="n">x</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">unique_users</span><span class="p">)}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">map_back_items</span> <span class="o">=</span> <span class="p">{</span><span class="n">i</span><span class="p">:</span> <span class="n">x</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">unique_items</span><span class="p">)}</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">df_</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,</span> <span class="s2">&quot;hashedItems&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">df_</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">col_item</span><span class="p">]</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">map_items</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">df_</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,</span> <span class="s2">&quot;hashedUsers&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">df_</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">col_user</span><span class="p">]</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">map_users</span><span class="p">)</span>
+
+        <span class="c1"># optionally save the inverse dictionary to work with trained models</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">save_path</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+
+            <span class="n">np</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">save_path</span> <span class="o">+</span> <span class="s2">&quot;/user_dict&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">map_users</span><span class="p">)</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">save_path</span> <span class="o">+</span> <span class="s2">&quot;/item_dict&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">map_items</span><span class="p">)</span>
+
+            <span class="n">np</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">save_path</span> <span class="o">+</span> <span class="s2">&quot;/user_back_dict&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">map_back_users</span><span class="p">)</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">save_path</span> <span class="o">+</span> <span class="s2">&quot;/item_back_dict&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">map_back_items</span><span class="p">)</span>
+
+<div class="viewcode-block" id="AffinityMatrix.gen_affinity_matrix"><a class="viewcode-back" href="../../../source/datasets.html#recommenders.datasets.sparse.AffinityMatrix.gen_affinity_matrix">[docs]</a>    <span class="k">def</span> <span class="nf">gen_affinity_matrix</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Generate the user/item affinity matrix.</span>
+
+<span class="sd">        As a first step, two new columns are added to the input DF, containing the index maps</span>
+<span class="sd">        generated by the gen_index() method. The new indices, together with the ratings, are</span>
+<span class="sd">        then used to generate the user/item affinity matrix using scipy&#39;s sparse matrix method</span>
+<span class="sd">        coo_matrix; for reference see:</span>
+<span class="sd">        https://docs.scipy.org/doc/scipy/reference/generated/scipy.sparse.coo_matrix.html.</span>
+<span class="sd">        The input format is: `coo_matrix((data, (rows, columns)), shape=(rows, columns))`</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            scipy.sparse.coo_matrix: User-affinity matrix of dimensions (Nusers, Nitems) in numpy format.</span>
+<span class="sd">            Unrated movies are assigned a value of 0.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Generating the user/item affinity matrix...&quot;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_gen_index</span><span class="p">()</span>
+
+        <span class="n">ratings</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">df_</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">col_rating</span><span class="p">]</span>  <span class="c1"># ratings</span>
+        <span class="n">itm_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">df_</span><span class="p">[</span><span class="s2">&quot;hashedItems&quot;</span><span class="p">]</span>  <span class="c1"># itm_id serving as columns</span>
+        <span class="n">usr_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">df_</span><span class="p">[</span><span class="s2">&quot;hashedUsers&quot;</span><span class="p">]</span>  <span class="c1"># usr_id serving as rows</span>
+
+        <span class="c1"># generate a sparse matrix representation using scipy&#39;s coo_matrix and convert to array format</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">AM</span> <span class="o">=</span> <span class="n">coo_matrix</span><span class="p">(</span>
+            <span class="p">(</span><span class="n">ratings</span><span class="p">,</span> <span class="p">(</span><span class="n">usr_id</span><span class="p">,</span> <span class="n">itm_id</span><span class="p">)),</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Nusers</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">Nitems</span><span class="p">)</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">toarray</span><span class="p">()</span>
+
+        <span class="n">zero</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">AM</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>  <span class="c1"># number of unrated items</span>
+        <span class="n">total</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">AM</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">AM</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>  <span class="c1"># number of elements in the matrix</span>
+        <span class="n">sparsness</span> <span class="o">=</span> <span class="n">zero</span> <span class="o">/</span> <span class="n">total</span> <span class="o">*</span> <span class="mi">100</span>  <span class="c1"># Percentage of zeros in the matrix</span>
+
+        <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Matrix generated, sparseness percentage: </span><span class="si">%d</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">sparsness</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">AM</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">map_users</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">map_items</span></div>
+
+<div class="viewcode-block" id="AffinityMatrix.map_back_sparse"><a class="viewcode-back" href="../../../source/datasets.html#recommenders.datasets.sparse.AffinityMatrix.map_back_sparse">[docs]</a>    <span class="k">def</span> <span class="nf">map_back_sparse</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">kind</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Map back the user/affinity matrix to a pd dataframe</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            X (numpy.ndarray, int32): user/item affinity matrix</span>
+<span class="sd">            kind (string): specify if the output values are ratings or predictions</span>
+<span class="sd">        Returns:</span>
+<span class="sd">            pandas.DataFrame: the generated pandas dataframe</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">m</span><span class="p">,</span> <span class="n">n</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span>
+
+        <span class="c1"># 1) Create a DF from a sparse matrix</span>
+        <span class="c1"># obtain the non zero items</span>
+        <span class="n">items</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">asanyarray</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="p">:]</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">))</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">m</span><span class="p">)]</span>
+        <span class="n">ratings</span> <span class="o">=</span> <span class="p">[</span><span class="n">X</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">items</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">m</span><span class="p">)]</span>  <span class="c1"># obtain the non-zero ratings</span>
+
+        <span class="c1"># Creates user ids following the DF format</span>
+        <span class="n">userids</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">m</span><span class="p">):</span>
+            <span class="n">userids</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">items</span><span class="p">[</span><span class="n">i</span><span class="p">]))</span>
+
+        <span class="c1"># Flatten the lists to follow the DF input format</span>
+        <span class="n">items</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">itertools</span><span class="o">.</span><span class="n">chain</span><span class="o">.</span><span class="n">from_iterable</span><span class="p">(</span><span class="n">items</span><span class="p">))</span>
+        <span class="n">ratings</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">itertools</span><span class="o">.</span><span class="n">chain</span><span class="o">.</span><span class="n">from_iterable</span><span class="p">(</span><span class="n">ratings</span><span class="p">))</span>
+
+        <span class="k">if</span> <span class="n">kind</span> <span class="o">==</span> <span class="s2">&quot;ratings&quot;</span><span class="p">:</span>
+            <span class="n">col_out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">col_rating</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">col_out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">col_pred</span>
+
+        <span class="c1"># create a df</span>
+        <span class="n">out_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span>
+            <span class="p">{</span><span class="bp">self</span><span class="o">.</span><span class="n">col_user</span><span class="p">:</span> <span class="n">userids</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">col_item</span><span class="p">:</span> <span class="n">items</span><span class="p">,</span> <span class="n">col_out</span><span class="p">:</span> <span class="n">ratings</span><span class="p">}</span>
+        <span class="p">)</span>
+
+        <span class="c1"># 2) map back user/item ids to their original value</span>
+
+        <span class="n">out_df</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">col_user</span><span class="p">]</span> <span class="o">=</span> <span class="n">out_df</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">col_user</span><span class="p">]</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">map_back_users</span><span class="p">)</span>
+        <span class="n">out_df</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">col_item</span><span class="p">]</span> <span class="o">=</span> <span class="n">out_df</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">col_item</span><span class="p">]</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">map_back_items</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">out_df</span></div></div>
+</pre></div>
+
+              </div>
+              
+        
+            
+
+
+
+<div class='prev-next-bottom'>
+    
+
+</div>
+        
+        </div>
+    </div>
+    <footer class="footer">
+    <div class="container">
+      <p>
+        
+          By The Jupyter Book community<br/>
+        
+            &copy; Copyright 2021.<br/>
+          <div class="extra_footer">
+            Don't forget to check out <a href= https://arxiv.org/abs/2108.02899>our paper from Document Intelligence Workshop at KDD 2021!</a>
+          </div>
+      </p>
+    </div>
+  </footer>
+</main>
+
+
+      </div>
+    </div>
+  
+  <script src="../../../_static/js/index.1c5a1a01449ed65a7b51.js"></script>
+
+  
+  </body>
+</html>

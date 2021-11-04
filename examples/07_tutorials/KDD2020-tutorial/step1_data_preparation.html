@@ -1,0 +1,642 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Data manipulation &#8212; &lt;h1 style=&#34;font-size:2em;text-align:center;color:#FF5733&#34;&gt;Recommenders&lt;/h1&gt;</title>
+    
+  <link href="../../../_static/css/theme.css" rel="stylesheet" />
+  <link href="../../../_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
+
+    
+  <link rel="stylesheet"
+    href="../../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+
+    
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-book-theme.css?digest=c3fdc42140077d1ad13ad2f1588a4309" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/tabs.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    
+  <link rel="preload" as="script" href="../../../_static/js/index.1c5a1a01449ed65a7b51.js">
+
+    <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/jquery.js"></script>
+    <script src="../../../_static/underscore.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/togglebutton.js"></script>
+    <script src="../../../_static/clipboard.min.js"></script>
+    <script src="../../../_static/copybutton.js"></script>
+    <script src="../../../_static/tabs.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../../../_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script>
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="../../../_static/sphinx-thebe.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en" />
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="../../../index.html">
+      
+      
+      
+      <h1 class="site-logo" id="site-title"><h1 style="font-size:2em;text-align:center;color:#FF5733">Recommenders</h1></h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="../../../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        <p class="caption" role="heading">
+ <span class="caption-text">
+  Getting Started Notebooks
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../00_quick_start/als_movielens.html">
+   Running ALS on MovieLens (PySpark)
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../00_quick_start/ncf_movielens.html">
+   Neural Collaborative Filtering on MovieLens dataset.
+  </a>
+ </li>
+</ul>
+
+    </div>
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="topbar container-xl fixed-top">
+    <div class="topbar-contents row">
+        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
+        <div class="col pl-md-4 topbar-main">
+            
+            <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+                data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+                aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
+                title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+                <i class="fas fa-bars"></i>
+                <i class="fas fa-arrow-left"></i>
+                <i class="fas fa-arrow-up"></i>
+            </button>
+            
+            
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
+            class="fas fa-download"></i></button>
+
+    <div class="dropdown-buttons">
+        <!-- ipynb file if we had a myst markdown file -->
+        
+        <!-- Download raw file -->
+        <a class="dropdown-buttons" href="../../../_sources/examples/07_tutorials/KDD2020-tutorial/step1_data_preparation.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
+                data-placement="left">.ipynb</button></a>
+        <!-- Download PDF via print -->
+        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
+            onClick="window.print()" data-toggle="tooltip" data-placement="left">.pdf</button>
+    </div>
+</div>
+
+            <!-- Source interaction buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
+    <div class="dropdown-buttons sourcebuttons">
+        <a class="repository-button"
+            href="https://github.com/microsoft/genalog"><button type="button" class="btn btn-secondary topbarbtn"
+                data-toggle="tooltip" data-placement="left" title="Source repository"><i
+                    class="fab fa-github"></i>repository</button></a>
+        <a class="issues-button"
+            href="https://github.com/microsoft/genalog/issues/new?title=Issue%20on%20page%20%2Fexamples/07_tutorials/KDD2020-tutorial/step1_data_preparation.html&body=Your%20issue%20content%20here."><button
+                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
+                title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
+        
+    </div>
+</div>
+
+            <!-- Full screen (wrap in <a> to have style consistency -->
+
+<a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+        data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+        title="Fullscreen mode"><i
+            class="fas fa-expand"></i></button></a>
+
+            <!-- Launch buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Launch interactive content"><i class="fas fa-rocket"></i></button>
+    <div class="dropdown-buttons">
+        
+        <a class="binder-button" href="https://mybinder.org/v2/gh/microsoft/genalog/main?urlpath=tree/docs/genalog_docs/examples/07_tutorials/KDD2020-tutorial/step1_data_preparation.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Launch Binder" data-toggle="tooltip"
+                data-placement="left"><img class="binder-button-logo"
+                    src="../../../_static/images/logo_binder.svg"
+                    alt="Interact on binder">Binder</button></a>
+        
+        
+        
+        
+    </div>
+</div>
+
+        </div>
+
+        <!-- Table of contents -->
+        <div class="d-none d-md-block col-md-2 bd-toc show">
+            
+            <div class="tocsection onthispage pt-5 pb-3">
+                <i class="fas fa-list"></i> Contents
+            </div>
+            <nav id="bd-toc-nav" aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#preparing-paper-related-files">
+   Preparing paper related files
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#prepare-user-related-files">
+   Prepare user related files
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#dkn-takes-several-more-files-as-inputs">
+     DKN takes several more files as inputs:
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#prepare-item2item-recommendation-dataset">
+   Prepare item2item recommendation dataset
+  </a>
+ </li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+        
+              <div>
+                
+  <p><i>Copyright (c) Microsoft Corporation. All rights reserved.</i></p>
+<p><i>Licensed under the MIT License.</i></p>
+<div class="tex2jax_ignore mathjax_ignore section" id="data-manipulation">
+<h1>Data manipulation<a class="headerlink" href="#data-manipulation" title="Permalink to this headline">¶</a></h1>
+<p>This notebook provides necessary steps to generate DKN’s input dataset from the MAG COVID-19 raw dataset</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span> 
+<span class="kn">import</span> <span class="nn">codecs</span>
+<span class="kn">import</span> <span class="nn">pickle</span>
+<span class="kn">import</span> <span class="nn">time</span> 
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>  
+<span class="kn">import</span> <span class="nn">random</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">math</span>
+
+<span class="kn">from</span> <span class="nn">utils.task_helper</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">utils.general</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">utils.data_helper</span> <span class="kn">import</span> <span class="o">*</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="preparing-paper-related-files">
+<h2>Preparing paper related files<a class="headerlink" href="#preparing-paper-related-files" title="Permalink to this headline">¶</a></h2>
+<p>First let’s generate data for papers.
+For DKN, the paper data format is like: <br>
+<code class="docutils literal notranslate"><span class="pre">[Newsid]</span> <span class="pre">[w1,w2,w3...wk]</span> <span class="pre">[e1,e2,e3...ek]</span></code> <br>
+where w and e are the indices of words and entities sequence of this paper.
+Words and entities are aligned. To take a quick example, a paper with title is:  <br> <code class="docutils literal notranslate"><span class="pre">One</span> <span class="pre">Health</span> <span class="pre">approach</span> <span class="pre">in</span> <span class="pre">the</span> <span class="pre">South</span> <span class="pre">East</span> <span class="pre">Asia</span> <span class="pre">region:</span> <span class="pre">opportunities</span> <span class="pre">and</span> <span class="pre">challenges</span></code> <br>
+Then the title words value can be <br>  <code class="docutils literal notranslate"><span class="pre">101,56,23,14,1,69,256,887,365,32,11,567</span></code> <br>   and the title entitie value can be: <br>  <code class="docutils literal notranslate"><span class="pre">10,10,0,0,0,45,45,45,0,0,0,0</span></code> <br>  The first two values of entities sequence is 10, indicating that these two words corresponding to the same entity. The title value and entity value is hashed from 1 to n and m(n/m is the number of distinct words/entities).</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">InFile_dir</span> <span class="o">=</span> <span class="s1">&#39;data_folder/raw&#39;</span>
+<span class="n">OutFile_dir</span> <span class="o">=</span> <span class="s1">&#39;data_folder/my&#39;</span>
+<span class="n">create_dir</span><span class="p">(</span><span class="n">OutFile_dir</span><span class="p">)</span>
+
+<span class="n">Path_PaperTitleAbs_bySentence</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">InFile_dir</span><span class="p">,</span> <span class="s1">&#39;PaperTitleAbs_bySentence.txt&#39;</span><span class="p">)</span>
+<span class="n">Path_PaperFeature</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">OutFile_dir</span><span class="p">,</span> <span class="s1">&#39;paper_feature.txt&#39;</span><span class="p">)</span>
+
+<span class="n">max_word_size_per_paper</span> <span class="o">=</span> <span class="mi">15</span> 
+</pre></div>
+</div>
+</div>
+</div>
+<p>Step 1 is to hash the words and entities. <br>
+For simplicy, in this tutorial we only use the paper title to repsesent the content of paper. Definitely you can use more content, such as paper abstract and paper body. <br>
+Each feature length should be fixed at k (max_word_size_per_paper), if the number of words in document is more than k, we will truncate the document to k words. If the number of words in document is less than k, we will pad 0 to the end.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">word2idx</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="n">entity2idx</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="n">relation2idx</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="n">word2idx</span><span class="p">,</span> <span class="n">entity2idx</span> <span class="o">=</span> <span class="n">gen_paper_content</span><span class="p">(</span>
+    <span class="n">Path_PaperTitleAbs_bySentence</span><span class="p">,</span> <span class="n">Path_PaperFeature</span><span class="p">,</span> <span class="n">word2idx</span><span class="p">,</span> <span class="n">entity2idx</span><span class="p">,</span> <span class="n">field</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;Title&quot;</span><span class="p">],</span> <span class="n">doc_len</span><span class="o">=</span><span class="n">max_word_size_per_paper</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>loading file PaperTitleAbs_bySentence.txt...
+loading line: 880000, time elapses: 10.1s  
+parsing into feature file  ...
+parsed paper count: 110000, time elapses: 0.5s 
+</pre></div>
+</div>
+</div>
+</div>
+<p>Step 2 is to generate the data of the knowledge graph, in turns of a set of triples: <br>
+<code class="docutils literal notranslate"><span class="pre">head,</span> <span class="pre">tail,</span> <span class="pre">relation</span></code> <br></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">word2idx_filename</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">OutFile_dir</span><span class="p">,</span> <span class="s1">&#39;word2idx.pkl&#39;</span><span class="p">)</span>
+<span class="n">entity2idx_filename</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">OutFile_dir</span><span class="p">,</span> <span class="s1">&#39;entity2idx.pkl&#39;</span><span class="p">)</span>
+
+<span class="n">Path_RelatedFieldOfStudy</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">InFile_dir</span><span class="p">,</span> <span class="s1">&#39;RelatedFieldOfStudy.txt&#39;</span><span class="p">)</span>
+<span class="n">OutFile_dir_KG</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">OutFile_dir</span><span class="p">,</span> <span class="s1">&#39;KG&#39;</span><span class="p">)</span>
+<span class="n">create_dir</span><span class="p">(</span><span class="n">OutFile_dir_KG</span><span class="p">)</span>
+
+<span class="n">gen_knowledge_relations</span><span class="p">(</span><span class="n">Path_RelatedFieldOfStudy</span><span class="p">,</span> <span class="n">OutFile_dir_KG</span><span class="p">,</span> <span class="n">entity2idx</span><span class="p">,</span> <span class="n">relation2idx</span><span class="p">)</span> 
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>processing file RelatedFieldOfStudy.txt... done.
+</pre></div>
+</div>
+</div>
+</div>
+<p>The data files will be outputed to the folder <code class="docutils literal notranslate"><span class="pre">OutFile_dir_KG</span></code>.  <br>
+To train word embeddings, we need a collection of sentences:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Path_SentenceCollection</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">OutFile_dir</span><span class="p">,</span> <span class="s1">&#39;sentence.txt&#39;</span><span class="p">)</span>
+<span class="n">gen_sentence_collection</span><span class="p">(</span>
+    <span class="n">Path_PaperTitleAbs_bySentence</span><span class="p">,</span>
+    <span class="n">Path_SentenceCollection</span><span class="p">,</span>
+    <span class="n">word2idx</span>
+<span class="p">)</span>
+
+<span class="c1">## save the id mapper</span>
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">word2idx_filename</span><span class="p">,</span> <span class="s1">&#39;wb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="n">pickle</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">word2idx</span><span class="p">,</span> <span class="n">f</span><span class="p">)</span>
+<span class="n">dump_dict_as_txt</span><span class="p">(</span><span class="n">word2idx</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">OutFile_dir</span><span class="p">,</span> <span class="s1">&#39;word2id.tsv&#39;</span><span class="p">))</span>
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">entity2idx_filename</span><span class="p">,</span> <span class="s1">&#39;wb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="n">pickle</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">entity2idx</span><span class="p">,</span> <span class="n">f</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>loading file PaperTitleAbs_bySentence.txt...
+loading line: 880000, time elapses: 8.8s 
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="prepare-user-related-files">
+<h2>Prepare user related files<a class="headerlink" href="#prepare-user-related-files" title="Permalink to this headline">¶</a></h2>
+<p>Next we generate user related files.
+Our first task is user-to-paper recommendations. For each user, we collect his/her complete cited papers, and arrange them in chronological order. The recommendation task can then be formulated as: given a user’s citation history, to predict what paper he/she will cite in the future.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">_t0</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+
+<span class="n">Path_PaperReference</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">InFile_dir</span><span class="p">,</span> <span class="s1">&#39;PaperReferences.txt&#39;</span><span class="p">)</span>
+<span class="n">Path_PaperAuthorAffiliations</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">InFile_dir</span><span class="p">,</span> <span class="s1">&#39;PaperAuthorAffiliations.txt&#39;</span><span class="p">)</span>
+<span class="n">Path_Papers</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">InFile_dir</span><span class="p">,</span> <span class="s1">&#39;Papers.txt&#39;</span><span class="p">)</span>
+<span class="n">Path_Author2ReferencePapers</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">OutFile_dir</span><span class="p">,</span> <span class="s1">&#39;Author2ReferencePapers.tsv&#39;</span><span class="p">)</span>
+
+<span class="n">author2paper_list</span> <span class="o">=</span> <span class="n">load_author_paperlist</span><span class="p">(</span><span class="n">Path_PaperAuthorAffiliations</span><span class="p">)</span>
+<span class="n">paper2date</span> <span class="o">=</span> <span class="n">load_paper_date</span><span class="p">(</span><span class="n">Path_Papers</span><span class="p">)</span>
+<span class="n">paper2reference_list</span> <span class="o">=</span> <span class="n">load_paper_reference</span><span class="p">(</span><span class="n">Path_PaperReference</span><span class="p">)</span>
+
+<span class="n">author2reference_list</span> <span class="o">=</span> <span class="n">get_author_reference_list</span><span class="p">(</span><span class="n">author2paper_list</span><span class="p">,</span> <span class="n">paper2reference_list</span><span class="p">,</span> <span class="n">paper2date</span><span class="p">)</span>
+
+<span class="n">output_author2reference_list</span><span class="p">(</span>
+    <span class="n">author2reference_list</span><span class="p">,</span>
+    <span class="n">Path_Author2ReferencePapers</span>
+<span class="p">)</span>
+
+<span class="n">OutFile_dir_DKN</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">OutFile_dir</span><span class="p">,</span> <span class="s1">&#39;DKN-training-folder&#39;</span><span class="p">)</span>
+<span class="n">create_dir</span><span class="p">(</span><span class="n">OutFile_dir_KG</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>loading PaperAuthorAffiliations.txt...
+loading Papers.txt...
+loading PaperReferences.txt...
+parsing user&#39;s reference list ...
+parsed user count: 430000, time elapses: 3.6s 
+outputing author reference list
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="dkn-takes-several-more-files-as-inputs">
+<h3>DKN takes several more files as inputs:<a class="headerlink" href="#dkn-takes-several-more-files-as-inputs" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>training / validation / test files: each line in these files represents one instance. Impressionid is used to evaluate performance within an impression session, so it is only used when evaluating, you can set it to 0 for training data. The format is : <br>
+<code class="docutils literal notranslate"><span class="pre">[label]</span> <span class="pre">[userid]</span> <span class="pre">[CandidateNews]%[impressionid]</span> </code><br>
+e.g., <code class="docutils literal notranslate"><span class="pre">1</span> <span class="pre">train_U1</span> <span class="pre">N1%0</span></code> <br></p></li>
+<li><p>user history file: each line in this file represents a users’ citation history. You need to set his_size parameter in config file, which is the max number of user’s click history we use. We will automatically keep the last his_size number of user click history, if user’s click history is more than his_size, and we will automatically padding 0 if user’s click history less than his_size. the format is : <br>
+<code class="docutils literal notranslate"><span class="pre">[Userid]</span> <span class="pre">[newsid1,newsid2...]</span></code><br>
+e.g., <code class="docutils literal notranslate"><span class="pre">train_U1</span> <span class="pre">N1,N2</span></code> <br></p></li>
+</ul>
+<p>DKN take recommendations as a binary classification problem. We sample negative instances according to item’s popularity:
+<img src="https://recodatasets.z20.web.core.windows.net/kdd2020/images/item-popularity.JPG" width="600"></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gen_experiment_splits</span><span class="p">(</span>
+    <span class="n">Path_Author2ReferencePapers</span><span class="p">,</span>
+    <span class="n">OutFile_dir_DKN</span><span class="p">,</span>
+    <span class="n">Path_PaperFeature</span><span class="p">,</span>
+    <span class="n">item_ratio</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>
+    <span class="n">tag</span><span class="o">=</span><span class="s1">&#39;small&#39;</span><span class="p">,</span>
+    <span class="n">process_num</span><span class="o">=</span><span class="mi">2</span>
+<span class="p">)</span>
+
+<span class="n">_t1</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;time elapses for user is : </span><span class="si">{0:.1f}</span><span class="s1">s&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">_t1</span> <span class="o">-</span> <span class="n">_t0</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>expanding user behaviors...
+processing user number : 287000, time elapses: 1.7s done. 
+sample number in train / valid / test is 150874 / 8198 / 8198
+negative sampling for train...
+sampling process 0:  150000 / 150874, time elapses: 28.3s                                                                                                                                                                                                                                                                                                         	sampling process 1 done.
+	sampling process 0 done.
+negative sampling for validation...
+sampling process 1:  8000 / 8198, time elapses: 1.5s                	sampling process 0 done.
+	sampling process 1 done.
+negative sampling for test...
+sampling process 1:  8000 / 8198, time elapses: 1.6s                	sampling process 0 done.
+	sampling process 1 done.
+done.
+time elapses for user is : 51.8s
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="prepare-item2item-recommendation-dataset">
+<h2>Prepare item2item recommendation dataset<a class="headerlink" href="#prepare-item2item-recommendation-dataset" title="Permalink to this headline">¶</a></h2>
+<p>Our second recommendation scenario is about item-to-item recommendations. Given a paper, we can recommend a list of related papers for users to cite.
+Here we use a supervised learning approach to train this model. Each instance is a tuple of &lt;paper_a, paper_b, label&gt;. Label = 1 means the pair is highly related; otherwise the label will be 0.
+The positive labels are constructed in the following three ways: <br></p>
+<ol class="simple">
+<li><p>Paper A and B overlap a lot in their reference list;</p></li>
+<li><p>Paper A and B are co-cited by many other papers;</p></li>
+<li><p>Paper A and B are published in 12 months by the same author (first author).</p></li>
+</ol>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">OutFile_dir_item2item</span> <span class="o">=</span> <span class="sa">r</span><span class="s1">&#39;data_folder/my/item2item&#39;</span>
+<span class="n">create_dir</span><span class="p">(</span><span class="n">OutFile_dir_item2item</span><span class="p">)</span>
+<span class="n">Path_PaperFeature</span>
+<span class="n">item_set</span> <span class="o">=</span> <span class="n">load_has_feature_items</span><span class="p">(</span><span class="n">Path_PaperFeature</span><span class="p">)</span>
+
+
+<span class="n">Path_PaperReference</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">InFile_dir</span><span class="p">,</span> <span class="s1">&#39;PaperReferences.txt&#39;</span><span class="p">)</span>
+<span class="n">pair2CocitedCnt</span><span class="p">,</span> <span class="n">pair2CoReferenceCnt</span> <span class="o">=</span> <span class="n">gen_paper_cocitation</span><span class="p">(</span><span class="n">Path_PaperReference</span><span class="p">)</span>
+
+<span class="n">Path_paper_pair_cocitation</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">OutFile_dir_item2item</span><span class="p">,</span> <span class="s1">&#39;paper_pair_cocitation_cnt.csv&#39;</span><span class="p">)</span>
+<span class="n">Path_paper_pair_coreference</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">OutFile_dir_item2item</span><span class="p">,</span> <span class="s1">&#39;paper_pair_coreference_cnt.csv&#39;</span><span class="p">)</span>
+
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">Path_paper_pair_cocitation</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">wt</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">p</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">pair2CocitedCnt</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="k">if</span> <span class="n">p</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">in</span> <span class="n">item_set</span> <span class="ow">and</span> <span class="n">p</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="ow">in</span> <span class="n">item_set</span><span class="p">:</span>
+            <span class="n">wt</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{0}</span><span class="s1">,</span><span class="si">{1}</span><span class="s1">,</span><span class="si">{2}</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">p</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">p</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">v</span><span class="p">))</span>
+
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">Path_paper_pair_coreference</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">wt</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">p</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">pair2CoReferenceCnt</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="k">if</span> <span class="n">p</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">in</span> <span class="n">item_set</span> <span class="ow">and</span> <span class="n">p</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="ow">in</span> <span class="n">item_set</span><span class="p">:</span>
+            <span class="n">wt</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{0}</span><span class="s1">,</span><span class="si">{1}</span><span class="s1">,</span><span class="si">{2}</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">p</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">p</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">v</span><span class="p">))</span>
+            
+            
+<span class="n">Path_Papers</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">InFile_dir</span><span class="p">,</span> <span class="s1">&#39;Papers.txt&#39;</span><span class="p">)</span>
+<span class="n">Path_PaperAuthorAffiliations</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">InFile_dir</span><span class="p">,</span> <span class="s1">&#39;PaperAuthorAffiliations.txt&#39;</span><span class="p">)</span>
+<span class="n">paper2date</span> <span class="o">=</span> <span class="n">load_paper_date</span><span class="p">(</span><span class="n">Path_Papers</span><span class="p">)</span>
+<span class="n">author2paper_list</span><span class="p">,</span> <span class="n">paper2author_set</span> <span class="o">=</span> <span class="n">load_paper_author_relation</span><span class="p">(</span><span class="n">Path_PaperAuthorAffiliations</span><span class="p">)</span>
+<span class="n">Path_FirstAuthorPaperPair</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">OutFile_dir_item2item</span><span class="p">,</span> <span class="s1">&#39;paper_pair_cofirstauthor.csv&#39;</span><span class="p">)</span>
+<span class="n">first_author_pairs</span> <span class="o">=</span> <span class="n">gen_paper_pairs_from_same_author</span><span class="p">(</span>
+    <span class="n">author2paper_list</span><span class="p">,</span> <span class="n">paper2author_set</span><span class="p">,</span> <span class="n">paper2date</span><span class="p">,</span> <span class="n">Path_FirstAuthorPaperPair</span><span class="p">,</span> <span class="n">item_set</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>loading PaperReferences.txt...
+process paper num 53400 / 53452...time elapses: 8.8s	Done.
+process paper num 73600 / 73699...time elapses: 48.9s	Done.
+loading Papers.txt...
+loading PaperAuthorAffiliations.txt...
+process author num 435800 / 435822...time elapses: 1.0s
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now let’s separate the instances into training and validation set, and conduct negative sampling:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">split_train_valid_file</span><span class="p">(</span>
+    <span class="p">[</span><span class="n">Path_paper_pair_cocitation</span><span class="p">,</span> <span class="n">Path_FirstAuthorPaperPair</span><span class="p">,</span> <span class="n">Path_paper_pair_coreference</span><span class="p">],</span>
+    <span class="n">OutFile_dir_DKN</span>
+<span class="p">)</span>
+<span class="n">gen_negative_instances</span><span class="p">(</span>
+    <span class="n">item_set</span><span class="p">,</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">OutFile_dir_DKN</span><span class="p">,</span> <span class="s1">&#39;item2item_train.txt&#39;</span><span class="p">),</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">OutFile_dir_DKN</span><span class="p">,</span> <span class="s1">&#39;item2item_train_instances.txt&#39;</span><span class="p">),</span>
+    <span class="mi">9</span>
+<span class="p">)</span>
+<span class="n">gen_negative_instances</span><span class="p">(</span>
+    <span class="n">item_set</span><span class="p">,</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">OutFile_dir_DKN</span><span class="p">,</span> <span class="s1">&#39;item2item_valid.txt&#39;</span><span class="p">),</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">OutFile_dir_DKN</span><span class="p">,</span> <span class="s1">&#39;item2item_valid_instances.txt&#39;</span><span class="p">),</span>
+    <span class="mi">9</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>negative sampling for file item2item_train.txt...
+process line num 182500 / 182537...time elapses: 3.6s	done.
+negative sampling for file item2item_valid.txt...
+process line num 45600 / 45613...time elapses: 0.9s	done.
+</pre></div>
+</div>
+</div>
+</div>
+<p>Generating the full dataset will take a longer time, let it run in the background freely…</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gen_experiment_splits</span><span class="p">(</span>
+    <span class="n">Path_Author2ReferencePapers</span><span class="p">,</span>
+    <span class="n">OutFile_dir_DKN</span><span class="p">,</span>
+    <span class="n">Path_PaperFeature</span><span class="p">,</span>
+    <span class="n">item_ratio</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>
+    <span class="n">tag</span><span class="o">=</span><span class="s1">&#39;full&#39;</span><span class="p">,</span>
+    <span class="n">process_num</span><span class="o">=</span><span class="mi">8</span>
+<span class="p">)</span> 
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>expanding user behaviors...
+processing user number : 287000, time elapses: 8.7s done. 
+sample number in train / valid / test is 1782333 / 125010 / 125010
+negative sampling for train...
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>sampling process 1:  1014000 / 1782333, time elapses: 698.0s                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     sampling process 2:  1774000 / 1782333, time elapses: 1207.6s                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     	sampling process 3 done.
+sampling process 6:  1777000 / 1782333, time elapses: 1210.3s                                   	sampling process 0 done.
+sampling process 6:  1780000 / 1782333, time elapses: 1211.8s                  	sampling process 2 done.
+sampling process 7:  1778000 / 1782333, time elapses: 1212.9s            	sampling process 6 done.
+sampling process 5:  1781000 / 1782333, time elapses: 1215.0s                  	sampling process 1 done.
+	sampling process 7 done.
+sampling process 5:  1782000 / 1782333, time elapses: 1215.5s  	sampling process 5 done.
+sampling process 4:  1782000 / 1782333, time elapses: 1220.2s          	sampling process 4 done.
+negative sampling for validation...
+sampling process 4:  125000 / 125010, time elapses: 80.2s                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     	sampling process 4 done.
+sampling process 0:  125000 / 125010, time elapses: 80.5s  	sampling process 7 done.
+sampling process 3:  123000 / 125010, time elapses: 80.4s 	sampling process 0 done.
+sampling process 3:  125000 / 125010, time elapses: 81.3s          	sampling process 3 done.
+sampling process 1:  125000 / 125010, time elapses: 82.3s        	sampling process 1 done.
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>sampling process 5:  125000 / 125010, time elapses: 82.3s   	sampling process 5 done.
+sampling process 6:  125000 / 125010, time elapses: 83.7s      	sampling process 6 done.
+sampling process 2:  125000 / 125010, time elapses: 84.2s 	sampling process 2 done.
+negative sampling for test...
+sampling process 1:  125000 / 125010, time elapses: 81.9s                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          	sampling process 1 done.
+sampling process 6:  125000 / 125010, time elapses: 83.0s                	sampling process 6 done.
+sampling process 5:  125000 / 125010, time elapses: 83.3s  	sampling process 5 done.
+sampling process 3:  125000 / 125010, time elapses: 83.5s  	sampling process 3 done.
+sampling process 7:  125000 / 125010, time elapses: 83.4s  	sampling process 7 done.
+sampling process 2:  125000 / 125010, time elapses: 83.8s 	sampling process 2 done.
+sampling process 4:  125000 / 125010, time elapses: 83.9s 	sampling process 4 done.
+sampling process 0:  125000 / 125010, time elapses: 85.2s   	sampling process 0 done.
+done.
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "kdd_tutorial_2020"
+        },
+        kernelOptions: {
+            kernelName: "kdd_tutorial_2020",
+            path: "./examples/07_tutorials/KDD2020-tutorial"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'kdd_tutorial_2020'</script>
+
+              </div>
+              
+        
+            
+
+
+
+<div class='prev-next-bottom'>
+    
+
+</div>
+        
+        </div>
+    </div>
+    <footer class="footer">
+    <div class="container">
+      <p>
+        
+          By The Jupyter Book community<br/>
+        
+            &copy; Copyright 2021.<br/>
+      </p>
+    </div>
+  </footer>
+</main>
+
+
+      </div>
+    </div>
+  
+  <script src="../../../_static/js/index.1c5a1a01449ed65a7b51.js"></script>
+
+  
+  </body>
+</html>

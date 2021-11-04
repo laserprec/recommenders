@@ -1,0 +1,307 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>recommenders.models.deeprec.io.dkn_item2item_iterator &#8212; &lt;h1 style=&#34;font-size:2em;text-align:center;color:#FF5733&#34;&gt;Recommenders&lt;/h1&gt;</title>
+    
+  <link href="../../../../../_static/css/theme.css" rel="stylesheet" />
+  <link href="../../../../../_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
+
+    
+  <link rel="stylesheet"
+    href="../../../../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../../../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../../../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+
+    
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/sphinx-book-theme.css?digest=c3fdc42140077d1ad13ad2f1588a4309" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/tabs.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    
+  <link rel="preload" as="script" href="../../../../../_static/js/index.1c5a1a01449ed65a7b51.js">
+
+    <script data-url_root="../../../../../" id="documentation_options" src="../../../../../_static/documentation_options.js"></script>
+    <script src="../../../../../_static/jquery.js"></script>
+    <script src="../../../../../_static/underscore.js"></script>
+    <script src="../../../../../_static/doctools.js"></script>
+    <script src="../../../../../_static/togglebutton.js"></script>
+    <script src="../../../../../_static/clipboard.min.js"></script>
+    <script src="../../../../../_static/copybutton.js"></script>
+    <script src="../../../../../_static/tabs.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../../../../../_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
+    <link rel="canonical" href="https://microsoft.github.io/genalog/_modules/recommenders/models/deeprec/io/dkn_item2item_iterator.html" />
+    <link rel="index" title="Index" href="../../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../../search.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en" />
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="../../../../../index.html">
+      
+      
+      
+      <h1 class="site-logo" id="site-title"><h1 style="font-size:2em;text-align:center;color:#FF5733">Recommenders</h1></h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="../../../../../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        
+    </div>
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="topbar container-xl fixed-top">
+    <div class="topbar-contents row">
+        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
+        <div class="col pl-md-4 topbar-main">
+            
+            <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+                data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+                aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
+                title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+                <i class="fas fa-bars"></i>
+                <i class="fas fa-arrow-left"></i>
+                <i class="fas fa-arrow-up"></i>
+            </button>
+            
+            
+            <!-- Source interaction buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
+    <div class="dropdown-buttons sourcebuttons">
+        <a class="repository-button"
+            href="https://github.com/microsoft/genalog"><button type="button" class="btn btn-secondary topbarbtn"
+                data-toggle="tooltip" data-placement="left" title="Source repository"><i
+                    class="fab fa-github"></i>repository</button></a>
+        <a class="issues-button"
+            href="https://github.com/microsoft/genalog/issues/new?title=Issue%20on%20page%20%2F_modules/recommenders/models/deeprec/io/dkn_item2item_iterator.html&body=Your%20issue%20content%20here."><button
+                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
+                title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
+        
+    </div>
+</div>
+
+            <!-- Full screen (wrap in <a> to have style consistency -->
+
+<a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+        data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+        title="Fullscreen mode"><i
+            class="fas fa-expand"></i></button></a>
+
+            <!-- Launch buttons -->
+
+        </div>
+
+        <!-- Table of contents -->
+        <div class="d-none d-md-block col-md-2 bd-toc show">
+            
+        </div>
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+        
+              <div>
+                
+  <h1>Source code for recommenders.models.deeprec.io.dkn_item2item_iterator</h1><div class="highlight"><pre>
+<span></span><span class="c1"># Copyright (c) Microsoft Corporation. All rights reserved.</span>
+<span class="c1"># Licensed under the MIT License.</span>
+
+
+<span class="kn">import</span> <span class="nn">tensorflow</span> <span class="k">as</span> <span class="nn">tf</span>
+<span class="kn">from</span> <span class="nn">recommenders.models.deeprec.io.dkn_iterator</span> <span class="kn">import</span> <span class="n">DKNTextIterator</span>
+
+
+<div class="viewcode-block" id="DKNItem2itemTextIterator"><a class="viewcode-back" href="../../../../../source/models.html#recommenders.models.deeprec.io.dkn_item2item_iterator.DKNItem2itemTextIterator">[docs]</a><span class="k">class</span> <span class="nc">DKNItem2itemTextIterator</span><span class="p">(</span><span class="n">DKNTextIterator</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">hparams</span><span class="p">,</span> <span class="n">graph</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;This new iterator is for DKN&#39;s item-to-item recommendations version.</span>
+<span class="sd">        The tutorial can be found `on this notebook &lt;https://github.com/microsoft/recommenders/blob/main/examples/07_tutorials/KDD2020-tutorial/step4_run_dkn_item2item.ipynb&gt;`_.</span>
+
+<span class="sd">        Compared with user-to-item recommendations, we don&#39;t need the user behavior module.</span>
+<span class="sd">        So the placeholder can be simplified from the original DKNTextIterator.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            hparams (object): Global hyper-parameters.</span>
+<span class="sd">            graph (object): The running graph.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">hparams</span> <span class="o">=</span> <span class="n">hparams</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">graph</span> <span class="o">=</span> <span class="n">graph</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">neg_num</span> <span class="o">=</span> <span class="n">hparams</span><span class="o">.</span><span class="n">neg_num</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">batch_size</span> <span class="o">=</span> <span class="n">hparams</span><span class="o">.</span><span class="n">batch_size</span> <span class="o">*</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">neg_num</span> <span class="o">+</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">doc_size</span> <span class="o">=</span> <span class="n">hparams</span><span class="o">.</span><span class="n">doc_size</span>
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">as_default</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">candidate_news_index_batch</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">placeholder</span><span class="p">(</span>
+                <span class="n">tf</span><span class="o">.</span><span class="n">int64</span><span class="p">,</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">batch_size</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">doc_size</span><span class="p">],</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;candidate_news_index&quot;</span>
+            <span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">candidate_news_entity_index_batch</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">placeholder</span><span class="p">(</span>
+                <span class="n">tf</span><span class="o">.</span><span class="n">int64</span><span class="p">,</span>
+                <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">batch_size</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">doc_size</span><span class="p">],</span>
+                <span class="n">name</span><span class="o">=</span><span class="s2">&quot;candidate_news_entity_index&quot;</span><span class="p">,</span>
+            <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_loading_nessary_files</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">_loading_nessary_files</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Only one feature file is needed:  `news_feature_file`.</span>
+<span class="sd">        This function loads the news article&#39;s features into two dictionaries: `self.news_word_index` and `self.news_entity_index`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">hparams</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">hparams</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">news_word_index</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">news_entity_index</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">hparams</span><span class="o">.</span><span class="n">news_feature_file</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">rd</span><span class="p">:</span>
+            <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+                <span class="n">line</span> <span class="o">=</span> <span class="n">rd</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">line</span><span class="p">:</span>
+                    <span class="k">break</span>
+                <span class="n">newsid</span><span class="p">,</span> <span class="n">word_index</span><span class="p">,</span> <span class="n">entity_index</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">news_word_index</span><span class="p">[</span><span class="n">newsid</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span>
+                    <span class="nb">int</span><span class="p">(</span><span class="n">item</span><span class="p">)</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">word_index</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">)</span>
+                <span class="p">]</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">news_entity_index</span><span class="p">[</span><span class="n">newsid</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span>
+                    <span class="nb">int</span><span class="p">(</span><span class="n">item</span><span class="p">)</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">entity_index</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">)</span>
+                <span class="p">]</span>
+
+<div class="viewcode-block" id="DKNItem2itemTextIterator.load_data_from_file"><a class="viewcode-back" href="../../../../../source/models.html#recommenders.models.deeprec.io.dkn_item2item_iterator.DKNItem2itemTextIterator.load_data_from_file">[docs]</a>    <span class="k">def</span> <span class="nf">load_data_from_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">infile</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;This function will return a mini-batch of data with features,</span>
+<span class="sd">        by looking up `news_word_index` dictionary and `news_entity_index` dictionary according to the news article&#39;s ID.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            infile (str): File path. Each line of `infile` is a news article&#39;s ID.</span>
+
+<span class="sd">        Yields:</span>
+<span class="sd">            dict, list, int:</span>
+<span class="sd">            - A dictionary that maps graph elements to numpy arrays.</span>
+<span class="sd">            - A list with news article&#39;s ID.</span>
+<span class="sd">            - Size of the data in a batch.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">newsid_list</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">candidate_news_index_batch</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">candidate_news_entity_index_batch</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">cnt</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">infile</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">rd</span><span class="p">:</span>
+            <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+                <span class="n">line</span> <span class="o">=</span> <span class="n">rd</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">line</span><span class="p">:</span>
+                    <span class="k">break</span>
+                <span class="n">newsid</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+                <span class="n">word_index</span><span class="p">,</span> <span class="n">entity_index</span> <span class="o">=</span> <span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">news_word_index</span><span class="p">[</span><span class="n">newsid</span><span class="p">],</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">news_entity_index</span><span class="p">[</span><span class="n">newsid</span><span class="p">],</span>
+                <span class="p">)</span>
+                <span class="n">newsid_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">newsid</span><span class="p">)</span>
+
+                <span class="n">candidate_news_index_batch</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">word_index</span><span class="p">)</span>
+                <span class="n">candidate_news_entity_index_batch</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">entity_index</span><span class="p">)</span>
+
+                <span class="n">cnt</span> <span class="o">+=</span> <span class="mi">1</span>
+                <span class="k">if</span> <span class="n">cnt</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">batch_size</span><span class="p">:</span>
+                    <span class="n">res</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_convert_infer_data</span><span class="p">(</span>
+                        <span class="n">candidate_news_index_batch</span><span class="p">,</span>
+                        <span class="n">candidate_news_entity_index_batch</span><span class="p">,</span>
+                    <span class="p">)</span>
+                    <span class="n">data_size</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">batch_size</span>
+                    <span class="k">yield</span> <span class="bp">self</span><span class="o">.</span><span class="n">gen_infer_feed_dict</span><span class="p">(</span><span class="n">res</span><span class="p">),</span> <span class="n">newsid_list</span><span class="p">,</span> <span class="n">data_size</span>
+                    <span class="n">candidate_news_index_batch</span> <span class="o">=</span> <span class="p">[]</span>
+                    <span class="n">candidate_news_entity_index_batch</span> <span class="o">=</span> <span class="p">[]</span>
+                    <span class="n">newsid_list</span> <span class="o">=</span> <span class="p">[]</span>
+                    <span class="n">cnt</span> <span class="o">=</span> <span class="mi">0</span>
+
+            <span class="k">if</span> <span class="n">cnt</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">data_size</span> <span class="o">=</span> <span class="n">cnt</span>
+                <span class="k">while</span> <span class="n">cnt</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">batch_size</span><span class="p">:</span>
+                    <span class="n">candidate_news_index_batch</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                        <span class="n">candidate_news_index_batch</span><span class="p">[</span><span class="n">cnt</span> <span class="o">%</span> <span class="n">data_size</span><span class="p">]</span>
+                    <span class="p">)</span>
+                    <span class="n">candidate_news_entity_index_batch</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                        <span class="n">candidate_news_entity_index_batch</span><span class="p">[</span><span class="n">cnt</span> <span class="o">%</span> <span class="n">data_size</span><span class="p">]</span>
+                    <span class="p">)</span>
+                    <span class="n">cnt</span> <span class="o">+=</span> <span class="mi">1</span>
+                <span class="n">res</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_convert_infer_data</span><span class="p">(</span>
+                    <span class="n">candidate_news_index_batch</span><span class="p">,</span>
+                    <span class="n">candidate_news_entity_index_batch</span><span class="p">,</span>
+                <span class="p">)</span>
+                <span class="k">yield</span> <span class="bp">self</span><span class="o">.</span><span class="n">gen_infer_feed_dict</span><span class="p">(</span><span class="n">res</span><span class="p">),</span> <span class="n">newsid_list</span><span class="p">,</span> <span class="n">data_size</span></div></div>
+</pre></div>
+
+              </div>
+              
+        
+            
+
+
+
+<div class='prev-next-bottom'>
+    
+
+</div>
+        
+        </div>
+    </div>
+    <footer class="footer">
+    <div class="container">
+      <p>
+        
+          By The Jupyter Book community<br/>
+        
+            &copy; Copyright 2021.<br/>
+          <div class="extra_footer">
+            Don't forget to check out <a href= https://arxiv.org/abs/2108.02899>our paper from Document Intelligence Workshop at KDD 2021!</a>
+          </div>
+      </p>
+    </div>
+  </footer>
+</main>
+
+
+      </div>
+    </div>
+  
+  <script src="../../../../../_static/js/index.1c5a1a01449ed65a7b51.js"></script>
+
+  
+  </body>
+</html>

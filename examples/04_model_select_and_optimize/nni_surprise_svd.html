@@ -1,0 +1,1108 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Hyperparameter Tuning for Matrix Factorization Using the Neural Network Intelligence Toolkit &#8212; &lt;h1 style=&#34;font-size:2em;text-align:center;color:#FF5733&#34;&gt;Recommenders&lt;/h1&gt;</title>
+    
+  <link href="../../_static/css/theme.css" rel="stylesheet" />
+  <link href="../../_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
+
+    
+  <link rel="stylesheet"
+    href="../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+
+    
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-book-theme.css?digest=c3fdc42140077d1ad13ad2f1588a4309" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/tabs.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    
+  <link rel="preload" as="script" href="../../_static/js/index.1c5a1a01449ed65a7b51.js">
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/togglebutton.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <script src="../../_static/tabs.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../../_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script>
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="../../_static/sphinx-thebe.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en" />
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="../../index.html">
+      
+      
+      
+      <h1 class="site-logo" id="site-title"><h1 style="font-size:2em;text-align:center;color:#FF5733">Recommenders</h1></h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="../../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        <p class="caption" role="heading">
+ <span class="caption-text">
+  Getting Started Notebooks
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../00_quick_start/als_movielens.html">
+   Running ALS on MovieLens (PySpark)
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../00_quick_start/ncf_movielens.html">
+   Neural Collaborative Filtering on MovieLens dataset.
+  </a>
+ </li>
+</ul>
+
+    </div>
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="topbar container-xl fixed-top">
+    <div class="topbar-contents row">
+        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
+        <div class="col pl-md-4 topbar-main">
+            
+            <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+                data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+                aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
+                title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+                <i class="fas fa-bars"></i>
+                <i class="fas fa-arrow-left"></i>
+                <i class="fas fa-arrow-up"></i>
+            </button>
+            
+            
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
+            class="fas fa-download"></i></button>
+
+    <div class="dropdown-buttons">
+        <!-- ipynb file if we had a myst markdown file -->
+        
+        <!-- Download raw file -->
+        <a class="dropdown-buttons" href="../../_sources/examples/04_model_select_and_optimize/nni_surprise_svd.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
+                data-placement="left">.ipynb</button></a>
+        <!-- Download PDF via print -->
+        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
+            onClick="window.print()" data-toggle="tooltip" data-placement="left">.pdf</button>
+    </div>
+</div>
+
+            <!-- Source interaction buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
+    <div class="dropdown-buttons sourcebuttons">
+        <a class="repository-button"
+            href="https://github.com/microsoft/genalog"><button type="button" class="btn btn-secondary topbarbtn"
+                data-toggle="tooltip" data-placement="left" title="Source repository"><i
+                    class="fab fa-github"></i>repository</button></a>
+        <a class="issues-button"
+            href="https://github.com/microsoft/genalog/issues/new?title=Issue%20on%20page%20%2Fexamples/04_model_select_and_optimize/nni_surprise_svd.html&body=Your%20issue%20content%20here."><button
+                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
+                title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
+        
+    </div>
+</div>
+
+            <!-- Full screen (wrap in <a> to have style consistency -->
+
+<a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+        data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+        title="Fullscreen mode"><i
+            class="fas fa-expand"></i></button></a>
+
+            <!-- Launch buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Launch interactive content"><i class="fas fa-rocket"></i></button>
+    <div class="dropdown-buttons">
+        
+        <a class="binder-button" href="https://mybinder.org/v2/gh/microsoft/genalog/main?urlpath=tree/docs/genalog_docs/examples/04_model_select_and_optimize/nni_surprise_svd.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Launch Binder" data-toggle="tooltip"
+                data-placement="left"><img class="binder-button-logo"
+                    src="../../_static/images/logo_binder.svg"
+                    alt="Interact on binder">Binder</button></a>
+        
+        
+        
+        
+    </div>
+</div>
+
+        </div>
+
+        <!-- Table of contents -->
+        <div class="d-none d-md-block col-md-2 bd-toc show">
+            
+            <div class="tocsection onthispage pt-5 pb-3">
+                <i class="fas fa-list"></i> Contents
+            </div>
+            <nav id="bd-toc-nav" aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#global-settings">
+   1. Global Settings
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#prepare-dataset">
+   2. Prepare Dataset
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#prepare-hyperparameter-tuning">
+   3. Prepare Hyperparameter Tuning
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#execute-nni-trials">
+   4. Execute NNI Trials
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#show-results">
+   5. Show Results
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#more-tuning-algorithms">
+   6. More Tuning Algorithms
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#concluding-remarks">
+   7. Concluding Remarks
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#references">
+   References
+  </a>
+ </li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+        
+              <div>
+                
+  <p><i>Copyright (c) Microsoft Corporation. All rights reserved.<br>
+Licensed under the MIT License.</i>
+<br></p>
+<div class="tex2jax_ignore mathjax_ignore section" id="hyperparameter-tuning-for-matrix-factorization-using-the-neural-network-intelligence-toolkit">
+<h1>Hyperparameter Tuning for Matrix Factorization Using the Neural Network Intelligence Toolkit<a class="headerlink" href="#hyperparameter-tuning-for-matrix-factorization-using-the-neural-network-intelligence-toolkit" title="Permalink to this headline">¶</a></h1>
+<p>This notebook shows how to use the <strong><a class="reference external" href="https://nni.readthedocs.io/en/latest/">Neural Network Intelligence</a> toolkit (NNI)</strong> for tuning hyperparameters of a matrix factorization model. In particular, we optimize the hyperparameters of <a class="reference external" href="https://surprise.readthedocs.io/en/stable/matrix_factorization.html">Surprise SVD</a>.</p>
+<p>NNI is a toolkit to help users design and tune machine learning models (e.g., hyperparameters), neural network architectures, or complex system’s parameters, in an efficient and automatic way. NNI has several appealing properties: ease of use, scalability, flexibility and efficiency. NNI comes with <a class="reference external" href="https://nni.readthedocs.io/en/latest/Builtin_Tuner.html">several tuning algorithms</a> built in. It also allows users to <a class="reference external" href="https://nni.readthedocs.io/en/latest/Customize_Tuner.html">define their own general purpose tuners</a>. NNI can be executed in a distributed way on a local machine, a remote server, or a large scale training platform such as OpenPAI or Kubernetes.</p>
+<p>In this notebook we execute several NNI <em>experiments</em> on the same data sets obtained from Movielens with a training-validation-test split. Each experiment corresponds to one of the built-in tuning algorithms. It consists of many parallel <em>trials</em>, each of which corresponds to a choice of hyperparameters sampled by the tuning algorithm. All the experiments require a call to the same <span class="xref myst">python script</span> for training the SVD model and evaluating rating and ranking metrics on the test data. This script has been adapted from the <span class="xref myst">Surprise SVD notebook</span> with only a few changes. In all experiments, we maximize precision&#64;10.</p>
+<p>For this notebook we use a <em>local machine</em> as the training platform (this can be any machine running the <code class="docutils literal notranslate"><span class="pre">reco_base</span></code> conda environment). In this case, NNI uses the available processors of the machine to parallelize the trials, subject to the value of <code class="docutils literal notranslate"><span class="pre">trialConcurrency</span></code> we specify in the configuration. Our runs and the results we report were obtained on a <a class="reference external" href="https://docs.microsoft.com/en-us/azure/virtual-machines/windows/sizes-general#dv3-series-1">Standard_D16_v3 virtual machine</a> with 16 vcpus and 64 GB memory.</p>
+<div class="section" id="global-settings">
+<h2>1. Global Settings<a class="headerlink" href="#global-settings" title="Permalink to this headline">¶</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">surprise</span>
+<span class="kn">import</span> <span class="nn">papermill</span> <span class="k">as</span> <span class="nn">pm</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">shutil</span>
+<span class="kn">import</span> <span class="nn">subprocess</span>
+<span class="kn">import</span> <span class="nn">yaml</span>
+<span class="kn">import</span> <span class="nn">pkg_resources</span>
+<span class="kn">from</span> <span class="nn">tempfile</span> <span class="kn">import</span> <span class="n">TemporaryDirectory</span>
+
+<span class="kn">import</span> <span class="nn">recommenders</span>
+<span class="kn">from</span> <span class="nn">recommenders.utils.timer</span> <span class="kn">import</span> <span class="n">Timer</span>
+<span class="kn">from</span> <span class="nn">recommenders.datasets</span> <span class="kn">import</span> <span class="n">movielens</span>
+<span class="kn">from</span> <span class="nn">recommenders.datasets.python_splitters</span> <span class="kn">import</span> <span class="n">python_random_split</span>
+<span class="kn">from</span> <span class="nn">recommenders.evaluation.python_evaluation</span> <span class="kn">import</span> <span class="n">rmse</span><span class="p">,</span> <span class="n">precision_at_k</span><span class="p">,</span> <span class="n">ndcg_at_k</span>
+<span class="kn">from</span> <span class="nn">recommenders.tuning.nni.nni_utils</span> <span class="kn">import</span> <span class="p">(</span><span class="n">check_experiment_status</span><span class="p">,</span> <span class="n">check_stopped</span><span class="p">,</span> <span class="n">check_metrics_written</span><span class="p">,</span> <span class="n">get_trials</span><span class="p">,</span>
+                                      <span class="n">stop_nni</span><span class="p">,</span> <span class="n">start_nni</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">recommenders.models.surprise.surprise_utils</span> <span class="kn">import</span> <span class="n">predict</span><span class="p">,</span> <span class="n">compute_ranking_predictions</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;System version: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">version</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Surprise version: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">surprise</span><span class="o">.</span><span class="n">__version__</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;NNI version: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">pkg_resources</span><span class="o">.</span><span class="n">get_distribution</span><span class="p">(</span><span class="s2">&quot;nni&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">version</span><span class="p">))</span>
+
+<span class="o">%</span><span class="k">load_ext</span> autoreload
+<span class="o">%</span><span class="k">autoreload</span> 2
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>System version: 3.6.10 |Anaconda, Inc.| (default, Mar 25 2020, 23:51:54) 
+[GCC 7.3.0]
+Surprise version: 1.1.0
+NNI version: 1.5
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="prepare-dataset">
+<h2>2. Prepare Dataset<a class="headerlink" href="#prepare-dataset" title="Permalink to this headline">¶</a></h2>
+<ol class="simple">
+<li><p>Download data and split into training, validation and test sets</p></li>
+<li><p>Store the data sets to a local directory.</p></li>
+</ol>
+<div class="cell tag_parameters docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Parameters used by papermill</span>
+
+<span class="c1"># Select Movielens data size: 100k, 1m</span>
+<span class="n">MOVIELENS_DATA_SIZE</span> <span class="o">=</span> <span class="s1">&#39;100k&#39;</span>
+<span class="n">SURPRISE_READER</span> <span class="o">=</span> <span class="s1">&#39;ml-100k&#39;</span>
+<span class="n">tmp_dir</span> <span class="o">=</span> <span class="n">TemporaryDirectory</span><span class="p">()</span>
+<span class="n">TMP_DIR</span> <span class="o">=</span> <span class="n">tmp_dir</span><span class="o">.</span><span class="n">name</span>
+<span class="n">NUM_EPOCHS</span> <span class="o">=</span> <span class="mi">30</span>
+<span class="n">MAX_TRIAL_NUM</span> <span class="o">=</span> <span class="mi">10</span>
+
+<span class="c1"># time (in seconds) to wait for each tuning experiment to complete</span>
+<span class="n">WAITING_TIME</span> <span class="o">=</span> <span class="mi">20</span>
+<span class="n">MAX_RETRIES</span> <span class="o">=</span> <span class="mi">40</span> <span class="c1"># it is recommended to have MAX_RETRIES&gt;=4*MAX_TRIAL_NUM</span>
+
+<span class="n">tmp_dir</span> <span class="o">=</span> <span class="n">TemporaryDirectory</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data</span> <span class="o">=</span> <span class="n">movielens</span><span class="o">.</span><span class="n">load_pandas_df</span><span class="p">(</span>
+    <span class="n">size</span><span class="o">=</span><span class="n">MOVIELENS_DATA_SIZE</span><span class="p">,</span>
+    <span class="n">header</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;userID&quot;</span><span class="p">,</span> <span class="s2">&quot;itemID&quot;</span><span class="p">,</span> <span class="s2">&quot;rating&quot;</span><span class="p">]</span>
+<span class="p">)</span>
+
+<span class="n">data</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>100%|██████████| 4.81k/4.81k [00:00&lt;00:00, 10.3kKB/s]
+</pre></div>
+</div>
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>userID</th>
+      <th>itemID</th>
+      <th>rating</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>196</td>
+      <td>242</td>
+      <td>3.0</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>186</td>
+      <td>302</td>
+      <td>3.0</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>22</td>
+      <td>377</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>244</td>
+      <td>51</td>
+      <td>2.0</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>166</td>
+      <td>346</td>
+      <td>1.0</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">train</span><span class="p">,</span> <span class="n">validation</span><span class="p">,</span> <span class="n">test</span> <span class="o">=</span> <span class="n">python_random_split</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="p">[</span><span class="mf">0.7</span><span class="p">,</span> <span class="mf">0.15</span><span class="p">,</span> <span class="mf">0.15</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">LOG_DIR</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">TMP_DIR</span><span class="p">,</span> <span class="s2">&quot;experiments&quot;</span><span class="p">)</span>
+<span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">LOG_DIR</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="n">DATA_DIR</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">TMP_DIR</span><span class="p">,</span> <span class="s2">&quot;data&quot;</span><span class="p">)</span> 
+<span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">DATA_DIR</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="n">TRAIN_FILE_NAME</span> <span class="o">=</span> <span class="s2">&quot;movielens_&quot;</span> <span class="o">+</span> <span class="n">MOVIELENS_DATA_SIZE</span> <span class="o">+</span> <span class="s2">&quot;_train.pkl&quot;</span>
+<span class="n">train</span><span class="o">.</span><span class="n">to_pickle</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">DATA_DIR</span><span class="p">,</span> <span class="n">TRAIN_FILE_NAME</span><span class="p">))</span>
+
+<span class="n">VAL_FILE_NAME</span> <span class="o">=</span> <span class="s2">&quot;movielens_&quot;</span> <span class="o">+</span> <span class="n">MOVIELENS_DATA_SIZE</span> <span class="o">+</span> <span class="s2">&quot;_val.pkl&quot;</span>
+<span class="n">validation</span><span class="o">.</span><span class="n">to_pickle</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">DATA_DIR</span><span class="p">,</span> <span class="n">VAL_FILE_NAME</span><span class="p">))</span>
+
+<span class="n">TEST_FILE_NAME</span> <span class="o">=</span> <span class="s2">&quot;movielens_&quot;</span> <span class="o">+</span> <span class="n">MOVIELENS_DATA_SIZE</span> <span class="o">+</span> <span class="s2">&quot;_test.pkl&quot;</span>
+<span class="n">test</span><span class="o">.</span><span class="n">to_pickle</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">DATA_DIR</span><span class="p">,</span> <span class="n">TEST_FILE_NAME</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="prepare-hyperparameter-tuning">
+<h2>3. Prepare Hyperparameter Tuning<a class="headerlink" href="#prepare-hyperparameter-tuning" title="Permalink to this headline">¶</a></h2>
+<p>We now prepare a training script <span class="xref myst">svd_training_nni.py</span> for the hyperparameter tuning, which will log our target metrics such as precision, NDCG, RMSE.
+We define the arguments of the script and the search space for the hyperparameters. All the parameter values will be passed to our training script.<br>
+Note that we specify <em>precision&#64;10</em> as the primary metric. We will also instruct NNI (in the configuration file) to <em>maximize</em> the primary metric. This is passed as an argument in the training script and the evaluated metric is returned through the NNI python library. In addition, we also evaluate RMSE and NDCG&#64;10.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">script_params</span></code> below are the parameters of the training script that are fixed (unlike <code class="docutils literal notranslate"><span class="pre">hyper_params</span></code> which are tuned). In particular, <code class="docutils literal notranslate"><span class="pre">VERBOSE,</span> <span class="pre">BIASED,</span> <span class="pre">RANDOM_STATE,</span> <span class="pre">NUM_EPOCHS</span></code> are parameters used in the <span class="xref myst">SVD method</span> and <code class="docutils literal notranslate"><span class="pre">REMOVE_SEEN</span></code> removes the training data from the recommended items.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">EXP_NAME</span> <span class="o">=</span> <span class="s2">&quot;movielens_&quot;</span> <span class="o">+</span> <span class="n">MOVIELENS_DATA_SIZE</span> <span class="o">+</span> <span class="s2">&quot;_svd_model&quot;</span>
+<span class="n">PRIMARY_METRIC</span> <span class="o">=</span> <span class="s2">&quot;precision_at_k&quot;</span>
+<span class="n">RATING_METRICS</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;rmse&quot;</span><span class="p">]</span>
+<span class="n">RANKING_METRICS</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;precision_at_k&quot;</span><span class="p">,</span> <span class="s2">&quot;ndcg_at_k&quot;</span><span class="p">]</span>  
+<span class="n">USERCOL</span> <span class="o">=</span> <span class="s2">&quot;userID&quot;</span>
+<span class="n">ITEMCOL</span> <span class="o">=</span> <span class="s2">&quot;itemID&quot;</span>
+<span class="n">REMOVE_SEEN</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">K</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="n">RANDOM_STATE</span> <span class="o">=</span> <span class="mi">42</span>
+<span class="n">VERBOSE</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">BIASED</span> <span class="o">=</span> <span class="kc">True</span>
+
+<span class="n">script_params</span> <span class="o">=</span> <span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span>
+    <span class="s2">&quot;--datastore&quot;</span><span class="p">,</span> <span class="n">DATA_DIR</span><span class="p">,</span>
+    <span class="s2">&quot;--train-datapath&quot;</span><span class="p">,</span> <span class="n">TRAIN_FILE_NAME</span><span class="p">,</span>
+    <span class="s2">&quot;--validation-datapath&quot;</span><span class="p">,</span> <span class="n">VAL_FILE_NAME</span><span class="p">,</span>
+    <span class="s2">&quot;--surprise-reader&quot;</span><span class="p">,</span> <span class="n">SURPRISE_READER</span><span class="p">,</span>
+    <span class="s2">&quot;--rating-metrics&quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">RATING_METRICS</span><span class="p">),</span>
+    <span class="s2">&quot;--ranking-metrics&quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">RANKING_METRICS</span><span class="p">),</span>
+    <span class="s2">&quot;--usercol&quot;</span><span class="p">,</span> <span class="n">USERCOL</span><span class="p">,</span>
+    <span class="s2">&quot;--itemcol&quot;</span><span class="p">,</span> <span class="n">ITEMCOL</span><span class="p">,</span>
+    <span class="s2">&quot;--k&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">K</span><span class="p">),</span>
+    <span class="s2">&quot;--random-state&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">RANDOM_STATE</span><span class="p">),</span>
+    <span class="s2">&quot;--epochs&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">NUM_EPOCHS</span><span class="p">),</span>
+    <span class="s2">&quot;--primary-metric&quot;</span><span class="p">,</span> <span class="n">PRIMARY_METRIC</span>
+<span class="p">])</span>
+
+<span class="k">if</span> <span class="n">BIASED</span><span class="p">:</span>
+    <span class="n">script_params</span> <span class="o">+=</span> <span class="s2">&quot; --biased&quot;</span>
+<span class="k">if</span> <span class="n">VERBOSE</span><span class="p">:</span>
+    <span class="n">script_params</span> <span class="o">+=</span> <span class="s2">&quot; --verbose&quot;</span>
+<span class="k">if</span> <span class="n">REMOVE_SEEN</span><span class="p">:</span>
+    <span class="n">script_params</span> <span class="o">+=</span> <span class="s2">&quot; --remove-seen&quot;</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># hyperparameters search space</span>
+<span class="c1"># We do not set &#39;lr_all&#39; and &#39;reg_all&#39; because they will be overriden by the other lr_ and reg_ parameters</span>
+
+<span class="n">hyper_params</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;n_factors&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;_type&quot;</span><span class="p">:</span> <span class="s2">&quot;choice&quot;</span><span class="p">,</span> <span class="s2">&quot;_value&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">150</span><span class="p">,</span> <span class="mi">200</span><span class="p">]},</span>
+    <span class="s1">&#39;init_mean&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;_type&quot;</span><span class="p">:</span> <span class="s2">&quot;uniform&quot;</span><span class="p">,</span> <span class="s2">&quot;_value&quot;</span><span class="p">:</span> <span class="p">[</span><span class="o">-</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">]},</span>
+    <span class="s1">&#39;init_std_dev&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;_type&quot;</span><span class="p">:</span> <span class="s2">&quot;uniform&quot;</span><span class="p">,</span> <span class="s2">&quot;_value&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.01</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">]},</span>
+    <span class="s1">&#39;lr_bu&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;_type&quot;</span><span class="p">:</span> <span class="s2">&quot;uniform&quot;</span><span class="p">,</span> <span class="s2">&quot;_value&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mf">1e-6</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">]},</span> 
+    <span class="s1">&#39;lr_bi&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;_type&quot;</span><span class="p">:</span> <span class="s2">&quot;uniform&quot;</span><span class="p">,</span> <span class="s2">&quot;_value&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mf">1e-6</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">]},</span> 
+    <span class="s1">&#39;lr_pu&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;_type&quot;</span><span class="p">:</span> <span class="s2">&quot;uniform&quot;</span><span class="p">,</span> <span class="s2">&quot;_value&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mf">1e-6</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">]},</span> 
+    <span class="s1">&#39;lr_qi&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;_type&quot;</span><span class="p">:</span> <span class="s2">&quot;uniform&quot;</span><span class="p">,</span> <span class="s2">&quot;_value&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mf">1e-6</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">]},</span> 
+    <span class="s1">&#39;reg_bu&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;_type&quot;</span><span class="p">:</span> <span class="s2">&quot;uniform&quot;</span><span class="p">,</span> <span class="s2">&quot;_value&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mf">1e-6</span><span class="p">,</span> <span class="mi">1</span><span class="p">]},</span>
+    <span class="s1">&#39;reg_bi&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;_type&quot;</span><span class="p">:</span> <span class="s2">&quot;uniform&quot;</span><span class="p">,</span> <span class="s2">&quot;_value&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mf">1e-6</span><span class="p">,</span> <span class="mi">1</span><span class="p">]},</span> 
+    <span class="s1">&#39;reg_pu&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;_type&quot;</span><span class="p">:</span> <span class="s2">&quot;uniform&quot;</span><span class="p">,</span> <span class="s2">&quot;_value&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mf">1e-6</span><span class="p">,</span> <span class="mi">1</span><span class="p">]},</span> 
+    <span class="s1">&#39;reg_qi&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;_type&quot;</span><span class="p">:</span> <span class="s2">&quot;uniform&quot;</span><span class="p">,</span> <span class="s2">&quot;_value&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mf">1e-6</span><span class="p">,</span> <span class="mi">1</span><span class="p">]}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">TMP_DIR</span><span class="p">,</span> <span class="s1">&#39;search_space_svd.json&#39;</span><span class="p">),</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fp</span><span class="p">:</span>
+    <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">hyper_params</span><span class="p">,</span> <span class="n">fp</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>We also create a yaml file for the configuration of the trials and the tuning algorithm to be used (in this experiment we use the <a class="reference external" href="https://nni.readthedocs.io/en/latest/hyperoptTuner.html">TPE tuner</a>).</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">config</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;authorName&quot;</span><span class="p">:</span> <span class="s2">&quot;default&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;experimentName&quot;</span><span class="p">:</span> <span class="s2">&quot;surprise_svd&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;trialConcurrency&quot;</span><span class="p">:</span> <span class="mi">8</span><span class="p">,</span>
+    <span class="s2">&quot;maxExecDuration&quot;</span><span class="p">:</span> <span class="s2">&quot;1h&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;maxTrialNum&quot;</span><span class="p">:</span> <span class="n">MAX_TRIAL_NUM</span><span class="p">,</span>
+    <span class="s2">&quot;trainingServicePlatform&quot;</span><span class="p">:</span> <span class="s2">&quot;local&quot;</span><span class="p">,</span>
+    <span class="c1"># The path to Search Space</span>
+    <span class="s2">&quot;searchSpacePath&quot;</span><span class="p">:</span> <span class="s2">&quot;search_space_svd.json&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;useAnnotation&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="s2">&quot;logDir&quot;</span><span class="p">:</span> <span class="n">LOG_DIR</span><span class="p">,</span>
+    <span class="s2">&quot;tuner&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;builtinTunerName&quot;</span><span class="p">:</span> <span class="s2">&quot;TPE&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;classArgs&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="c1">#choice: maximize, minimize</span>
+            <span class="s2">&quot;optimize_mode&quot;</span><span class="p">:</span> <span class="s2">&quot;maximize&quot;</span>
+        <span class="p">}</span>
+    <span class="p">},</span>
+    <span class="c1"># The path and the running command of trial</span>
+    <span class="s2">&quot;trial&quot;</span><span class="p">:</span>  <span class="p">{</span>
+      <span class="s2">&quot;command&quot;</span><span class="p">:</span> <span class="n">sys</span><span class="o">.</span><span class="n">prefix</span> <span class="o">+</span> <span class="s2">&quot;/bin/python svd_training.py&quot;</span> <span class="o">+</span> <span class="s2">&quot; &quot;</span> <span class="o">+</span> <span class="n">script_params</span><span class="p">,</span>
+      <span class="s2">&quot;codeDir&quot;</span><span class="p">:</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">recommenders</span><span class="o">.</span><span class="vm">__file__</span><span class="p">))[</span><span class="mi">0</span><span class="p">],</span> <span class="s2">&quot;tuning&quot;</span><span class="p">,</span> <span class="s2">&quot;nni&quot;</span><span class="p">),</span>
+      <span class="s2">&quot;gpuNum&quot;</span><span class="p">:</span> <span class="mi">0</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+ 
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">TMP_DIR</span><span class="p">,</span> <span class="s2">&quot;config_svd.yml&quot;</span><span class="p">),</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fp</span><span class="p">:</span>
+    <span class="n">fp</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">yaml</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="n">default_flow_style</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="execute-nni-trials">
+<h2>4. Execute NNI Trials<a class="headerlink" href="#execute-nni-trials" title="Permalink to this headline">¶</a></h2>
+<p>The conda environment comes with NNI installed, which includes the command line tool <code class="docutils literal notranslate"><span class="pre">nnictl</span></code> for controlling and getting information about NNI experiments. <br>
+To start the NNI tuning trials from the command line, execute the following command: <br>
+<code class="docutils literal notranslate"><span class="pre">nnictl</span> <span class="pre">create</span> <span class="pre">--config</span> <span class="pre">&lt;path</span> <span class="pre">of</span> <span class="pre">config_svd.yml&gt;</span></code> <br>
+In the cell below, we call this command programmatically. <br>
+You can see the progress of the experiment by using the URL links output by the above command.</p>
+<p><img alt="" src="https://recodatasets.z20.web.core.windows.net/images/nn1.png" /></p>
+<p><img alt="" src="https://recodatasets.z20.web.core.windows.net/images/nn2.png" /></p>
+<p><img alt="" src="https://recodatasets.z20.web.core.windows.net/images/nn3.png" /></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Make sure that there is no experiment running</span>
+<span class="n">stop_nni</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">config_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">TMP_DIR</span><span class="p">,</span> <span class="s1">&#39;config_svd.yml&#39;</span><span class="p">)</span>
+<span class="n">nni_env</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">nni_env</span><span class="p">[</span><span class="s1">&#39;PATH&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">prefix</span> <span class="o">+</span> <span class="s1">&#39;/bin:&#39;</span> <span class="o">+</span> <span class="n">nni_env</span><span class="p">[</span><span class="s1">&#39;PATH&#39;</span><span class="p">]</span>
+<span class="n">proc</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">([</span><span class="n">sys</span><span class="o">.</span><span class="n">prefix</span> <span class="o">+</span> <span class="s1">&#39;/bin/nnictl&#39;</span><span class="p">,</span> <span class="s1">&#39;create&#39;</span><span class="p">,</span> <span class="s1">&#39;--config&#39;</span><span class="p">,</span> <span class="n">config_path</span><span class="p">],</span> <span class="n">env</span><span class="o">=</span><span class="n">nni_env</span><span class="p">)</span>
+<span class="k">if</span> <span class="n">proc</span><span class="o">.</span><span class="n">returncode</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+    <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;&#39;nnictl create&#39; failed with code </span><span class="si">%d</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">proc</span><span class="o">.</span><span class="n">returncode</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">Timer</span><span class="p">()</span> <span class="k">as</span> <span class="n">time_tpe</span><span class="p">:</span>
+    <span class="n">check_experiment_status</span><span class="p">(</span><span class="n">wait</span><span class="o">=</span><span class="n">WAITING_TIME</span><span class="p">,</span> <span class="n">max_retries</span><span class="o">=</span><span class="n">MAX_RETRIES</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="show-results">
+<h2>5. Show Results<a class="headerlink" href="#show-results" title="Permalink to this headline">¶</a></h2>
+<p>The trial with the best metric and the corresponding metrics and hyperparameters can also be read from the Web UI</p>
+<p><img alt="" src="https://recodatasets.z20.web.core.windows.net/images/nni4.png" /></p>
+<p>or from the JSON file created by the training script. Below, we do this programmatically using <span class="xref myst">nni_utils.py</span></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">trials</span><span class="p">,</span> <span class="n">best_metrics</span><span class="p">,</span> <span class="n">best_params</span><span class="p">,</span> <span class="n">best_trial_path</span> <span class="o">=</span> <span class="n">get_trials</span><span class="p">(</span><span class="s1">&#39;maximize&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">best_metrics</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;rmse&#39;: 0.9918669108638116,
+ &#39;ndcg_at_k&#39;: 0.05341690918927691,
+ &#39;precision_at_k&#39;: 0.051437699680511186}
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">best_params</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;parameter_id&#39;: 1,
+ &#39;parameter_source&#39;: &#39;algorithm&#39;,
+ &#39;parameters&#39;: {&#39;n_factors&#39;: 50,
+  &#39;init_mean&#39;: -0.32199095465587735,
+  &#39;init_std_dev&#39;: 0.11455022391401633,
+  &#39;lr_bu&#39;: 0.07562149308631293,
+  &#39;lr_bi&#39;: 0.0002925566403137119,
+  &#39;lr_pu&#39;: 0.04052551251769183,
+  &#39;lr_qi&#39;: 0.005161900020236067,
+  &#39;reg_bu&#39;: 0.8623789452897435,
+  &#39;reg_bi&#39;: 0.5692944661931444,
+  &#39;reg_pu&#39;: 0.2579260065274244,
+  &#39;reg_qi&#39;: 0.5207340528183084},
+ &#39;parameter_index&#39;: 0}
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">best_trial_path</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;/tmp/tmp21mjabn1/experiments/nR67pfst/trials/esAqs&#39;
+</pre></div>
+</div>
+</div>
+</div>
+<p>This directory path is where info about the trial can be found, including logs, parameters and the model that was learned. To evaluate the metrics on the test data, we get the SVD model that was saved as <code class="docutils literal notranslate"><span class="pre">model.dump</span></code> in the training script.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">svd</span> <span class="o">=</span> <span class="n">surprise</span><span class="o">.</span><span class="n">dump</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">best_trial_path</span><span class="p">,</span> <span class="s2">&quot;model.dump&quot;</span><span class="p">))[</span><span class="mi">1</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>The following function computes all the metrics given an SVD model.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">compute_test_results</span><span class="p">(</span><span class="n">svd</span><span class="p">):</span>
+    <span class="n">test_results</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">predictions</span> <span class="o">=</span> <span class="n">predict</span><span class="p">(</span><span class="n">svd</span><span class="p">,</span> <span class="n">test</span><span class="p">,</span> <span class="n">usercol</span><span class="o">=</span><span class="s2">&quot;userID&quot;</span><span class="p">,</span> <span class="n">itemcol</span><span class="o">=</span><span class="s2">&quot;itemID&quot;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">metric</span> <span class="ow">in</span> <span class="n">RATING_METRICS</span><span class="p">:</span>
+        <span class="n">test_results</span><span class="p">[</span><span class="n">metric</span><span class="p">]</span> <span class="o">=</span> <span class="nb">eval</span><span class="p">(</span><span class="n">metric</span><span class="p">)(</span><span class="n">test</span><span class="p">,</span> <span class="n">predictions</span><span class="p">)</span>
+
+    <span class="n">all_predictions</span> <span class="o">=</span> <span class="n">compute_ranking_predictions</span><span class="p">(</span><span class="n">svd</span><span class="p">,</span> <span class="n">train</span><span class="p">,</span> <span class="n">usercol</span><span class="o">=</span><span class="s2">&quot;userID&quot;</span><span class="p">,</span> <span class="n">itemcol</span><span class="o">=</span><span class="s2">&quot;itemID&quot;</span><span class="p">,</span> <span class="n">remove_seen</span><span class="o">=</span><span class="n">REMOVE_SEEN</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">metric</span> <span class="ow">in</span> <span class="n">RANKING_METRICS</span><span class="p">:</span>
+        <span class="n">test_results</span><span class="p">[</span><span class="n">metric</span><span class="p">]</span> <span class="o">=</span> <span class="nb">eval</span><span class="p">(</span><span class="n">metric</span><span class="p">)(</span><span class="n">test</span><span class="p">,</span> <span class="n">all_predictions</span><span class="p">,</span> <span class="n">col_prediction</span><span class="o">=</span><span class="s1">&#39;prediction&#39;</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="n">K</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">test_results</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">test_results_tpe</span> <span class="o">=</span> <span class="n">compute_test_results</span><span class="p">(</span><span class="n">svd</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">test_results_tpe</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;rmse&#39;: 0.9897488773596576, &#39;precision_at_k&#39;: 0.0769722814498934, &#39;ndcg_at_k&#39;: 0.0850595462545088}
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="more-tuning-algorithms">
+<h2>6. More Tuning Algorithms<a class="headerlink" href="#more-tuning-algorithms" title="Permalink to this headline">¶</a></h2>
+<p>We now apply other tuning algorithms supported by NNI to the same problem. For details about these tuners, see the <a class="reference external" href="https://nni.readthedocs.io/en/latest/tuners.html">NNI docs.</a>
+The only change needed is in the relevant entry in the configuration file.</p>
+<p>In summary, the tuners used in this notebook are the following:</p>
+<ul class="simple">
+<li><p>Tree-structured Parzen Estimator (TPE), within the Sequential Model-Based Optimization (SMBO) framework,</p></li>
+<li><p>SMAC, also an instance of SMBO,</p></li>
+<li><p>Hyperband</p></li>
+<li><p>Metis, an implementation of Bayesian optimization with Gaussian Processes</p></li>
+<li><p>a Naive Evolutionary algorithm</p></li>
+<li><p>an Annealing method for sampling, and</p></li>
+<li><p>plain Random Search as a baseline.</p></li>
+</ul>
+<p>For more details and references to the relevant literature, see the <a class="reference external" href="https://github.com/Microsoft/nni/blob/master/docs/en_US/Builtin_Tuner.md">NNI github</a>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Random search</span>
+<span class="n">config</span><span class="p">[</span><span class="s1">&#39;tuner&#39;</span><span class="p">][</span><span class="s1">&#39;builtinTunerName&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;Random&#39;</span>
+<span class="k">if</span> <span class="s1">&#39;classArgs&#39;</span> <span class="ow">in</span> <span class="n">config</span><span class="p">[</span><span class="s1">&#39;tuner&#39;</span><span class="p">]:</span>
+    <span class="n">config</span><span class="p">[</span><span class="s1">&#39;tuner&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;classArgs&#39;</span><span class="p">)</span>
+    
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">config_path</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fp</span><span class="p">:</span>
+    <span class="n">fp</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">yaml</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="n">default_flow_style</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">stop_nni</span><span class="p">()</span>
+<span class="k">with</span> <span class="n">Timer</span><span class="p">()</span> <span class="k">as</span> <span class="n">time_random</span><span class="p">:</span>
+    <span class="n">start_nni</span><span class="p">(</span><span class="n">config_path</span><span class="p">,</span> <span class="n">wait</span><span class="o">=</span><span class="n">WAITING_TIME</span><span class="p">,</span> <span class="n">max_retries</span><span class="o">=</span><span class="n">MAX_RETRIES</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">check_metrics_written</span><span class="p">(</span><span class="n">wait</span><span class="o">=</span><span class="n">WAITING_TIME</span><span class="p">,</span> <span class="n">max_retries</span><span class="o">=</span><span class="n">MAX_RETRIES</span><span class="p">)</span>
+<span class="n">svd</span> <span class="o">=</span> <span class="n">surprise</span><span class="o">.</span><span class="n">dump</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">get_trials</span><span class="p">(</span><span class="s1">&#39;maximize&#39;</span><span class="p">)[</span><span class="mi">3</span><span class="p">],</span> <span class="s2">&quot;model.dump&quot;</span><span class="p">))[</span><span class="mi">1</span><span class="p">]</span>
+<span class="n">test_results_random</span> <span class="o">=</span> <span class="n">compute_test_results</span><span class="p">(</span><span class="n">svd</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Annealing</span>
+<span class="n">config</span><span class="p">[</span><span class="s1">&#39;tuner&#39;</span><span class="p">][</span><span class="s1">&#39;builtinTunerName&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;Anneal&#39;</span>
+<span class="k">if</span> <span class="s1">&#39;classArgs&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">config</span><span class="p">[</span><span class="s1">&#39;tuner&#39;</span><span class="p">]:</span>
+    <span class="n">config</span><span class="p">[</span><span class="s1">&#39;tuner&#39;</span><span class="p">][</span><span class="s1">&#39;classArgs&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;optimize_mode&#39;</span><span class="p">:</span> <span class="s1">&#39;maximize&#39;</span><span class="p">}</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">config</span><span class="p">[</span><span class="s1">&#39;tuner&#39;</span><span class="p">][</span><span class="s1">&#39;classArgs&#39;</span><span class="p">][</span><span class="s1">&#39;optimize_mode&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;maximize&#39;</span>
+    
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">config_path</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fp</span><span class="p">:</span>
+    <span class="n">fp</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">yaml</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="n">default_flow_style</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">stop_nni</span><span class="p">()</span>
+<span class="k">with</span> <span class="n">Timer</span><span class="p">()</span> <span class="k">as</span> <span class="n">time_anneal</span><span class="p">:</span>
+    <span class="n">start_nni</span><span class="p">(</span><span class="n">config_path</span><span class="p">,</span> <span class="n">wait</span><span class="o">=</span><span class="n">WAITING_TIME</span><span class="p">,</span> <span class="n">max_retries</span><span class="o">=</span><span class="n">MAX_RETRIES</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">check_metrics_written</span><span class="p">(</span><span class="n">wait</span><span class="o">=</span><span class="n">WAITING_TIME</span><span class="p">,</span> <span class="n">max_retries</span><span class="o">=</span><span class="n">MAX_RETRIES</span><span class="p">)</span>
+<span class="n">svd</span> <span class="o">=</span> <span class="n">surprise</span><span class="o">.</span><span class="n">dump</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">get_trials</span><span class="p">(</span><span class="s1">&#39;maximize&#39;</span><span class="p">)[</span><span class="mi">3</span><span class="p">],</span> <span class="s2">&quot;model.dump&quot;</span><span class="p">))[</span><span class="mi">1</span><span class="p">]</span>
+<span class="n">test_results_anneal</span> <span class="o">=</span> <span class="n">compute_test_results</span><span class="p">(</span><span class="n">svd</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Naive evolutionary search</span>
+<span class="n">config</span><span class="p">[</span><span class="s1">&#39;tuner&#39;</span><span class="p">][</span><span class="s1">&#39;builtinTunerName&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;Evolution&#39;</span>
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">config_path</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fp</span><span class="p">:</span>
+    <span class="n">fp</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">yaml</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="n">default_flow_style</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">stop_nni</span><span class="p">()</span>
+<span class="k">with</span> <span class="n">Timer</span><span class="p">()</span> <span class="k">as</span> <span class="n">time_evolution</span><span class="p">:</span>
+    <span class="n">start_nni</span><span class="p">(</span><span class="n">config_path</span><span class="p">,</span> <span class="n">wait</span><span class="o">=</span><span class="n">WAITING_TIME</span><span class="p">,</span> <span class="n">max_retries</span><span class="o">=</span><span class="n">MAX_RETRIES</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">check_metrics_written</span><span class="p">(</span><span class="n">wait</span><span class="o">=</span><span class="n">WAITING_TIME</span><span class="p">,</span> <span class="n">max_retries</span><span class="o">=</span><span class="n">MAX_RETRIES</span><span class="p">)</span>
+<span class="n">svd</span> <span class="o">=</span> <span class="n">surprise</span><span class="o">.</span><span class="n">dump</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">get_trials</span><span class="p">(</span><span class="s1">&#39;maximize&#39;</span><span class="p">)[</span><span class="mi">3</span><span class="p">],</span> <span class="s2">&quot;model.dump&quot;</span><span class="p">))[</span><span class="mi">1</span><span class="p">]</span>
+<span class="n">test_results_evolution</span> <span class="o">=</span> <span class="n">compute_test_results</span><span class="p">(</span><span class="n">svd</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>The SMAC tuner requires to have been installed with the following command <br>
+<code class="docutils literal notranslate"><span class="pre">nnictl</span> <span class="pre">package</span> <span class="pre">install</span> <span class="pre">--name=SMAC</span></code></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># SMAC</span>
+<span class="n">config</span><span class="p">[</span><span class="s1">&#39;tuner&#39;</span><span class="p">][</span><span class="s1">&#39;builtinTunerName&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;SMAC&#39;</span>
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">config_path</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fp</span><span class="p">:</span>
+    <span class="n">fp</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">yaml</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="n">default_flow_style</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Check if installed</span>
+<span class="n">proc</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">([</span><span class="n">sys</span><span class="o">.</span><span class="n">prefix</span> <span class="o">+</span> <span class="s1">&#39;/bin/nnictl&#39;</span><span class="p">,</span> <span class="s1">&#39;package&#39;</span><span class="p">,</span> <span class="s1">&#39;show&#39;</span><span class="p">],</span> <span class="n">stdout</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">)</span>
+<span class="k">if</span> <span class="n">proc</span><span class="o">.</span><span class="n">returncode</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+    <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;&#39;nnictl package show&#39; failed with code </span><span class="si">%d</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">proc</span><span class="o">.</span><span class="n">returncode</span><span class="p">)</span>
+<span class="k">if</span> <span class="s1">&#39;SMAC&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">proc</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">decode</span><span class="p">()</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">():</span>
+    <span class="n">proc</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">([</span><span class="n">sys</span><span class="o">.</span><span class="n">prefix</span> <span class="o">+</span> <span class="s1">&#39;/bin/nnictl&#39;</span><span class="p">,</span> <span class="s1">&#39;package&#39;</span><span class="p">,</span> <span class="s1">&#39;install&#39;</span><span class="p">,</span> <span class="s1">&#39;--name=SMAC&#39;</span><span class="p">])</span>
+    <span class="k">if</span> <span class="n">proc</span><span class="o">.</span><span class="n">returncode</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;&#39;nnictl package install&#39; failed with code </span><span class="si">%d</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">proc</span><span class="o">.</span><span class="n">returncode</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Skipping SMAC optimization for now</span>
+<span class="c1"># stop_nni()</span>
+<span class="k">with</span> <span class="n">Timer</span><span class="p">()</span> <span class="k">as</span> <span class="n">time_smac</span><span class="p">:</span>
+<span class="c1">#    start_nni(config_path, wait=WAITING_TIME, max_retries=MAX_RETRIES)</span>
+    <span class="k">pass</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#check_metrics_written()</span>
+<span class="c1">#svd = surprise.dump.load(os.path.join(get_trials(&#39;maximize&#39;)[3], &quot;model.dump&quot;))[1]</span>
+<span class="c1">#test_results_smac = compute_test_results(svd)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Metis</span>
+<span class="n">config</span><span class="p">[</span><span class="s1">&#39;tuner&#39;</span><span class="p">][</span><span class="s1">&#39;builtinTunerName&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;MetisTuner&#39;</span>
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">config_path</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fp</span><span class="p">:</span>
+    <span class="n">fp</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">yaml</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="n">default_flow_style</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">stop_nni</span><span class="p">()</span>
+<span class="k">with</span> <span class="n">Timer</span><span class="p">()</span> <span class="k">as</span> <span class="n">time_metis</span><span class="p">:</span>
+    <span class="n">start_nni</span><span class="p">(</span><span class="n">config_path</span><span class="p">,</span> <span class="n">wait</span><span class="o">=</span><span class="n">WAITING_TIME</span><span class="p">,</span> <span class="n">max_retries</span><span class="o">=</span><span class="n">MAX_RETRIES</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">check_metrics_written</span><span class="p">()</span>
+<span class="n">svd</span> <span class="o">=</span> <span class="n">surprise</span><span class="o">.</span><span class="n">dump</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">get_trials</span><span class="p">(</span><span class="s1">&#39;maximize&#39;</span><span class="p">)[</span><span class="mi">3</span><span class="p">],</span> <span class="s2">&quot;model.dump&quot;</span><span class="p">))[</span><span class="mi">1</span><span class="p">]</span>
+<span class="n">test_results_metis</span> <span class="o">=</span> <span class="n">compute_test_results</span><span class="p">(</span><span class="n">svd</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Hyperband follows a different style of configuration from other tuners. See <a class="reference external" href="https://nni.readthedocs.io/en/latest/hyperbandAdvisor.html">the NNI documentation</a>. Note that the <span class="xref myst">training script</span> needs to be adjusted as well, since each Hyperband trial receives an additional parameter <code class="docutils literal notranslate"><span class="pre">STEPS</span></code>, which corresponds to the resource allocation <em>r<sub>i</sub></em> in the <a class="reference external" href="https://arxiv.org/pdf/1603.06560.pdf">Hyperband algorithm</a>. In this example, we used <code class="docutils literal notranslate"><span class="pre">STEPS</span></code> in combination with <code class="docutils literal notranslate"><span class="pre">R</span></code> to determine the number of epochs that SVD will run for in every trial.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Hyperband</span>
+<span class="n">config</span><span class="p">[</span><span class="s1">&#39;advisor&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="s1">&#39;builtinAdvisorName&#39;</span><span class="p">:</span> <span class="s1">&#39;Hyperband&#39;</span><span class="p">,</span>
+  <span class="s1">&#39;classArgs&#39;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="s1">&#39;R&#39;</span><span class="p">:</span> <span class="n">NUM_EPOCHS</span><span class="p">,</span>
+    <span class="s1">&#39;eta&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+    <span class="s1">&#39;optimize_mode&#39;</span><span class="p">:</span> <span class="s1">&#39;maximize&#39;</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+<span class="n">config</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;tuner&#39;</span><span class="p">)</span>
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">config_path</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fp</span><span class="p">:</span>
+    <span class="n">fp</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">yaml</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="n">default_flow_style</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">stop_nni</span><span class="p">()</span>
+<span class="k">with</span> <span class="n">Timer</span><span class="p">()</span> <span class="k">as</span> <span class="n">time_hyperband</span><span class="p">:</span>
+    <span class="n">start_nni</span><span class="p">(</span><span class="n">config_path</span><span class="p">,</span> <span class="n">wait</span><span class="o">=</span><span class="n">WAITING_TIME</span><span class="p">,</span> <span class="n">max_retries</span><span class="o">=</span><span class="n">MAX_RETRIES</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">check_metrics_written</span><span class="p">()</span>
+<span class="n">svd</span> <span class="o">=</span> <span class="n">surprise</span><span class="o">.</span><span class="n">dump</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">get_trials</span><span class="p">(</span><span class="s1">&#39;maximize&#39;</span><span class="p">)[</span><span class="mi">3</span><span class="p">],</span> <span class="s2">&quot;model.dump&quot;</span><span class="p">))[</span><span class="mi">1</span><span class="p">]</span>
+<span class="n">test_results_hyperband</span> <span class="o">=</span> <span class="n">compute_test_results</span><span class="p">(</span><span class="n">svd</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">test_results_tpe</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s1">&#39;time&#39;</span><span class="p">:</span> <span class="n">time_tpe</span><span class="o">.</span><span class="n">interval</span><span class="p">})</span>
+<span class="n">test_results_random</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s1">&#39;time&#39;</span><span class="p">:</span> <span class="n">time_random</span><span class="o">.</span><span class="n">interval</span><span class="p">})</span>
+<span class="n">test_results_anneal</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s1">&#39;time&#39;</span><span class="p">:</span> <span class="n">time_anneal</span><span class="o">.</span><span class="n">interval</span><span class="p">})</span>
+<span class="n">test_results_evolution</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s1">&#39;time&#39;</span><span class="p">:</span> <span class="n">time_evolution</span><span class="o">.</span><span class="n">interval</span><span class="p">})</span>
+<span class="c1">#test_results_smac.update({&#39;time&#39;: time_smac.interval})</span>
+<span class="n">test_results_metis</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s1">&#39;time&#39;</span><span class="p">:</span> <span class="n">time_metis</span><span class="o">.</span><span class="n">interval</span><span class="p">})</span>
+<span class="n">test_results_hyperband</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s1">&#39;time&#39;</span><span class="p">:</span> <span class="n">time_hyperband</span><span class="o">.</span><span class="n">interval</span><span class="p">})</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">algos</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;TPE&quot;</span><span class="p">,</span> 
+         <span class="s2">&quot;Random Search&quot;</span><span class="p">,</span> 
+         <span class="s2">&quot;Annealing&quot;</span><span class="p">,</span> 
+         <span class="s2">&quot;Evolution&quot;</span><span class="p">,</span> 
+         <span class="c1">#&quot;SMAC&quot;, </span>
+         <span class="s2">&quot;Metis&quot;</span><span class="p">,</span> 
+         <span class="s2">&quot;Hyperband&quot;</span><span class="p">]</span>
+<span class="n">res_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="n">algos</span><span class="p">,</span>
+                      <span class="n">data</span><span class="o">=</span><span class="p">[</span><span class="n">res</span> <span class="k">for</span> <span class="n">res</span> <span class="ow">in</span> <span class="p">[</span><span class="n">test_results_tpe</span><span class="p">,</span> 
+                                            <span class="n">test_results_random</span><span class="p">,</span> 
+                                            <span class="n">test_results_anneal</span><span class="p">,</span> 
+                                            <span class="n">test_results_evolution</span><span class="p">,</span> 
+                                            <span class="c1">#test_results_smac, </span>
+                                            <span class="n">test_results_metis</span><span class="p">,</span> 
+                                            <span class="n">test_results_hyperband</span><span class="p">]]</span> 
+                     <span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">res_df</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="s2">&quot;precision_at_k&quot;</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>rmse</th>
+      <th>precision_at_k</th>
+      <th>ndcg_at_k</th>
+      <th>time</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>TPE</th>
+      <td>0.990</td>
+      <td>0.077</td>
+      <td>0.085</td>
+      <td>80.076</td>
+    </tr>
+    <tr>
+      <th>Metis</th>
+      <td>0.944</td>
+      <td>0.076</td>
+      <td>0.085</td>
+      <td>105.617</td>
+    </tr>
+    <tr>
+      <th>Random Search</th>
+      <td>0.974</td>
+      <td>0.052</td>
+      <td>0.051</td>
+      <td>84.977</td>
+    </tr>
+    <tr>
+      <th>Hyperband</th>
+      <td>1.863</td>
+      <td>0.033</td>
+      <td>0.032</td>
+      <td>104.792</td>
+    </tr>
+    <tr>
+      <th>Evolution</th>
+      <td>0.932</td>
+      <td>0.026</td>
+      <td>0.025</td>
+      <td>104.768</td>
+    </tr>
+    <tr>
+      <th>Annealing</th>
+      <td>0.961</td>
+      <td>0.015</td>
+      <td>0.014</td>
+      <td>105.013</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>As we see in the table above, <em>TPE</em> performs best with respect to the primary metric (precision&#64;10) that all the tuners optimized. Also the best NDCG&#64;10 is obtained for TPE and correlates well with precision&#64;10. RMSE on the other hand does not correlate well and is not optimized for TPE, since finding the top k recommendations in the right order is a different task from predicting ratings (high and low) accurately.<br />
+We have also observed that the above ranking of the tuners is not consistent and may change when trying these experiments multiple times. Since some of these tuners rely heavily on randomized sampling, a larger number of trials is required to get more consistent metrics.
+In addition, some of the tuning algorithms themselves come with parameters, which can affect their performance.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Stop the NNI experiment </span>
+<span class="n">stop_nni</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">tmp_dir</span><span class="o">.</span><span class="n">cleanup</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="concluding-remarks">
+<h2>7. Concluding Remarks<a class="headerlink" href="#concluding-remarks" title="Permalink to this headline">¶</a></h2>
+<p>We showed how to tune <strong>all</strong> the hyperparameters accepted by Surprise SVD simultaneously, by utilizing the NNI toolkit.
+For example, training and evaluation of a single SVD model takes about 50 seconds on the 100k MovieLens data on a Standard D2_V2 VM. Searching through 100 different combinations of hyperparameters sequentially would take about 80 minutes whereas each of the above experiments took about 10 minutes by exploiting parallelization on a single D16_v3 VM. With NNI, one can take advantage of concurrency and multiple processors on a virtual machine and can use a variety of tuning methods to navigate efficiently through a large space of hyperparameters.<br>
+For examples of scaling larger tuning workloads on clusters of machines, see <a class="reference internal" href="README.html"><span class="doc std std-doc">the notebooks</span></a> that employ the <a class="reference external" href="https://docs.microsoft.com/en-us/azure/machine-learning/service/how-to-tune-hyperparameters">Azure Machine Learning service</a>.</p>
+</div>
+<div class="section" id="references">
+<h2>References<a class="headerlink" href="#references" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p><a class="reference external" href="https://surprise.readthedocs.io/en/stable/matrix_factorization.html">Matrix factorization algorithms in Surprise</a></p></li>
+<li><p><span class="xref myst">Surprise SVD deep-dive notebook</span></p></li>
+<li><p><a class="reference external" href="https://github.com/Microsoft/nni">Neural Network Intelligence toolkit</a></p></li>
+</ul>
+</div>
+</div>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "reco_base"
+        },
+        kernelOptions: {
+            kernelName: "reco_base",
+            path: "./examples/04_model_select_and_optimize"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'reco_base'</script>
+
+              </div>
+              
+        
+            
+
+
+
+<div class='prev-next-bottom'>
+    
+
+</div>
+        
+        </div>
+    </div>
+    <footer class="footer">
+    <div class="container">
+      <p>
+        
+          By The Jupyter Book community<br/>
+        
+            &copy; Copyright 2021.<br/>
+      </p>
+    </div>
+  </footer>
+</main>
+
+
+      </div>
+    </div>
+  
+  <script src="../../_static/js/index.1c5a1a01449ed65a7b51.js"></script>
+
+  
+  </body>
+</html>

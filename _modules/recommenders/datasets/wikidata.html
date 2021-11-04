@@ -1,0 +1,440 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>recommenders.datasets.wikidata &#8212; &lt;h1 style=&#34;font-size:2em;text-align:center;color:#FF5733&#34;&gt;Recommenders&lt;/h1&gt;</title>
+    
+  <link href="../../../_static/css/theme.css" rel="stylesheet" />
+  <link href="../../../_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
+
+    
+  <link rel="stylesheet"
+    href="../../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+
+    
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-book-theme.css?digest=c3fdc42140077d1ad13ad2f1588a4309" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/tabs.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    
+  <link rel="preload" as="script" href="../../../_static/js/index.1c5a1a01449ed65a7b51.js">
+
+    <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/jquery.js"></script>
+    <script src="../../../_static/underscore.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/togglebutton.js"></script>
+    <script src="../../../_static/clipboard.min.js"></script>
+    <script src="../../../_static/copybutton.js"></script>
+    <script src="../../../_static/tabs.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../../../_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
+    <link rel="canonical" href="https://microsoft.github.io/genalog/_modules/recommenders/datasets/wikidata.html" />
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en" />
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="../../../index.html">
+      
+      
+      
+      <h1 class="site-logo" id="site-title"><h1 style="font-size:2em;text-align:center;color:#FF5733">Recommenders</h1></h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="../../../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        
+    </div>
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="topbar container-xl fixed-top">
+    <div class="topbar-contents row">
+        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
+        <div class="col pl-md-4 topbar-main">
+            
+            <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+                data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+                aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
+                title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+                <i class="fas fa-bars"></i>
+                <i class="fas fa-arrow-left"></i>
+                <i class="fas fa-arrow-up"></i>
+            </button>
+            
+            
+            <!-- Source interaction buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
+    <div class="dropdown-buttons sourcebuttons">
+        <a class="repository-button"
+            href="https://github.com/microsoft/genalog"><button type="button" class="btn btn-secondary topbarbtn"
+                data-toggle="tooltip" data-placement="left" title="Source repository"><i
+                    class="fab fa-github"></i>repository</button></a>
+        <a class="issues-button"
+            href="https://github.com/microsoft/genalog/issues/new?title=Issue%20on%20page%20%2F_modules/recommenders/datasets/wikidata.html&body=Your%20issue%20content%20here."><button
+                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
+                title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
+        
+    </div>
+</div>
+
+            <!-- Full screen (wrap in <a> to have style consistency -->
+
+<a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+        data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+        title="Fullscreen mode"><i
+            class="fas fa-expand"></i></button></a>
+
+            <!-- Launch buttons -->
+
+        </div>
+
+        <!-- Table of contents -->
+        <div class="d-none d-md-block col-md-2 bd-toc show">
+            
+        </div>
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+        
+              <div>
+                
+  <h1>Source code for recommenders.datasets.wikidata</h1><div class="highlight"><pre>
+<span></span><span class="c1"># Copyright (c) Microsoft Corporation. All rights reserved.</span>
+<span class="c1"># Licensed under the MIT License.</span>
+
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">requests</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">from</span> <span class="nn">retrying</span> <span class="kn">import</span> <span class="n">retry</span>
+
+
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+
+<span class="n">API_URL_WIKIPEDIA</span> <span class="o">=</span> <span class="s2">&quot;https://en.wikipedia.org/w/api.php&quot;</span>
+<span class="n">API_URL_WIKIDATA</span> <span class="o">=</span> <span class="s2">&quot;https://query.wikidata.org/sparql&quot;</span>
+<span class="n">SESSION</span> <span class="o">=</span> <span class="kc">None</span>
+
+
+<div class="viewcode-block" id="get_session"><a class="viewcode-back" href="../../../source/datasets.html#recommenders.datasets.wikidata.get_session">[docs]</a><span class="k">def</span> <span class="nf">get_session</span><span class="p">(</span><span class="n">session</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Get session object</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        session (requests.Session): request session object</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        requests.Session: request session object</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="n">session</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">global</span> <span class="n">SESSION</span>
+        <span class="k">if</span> <span class="n">SESSION</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">SESSION</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">Session</span><span class="p">()</span>
+        <span class="n">session</span> <span class="o">=</span> <span class="n">SESSION</span>
+
+    <span class="k">return</span> <span class="n">session</span></div>
+
+
+<div class="viewcode-block" id="find_wikidata_id"><a class="viewcode-back" href="../../../source/datasets.html#recommenders.datasets.wikidata.find_wikidata_id">[docs]</a><span class="nd">@retry</span><span class="p">(</span><span class="n">wait_random_min</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">wait_random_max</span><span class="o">=</span><span class="mi">5000</span><span class="p">,</span> <span class="n">stop_max_attempt_number</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">find_wikidata_id</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">session</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Find the entity ID in wikidata from a title string.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        name (str): A string with search terms (eg. &quot;Batman (1989) film&quot;)</span>
+<span class="sd">        limit (int): Number of results to return</span>
+<span class="sd">        session (requests.Session): requests session to reuse connections</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        str: wikidata entityID corresponding to the title string. &#39;entityNotFound&#39; will be returned if no page is found</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">session</span> <span class="o">=</span> <span class="n">get_session</span><span class="p">(</span><span class="n">session</span><span class="o">=</span><span class="n">session</span><span class="p">)</span>
+
+    <span class="n">params</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+        <span class="n">action</span><span class="o">=</span><span class="s2">&quot;query&quot;</span><span class="p">,</span>
+        <span class="nb">list</span><span class="o">=</span><span class="s2">&quot;search&quot;</span><span class="p">,</span>
+        <span class="n">srsearch</span><span class="o">=</span><span class="nb">bytes</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf8&quot;</span><span class="p">),</span>
+        <span class="n">srlimit</span><span class="o">=</span><span class="n">limit</span><span class="p">,</span>
+        <span class="n">srprop</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span>
+        <span class="nb">format</span><span class="o">=</span><span class="s2">&quot;json&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">API_URL_WIKIPEDIA</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">)</span>
+        <span class="n">page_id</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()[</span><span class="s2">&quot;query&quot;</span><span class="p">][</span><span class="s2">&quot;search&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;pageid&quot;</span><span class="p">]</span>
+    <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+        <span class="c1"># TODO: distinguish between connection error and entity not found</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;ENTITY NOT FOUND&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="s2">&quot;entityNotFound&quot;</span>
+
+    <span class="n">params</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+        <span class="n">action</span><span class="o">=</span><span class="s2">&quot;query&quot;</span><span class="p">,</span>
+        <span class="n">prop</span><span class="o">=</span><span class="s2">&quot;pageprops&quot;</span><span class="p">,</span>
+        <span class="n">ppprop</span><span class="o">=</span><span class="s2">&quot;wikibase_item&quot;</span><span class="p">,</span>
+        <span class="n">pageids</span><span class="o">=</span><span class="p">[</span><span class="n">page_id</span><span class="p">],</span>
+        <span class="nb">format</span><span class="o">=</span><span class="s2">&quot;json&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">API_URL_WIKIPEDIA</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">)</span>
+        <span class="n">entity_id</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()[</span><span class="s2">&quot;query&quot;</span><span class="p">][</span><span class="s2">&quot;pages&quot;</span><span class="p">][</span><span class="nb">str</span><span class="p">(</span><span class="n">page_id</span><span class="p">)][</span><span class="s2">&quot;pageprops&quot;</span><span class="p">][</span>
+            <span class="s2">&quot;wikibase_item&quot;</span>
+        <span class="p">]</span>
+    <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+        <span class="c1"># TODO: distinguish between connection error and entity not found</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;ENTITY NOT FOUND&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="s2">&quot;entityNotFound&quot;</span>
+
+    <span class="k">return</span> <span class="n">entity_id</span></div>
+
+
+<div class="viewcode-block" id="query_entity_links"><a class="viewcode-back" href="../../../source/datasets.html#recommenders.datasets.wikidata.query_entity_links">[docs]</a><span class="nd">@retry</span><span class="p">(</span><span class="n">wait_random_min</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">wait_random_max</span><span class="o">=</span><span class="mi">5000</span><span class="p">,</span> <span class="n">stop_max_attempt_number</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">query_entity_links</span><span class="p">(</span><span class="n">entity_id</span><span class="p">,</span> <span class="n">session</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Query all linked pages from a wikidata entityID</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        entity_id (str): A wikidata entity ID</span>
+<span class="sd">        session (requests.Session): requests session to reuse connections</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        json: Dictionary with linked pages.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">query</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    PREFIX entity: &lt;http://www.wikidata.org/entity/&gt;</span>
+<span class="sd">    #partial results</span>
+
+<span class="sd">    SELECT ?propUrl ?propLabel ?valUrl ?valLabel</span>
+<span class="sd">    WHERE</span>
+<span class="sd">    {</span>
+<span class="sd">        hint:Query hint:optimizer &#39;None&#39; .</span>
+<span class="sd">        {	BIND(entity:&quot;&quot;&quot;</span>
+        <span class="o">+</span> <span class="n">entity_id</span>
+        <span class="o">+</span> <span class="s2">&quot;&quot;&quot; AS ?valUrl) .</span>
+<span class="s2">            BIND(&quot;N/A&quot; AS ?propUrl ) .</span>
+<span class="s2">            BIND(&quot;identity&quot;@en AS ?propLabel ) .</span>
+<span class="s2">        }</span>
+<span class="s2">        UNION</span>
+<span class="s2">        {	entity:&quot;&quot;&quot;</span>
+        <span class="o">+</span> <span class="n">entity_id</span>
+        <span class="o">+</span> <span class="s2">&quot;&quot;&quot; ?propUrl ?valUrl .</span>
+<span class="s2">            ?property ?ref ?propUrl .</span>
+<span class="s2">            ?property rdf:type wikibase:Property .</span>
+<span class="s2">            ?property rdfs:label ?propLabel</span>
+<span class="s2">        }</span>
+
+<span class="s2">        ?valUrl rdfs:label ?valLabel</span>
+<span class="s2">        FILTER (LANG(?valLabel) = &#39;en&#39;) .</span>
+<span class="s2">        OPTIONAL{ ?valUrl wdt:P18 ?picture .}</span>
+<span class="s2">        FILTER (lang(?propLabel) = &#39;en&#39; )</span>
+<span class="s2">    }</span>
+<span class="s2">    ORDER BY ?propUrl ?valUrl</span>
+<span class="s2">    LIMIT 500</span>
+<span class="s2">    &quot;&quot;&quot;</span>
+    <span class="p">)</span>
+
+    <span class="n">session</span> <span class="o">=</span> <span class="n">get_session</span><span class="p">(</span><span class="n">session</span><span class="o">=</span><span class="n">session</span><span class="p">)</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+            <span class="n">API_URL_WIKIDATA</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">query</span><span class="o">=</span><span class="n">query</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s2">&quot;json&quot;</span><span class="p">)</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>  <span class="c1"># noqa: F841</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;ENTITY NOT FOUND&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">{}</span>
+
+    <span class="k">return</span> <span class="n">data</span></div>
+
+
+<div class="viewcode-block" id="read_linked_entities"><a class="viewcode-back" href="../../../source/datasets.html#recommenders.datasets.wikidata.read_linked_entities">[docs]</a><span class="k">def</span> <span class="nf">read_linked_entities</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Obtain lists of liken entities (IDs and names) from dictionary</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        data (json): dictionary with linked pages</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        list, list:</span>
+<span class="sd">        - List of liked entityIDs.</span>
+<span class="sd">        - List of liked entity names.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">return</span> <span class="p">[</span>
+        <span class="p">(</span>
+            <span class="n">c</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;valUrl&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;value&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;http://www.wikidata.org/entity/&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">),</span>
+            <span class="n">c</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;valLabel&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;value&quot;</span><span class="p">),</span>
+        <span class="p">)</span>
+        <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;results&quot;</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;bindings&quot;</span><span class="p">,</span> <span class="p">[])</span>
+    <span class="p">]</span></div>
+
+
+<div class="viewcode-block" id="query_entity_description"><a class="viewcode-back" href="../../../source/datasets.html#recommenders.datasets.wikidata.query_entity_description">[docs]</a><span class="nd">@retry</span><span class="p">(</span><span class="n">wait_random_min</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">wait_random_max</span><span class="o">=</span><span class="mi">5000</span><span class="p">,</span> <span class="n">stop_max_attempt_number</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">query_entity_description</span><span class="p">(</span><span class="n">entity_id</span><span class="p">,</span> <span class="n">session</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Query entity wikidata description from entityID</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        entity_id (str): A wikidata page ID.</span>
+<span class="sd">        session (requests.Session): requests session to reuse connections</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        str: Wikidata short description of the entityID</span>
+<span class="sd">        descriptionNotFound&#39; will be returned if no description is found</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">query</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    PREFIX wd: &lt;http://www.wikidata.org/entity/&gt;</span>
+<span class="sd">    PREFIX schema: &lt;http://schema.org/&gt;</span>
+
+<span class="sd">    SELECT ?o</span>
+<span class="sd">    WHERE</span>
+<span class="sd">    {</span>
+<span class="sd">      wd:&quot;&quot;&quot;</span>
+        <span class="o">+</span> <span class="n">entity_id</span>
+        <span class="o">+</span> <span class="s2">&quot;&quot;&quot; schema:description ?o.</span>
+<span class="s2">      FILTER ( lang(?o) = &quot;en&quot; )</span>
+<span class="s2">    }</span>
+<span class="s2">    &quot;&quot;&quot;</span>
+    <span class="p">)</span>
+
+    <span class="n">session</span> <span class="o">=</span> <span class="n">get_session</span><span class="p">(</span><span class="n">session</span><span class="o">=</span><span class="n">session</span><span class="p">)</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">r</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">API_URL_WIKIDATA</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">query</span><span class="o">=</span><span class="n">query</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s2">&quot;json&quot;</span><span class="p">))</span>
+        <span class="n">description</span> <span class="o">=</span> <span class="n">r</span><span class="o">.</span><span class="n">json</span><span class="p">()[</span><span class="s2">&quot;results&quot;</span><span class="p">][</span><span class="s2">&quot;bindings&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;o&quot;</span><span class="p">][</span><span class="s2">&quot;value&quot;</span><span class="p">]</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>  <span class="c1"># noqa: F841</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;DESCRIPTION NOT FOUND&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="s2">&quot;descriptionNotFound&quot;</span>
+
+    <span class="k">return</span> <span class="n">description</span></div>
+
+
+<div class="viewcode-block" id="search_wikidata"><a class="viewcode-back" href="../../../source/datasets.html#recommenders.datasets.wikidata.search_wikidata">[docs]</a><span class="k">def</span> <span class="nf">search_wikidata</span><span class="p">(</span><span class="n">names</span><span class="p">,</span> <span class="n">extras</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">describe</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Create DataFrame of Wikidata search results</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        names (list[str]): List of names to search for</span>
+<span class="sd">        extras (dict(str: list)): Optional extra items to assign to results for corresponding name</span>
+<span class="sd">        describe (bool): Optional flag to include description of entity</span>
+<span class="sd">        verbose (bool): Optional flag to print out intermediate data</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        pandas.DataFrame: Wikipedia results for all names with found entities</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">results</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">name</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">names</span><span class="p">):</span>
+        <span class="n">entity_id</span> <span class="o">=</span> <span class="n">find_wikidata_id</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;name: </span><span class="si">{name}</span><span class="s2">, entity_id: </span><span class="si">{id}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span> <span class="nb">id</span><span class="o">=</span><span class="n">entity_id</span><span class="p">))</span>
+
+        <span class="k">if</span> <span class="n">entity_id</span> <span class="o">==</span> <span class="s2">&quot;entityNotFound&quot;</span><span class="p">:</span>
+            <span class="k">continue</span>
+
+        <span class="n">json_links</span> <span class="o">=</span> <span class="n">query_entity_links</span><span class="p">(</span><span class="n">entity_id</span><span class="p">)</span>
+        <span class="n">related_links</span> <span class="o">=</span> <span class="n">read_linked_entities</span><span class="p">(</span><span class="n">json_links</span><span class="p">)</span>
+        <span class="n">description</span> <span class="o">=</span> <span class="n">query_entity_description</span><span class="p">(</span><span class="n">entity_id</span><span class="p">)</span> <span class="k">if</span> <span class="n">describe</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span>
+
+        <span class="k">for</span> <span class="n">related_entity</span><span class="p">,</span> <span class="n">related_name</span> <span class="ow">in</span> <span class="n">related_links</span><span class="p">:</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+                <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span>
+                <span class="n">original_entity</span><span class="o">=</span><span class="n">entity_id</span><span class="p">,</span>
+                <span class="n">linked_entities</span><span class="o">=</span><span class="n">related_entity</span><span class="p">,</span>
+                <span class="n">name_linked_entities</span><span class="o">=</span><span class="n">related_name</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="k">if</span> <span class="n">describe</span><span class="p">:</span>
+                <span class="n">result</span><span class="p">[</span><span class="s2">&quot;description&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">description</span>
+            <span class="k">if</span> <span class="n">extras</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">field</span><span class="p">,</span> <span class="n">lst</span> <span class="ow">in</span> <span class="n">extras</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                    <span class="n">result</span><span class="p">[</span><span class="n">field</span><span class="p">]</span> <span class="o">=</span> <span class="n">lst</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
+            <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">results</span><span class="p">)</span></div>
+</pre></div>
+
+              </div>
+              
+        
+            
+
+
+
+<div class='prev-next-bottom'>
+    
+
+</div>
+        
+        </div>
+    </div>
+    <footer class="footer">
+    <div class="container">
+      <p>
+        
+          By The Jupyter Book community<br/>
+        
+            &copy; Copyright 2021.<br/>
+          <div class="extra_footer">
+            Don't forget to check out <a href= https://arxiv.org/abs/2108.02899>our paper from Document Intelligence Workshop at KDD 2021!</a>
+          </div>
+      </p>
+    </div>
+  </footer>
+</main>
+
+
+      </div>
+    </div>
+  
+  <script src="../../../_static/js/index.1c5a1a01449ed65a7b51.js"></script>
+
+  
+  </body>
+</html>

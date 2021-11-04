@@ -1,0 +1,1111 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Wide and Deep Model for Movie Recommendation &#8212; &lt;h1 style=&#34;font-size:2em;text-align:center;color:#FF5733&#34;&gt;Recommenders&lt;/h1&gt;</title>
+    
+  <link href="../../_static/css/theme.css" rel="stylesheet" />
+  <link href="../../_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
+
+    
+  <link rel="stylesheet"
+    href="../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+
+    
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-book-theme.css?digest=c3fdc42140077d1ad13ad2f1588a4309" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/tabs.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    
+  <link rel="preload" as="script" href="../../_static/js/index.1c5a1a01449ed65a7b51.js">
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/togglebutton.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <script src="../../_static/tabs.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../../_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script>
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="../../_static/sphinx-thebe.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en" />
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="../../index.html">
+      
+      
+      
+      <h1 class="site-logo" id="site-title"><h1 style="font-size:2em;text-align:center;color:#FF5733">Recommenders</h1></h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="../../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        <p class="caption" role="heading">
+ <span class="caption-text">
+  Getting Started Notebooks
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="als_movielens.html">
+   Running ALS on MovieLens (PySpark)
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ncf_movielens.html">
+   Neural Collaborative Filtering on MovieLens dataset.
+  </a>
+ </li>
+</ul>
+
+    </div>
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="topbar container-xl fixed-top">
+    <div class="topbar-contents row">
+        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
+        <div class="col pl-md-4 topbar-main">
+            
+            <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+                data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+                aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
+                title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+                <i class="fas fa-bars"></i>
+                <i class="fas fa-arrow-left"></i>
+                <i class="fas fa-arrow-up"></i>
+            </button>
+            
+            
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
+            class="fas fa-download"></i></button>
+
+    <div class="dropdown-buttons">
+        <!-- ipynb file if we had a myst markdown file -->
+        
+        <!-- Download raw file -->
+        <a class="dropdown-buttons" href="../../_sources/examples/00_quick_start/wide_deep_movielens.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
+                data-placement="left">.ipynb</button></a>
+        <!-- Download PDF via print -->
+        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
+            onClick="window.print()" data-toggle="tooltip" data-placement="left">.pdf</button>
+    </div>
+</div>
+
+            <!-- Source interaction buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
+    <div class="dropdown-buttons sourcebuttons">
+        <a class="repository-button"
+            href="https://github.com/microsoft/genalog"><button type="button" class="btn btn-secondary topbarbtn"
+                data-toggle="tooltip" data-placement="left" title="Source repository"><i
+                    class="fab fa-github"></i>repository</button></a>
+        <a class="issues-button"
+            href="https://github.com/microsoft/genalog/issues/new?title=Issue%20on%20page%20%2Fexamples/00_quick_start/wide_deep_movielens.html&body=Your%20issue%20content%20here."><button
+                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
+                title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
+        
+    </div>
+</div>
+
+            <!-- Full screen (wrap in <a> to have style consistency -->
+
+<a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+        data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+        title="Fullscreen mode"><i
+            class="fas fa-expand"></i></button></a>
+
+            <!-- Launch buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Launch interactive content"><i class="fas fa-rocket"></i></button>
+    <div class="dropdown-buttons">
+        
+        <a class="binder-button" href="https://mybinder.org/v2/gh/microsoft/genalog/main?urlpath=tree/docs/genalog_docs/examples/00_quick_start/wide_deep_movielens.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Launch Binder" data-toggle="tooltip"
+                data-placement="left"><img class="binder-button-logo"
+                    src="../../_static/images/logo_binder.svg"
+                    alt="Interact on binder">Binder</button></a>
+        
+        
+        
+        
+    </div>
+</div>
+
+        </div>
+
+        <!-- Table of contents -->
+        <div class="d-none d-md-block col-md-2 bd-toc show">
+            
+            <div class="tocsection onthispage pt-5 pb-3">
+                <i class="fas fa-list"></i> Contents
+            </div>
+            <nav id="bd-toc-nav" aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#prepare-data">
+   1. Prepare Data
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#movie-rating-and-genres-data">
+     1.1 Movie Rating and Genres Data
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#encode-item-features-genres">
+     1.2 Encode Item Features (Genres)
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#train-and-test-split">
+     1.3 Train and Test Split
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#build-model">
+   2. Build Model
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#train-and-evaluate-model">
+   3. Train and Evaluate Model
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#tensorboard">
+     3.2 TensorBoard
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#test-and-export-model">
+   4. Test and Export Model
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#item-rating-prediction">
+     4.1 Item rating prediction
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#recommend-k-items">
+     4.2 Recommend k items
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#export-model">
+     4.3 Export Model
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+        
+              <div>
+                
+  <p><i>Copyright (c) Microsoft Corporation. All rights reserved.</i></p>
+<p><i>Licensed under the MIT License.</i></p>
+<div class="tex2jax_ignore mathjax_ignore section" id="wide-and-deep-model-for-movie-recommendation">
+<h1>Wide and Deep Model for Movie Recommendation<a class="headerlink" href="#wide-and-deep-model-for-movie-recommendation" title="Permalink to this headline">¶</a></h1>
+<br>
+<p>A linear model with a wide set of crossed-column (co-occurrence) features can memorize the feature interactions, while deep neural networks (DNN) can generalize the feature patterns through low-dimensional dense embeddings learned for the sparse features. <a class="reference external" href="https://arxiv.org/abs/1606.07792"><strong>Wide-and-deep</strong></a> learning jointly trains wide linear model and deep neural networks to combine the benefits of memorization and generalization for recommender systems.</p>
+<p>This notebook shows how to build and test the wide-and-deep model using <a class="reference external" href="https://www.tensorflow.org/api_docs/python/tf/estimator/DNNLinearCombinedRegressor">TensorFlow high-level Estimator API</a>. With the <a class="reference external" href="https://grouplens.org/datasets/movielens/">movie recommendation dataset</a>, we quickly demonstrate following topics:</p>
+<ol class="simple">
+<li><p>How to prepare data</p></li>
+<li><p>Build the model</p></li>
+<li><p>Use log-hook to estimate performance while training</p></li>
+<li><p>Test the model and export</p></li>
+</ol>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">reload_ext</span> autoreload
+<span class="o">%</span><span class="k">autoreload</span> 2
+<span class="o">%</span><span class="k">matplotlib</span> inline
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">itertools</span>
+<span class="kn">import</span> <span class="nn">math</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">from</span> <span class="nn">tempfile</span> <span class="kn">import</span> <span class="n">TemporaryDirectory</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">scrapbook</span> <span class="k">as</span> <span class="nn">sb</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">sklearn.preprocessing</span>
+<span class="kn">import</span> <span class="nn">tensorflow</span> <span class="k">as</span> <span class="nn">tf</span>
+<span class="n">tf</span><span class="o">.</span><span class="n">get_logger</span><span class="p">()</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="s1">&#39;ERROR&#39;</span><span class="p">)</span> <span class="c1"># only show error messages</span>
+
+<span class="kn">from</span> <span class="nn">recommenders.utils.constants</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">DEFAULT_USER_COL</span> <span class="k">as</span> <span class="n">USER_COL</span><span class="p">,</span>
+    <span class="n">DEFAULT_ITEM_COL</span> <span class="k">as</span> <span class="n">ITEM_COL</span><span class="p">,</span>
+    <span class="n">DEFAULT_RATING_COL</span> <span class="k">as</span> <span class="n">RATING_COL</span><span class="p">,</span>
+    <span class="n">DEFAULT_PREDICTION_COL</span> <span class="k">as</span> <span class="n">PREDICT_COL</span><span class="p">,</span>
+    <span class="n">SEED</span>
+<span class="p">)</span>
+<span class="kn">from</span> <span class="nn">recommenders.utils</span> <span class="kn">import</span> <span class="n">tf_utils</span><span class="p">,</span> <span class="n">gpu_utils</span><span class="p">,</span> <span class="n">plot</span>
+<span class="kn">from</span> <span class="nn">recommenders.datasets</span> <span class="kn">import</span> <span class="n">movielens</span>
+<span class="kn">from</span> <span class="nn">recommenders.datasets.pandas_df_utils</span> <span class="kn">import</span> <span class="n">user_item_pairs</span>
+<span class="kn">from</span> <span class="nn">recommenders.datasets.python_splitters</span> <span class="kn">import</span> <span class="n">python_random_split</span>
+<span class="kn">import</span> <span class="nn">recommenders.evaluation.python_evaluation</span> <span class="k">as</span> <span class="nn">evaluator</span>
+<span class="kn">import</span> <span class="nn">recommenders.models.wide_deep.wide_deep_utils</span> <span class="k">as</span> <span class="nn">wide_deep</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Tensorflow Version:&quot;</span><span class="p">,</span> <span class="n">tf</span><span class="o">.</span><span class="n">VERSION</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;GPUs:</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">gpu_utils</span><span class="o">.</span><span class="n">get_gpu_info</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Tensorflow Version: 1.15.2
+GPUs:
+ [{&#39;device_name&#39;: &#39;TITAN V&#39;, &#39;total_memory&#39;: 12065.375, &#39;free_memory&#39;: 10537.0625}, {&#39;device_name&#39;: &#39;TITAN V&#39;, &#39;total_memory&#39;: 12066.6875, &#39;free_memory&#39;: 11137.75}, {&#39;device_name&#39;: &#39;TITAN V&#39;, &#39;total_memory&#39;: 12066.6875, &#39;free_memory&#39;: 11137.75}]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell tag_parameters docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="sd">&quot;&quot;&quot;Parameters (papermill)&quot;&quot;&quot;</span>
+
+<span class="c1"># Recommend top k items</span>
+<span class="n">TOP_K</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="c1"># Select MovieLens data size: 100k, 1m, 10m, or 20m</span>
+<span class="n">MOVIELENS_DATA_SIZE</span> <span class="o">=</span> <span class="s1">&#39;100k&#39;</span>
+<span class="c1"># Metrics to use for evaluation</span>
+<span class="n">RANKING_METRICS</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="n">evaluator</span><span class="o">.</span><span class="n">ndcg_at_k</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span>
+    <span class="n">evaluator</span><span class="o">.</span><span class="n">precision_at_k</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span>
+<span class="p">]</span>
+<span class="n">RATING_METRICS</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="n">evaluator</span><span class="o">.</span><span class="n">rmse</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span>
+    <span class="n">evaluator</span><span class="o">.</span><span class="n">mae</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span>
+<span class="p">]</span>
+<span class="c1"># Use session hook to evaluate model while training</span>
+<span class="n">EVALUATE_WHILE_TRAINING</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="c1"># Item feature column name</span>
+<span class="n">ITEM_FEAT_COL</span> <span class="o">=</span> <span class="s1">&#39;genres&#39;</span>
+
+<span class="n">RANDOM_SEED</span> <span class="o">=</span> <span class="n">SEED</span>  <span class="c1"># Set seed for deterministic result</span>
+
+<span class="c1"># Train and test set pickle file paths. If provided, use them. Otherwise, download the MovieLens dataset.</span>
+<span class="n">DATA_DIR</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="n">TRAIN_PICKLE_PATH</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="n">TEST_PICKLE_PATH</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="n">EXPORT_DIR_BASE</span> <span class="o">=</span> <span class="s1">&#39;./outputs/model&#39;</span>
+<span class="c1"># Model checkpoints directory. If None, use temp-dir.</span>
+<span class="n">MODEL_DIR</span> <span class="o">=</span> <span class="kc">None</span>
+
+<span class="c1">#### Hyperparameters</span>
+<span class="n">MODEL_TYPE</span> <span class="o">=</span> <span class="s1">&#39;wide_deep&#39;</span>
+<span class="n">STEPS</span> <span class="o">=</span> <span class="mi">50000</span>  <span class="c1"># Number of batches to train</span>
+<span class="n">BATCH_SIZE</span> <span class="o">=</span> <span class="mi">32</span>
+<span class="c1"># Wide (linear) model hyperparameters</span>
+<span class="n">LINEAR_OPTIMIZER</span> <span class="o">=</span> <span class="s1">&#39;adagrad&#39;</span>
+<span class="n">LINEAR_OPTIMIZER_LR</span> <span class="o">=</span> <span class="mf">0.0621</span>  <span class="c1"># Learning rate</span>
+<span class="n">LINEAR_L1_REG</span> <span class="o">=</span> <span class="mf">0.0</span>           <span class="c1"># Regularization rate for FtrlOptimizer</span>
+<span class="n">LINEAR_L2_REG</span> <span class="o">=</span> <span class="mf">0.0</span>
+<span class="n">LINEAR_MOMENTUM</span> <span class="o">=</span> <span class="mf">0.0</span>         <span class="c1"># Momentum for MomentumOptimizer or RMSPropOptimizer</span>
+<span class="c1"># DNN model hyperparameters</span>
+<span class="n">DNN_OPTIMIZER</span> <span class="o">=</span> <span class="s1">&#39;adadelta&#39;</span>
+<span class="n">DNN_OPTIMIZER_LR</span> <span class="o">=</span> <span class="mf">0.1</span>
+<span class="n">DNN_L1_REG</span> <span class="o">=</span> <span class="mf">0.0</span>           <span class="c1"># Regularization rate for FtrlOptimizer</span>
+<span class="n">DNN_L2_REG</span> <span class="o">=</span> <span class="mf">0.0</span>
+<span class="n">DNN_MOMENTUM</span> <span class="o">=</span> <span class="mf">0.0</span>         <span class="c1"># Momentum for MomentumOptimizer or RMSPropOptimizer</span>
+<span class="c1"># Layer dimensions. Defined as follows to make this notebook runnable from Hyperparameter tuning services like AzureML Hyperdrive</span>
+<span class="n">DNN_HIDDEN_LAYER_1</span> <span class="o">=</span> <span class="mi">0</span>     <span class="c1"># Set 0 to not use this layer</span>
+<span class="n">DNN_HIDDEN_LAYER_2</span> <span class="o">=</span> <span class="mi">64</span>    <span class="c1"># Set 0 to not use this layer</span>
+<span class="n">DNN_HIDDEN_LAYER_3</span> <span class="o">=</span> <span class="mi">128</span>   <span class="c1"># Set 0 to not use this layer</span>
+<span class="n">DNN_HIDDEN_LAYER_4</span> <span class="o">=</span> <span class="mi">512</span>   <span class="c1"># Note, at least one layer should have nodes.</span>
+<span class="n">DNN_HIDDEN_UNITS</span> <span class="o">=</span> <span class="p">[</span><span class="n">h</span> <span class="k">for</span> <span class="n">h</span> <span class="ow">in</span> <span class="p">[</span><span class="n">DNN_HIDDEN_LAYER_1</span><span class="p">,</span> <span class="n">DNN_HIDDEN_LAYER_2</span><span class="p">,</span> <span class="n">DNN_HIDDEN_LAYER_3</span><span class="p">,</span> <span class="n">DNN_HIDDEN_LAYER_4</span><span class="p">]</span> <span class="k">if</span> <span class="n">h</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">]</span>
+<span class="n">DNN_USER_DIM</span> <span class="o">=</span> <span class="mi">32</span>          <span class="c1"># User embedding feature dimension</span>
+<span class="n">DNN_ITEM_DIM</span> <span class="o">=</span> <span class="mi">16</span>          <span class="c1"># Item embedding feature dimension</span>
+<span class="n">DNN_DROPOUT</span> <span class="o">=</span> <span class="mf">0.8</span>
+<span class="n">DNN_BATCH_NORM</span> <span class="o">=</span> <span class="mi">1</span>         <span class="c1"># 1 to use batch normalization, 0 if not.</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="n">MODEL_DIR</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="n">TMP_DIR</span> <span class="o">=</span> <span class="n">TemporaryDirectory</span><span class="p">()</span>
+    <span class="n">model_dir</span> <span class="o">=</span> <span class="n">TMP_DIR</span><span class="o">.</span><span class="n">name</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">MODEL_DIR</span><span class="p">)</span> <span class="ow">and</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">MODEL_DIR</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="s2">&quot;Model exists in </span><span class="si">{}</span><span class="s2">. Use different directory name or &quot;</span>
+            <span class="s2">&quot;remove the existing checkpoint files first&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">MODEL_DIR</span><span class="p">)</span>
+        <span class="p">)</span>
+    <span class="n">TMP_DIR</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">model_dir</span> <span class="o">=</span> <span class="n">MODEL_DIR</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="prepare-data">
+<h2>1. Prepare Data<a class="headerlink" href="#prepare-data" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="movie-rating-and-genres-data">
+<h3>1.1 Movie Rating and Genres Data<a class="headerlink" href="#movie-rating-and-genres-data" title="Permalink to this headline">¶</a></h3>
+<p>First, download <a class="reference external" href="https://grouplens.org/datasets/movielens/">MovieLens</a> data. Movies in the data set are tagged as one or more genres where there are total 19 genres including ‘<em>unknown</em>’. We load <em>movie genres</em> to use them as item features.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">use_preset</span> <span class="o">=</span> <span class="p">(</span><span class="n">TRAIN_PICKLE_PATH</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">TEST_PICKLE_PATH</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)</span>
+<span class="k">if</span> <span class="ow">not</span> <span class="n">use_preset</span><span class="p">:</span>
+    <span class="c1"># The genres of each movie are returned as &#39;|&#39; separated string, e.g. &quot;Animation|Children&#39;s|Comedy&quot;.</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">movielens</span><span class="o">.</span><span class="n">load_pandas_df</span><span class="p">(</span>
+        <span class="n">size</span><span class="o">=</span><span class="n">MOVIELENS_DATA_SIZE</span><span class="p">,</span>
+        <span class="n">header</span><span class="o">=</span><span class="p">[</span><span class="n">USER_COL</span><span class="p">,</span> <span class="n">ITEM_COL</span><span class="p">,</span> <span class="n">RATING_COL</span><span class="p">],</span>
+        <span class="n">genres_col</span><span class="o">=</span><span class="n">ITEM_FEAT_COL</span>
+    <span class="p">)</span>
+    <span class="n">display</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">head</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>100%|██████████| 4.81k/4.81k [00:00&lt;00:00, 20.0kKB/s]
+</pre></div>
+</div>
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>userID</th>
+      <th>itemID</th>
+      <th>rating</th>
+      <th>genres</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>196</td>
+      <td>242</td>
+      <td>3.0</td>
+      <td>Comedy</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>63</td>
+      <td>242</td>
+      <td>3.0</td>
+      <td>Comedy</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>226</td>
+      <td>242</td>
+      <td>5.0</td>
+      <td>Comedy</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>154</td>
+      <td>242</td>
+      <td>3.0</td>
+      <td>Comedy</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>306</td>
+      <td>242</td>
+      <td>5.0</td>
+      <td>Comedy</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+</div>
+<div class="section" id="encode-item-features-genres">
+<h3>1.2 Encode Item Features (Genres)<a class="headerlink" href="#encode-item-features-genres" title="Permalink to this headline">¶</a></h3>
+<p>To use genres from our model, we multi-hot-encode them with scikit-learn’s <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.MultiLabelBinarizer.html">MultiLabelBinarizer</a>.</p>
+<p>For example, <em>Movie id=2355</em> has three genres, <em>Animation|Children’s|Comedy</em>, which are being converted into an integer array of the indicator value for each genre like <code class="docutils literal notranslate"><span class="pre">[0,</span> <span class="pre">0,</span> <span class="pre">1,</span> <span class="pre">1,</span> <span class="pre">1,</span> <span class="pre">0,</span> <span class="pre">0,</span> <span class="pre">0,</span> <span class="pre">...]</span></code>. In the later step, we convert this into a float array and feed into the model.</p>
+<blockquote>
+<div><p>For faster feature encoding, you may load ratings and items separately (by using <code class="docutils literal notranslate"><span class="pre">movielens.load_item_df</span></code>), encode the item-features, then combine the rating and item dataframes by using join-operation.</p>
+</div></blockquote>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="ow">not</span> <span class="n">use_preset</span> <span class="ow">and</span> <span class="n">ITEM_FEAT_COL</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="c1"># Encode &#39;genres&#39; into int array (multi-hot representation) to use as item features</span>
+    <span class="n">genres_encoder</span> <span class="o">=</span> <span class="n">sklearn</span><span class="o">.</span><span class="n">preprocessing</span><span class="o">.</span><span class="n">MultiLabelBinarizer</span><span class="p">()</span>
+    <span class="n">data</span><span class="p">[</span><span class="n">ITEM_FEAT_COL</span><span class="p">]</span> <span class="o">=</span> <span class="n">genres_encoder</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span>
+        <span class="n">data</span><span class="p">[</span><span class="n">ITEM_FEAT_COL</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">s</span><span class="p">:</span> <span class="n">s</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;|&quot;</span><span class="p">))</span>
+    <span class="p">)</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Genres:&quot;</span><span class="p">,</span> <span class="n">genres_encoder</span><span class="o">.</span><span class="n">classes_</span><span class="p">)</span>
+    <span class="n">display</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">head</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Genres: [&#39;Action&#39; &#39;Adventure&#39; &#39;Animation&#39; &quot;Children&#39;s&quot; &#39;Comedy&#39; &#39;Crime&#39;
+ &#39;Documentary&#39; &#39;Drama&#39; &#39;Fantasy&#39; &#39;Film-Noir&#39; &#39;Horror&#39; &#39;Musical&#39; &#39;Mystery&#39;
+ &#39;Romance&#39; &#39;Sci-Fi&#39; &#39;Thriller&#39; &#39;War&#39; &#39;Western&#39; &#39;unknown&#39;]
+</pre></div>
+</div>
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>userID</th>
+      <th>itemID</th>
+      <th>rating</th>
+      <th>genres</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>196</td>
+      <td>242</td>
+      <td>3.0</td>
+      <td>[0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, ...</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>63</td>
+      <td>242</td>
+      <td>3.0</td>
+      <td>[0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, ...</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>226</td>
+      <td>242</td>
+      <td>5.0</td>
+      <td>[0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, ...</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>154</td>
+      <td>242</td>
+      <td>3.0</td>
+      <td>[0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, ...</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>306</td>
+      <td>242</td>
+      <td>5.0</td>
+      <td>[0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, ...</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+</div>
+<div class="section" id="train-and-test-split">
+<h3>1.3 Train and Test Split<a class="headerlink" href="#train-and-test-split" title="Permalink to this headline">¶</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="ow">not</span> <span class="n">use_preset</span><span class="p">:</span>
+    <span class="n">train</span><span class="p">,</span> <span class="n">test</span> <span class="o">=</span> <span class="n">python_random_split</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">ratio</span><span class="o">=</span><span class="mf">0.75</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="n">RANDOM_SEED</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">train</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_pickle</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="n">TRAIN_PICKLE_PATH</span> <span class="k">if</span> <span class="n">DATA_DIR</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">DATA_DIR</span><span class="p">,</span> <span class="n">TRAIN_PICKLE_PATH</span><span class="p">))</span>
+    <span class="n">test</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_pickle</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="n">TEST_PICKLE_PATH</span> <span class="k">if</span> <span class="n">DATA_DIR</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">DATA_DIR</span><span class="p">,</span> <span class="n">TEST_PICKLE_PATH</span><span class="p">))</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">train</span><span class="p">,</span> <span class="n">test</span><span class="p">])</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{}</span><span class="s2"> train samples and </span><span class="si">{}</span><span class="s2"> test samples&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">train</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">test</span><span class="p">)))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>75000 train samples and 25000 test samples
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Unique items in the dataset</span>
+<span class="k">if</span> <span class="n">ITEM_FEAT_COL</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="n">items</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">drop_duplicates</span><span class="p">(</span><span class="n">ITEM_COL</span><span class="p">)[[</span><span class="n">ITEM_COL</span><span class="p">]]</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">item_feat_shape</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">items</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">drop_duplicates</span><span class="p">(</span><span class="n">ITEM_COL</span><span class="p">)[[</span><span class="n">ITEM_COL</span><span class="p">,</span> <span class="n">ITEM_FEAT_COL</span><span class="p">]]</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">item_feat_shape</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">items</span><span class="p">[</span><span class="n">ITEM_FEAT_COL</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
+<span class="c1"># Unique users in the dataset</span>
+<span class="n">users</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">drop_duplicates</span><span class="p">(</span><span class="n">USER_COL</span><span class="p">)[[</span><span class="n">USER_COL</span><span class="p">]]</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Total </span><span class="si">{}</span><span class="s2"> items and </span><span class="si">{}</span><span class="s2"> users in the dataset&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">items</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">users</span><span class="p">)))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Total 1682 items and 943 users in the dataset
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="build-model">
+<h2>2. Build Model<a class="headerlink" href="#build-model" title="Permalink to this headline">¶</a></h2>
+<p>Wide-and-deep model consists of a linear model and DNN. We use the following hyperparameters and feature sets for the model:</p>
+<table class="colwidths-auto table">
+<thead>
+<tr class="row-odd"><th class="head"><p><br></p></th>
+<th class="head"><p><div align="center">Wide (linear) model</div></p></th>
+<th class="head"><p><div align="center">Deep neural networks</div></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Feature set</p></td>
+<td><p><ul><li>User-item co-occurrence features<br>to capture how their co-occurrence<br>correlates with the target rating</li></ul></p></td>
+<td><p><ul><li>Deep, lower-dimensional embedding vectors<br>for every user and item</li><li>Item feature vector</li></ul></p></td>
+</tr>
+<tr class="row-odd"><td><p>Hyperparameters</p></td>
+<td><p><ul><li>FTRL optimizer</li><li>Learning rate = 0.0029</li><li>L1 regularization = 0.0</li></ul></p></td>
+<td><p><ul><li>Adagrad optimizer</li><li>Learning rate = 0.1</li><li>Hidden units = [128, 256, 32]</li><li>Dropout rate = 0.4</li><li>Use batch normalization (Batch size = 64)</li><li>User embedding vector size = 4</li><li>Item embedding vector size = 4</li></ul></p></td>
+</tr>
+</tbody>
+</table>
+<br>
+<ul class="simple">
+<li><p><a class="reference external" href="https://www.eecs.tufts.edu/%7Edsculley/papers/ad-click-prediction.pdf">FTRL optimizer</a></p></li>
+<li><p><a class="reference external" href="http://www.jmlr.org/papers/volume12/duchi11a/duchi11a.pdf">Adagrad optimizer</a></p></li>
+</ul>
+<p>Note, the hyperparameters are optimized for the training set. We used <strong>Azure Machine Learning service</strong> (<a class="reference external" href="https://azure.microsoft.com/en-us/services/machine-learning-service/">AzureML</a>) to find the best hyperparameters, where we further split the training set into two subsets for training and validation respectively so that the test set is being separated from the tuning and training phases. For more details, see <a class="reference internal" href="../04_model_select_and_optimize/azureml_hyperdrive_wide_and_deep.html"><span class="doc std std-doc">azureml_hyperdrive_wide_and_deep.ipynb</span></a>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create model checkpoint every n steps. We store the model 5 times.</span>
+<span class="n">save_checkpoints_steps</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">STEPS</span> <span class="o">//</span> <span class="mi">5</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Define wide (linear) and deep (dnn) features</span>
+<span class="n">wide_columns</span><span class="p">,</span> <span class="n">deep_columns</span> <span class="o">=</span> <span class="n">wide_deep</span><span class="o">.</span><span class="n">build_feature_columns</span><span class="p">(</span>
+    <span class="n">users</span><span class="o">=</span><span class="n">users</span><span class="p">[</span><span class="n">USER_COL</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">,</span>
+    <span class="n">items</span><span class="o">=</span><span class="n">items</span><span class="p">[</span><span class="n">ITEM_COL</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">,</span>
+    <span class="n">user_col</span><span class="o">=</span><span class="n">USER_COL</span><span class="p">,</span>
+    <span class="n">item_col</span><span class="o">=</span><span class="n">ITEM_COL</span><span class="p">,</span>
+    <span class="n">item_feat_col</span><span class="o">=</span><span class="n">ITEM_FEAT_COL</span><span class="p">,</span>
+    <span class="n">crossed_feat_dim</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span>
+    <span class="n">user_dim</span><span class="o">=</span><span class="n">DNN_USER_DIM</span><span class="p">,</span>
+    <span class="n">item_dim</span><span class="o">=</span><span class="n">DNN_ITEM_DIM</span><span class="p">,</span>
+    <span class="n">item_feat_shape</span><span class="o">=</span><span class="n">item_feat_shape</span><span class="p">,</span>
+    <span class="n">model_type</span><span class="o">=</span><span class="n">MODEL_TYPE</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Wide feature specs:&quot;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">wide_columns</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">c</span><span class="p">)[:</span><span class="mi">100</span><span class="p">],</span> <span class="s2">&quot;...&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Deep feature specs:&quot;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">deep_columns</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">c</span><span class="p">)[:</span><span class="mi">100</span><span class="p">],</span> <span class="s2">&quot;...&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Wide feature specs:
+	 _VocabularyListCategoricalColumn(key=&#39;userID&#39;, vocabulary_list=(196, 63, 226, 154, 306, 296, 34, 271 ...
+	 _VocabularyListCategoricalColumn(key=&#39;itemID&#39;, vocabulary_list=(242, 302, 377, 51, 346, 474, 265, 46 ...
+	 _CrossedColumn(keys=(_VocabularyListCategoricalColumn(key=&#39;userID&#39;, vocabulary_list=(196, 63, 226, 1 ...
+Deep feature specs:
+	 _EmbeddingColumn(categorical_column=_VocabularyListCategoricalColumn(key=&#39;userID&#39;, vocabulary_list=( ...
+	 _EmbeddingColumn(categorical_column=_VocabularyListCategoricalColumn(key=&#39;itemID&#39;, vocabulary_list=( ...
+	 _NumericColumn(key=&#39;genres&#39;, shape=(19,), default_value=None, dtype=tf.float32, normalizer_fn=None) ...
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Build a model based on the parameters</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">wide_deep</span><span class="o">.</span><span class="n">build_model</span><span class="p">(</span>
+    <span class="n">model_dir</span><span class="o">=</span><span class="n">model_dir</span><span class="p">,</span>
+    <span class="n">wide_columns</span><span class="o">=</span><span class="n">wide_columns</span><span class="p">,</span>
+    <span class="n">deep_columns</span><span class="o">=</span><span class="n">deep_columns</span><span class="p">,</span>
+    <span class="n">linear_optimizer</span><span class="o">=</span><span class="n">tf_utils</span><span class="o">.</span><span class="n">build_optimizer</span><span class="p">(</span><span class="n">LINEAR_OPTIMIZER</span><span class="p">,</span> <span class="n">LINEAR_OPTIMIZER_LR</span><span class="p">,</span> <span class="o">**</span><span class="p">{</span>
+        <span class="s1">&#39;l1_regularization_strength&#39;</span><span class="p">:</span> <span class="n">LINEAR_L1_REG</span><span class="p">,</span>
+        <span class="s1">&#39;l2_regularization_strength&#39;</span><span class="p">:</span> <span class="n">LINEAR_L2_REG</span><span class="p">,</span>
+        <span class="s1">&#39;momentum&#39;</span><span class="p">:</span> <span class="n">LINEAR_MOMENTUM</span><span class="p">,</span>
+    <span class="p">}),</span>
+    <span class="n">dnn_optimizer</span><span class="o">=</span><span class="n">tf_utils</span><span class="o">.</span><span class="n">build_optimizer</span><span class="p">(</span><span class="n">DNN_OPTIMIZER</span><span class="p">,</span> <span class="n">DNN_OPTIMIZER_LR</span><span class="p">,</span> <span class="o">**</span><span class="p">{</span>
+        <span class="s1">&#39;l1_regularization_strength&#39;</span><span class="p">:</span> <span class="n">DNN_L1_REG</span><span class="p">,</span>
+        <span class="s1">&#39;l2_regularization_strength&#39;</span><span class="p">:</span> <span class="n">DNN_L2_REG</span><span class="p">,</span>
+        <span class="s1">&#39;momentum&#39;</span><span class="p">:</span> <span class="n">DNN_MOMENTUM</span><span class="p">,</span>  
+    <span class="p">}),</span>
+    <span class="n">dnn_hidden_units</span><span class="o">=</span><span class="n">DNN_HIDDEN_UNITS</span><span class="p">,</span>
+    <span class="n">dnn_dropout</span><span class="o">=</span><span class="n">DNN_DROPOUT</span><span class="p">,</span>
+    <span class="n">dnn_batch_norm</span><span class="o">=</span><span class="p">(</span><span class="n">DNN_BATCH_NORM</span><span class="o">==</span><span class="mi">1</span><span class="p">),</span>
+    <span class="n">log_every_n_iter</span><span class="o">=</span><span class="nb">max</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">STEPS</span><span class="o">//</span><span class="mi">10</span><span class="p">),</span>  <span class="c1"># log 10 times</span>
+    <span class="n">save_checkpoints_steps</span><span class="o">=</span><span class="n">save_checkpoints_steps</span><span class="p">,</span>
+    <span class="n">seed</span><span class="o">=</span><span class="n">RANDOM_SEED</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:tensorflow:Using config: {&#39;_model_dir&#39;: &#39;/tmp/tmp_dvlimh6&#39;, &#39;_tf_random_seed&#39;: 42, &#39;_save_summary_steps&#39;: 100, &#39;_save_checkpoints_steps&#39;: 10000, &#39;_save_checkpoints_secs&#39;: None, &#39;_session_config&#39;: allow_soft_placement: true
+graph_options {
+  rewrite_options {
+    meta_optimizer_iterations: ONE
+  }
+}
+, &#39;_keep_checkpoint_max&#39;: 5, &#39;_keep_checkpoint_every_n_hours&#39;: 10000, &#39;_log_step_count_steps&#39;: 5000, &#39;_train_distribute&#39;: None, &#39;_device_fn&#39;: None, &#39;_protocol&#39;: None, &#39;_eval_distribute&#39;: None, &#39;_experimental_distribute&#39;: None, &#39;_service&#39;: None, &#39;_cluster_spec&#39;: &lt;tensorflow.python.training.server_lib.ClusterSpec object at 0x7f0e417af128&gt;, &#39;_task_type&#39;: &#39;worker&#39;, &#39;_task_id&#39;: 0, &#39;_global_id_in_cluster&#39;: 0, &#39;_master&#39;: &#39;&#39;, &#39;_evaluation_master&#39;: &#39;&#39;, &#39;_is_chief&#39;: True, &#39;_num_ps_replicas&#39;: 0, &#39;_num_worker_replicas&#39;: 1}
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="train-and-evaluate-model">
+<h2>3. Train and Evaluate Model<a class="headerlink" href="#train-and-evaluate-model" title="Permalink to this headline">¶</a></h2>
+<p>Now we are all set to train the model. Here, we show how to utilize session hooks to track model performance while training. Our custom hook <code class="docutils literal notranslate"><span class="pre">tf_utils.evaluation_log_hook</span></code> estimates the model performance on the given data based on the specified evaluation functions. Note we pass test set to evaluate the model on rating metrics while we use <span id="ranking-pool">ranking-pool (all the user-item pairs)</span> for ranking metrics.</p>
+<blockquote>
+<div><p>Note: The TensorFlow Estimator’s default loss calculates Mean Squared Error. Square root of the loss is the same as <a class="reference external" href="https://en.wikipedia.org/wiki/Root-mean-square_deviation">RMSE</a>.</p>
+</div></blockquote>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cols</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;col_user&#39;</span><span class="p">:</span> <span class="n">USER_COL</span><span class="p">,</span>
+    <span class="s1">&#39;col_item&#39;</span><span class="p">:</span> <span class="n">ITEM_COL</span><span class="p">,</span>
+    <span class="s1">&#39;col_rating&#39;</span><span class="p">:</span> <span class="n">RATING_COL</span><span class="p">,</span>
+    <span class="s1">&#39;col_prediction&#39;</span><span class="p">:</span> <span class="n">PREDICT_COL</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="c1"># Prepare ranking evaluation set, i.e. get the cross join of all user-item pairs</span>
+<span class="n">ranking_pool</span> <span class="o">=</span> <span class="n">user_item_pairs</span><span class="p">(</span>
+    <span class="n">user_df</span><span class="o">=</span><span class="n">users</span><span class="p">,</span>
+    <span class="n">item_df</span><span class="o">=</span><span class="n">items</span><span class="p">,</span>
+    <span class="n">user_col</span><span class="o">=</span><span class="n">USER_COL</span><span class="p">,</span>
+    <span class="n">item_col</span><span class="o">=</span><span class="n">ITEM_COL</span><span class="p">,</span>
+    <span class="n">user_item_filter_df</span><span class="o">=</span><span class="n">train</span><span class="p">,</span>  <span class="c1"># Remove seen items</span>
+    <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">seed</span><span class="o">=</span><span class="n">RANDOM_SEED</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Define training hooks to track performance while training</span>
+<span class="n">hooks</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">if</span> <span class="n">EVALUATE_WHILE_TRAINING</span><span class="p">:</span>
+    <span class="n">evaluation_logger</span> <span class="o">=</span> <span class="n">tf_utils</span><span class="o">.</span><span class="n">MetricsLogger</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">metrics</span> <span class="ow">in</span> <span class="p">(</span><span class="n">RANKING_METRICS</span><span class="p">,</span> <span class="n">RATING_METRICS</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">metrics</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">hooks</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                <span class="n">tf_utils</span><span class="o">.</span><span class="n">evaluation_log_hook</span><span class="p">(</span>
+                    <span class="n">model</span><span class="p">,</span>
+                    <span class="n">logger</span><span class="o">=</span><span class="n">evaluation_logger</span><span class="p">,</span>
+                    <span class="n">true_df</span><span class="o">=</span><span class="n">test</span><span class="p">,</span>
+                    <span class="n">y_col</span><span class="o">=</span><span class="n">RATING_COL</span><span class="p">,</span>
+                    <span class="n">eval_df</span><span class="o">=</span><span class="n">ranking_pool</span> <span class="k">if</span> <span class="n">metrics</span><span class="o">==</span><span class="n">RANKING_METRICS</span> <span class="k">else</span> <span class="n">test</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">RATING_COL</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span>
+                    <span class="n">every_n_iter</span><span class="o">=</span><span class="n">save_checkpoints_steps</span><span class="p">,</span>
+                    <span class="n">model_dir</span><span class="o">=</span><span class="n">model_dir</span><span class="p">,</span>
+                    <span class="n">eval_fns</span><span class="o">=</span><span class="p">[</span><span class="n">evaluator</span><span class="o">.</span><span class="n">metrics</span><span class="p">[</span><span class="n">m</span><span class="p">]</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">metrics</span><span class="p">],</span>
+                    <span class="o">**</span><span class="p">({</span><span class="o">**</span><span class="n">cols</span><span class="p">,</span> <span class="s1">&#39;k&#39;</span><span class="p">:</span> <span class="n">TOP_K</span><span class="p">}</span> <span class="k">if</span> <span class="n">metrics</span><span class="o">==</span><span class="n">RANKING_METRICS</span> <span class="k">else</span> <span class="n">cols</span><span class="p">)</span>
+                <span class="p">)</span>
+            <span class="p">)</span>
+
+<span class="c1"># Define training input (sample feeding) function</span>
+<span class="n">train_fn</span> <span class="o">=</span> <span class="n">tf_utils</span><span class="o">.</span><span class="n">pandas_input_fn</span><span class="p">(</span>
+    <span class="n">df</span><span class="o">=</span><span class="n">train</span><span class="p">,</span>
+    <span class="n">y_col</span><span class="o">=</span><span class="n">RATING_COL</span><span class="p">,</span>
+    <span class="n">batch_size</span><span class="o">=</span><span class="n">BATCH_SIZE</span><span class="p">,</span>
+    <span class="n">num_epochs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>  <span class="c1"># We use steps=TRAIN_STEPS instead.</span>
+    <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">seed</span><span class="o">=</span><span class="n">RANDOM_SEED</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Let’s train the model.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span>
+    <span class="s2">&quot;Training steps = </span><span class="si">{}</span><span class="s2">, Batch size = </span><span class="si">{}</span><span class="s2"> (num epochs = </span><span class="si">{}</span><span class="s2">)&quot;</span>
+    <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">STEPS</span><span class="p">,</span> <span class="n">BATCH_SIZE</span><span class="p">,</span> <span class="p">(</span><span class="n">STEPS</span><span class="o">*</span><span class="n">BATCH_SIZE</span><span class="p">)</span><span class="o">//</span><span class="nb">len</span><span class="p">(</span><span class="n">train</span><span class="p">))</span>
+<span class="p">)</span>
+<span class="n">tf</span><span class="o">.</span><span class="n">logging</span><span class="o">.</span><span class="n">set_verbosity</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">)</span>
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">train</span><span class="p">(</span>
+        <span class="n">input_fn</span><span class="o">=</span><span class="n">train_fn</span><span class="p">,</span>
+        <span class="n">hooks</span><span class="o">=</span><span class="n">hooks</span><span class="p">,</span>
+        <span class="n">steps</span><span class="o">=</span><span class="n">STEPS</span>
+    <span class="p">)</span>
+<span class="k">except</span> <span class="n">tf</span><span class="o">.</span><span class="n">train</span><span class="o">.</span><span class="n">NanLossDuringTrainingError</span><span class="p">:</span>
+    <span class="kn">import</span> <span class="nn">warnings</span>
+    <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+        <span class="s2">&quot;Training stopped with NanLossDuringTrainingError. &quot;</span>
+        <span class="s2">&quot;Try other optimizers, smaller batch size and/or smaller learning rate.&quot;</span>
+    <span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Training steps = 50000, Batch size = 32 (num epochs = 21)
+INFO:tensorflow:Calling model_fn.
+INFO:tensorflow:Done calling model_fn.
+INFO:tensorflow:Create CheckpointSaverHook.
+INFO:tensorflow:Graph was finalized.
+INFO:tensorflow:Running local_init_op.
+INFO:tensorflow:Done running local_init_op.
+INFO:tensorflow:Saving checkpoints for 0 into /tmp/tmp_dvlimh6/model.ckpt.
+INFO:tensorflow:loss = 459.19025, step = 0
+INFO:tensorflow:global_step/sec: 118.212
+INFO:tensorflow:loss = 26.569515, step = 5000 (42.298 sec)
+INFO:tensorflow:Saving checkpoints for 10000 into /tmp/tmp_dvlimh6/model.ckpt.
+INFO:tensorflow:global_step/sec: 118.699
+INFO:tensorflow:loss = 25.64497, step = 10000 (87.955 sec)
+INFO:tensorflow:global_step/sec: 57.0704
+INFO:tensorflow:loss = 21.546698, step = 15000 (41.779 sec)
+INFO:tensorflow:Saving checkpoints for 20000 into /tmp/tmp_dvlimh6/model.ckpt.
+INFO:tensorflow:global_step/sec: 118.598
+INFO:tensorflow:loss = 39.53526, step = 20000 (88.061 sec)
+INFO:tensorflow:global_step/sec: 56.9188
+INFO:tensorflow:loss = 27.464117, step = 25000 (41.943 sec)
+INFO:tensorflow:Saving checkpoints for 30000 into /tmp/tmp_dvlimh6/model.ckpt.
+INFO:tensorflow:global_step/sec: 118.554
+INFO:tensorflow:loss = 28.321032, step = 30000 (88.207 sec)
+INFO:tensorflow:global_step/sec: 56.865
+INFO:tensorflow:loss = 29.131533, step = 35000 (41.896 sec)
+INFO:tensorflow:Saving checkpoints for 40000 into /tmp/tmp_dvlimh6/model.ckpt.
+INFO:tensorflow:global_step/sec: 118.834
+INFO:tensorflow:loss = 24.887686, step = 40000 (88.473 sec)
+INFO:tensorflow:global_step/sec: 56.5719
+INFO:tensorflow:loss = 22.260078, step = 45000 (41.986 sec)
+INFO:tensorflow:Saving checkpoints for 50000 into /tmp/tmp_dvlimh6/model.ckpt.
+INFO:tensorflow:Loss for final step: 23.359797.
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="n">EVALUATE_WHILE_TRAINING</span><span class="p">:</span>
+    <span class="n">logs</span> <span class="o">=</span> <span class="n">evaluation_logger</span><span class="o">.</span><span class="n">get_log</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">logs</span><span class="o">.</span><span class="n">items</span><span class="p">(),</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="n">sb</span><span class="o">.</span><span class="n">glue</span><span class="p">(</span><span class="s2">&quot;eval_</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">m</span><span class="p">),</span> <span class="n">v</span><span class="p">)</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="p">[</span><span class="n">save_checkpoints_steps</span><span class="o">*</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">v</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span><span class="p">)]</span>
+        <span class="n">plot</span><span class="o">.</span><span class="n">line_graph</span><span class="p">(</span>
+            <span class="n">values</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">x</span><span class="p">)),</span>
+            <span class="n">labels</span><span class="o">=</span><span class="n">m</span><span class="p">,</span>
+            <span class="n">x_name</span><span class="o">=</span><span class="s2">&quot;steps&quot;</span><span class="p">,</span>
+            <span class="n">y_name</span><span class="o">=</span><span class="n">m</span><span class="p">,</span>
+            <span class="n">subplot</span><span class="o">=</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">logs</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span><span class="p">),</span> <span class="mi">2</span><span class="p">,</span> <span class="n">i</span><span class="p">),</span>
+        <span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/data/anaconda/envs/reco_gpu/lib/python3.6/site-packages/ipykernel_launcher.py:4: DeprecationWarning: Function record is deprecated and will be removed in verison 1.0.0 (current version 0.19.0). Please see `scrapbook.glue` (nteract-scrapbook) as a replacement for this functionality.
+  after removing the cwd from sys.path.
+</pre></div>
+</div>
+<img alt="../../_images/wide_deep_movielens_22_5.png" src="../../_images/wide_deep_movielens_22_5.png" />
+</div>
+</div>
+<div class="section" id="tensorboard">
+<h3>3.2 TensorBoard<a class="headerlink" href="#tensorboard" title="Permalink to this headline">¶</a></h3>
+<p>Once the train is done, you can browse the details of the training results as well as the metrics we logged from <a class="reference external" href="https://www.tensorflow.org/guide/summaries_and_tensorboard">TensorBoard</a>.</p>
+<table class="colwidths-auto table">
+<thead>
+<tr class="row-odd"><th class="text-align:center head"><p><span class="xref myst"></span></p></th>
+<th class="text-align:center head"><p><span class="xref myst"></span></p></th>
+<th class="text-align:center head"><p><span class="xref myst"></span></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-align:center"><p><img src="https://recodatasets.z20.web.core.windows.net/images/tensorboard_0.png?sanitize=true"></p></td>
+<td class="text-align:center"><p><img src="https://recodatasets.z20.web.core.windows.net/images/tensorboard_1.png?sanitize=true"></p></td>
+<td class="text-align:center"><p><img src="https://recodatasets.z20.web.core.windows.net/images/tensorboard_2.png?sanitize=true"></p></td>
+</tr>
+</tbody>
+</table>
+<p>To open the TensorBoard, open a terminal from the same directory of this notebook, run <code class="docutils literal notranslate"><span class="pre">tensorboard</span> <span class="pre">--logdir=model_checkpoints</span></code>, and open <a class="reference external" href="http://localhost:6006">http://localhost:6006</a> from a browser.</p>
+</div>
+</div>
+<div class="section" id="test-and-export-model">
+<h2>4. Test and Export Model<a class="headerlink" href="#test-and-export-model" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="item-rating-prediction">
+<h3>4.1 Item rating prediction<a class="headerlink" href="#item-rating-prediction" title="Permalink to this headline">¶</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">RATING_METRICS</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+    <span class="n">predictions</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">input_fn</span><span class="o">=</span><span class="n">tf_utils</span><span class="o">.</span><span class="n">pandas_input_fn</span><span class="p">(</span><span class="n">df</span><span class="o">=</span><span class="n">test</span><span class="p">)))</span>
+    <span class="n">prediction_df</span> <span class="o">=</span> <span class="n">test</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">RATING_COL</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">prediction_df</span><span class="p">[</span><span class="n">PREDICT_COL</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">p</span><span class="p">[</span><span class="s1">&#39;predictions&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">predictions</span><span class="p">]</span>
+    
+    <span class="n">rating_results</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">RATING_METRICS</span><span class="p">:</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">evaluator</span><span class="o">.</span><span class="n">metrics</span><span class="p">[</span><span class="n">m</span><span class="p">](</span><span class="n">test</span><span class="p">,</span> <span class="n">prediction_df</span><span class="p">,</span> <span class="o">**</span><span class="n">cols</span><span class="p">)</span>
+        <span class="n">sb</span><span class="o">.</span><span class="n">glue</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">result</span><span class="p">)</span>
+        <span class="n">rating_results</span><span class="p">[</span><span class="n">m</span><span class="p">]</span> <span class="o">=</span> <span class="n">result</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">rating_results</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:tensorflow:Calling model_fn.
+INFO:tensorflow:Done calling model_fn.
+INFO:tensorflow:Graph was finalized.
+INFO:tensorflow:Restoring parameters from /tmp/tmp_dvlimh6/model.ckpt-50000
+INFO:tensorflow:Running local_init_op.
+INFO:tensorflow:Done running local_init_op.
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/data/anaconda/envs/reco_gpu/lib/python3.6/site-packages/ipykernel_launcher.py:9: DeprecationWarning: Function record is deprecated and will be removed in verison 1.0.0 (current version 0.19.0). Please see `scrapbook.glue` (nteract-scrapbook) as a replacement for this functionality.
+  if __name__ == &#39;__main__&#39;:
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;rmse&#39;: 0.9525733983856536, &#39;mae&#39;: 0.7574306222200393}
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="recommend-k-items">
+<h3>4.2 Recommend k items<a class="headerlink" href="#recommend-k-items" title="Permalink to this headline">¶</a></h3>
+<p>For top-k recommendation evaluation, we use the ranking pool (all the user-item pairs) we prepared at the <a class="reference external" href="#ranking-pool">training step</a>. The difference is we remove users’ seen items from the pool in this step which is more natural to the movie recommendation scenario.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">RANKING_METRICS</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+    <span class="n">predictions</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">input_fn</span><span class="o">=</span><span class="n">tf_utils</span><span class="o">.</span><span class="n">pandas_input_fn</span><span class="p">(</span><span class="n">df</span><span class="o">=</span><span class="n">ranking_pool</span><span class="p">)))</span>
+    <span class="n">prediction_df</span> <span class="o">=</span> <span class="n">ranking_pool</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="n">prediction_df</span><span class="p">[</span><span class="n">PREDICT_COL</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">p</span><span class="p">[</span><span class="s1">&#39;predictions&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">predictions</span><span class="p">]</span>
+
+    <span class="n">ranking_results</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">RANKING_METRICS</span><span class="p">:</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">evaluator</span><span class="o">.</span><span class="n">metrics</span><span class="p">[</span><span class="n">m</span><span class="p">](</span><span class="n">test</span><span class="p">,</span> <span class="n">prediction_df</span><span class="p">,</span> <span class="o">**</span><span class="p">{</span><span class="o">**</span><span class="n">cols</span><span class="p">,</span> <span class="s1">&#39;k&#39;</span><span class="p">:</span> <span class="n">TOP_K</span><span class="p">})</span>
+        <span class="n">sb</span><span class="o">.</span><span class="n">glue</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">result</span><span class="p">)</span>
+        <span class="n">ranking_results</span><span class="p">[</span><span class="n">m</span><span class="p">]</span> <span class="o">=</span> <span class="n">result</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">ranking_results</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:tensorflow:Calling model_fn.
+INFO:tensorflow:Done calling model_fn.
+INFO:tensorflow:Graph was finalized.
+INFO:tensorflow:Restoring parameters from /tmp/tmp_dvlimh6/model.ckpt-50000
+INFO:tensorflow:Running local_init_op.
+INFO:tensorflow:Done running local_init_op.
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/data/anaconda/envs/reco_gpu/lib/python3.6/site-packages/ipykernel_launcher.py:9: DeprecationWarning: Function record is deprecated and will be removed in verison 1.0.0 (current version 0.19.0). Please see `scrapbook.glue` (nteract-scrapbook) as a replacement for this functionality.
+  if __name__ == &#39;__main__&#39;:
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;ndcg_at_k&#39;: 0.0854092078835321, &#39;precision_at_k&#39;: 0.08504772004241784}
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="export-model">
+<h3>4.3 Export Model<a class="headerlink" href="#export-model" title="Permalink to this headline">¶</a></h3>
+<p>Finally, we export the model so that we can load later for re-training, evaluation, and prediction.
+Examples of how to load, re-train, and evaluate the saved model can be found from <a class="reference internal" href="../04_model_select_and_optimize/azureml_hyperdrive_wide_and_deep.html"><span class="doc std std-doc">azureml_hyperdrive_wide_and_deep.ipynb</span></a> notebook.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">EXPORT_DIR_BASE</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">exported_path</span> <span class="o">=</span> <span class="n">tf_utils</span><span class="o">.</span><span class="n">export_model</span><span class="p">(</span>
+    <span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">,</span>
+    <span class="n">train_input_fn</span><span class="o">=</span><span class="n">train_fn</span><span class="p">,</span>
+    <span class="n">eval_input_fn</span><span class="o">=</span><span class="n">tf_utils</span><span class="o">.</span><span class="n">pandas_input_fn</span><span class="p">(</span>
+        <span class="n">df</span><span class="o">=</span><span class="n">test</span><span class="p">,</span> <span class="n">y_col</span><span class="o">=</span><span class="n">RATING_COL</span>
+    <span class="p">),</span>
+    <span class="n">tf_feat_cols</span><span class="o">=</span><span class="n">wide_columns</span><span class="o">+</span><span class="n">deep_columns</span><span class="p">,</span>
+    <span class="n">base_dir</span><span class="o">=</span><span class="n">EXPORT_DIR_BASE</span>
+<span class="p">)</span>
+<span class="n">sb</span><span class="o">.</span><span class="n">glue</span><span class="p">(</span><span class="s1">&#39;saved_model_dir&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">exported_path</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Model exported to&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">exported_path</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/data/anaconda/envs/reco_gpu/lib/python3.6/site-packages/ipykernel_launcher.py:9: DeprecationWarning: Function record is deprecated and will be removed in verison 1.0.0 (current version 0.19.0). Please see `scrapbook.glue` (nteract-scrapbook) as a replacement for this functionality.
+  if __name__ == &#39;__main__&#39;:
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Model exported to ./outputs/model/1561848625
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Close the event file so that the model folder can be cleaned up.</span>
+<span class="n">summary_writer</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">summary</span><span class="o">.</span><span class="n">FileWriterCache</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">model_dir</span><span class="p">)</span>
+<span class="n">summary_writer</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+<span class="c1"># Cleanup temporary directory if used</span>
+<span class="k">if</span> <span class="n">TMP_DIR</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="n">TMP_DIR</span><span class="o">.</span><span class="n">cleanup</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "reco_gpu"
+        },
+        kernelOptions: {
+            kernelName: "reco_gpu",
+            path: "./examples/00_quick_start"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'reco_gpu'</script>
+
+              </div>
+              
+        
+            
+
+
+
+<div class='prev-next-bottom'>
+    
+
+</div>
+        
+        </div>
+    </div>
+    <footer class="footer">
+    <div class="container">
+      <p>
+        
+          By The Jupyter Book community<br/>
+        
+            &copy; Copyright 2021.<br/>
+      </p>
+    </div>
+  </footer>
+</main>
+
+
+      </div>
+    </div>
+  
+  <script src="../../_static/js/index.1c5a1a01449ed65a7b51.js"></script>
+
+  
+  </body>
+</html>

@@ -1,0 +1,875 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>recommenders.models.deeprec.deeprec_utils &#8212; &lt;h1 style=&#34;font-size:2em;text-align:center;color:#FF5733&#34;&gt;Recommenders&lt;/h1&gt;</title>
+    
+  <link href="../../../../_static/css/theme.css" rel="stylesheet" />
+  <link href="../../../../_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
+
+    
+  <link rel="stylesheet"
+    href="../../../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+
+    
+    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/sphinx-book-theme.css?digest=c3fdc42140077d1ad13ad2f1588a4309" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/tabs.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    
+  <link rel="preload" as="script" href="../../../../_static/js/index.1c5a1a01449ed65a7b51.js">
+
+    <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
+    <script src="../../../../_static/jquery.js"></script>
+    <script src="../../../../_static/underscore.js"></script>
+    <script src="../../../../_static/doctools.js"></script>
+    <script src="../../../../_static/togglebutton.js"></script>
+    <script src="../../../../_static/clipboard.min.js"></script>
+    <script src="../../../../_static/copybutton.js"></script>
+    <script src="../../../../_static/tabs.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../../../../_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
+    <link rel="canonical" href="https://microsoft.github.io/genalog/_modules/recommenders/models/deeprec/deeprec_utils.html" />
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en" />
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="../../../../index.html">
+      
+      
+      
+      <h1 class="site-logo" id="site-title"><h1 style="font-size:2em;text-align:center;color:#FF5733">Recommenders</h1></h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="../../../../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        
+    </div>
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="topbar container-xl fixed-top">
+    <div class="topbar-contents row">
+        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
+        <div class="col pl-md-4 topbar-main">
+            
+            <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+                data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+                aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
+                title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+                <i class="fas fa-bars"></i>
+                <i class="fas fa-arrow-left"></i>
+                <i class="fas fa-arrow-up"></i>
+            </button>
+            
+            
+            <!-- Source interaction buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
+    <div class="dropdown-buttons sourcebuttons">
+        <a class="repository-button"
+            href="https://github.com/microsoft/genalog"><button type="button" class="btn btn-secondary topbarbtn"
+                data-toggle="tooltip" data-placement="left" title="Source repository"><i
+                    class="fab fa-github"></i>repository</button></a>
+        <a class="issues-button"
+            href="https://github.com/microsoft/genalog/issues/new?title=Issue%20on%20page%20%2F_modules/recommenders/models/deeprec/deeprec_utils.html&body=Your%20issue%20content%20here."><button
+                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
+                title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
+        
+    </div>
+</div>
+
+            <!-- Full screen (wrap in <a> to have style consistency -->
+
+<a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+        data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+        title="Fullscreen mode"><i
+            class="fas fa-expand"></i></button></a>
+
+            <!-- Launch buttons -->
+
+        </div>
+
+        <!-- Table of contents -->
+        <div class="d-none d-md-block col-md-2 bd-toc show">
+            
+        </div>
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+        
+              <div>
+                
+  <h1>Source code for recommenders.models.deeprec.deeprec_utils</h1><div class="highlight"><pre>
+<span></span><span class="c1"># Copyright (c) Microsoft Corporation. All rights reserved.</span>
+<span class="c1"># Licensed under the MIT License.</span>
+
+
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">roc_auc_score</span><span class="p">,</span>
+    <span class="n">log_loss</span><span class="p">,</span>
+    <span class="n">mean_squared_error</span><span class="p">,</span>
+    <span class="n">accuracy_score</span><span class="p">,</span>
+    <span class="n">f1_score</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">yaml</span>
+<span class="kn">import</span> <span class="nn">zipfile</span>
+<span class="kn">import</span> <span class="nn">pickle</span> <span class="k">as</span> <span class="nn">pkl</span>
+<span class="kn">import</span> <span class="nn">tensorflow</span> <span class="k">as</span> <span class="nn">tf</span>
+
+<span class="kn">from</span> <span class="nn">recommenders.datasets.download_utils</span> <span class="kn">import</span> <span class="n">maybe_download</span>
+
+
+<div class="viewcode-block" id="flat_config"><a class="viewcode-back" href="../../../../source/models.html#recommenders.models.deeprec.deeprec_utils.flat_config">[docs]</a><span class="k">def</span> <span class="nf">flat_config</span><span class="p">(</span><span class="n">config</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Flat config loaded from a yaml file to a flat dict.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        config (dict): Configuration loaded from a yaml file.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        dict: Configuration dictionary.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">f_config</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">category</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">cate</span> <span class="ow">in</span> <span class="n">category</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">config</span><span class="p">[</span><span class="n">cate</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">f_config</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">val</span>
+    <span class="k">return</span> <span class="n">f_config</span></div>
+
+
+<div class="viewcode-block" id="check_type"><a class="viewcode-back" href="../../../../source/models.html#recommenders.models.deeprec.deeprec_utils.check_type">[docs]</a><span class="k">def</span> <span class="nf">check_type</span><span class="p">(</span><span class="n">config</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Check that the config parameters are the correct type</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        config (dict): Configuration dictionary.</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">        TypeError: If the parameters are not the correct type.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">int_parameters</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="s2">&quot;word_size&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;entity_size&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;doc_size&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;history_size&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;FEATURE_COUNT&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;FIELD_COUNT&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;dim&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;epochs&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;batch_size&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;show_step&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;save_epoch&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;PAIR_NUM&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;DNN_FIELD_NUM&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;attention_layer_sizes&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;n_user&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;n_item&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;n_user_attr&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;n_item_attr&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;item_embedding_dim&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;cate_embedding_dim&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;user_embedding_dim&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;max_seq_length&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;hidden_size&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;T&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;L&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;n_v&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;n_h&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;kernel_size&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;min_seq_length&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;attention_size&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;epochs&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;batch_size&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;show_step&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;save_epoch&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;train_num_ngs&quot;</span><span class="p">,</span>
+    <span class="p">]</span>
+    <span class="k">for</span> <span class="n">param</span> <span class="ow">in</span> <span class="n">int_parameters</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">param</span> <span class="ow">in</span> <span class="n">config</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">config</span><span class="p">[</span><span class="n">param</span><span class="p">],</span> <span class="nb">int</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;Parameters </span><span class="si">{0}</span><span class="s2"> must be int&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">param</span><span class="p">))</span>
+
+    <span class="n">float_parameters</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="s2">&quot;init_value&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;learning_rate&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;embed_l2&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;embed_l1&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;layer_l2&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;layer_l1&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;mu&quot;</span><span class="p">,</span>
+    <span class="p">]</span>
+    <span class="k">for</span> <span class="n">param</span> <span class="ow">in</span> <span class="n">float_parameters</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">param</span> <span class="ow">in</span> <span class="n">config</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">config</span><span class="p">[</span><span class="n">param</span><span class="p">],</span> <span class="nb">float</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;Parameters </span><span class="si">{0}</span><span class="s2"> must be float&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">param</span><span class="p">))</span>
+
+    <span class="n">str_parameters</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="s2">&quot;train_file&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;eval_file&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;test_file&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;infer_file&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;method&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;load_model_name&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;infer_model_name&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;loss&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;optimizer&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;init_method&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;attention_activation&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;user_vocab&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;item_vocab&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;cate_vocab&quot;</span><span class="p">,</span>
+    <span class="p">]</span>
+    <span class="k">for</span> <span class="n">param</span> <span class="ow">in</span> <span class="n">str_parameters</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">param</span> <span class="ow">in</span> <span class="n">config</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">config</span><span class="p">[</span><span class="n">param</span><span class="p">],</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;Parameters </span><span class="si">{0}</span><span class="s2"> must be str&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">param</span><span class="p">))</span>
+
+    <span class="n">list_parameters</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="s2">&quot;layer_sizes&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;activation&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;dropout&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;att_fcn_layer_sizes&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;dilations&quot;</span><span class="p">,</span>
+    <span class="p">]</span>
+    <span class="k">for</span> <span class="n">param</span> <span class="ow">in</span> <span class="n">list_parameters</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">param</span> <span class="ow">in</span> <span class="n">config</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">config</span><span class="p">[</span><span class="n">param</span><span class="p">],</span> <span class="nb">list</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;Parameters </span><span class="si">{0}</span><span class="s2"> must be list&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">param</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="check_nn_config"><a class="viewcode-back" href="../../../../source/models.html#recommenders.models.deeprec.deeprec_utils.check_nn_config">[docs]</a><span class="k">def</span> <span class="nf">check_nn_config</span><span class="p">(</span><span class="n">f_config</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Check neural networks configuration.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        f_config (dict): Neural network configuration.</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">        ValueError: If the parameters are not correct.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">f_config</span><span class="p">[</span><span class="s2">&quot;model_type&quot;</span><span class="p">]</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;fm&quot;</span><span class="p">,</span> <span class="s2">&quot;FM&quot;</span><span class="p">]:</span>
+        <span class="n">required_parameters</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;FEATURE_COUNT&quot;</span><span class="p">,</span> <span class="s2">&quot;dim&quot;</span><span class="p">,</span> <span class="s2">&quot;loss&quot;</span><span class="p">,</span> <span class="s2">&quot;data_format&quot;</span><span class="p">,</span> <span class="s2">&quot;method&quot;</span><span class="p">]</span>
+    <span class="k">elif</span> <span class="n">f_config</span><span class="p">[</span><span class="s2">&quot;model_type&quot;</span><span class="p">]</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;lr&quot;</span><span class="p">,</span> <span class="s2">&quot;LR&quot;</span><span class="p">]:</span>
+        <span class="n">required_parameters</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;FEATURE_COUNT&quot;</span><span class="p">,</span> <span class="s2">&quot;loss&quot;</span><span class="p">,</span> <span class="s2">&quot;data_format&quot;</span><span class="p">,</span> <span class="s2">&quot;method&quot;</span><span class="p">]</span>
+    <span class="k">elif</span> <span class="n">f_config</span><span class="p">[</span><span class="s2">&quot;model_type&quot;</span><span class="p">]</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;dkn&quot;</span><span class="p">,</span> <span class="s2">&quot;DKN&quot;</span><span class="p">]:</span>
+        <span class="n">required_parameters</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="s2">&quot;doc_size&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;history_size&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;wordEmb_file&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;entityEmb_file&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;contextEmb_file&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;news_feature_file&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;user_history_file&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;word_size&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;entity_size&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;use_entity&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;use_context&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;data_format&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;dim&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;layer_sizes&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;activation&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;attention_activation&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;attention_activation&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;attention_dropout&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;loss&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;data_format&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;dropout&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;method&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;num_filters&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;filter_sizes&quot;</span><span class="p">,</span>
+        <span class="p">]</span>
+    <span class="k">elif</span> <span class="n">f_config</span><span class="p">[</span><span class="s2">&quot;model_type&quot;</span><span class="p">]</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;exDeepFM&quot;</span><span class="p">,</span> <span class="s2">&quot;xDeepFM&quot;</span><span class="p">]:</span>
+        <span class="n">required_parameters</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="s2">&quot;FIELD_COUNT&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;FEATURE_COUNT&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;method&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;dim&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;layer_sizes&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;cross_layer_sizes&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;activation&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;loss&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;data_format&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;dropout&quot;</span><span class="p">,</span>
+        <span class="p">]</span>
+    <span class="k">if</span> <span class="n">f_config</span><span class="p">[</span><span class="s2">&quot;model_type&quot;</span><span class="p">]</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;gru4rec&quot;</span><span class="p">,</span> <span class="s2">&quot;GRU4REC&quot;</span><span class="p">,</span> <span class="s2">&quot;GRU4Rec&quot;</span><span class="p">]:</span>
+        <span class="n">required_parameters</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="s2">&quot;item_embedding_dim&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;cate_embedding_dim&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;max_seq_length&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;loss&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;method&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;user_vocab&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;item_vocab&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;cate_vocab&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;hidden_size&quot;</span><span class="p">,</span>
+        <span class="p">]</span>
+    <span class="k">elif</span> <span class="n">f_config</span><span class="p">[</span><span class="s2">&quot;model_type&quot;</span><span class="p">]</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;caser&quot;</span><span class="p">,</span> <span class="s2">&quot;CASER&quot;</span><span class="p">,</span> <span class="s2">&quot;Caser&quot;</span><span class="p">]:</span>
+        <span class="n">required_parameters</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="s2">&quot;item_embedding_dim&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;cate_embedding_dim&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;user_embedding_dim&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;max_seq_length&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;loss&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;method&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;user_vocab&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;item_vocab&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;cate_vocab&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;T&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;L&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;n_v&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;n_h&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;min_seq_length&quot;</span><span class="p">,</span>
+        <span class="p">]</span>
+    <span class="k">elif</span> <span class="n">f_config</span><span class="p">[</span><span class="s2">&quot;model_type&quot;</span><span class="p">]</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;asvd&quot;</span><span class="p">,</span> <span class="s2">&quot;ASVD&quot;</span><span class="p">,</span> <span class="s2">&quot;a2svd&quot;</span><span class="p">,</span> <span class="s2">&quot;A2SVD&quot;</span><span class="p">]:</span>
+        <span class="n">required_parameters</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="s2">&quot;item_embedding_dim&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;cate_embedding_dim&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;max_seq_length&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;loss&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;method&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;user_vocab&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;item_vocab&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;cate_vocab&quot;</span><span class="p">,</span>
+        <span class="p">]</span>
+    <span class="k">elif</span> <span class="n">f_config</span><span class="p">[</span><span class="s2">&quot;model_type&quot;</span><span class="p">]</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;slirec&quot;</span><span class="p">,</span> <span class="s2">&quot;sli_rec&quot;</span><span class="p">,</span> <span class="s2">&quot;SLI_REC&quot;</span><span class="p">,</span> <span class="s2">&quot;Sli_rec&quot;</span><span class="p">]:</span>
+        <span class="n">required_parameters</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="s2">&quot;item_embedding_dim&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;cate_embedding_dim&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;max_seq_length&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;loss&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;method&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;user_vocab&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;item_vocab&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;cate_vocab&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;attention_size&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;hidden_size&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;att_fcn_layer_sizes&quot;</span><span class="p">,</span>
+        <span class="p">]</span>
+    <span class="k">elif</span> <span class="n">f_config</span><span class="p">[</span><span class="s2">&quot;model_type&quot;</span><span class="p">]</span> <span class="ow">in</span> <span class="p">[</span>
+        <span class="s2">&quot;nextitnet&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;next_it_net&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;NextItNet&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;NEXT_IT_NET&quot;</span><span class="p">,</span>
+    <span class="p">]:</span>
+        <span class="n">required_parameters</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="s2">&quot;item_embedding_dim&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;cate_embedding_dim&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;user_embedding_dim&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;max_seq_length&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;loss&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;method&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;user_vocab&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;item_vocab&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;cate_vocab&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;dilations&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;kernel_size&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;min_seq_length&quot;</span><span class="p">,</span>
+        <span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">required_parameters</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="c1"># check required parameters</span>
+    <span class="k">for</span> <span class="n">param</span> <span class="ow">in</span> <span class="n">required_parameters</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">param</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">f_config</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Parameters </span><span class="si">{0}</span><span class="s2"> must be set&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">param</span><span class="p">))</span>
+
+    <span class="k">if</span> <span class="n">f_config</span><span class="p">[</span><span class="s2">&quot;model_type&quot;</span><span class="p">]</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;exDeepFM&quot;</span><span class="p">,</span> <span class="s2">&quot;xDeepFM&quot;</span><span class="p">]:</span>
+        <span class="k">if</span> <span class="n">f_config</span><span class="p">[</span><span class="s2">&quot;data_format&quot;</span><span class="p">]</span> <span class="o">!=</span> <span class="s2">&quot;ffm&quot;</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">&quot;For xDeepFM model, data format must be &#39;ffm&#39;, but your set is </span><span class="si">{0}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                    <span class="n">f_config</span><span class="p">[</span><span class="s2">&quot;data_format&quot;</span><span class="p">]</span>
+                <span class="p">)</span>
+            <span class="p">)</span>
+    <span class="k">elif</span> <span class="n">f_config</span><span class="p">[</span><span class="s2">&quot;model_type&quot;</span><span class="p">]</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;dkn&quot;</span><span class="p">,</span> <span class="s2">&quot;DKN&quot;</span><span class="p">]:</span>
+        <span class="k">if</span> <span class="n">f_config</span><span class="p">[</span><span class="s2">&quot;data_format&quot;</span><span class="p">]</span> <span class="o">!=</span> <span class="s2">&quot;dkn&quot;</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">&quot;For dkn model, data format must be &#39;dkn&#39;, but your set is </span><span class="si">{0}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                    <span class="n">f_config</span><span class="p">[</span><span class="s2">&quot;data_format&quot;</span><span class="p">]</span>
+                <span class="p">)</span>
+            <span class="p">)</span>
+    <span class="n">check_type</span><span class="p">(</span><span class="n">f_config</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="load_yaml"><a class="viewcode-back" href="../../../../source/models.html#recommenders.models.deeprec.deeprec_utils.load_yaml">[docs]</a><span class="k">def</span> <span class="nf">load_yaml</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Load a yaml file.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        filename (str): Filename.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        dict: Dictionary.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="n">config</span> <span class="o">=</span> <span class="n">yaml</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">yaml</span><span class="o">.</span><span class="n">SafeLoader</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">config</span>
+    <span class="k">except</span> <span class="ne">FileNotFoundError</span><span class="p">:</span>  <span class="c1"># for file not found</span>
+        <span class="k">raise</span>
+    <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>  <span class="c1"># for other exceptions</span>
+        <span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="s2">&quot;load </span><span class="si">{0}</span><span class="s2"> error!&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">filename</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="create_hparams"><a class="viewcode-back" href="../../../../source/models.html#recommenders.models.deeprec.deeprec_utils.create_hparams">[docs]</a><span class="k">def</span> <span class="nf">create_hparams</span><span class="p">(</span><span class="n">flags</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Create the model hyperparameters.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        flags (dict): Dictionary with the model requirements.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        tf.contrib.training.HParams: Hyperparameter object in TF.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">tf</span><span class="o">.</span><span class="n">contrib</span><span class="o">.</span><span class="n">training</span><span class="o">.</span><span class="n">HParams</span><span class="p">(</span>
+        <span class="c1"># data</span>
+        <span class="n">kg_file</span><span class="o">=</span><span class="n">flags</span><span class="p">[</span><span class="s2">&quot;kg_file&quot;</span><span class="p">]</span> <span class="k">if</span> <span class="s2">&quot;kg_file&quot;</span> <span class="ow">in</span> <span class="n">flags</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">user_clicks</span><span class="o">=</span><span class="n">flags</span><span class="p">[</span><span class="s2">&quot;user_clicks&quot;</span><span class="p">]</span> <span class="k">if</span> <span class="s2">&quot;user_clicks&quot;</span> <span class="ow">in</span> <span class="n">flags</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">FEATURE_COUNT</span><span class="o">=</span><span class="n">flags</span><span class="p">[</span><span class="s2">&quot;FEATURE_COUNT&quot;</span><span class="p">]</span> <span class="k">if</span> <span class="s2">&quot;FEATURE_COUNT&quot;</span> <span class="ow">in</span> <span class="n">flags</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">FIELD_COUNT</span><span class="o">=</span><span class="n">flags</span><span class="p">[</span><span class="s2">&quot;FIELD_COUNT&quot;</span><span class="p">]</span> <span class="k">if</span> <span class="s2">&quot;FIELD_COUNT&quot;</span> <span class="ow">in</span> <span class="n">flags</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">data_format</span><span class="o">=</span><span class="n">flags</span><span class="p">[</span><span class="s2">&quot;data_format&quot;</span><span class="p">]</span> <span class="k">if</span> <span class="s2">&quot;data_format&quot;</span> <span class="ow">in</span> <span class="n">flags</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">PAIR_NUM</span><span class="o">=</span><span class="n">flags</span><span class="p">[</span><span class="s2">&quot;PAIR_NUM&quot;</span><span class="p">]</span> <span class="k">if</span> <span class="s2">&quot;PAIR_NUM&quot;</span> <span class="ow">in</span> <span class="n">flags</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">DNN_FIELD_NUM</span><span class="o">=</span><span class="n">flags</span><span class="p">[</span><span class="s2">&quot;DNN_FIELD_NUM&quot;</span><span class="p">]</span> <span class="k">if</span> <span class="s2">&quot;DNN_FIELD_NUM&quot;</span> <span class="ow">in</span> <span class="n">flags</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">n_user</span><span class="o">=</span><span class="n">flags</span><span class="p">[</span><span class="s2">&quot;n_user&quot;</span><span class="p">]</span> <span class="k">if</span> <span class="s2">&quot;n_user&quot;</span> <span class="ow">in</span> <span class="n">flags</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">n_item</span><span class="o">=</span><span class="n">flags</span><span class="p">[</span><span class="s2">&quot;n_item&quot;</span><span class="p">]</span> <span class="k">if</span> <span class="s2">&quot;n_item&quot;</span> <span class="ow">in</span> <span class="n">flags</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">n_user_attr</span><span class="o">=</span><span class="n">flags</span><span class="p">[</span><span class="s2">&quot;n_user_attr&quot;</span><span class="p">]</span> <span class="k">if</span> <span class="s2">&quot;n_user_attr&quot;</span> <span class="ow">in</span> <span class="n">flags</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">n_item_attr</span><span class="o">=</span><span class="n">flags</span><span class="p">[</span><span class="s2">&quot;n_item_attr&quot;</span><span class="p">]</span> <span class="k">if</span> <span class="s2">&quot;n_item_attr&quot;</span> <span class="ow">in</span> <span class="n">flags</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">iterator_type</span><span class="o">=</span><span class="n">flags</span><span class="p">[</span><span class="s2">&quot;iterator_type&quot;</span><span class="p">]</span> <span class="k">if</span> <span class="s2">&quot;iterator_type&quot;</span> <span class="ow">in</span> <span class="n">flags</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">SUMMARIES_DIR</span><span class="o">=</span><span class="n">flags</span><span class="p">[</span><span class="s2">&quot;SUMMARIES_DIR&quot;</span><span class="p">]</span> <span class="k">if</span> <span class="s2">&quot;SUMMARIES_DIR&quot;</span> <span class="ow">in</span> <span class="n">flags</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">MODEL_DIR</span><span class="o">=</span><span class="n">flags</span><span class="p">[</span><span class="s2">&quot;MODEL_DIR&quot;</span><span class="p">]</span> <span class="k">if</span> <span class="s2">&quot;MODEL_DIR&quot;</span> <span class="ow">in</span> <span class="n">flags</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="c1"># dkn</span>
+        <span class="n">wordEmb_file</span><span class="o">=</span><span class="n">flags</span><span class="p">[</span><span class="s2">&quot;wordEmb_file&quot;</span><span class="p">]</span> <span class="k">if</span> <span class="s2">&quot;wordEmb_file&quot;</span> <span class="ow">in</span> <span class="n">flags</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">entityEmb_file</span><span class="o">=</span><span class="n">flags</span><span class="p">[</span><span class="s2">&quot;entityEmb_file&quot;</span><span class="p">]</span> <span class="k">if</span> <span class="s2">&quot;entityEmb_file&quot;</span> <span class="ow">in</span> <span class="n">flags</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">contextEmb_file</span><span class="o">=</span><span class="n">flags</span><span class="p">[</span><span class="s2">&quot;contextEmb_file&quot;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="s2">&quot;contextEmb_file&quot;</span> <span class="ow">in</span> <span class="n">flags</span>
+        <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">news_feature_file</span><span class="o">=</span><span class="n">flags</span><span class="p">[</span><span class="s2">&quot;news_feature_file&quot;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="s2">&quot;news_feature_file&quot;</span> <span class="ow">in</span> <span class="n">flags</span>
+        <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">user_history_file</span><span class="o">=</span><span class="n">flags</span><span class="p">[</span><span class="s2">&quot;user_history_file&quot;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="s2">&quot;user_history_file&quot;</span> <span class="ow">in</span> <span class="n">flags</span>
+        <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">use_entity</span><span class="o">=</span><span class="n">flags</span><span class="p">[</span><span class="s2">&quot;use_entity&quot;</span><span class="p">]</span> <span class="k">if</span> <span class="s2">&quot;use_entity&quot;</span> <span class="ow">in</span> <span class="n">flags</span> <span class="k">else</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="n">use_context</span><span class="o">=</span><span class="n">flags</span><span class="p">[</span><span class="s2">&quot;use_context&quot;</span><span class="p">]</span> <span class="k">if</span> <span class="s2">&quot;use_context&quot;</span> <span class="ow">in</span> <span class="n">flags</span> <span class="k">else</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="n">doc_size</span><span class="o">=</span><span class="n">flags</span><span class="p">[</span><span class="s2">&quot;doc_size&quot;</span><span class="p">]</span> <span class="k">if</span> <span class="s2">&quot;doc_size&quot;</span> <span class="ow">in</span> <span class="n">flags</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">history_size</span><span class="o">=</span><span class="n">flags</span><span class="p">[</span><span class="s2">&quot;history_size&quot;</span><span class="p">]</span> <span class="k">if</span> <span class="s2">&quot;history_size&quot;</span> <span class="ow">in</span> <span class="n">flags</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">word_size</span><span class="o">=</span><span class="n">flags</span><span class="p">[</span><span class="s2">&quot;word_size&quot;</span><span class="p">]</span> <span class="k">if</span> <span class="s2">&quot;word_size&quot;</span> <span class="ow">in</span> <span class="n">flags</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">entity_size</span><span class="o">=</span><span class="n">flags</span><span class="p">[</span><span class="s2">&quot;entity_size&quot;</span><span class="p">]</span> <span class="k">if</span> <span class="s2">&quot;entity_size&quot;</span> <span class="ow">in</span> <span class="n">flags</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">entity_dim</span><span class="o">=</span><span class="n">flags</span><span class="p">[</span><span class="s2">&quot;entity_dim&quot;</span><span class="p">]</span> <span class="k">if</span> <span class="s2">&quot;entity_dim&quot;</span> <span class="ow">in</span> <span class="n">flags</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">entity_embedding_method</span><span class="o">=</span><span class="n">flags</span><span class="p">[</span><span class="s2">&quot;entity_embedding_method&quot;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="s2">&quot;entity_embedding_method&quot;</span> <span class="ow">in</span> <span class="n">flags</span>
+        <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">transform</span><span class="o">=</span><span class="n">flags</span><span class="p">[</span><span class="s2">&quot;transform&quot;</span><span class="p">]</span> <span class="k">if</span> <span class="s2">&quot;transform&quot;</span> <span class="ow">in</span> <span class="n">flags</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">train_ratio</span><span class="o">=</span><span class="n">flags</span><span class="p">[</span><span class="s2">&quot;train_ratio&quot;</span><span class="p">]</span> <span class="k">if</span> <span class="s2">&quot;train_ratio&quot;</span> <span class="ow">in</span> <span class="n">flags</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="c1"># model</span>
+        <span class="n">dim</span><span class="o">=</span><span class="n">flags</span><span class="p">[</span><span class="s2">&quot;dim&quot;</span><span class="p">]</span> <span class="k">if</span> <span class="s2">&quot;dim&quot;</span> <span class="ow">in</span> <span class="n">flags</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">layer_sizes</span><span class="o">=</span><span class="n">flags</span><span class="p">[</span><span class="s2">&quot;layer_sizes&quot;</span><span class="p">]</span> <span class="k">if</span> <span class="s2">&quot;layer_sizes&quot;</span> <span class="ow">in</span> <span class="n">flags</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">cross_layer_sizes</span><span class="o">=</span><span class="n">flags</span><span class="p">[</span><span class="s2">&quot;cross_layer_sizes&quot;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="s2">&quot;cross_layer_sizes&quot;</span> <span class="ow">in</span> <span class="n">flags</span>
+        <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">cross_layers</span><span class="o">=</span><span class="n">flags</span><span class="p">[</span><span class="s2">&quot;cross_layers&quot;</span><span class="p">]</span> <span class="k">if</span> <span class="s2">&quot;cross_layers&quot;</span> <span class="ow">in</span> <span class="n">flags</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">activation</span><span class="o">=</span><span class="n">flags</span><span class="p">[</span><span class="s2">&quot;activation&quot;</span><span class="p">]</span> <span class="k">if</span> <span class="s2">&quot;activation&quot;</span> <span class="ow">in</span> <span class="n">flags</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">cross_activation</span><span class="o">=</span><span class="n">flags</span><span class="p">[</span><span class="s2">&quot;cross_activation&quot;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="s2">&quot;cross_activation&quot;</span> <span class="ow">in</span> <span class="n">flags</span>
+        <span class="k">else</span> <span class="s2">&quot;identity&quot;</span><span class="p">,</span>
+        <span class="n">user_dropout</span><span class="o">=</span><span class="n">flags</span><span class="p">[</span><span class="s2">&quot;user_dropout&quot;</span><span class="p">]</span> <span class="k">if</span> <span class="s2">&quot;user_dropout&quot;</span> <span class="ow">in</span> <span class="n">flags</span> <span class="k">else</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">dropout</span><span class="o">=</span><span class="n">flags</span><span class="p">[</span><span class="s2">&quot;dropout&quot;</span><span class="p">]</span> <span class="k">if</span> <span class="s2">&quot;dropout&quot;</span> <span class="ow">in</span> <span class="n">flags</span> <span class="k">else</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">],</span>
+        <span class="n">attention_layer_sizes</span><span class="o">=</span><span class="n">flags</span><span class="p">[</span><span class="s2">&quot;attention_layer_sizes&quot;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="s2">&quot;attention_layer_sizes&quot;</span> <span class="ow">in</span> <span class="n">flags</span>
+        <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">attention_activation</span><span class="o">=</span><span class="n">flags</span><span class="p">[</span><span class="s2">&quot;attention_activation&quot;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="s2">&quot;attention_activation&quot;</span> <span class="ow">in</span> <span class="n">flags</span>
+        <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">attention_dropout</span><span class="o">=</span><span class="n">flags</span><span class="p">[</span><span class="s2">&quot;attention_dropout&quot;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="s2">&quot;attention_dropout&quot;</span> <span class="ow">in</span> <span class="n">flags</span>
+        <span class="k">else</span> <span class="mf">0.0</span><span class="p">,</span>
+        <span class="n">model_type</span><span class="o">=</span><span class="n">flags</span><span class="p">[</span><span class="s2">&quot;model_type&quot;</span><span class="p">]</span> <span class="k">if</span> <span class="s2">&quot;model_type&quot;</span> <span class="ow">in</span> <span class="n">flags</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">method</span><span class="o">=</span><span class="n">flags</span><span class="p">[</span><span class="s2">&quot;method&quot;</span><span class="p">]</span> <span class="k">if</span> <span class="s2">&quot;method&quot;</span> <span class="ow">in</span> <span class="n">flags</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">load_saved_model</span><span class="o">=</span><span class="n">flags</span><span class="p">[</span><span class="s2">&quot;load_saved_model&quot;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="s2">&quot;load_saved_model&quot;</span> <span class="ow">in</span> <span class="n">flags</span>
+        <span class="k">else</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">load_model_name</span><span class="o">=</span><span class="n">flags</span><span class="p">[</span><span class="s2">&quot;load_model_name&quot;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="s2">&quot;load_model_name&quot;</span> <span class="ow">in</span> <span class="n">flags</span>
+        <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">filter_sizes</span><span class="o">=</span><span class="n">flags</span><span class="p">[</span><span class="s2">&quot;filter_sizes&quot;</span><span class="p">]</span> <span class="k">if</span> <span class="s2">&quot;filter_sizes&quot;</span> <span class="ow">in</span> <span class="n">flags</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">num_filters</span><span class="o">=</span><span class="n">flags</span><span class="p">[</span><span class="s2">&quot;num_filters&quot;</span><span class="p">]</span> <span class="k">if</span> <span class="s2">&quot;num_filters&quot;</span> <span class="ow">in</span> <span class="n">flags</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">mu</span><span class="o">=</span><span class="n">flags</span><span class="p">[</span><span class="s2">&quot;mu&quot;</span><span class="p">]</span> <span class="k">if</span> <span class="s2">&quot;mu&quot;</span> <span class="ow">in</span> <span class="n">flags</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">fast_CIN_d</span><span class="o">=</span><span class="n">flags</span><span class="p">[</span><span class="s2">&quot;fast_CIN_d&quot;</span><span class="p">]</span> <span class="k">if</span> <span class="s2">&quot;fast_CIN_d&quot;</span> <span class="ow">in</span> <span class="n">flags</span> <span class="k">else</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="n">use_Linear_part</span><span class="o">=</span><span class="n">flags</span><span class="p">[</span><span class="s2">&quot;use_Linear_part&quot;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="s2">&quot;use_Linear_part&quot;</span> <span class="ow">in</span> <span class="n">flags</span>
+        <span class="k">else</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">use_FM_part</span><span class="o">=</span><span class="n">flags</span><span class="p">[</span><span class="s2">&quot;use_FM_part&quot;</span><span class="p">]</span> <span class="k">if</span> <span class="s2">&quot;use_FM_part&quot;</span> <span class="ow">in</span> <span class="n">flags</span> <span class="k">else</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">use_CIN_part</span><span class="o">=</span><span class="n">flags</span><span class="p">[</span><span class="s2">&quot;use_CIN_part&quot;</span><span class="p">]</span> <span class="k">if</span> <span class="s2">&quot;use_CIN_part&quot;</span> <span class="ow">in</span> <span class="n">flags</span> <span class="k">else</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">use_DNN_part</span><span class="o">=</span><span class="n">flags</span><span class="p">[</span><span class="s2">&quot;use_DNN_part&quot;</span><span class="p">]</span> <span class="k">if</span> <span class="s2">&quot;use_DNN_part&quot;</span> <span class="ow">in</span> <span class="n">flags</span> <span class="k">else</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="c1"># train</span>
+        <span class="n">init_method</span><span class="o">=</span><span class="n">flags</span><span class="p">[</span><span class="s2">&quot;init_method&quot;</span><span class="p">]</span> <span class="k">if</span> <span class="s2">&quot;init_method&quot;</span> <span class="ow">in</span> <span class="n">flags</span> <span class="k">else</span> <span class="s2">&quot;tnormal&quot;</span><span class="p">,</span>
+        <span class="n">init_value</span><span class="o">=</span><span class="n">flags</span><span class="p">[</span><span class="s2">&quot;init_value&quot;</span><span class="p">]</span> <span class="k">if</span> <span class="s2">&quot;init_value&quot;</span> <span class="ow">in</span> <span class="n">flags</span> <span class="k">else</span> <span class="mf">0.01</span><span class="p">,</span>
+        <span class="n">embed_l2</span><span class="o">=</span><span class="n">flags</span><span class="p">[</span><span class="s2">&quot;embed_l2&quot;</span><span class="p">]</span> <span class="k">if</span> <span class="s2">&quot;embed_l2&quot;</span> <span class="ow">in</span> <span class="n">flags</span> <span class="k">else</span> <span class="mf">0.0000</span><span class="p">,</span>
+        <span class="n">embed_l1</span><span class="o">=</span><span class="n">flags</span><span class="p">[</span><span class="s2">&quot;embed_l1&quot;</span><span class="p">]</span> <span class="k">if</span> <span class="s2">&quot;embed_l1&quot;</span> <span class="ow">in</span> <span class="n">flags</span> <span class="k">else</span> <span class="mf">0.0000</span><span class="p">,</span>
+        <span class="n">layer_l2</span><span class="o">=</span><span class="n">flags</span><span class="p">[</span><span class="s2">&quot;layer_l2&quot;</span><span class="p">]</span> <span class="k">if</span> <span class="s2">&quot;layer_l2&quot;</span> <span class="ow">in</span> <span class="n">flags</span> <span class="k">else</span> <span class="mf">0.0000</span><span class="p">,</span>
+        <span class="n">layer_l1</span><span class="o">=</span><span class="n">flags</span><span class="p">[</span><span class="s2">&quot;layer_l1&quot;</span><span class="p">]</span> <span class="k">if</span> <span class="s2">&quot;layer_l1&quot;</span> <span class="ow">in</span> <span class="n">flags</span> <span class="k">else</span> <span class="mf">0.0000</span><span class="p">,</span>
+        <span class="n">cross_l2</span><span class="o">=</span><span class="n">flags</span><span class="p">[</span><span class="s2">&quot;cross_l2&quot;</span><span class="p">]</span> <span class="k">if</span> <span class="s2">&quot;cross_l2&quot;</span> <span class="ow">in</span> <span class="n">flags</span> <span class="k">else</span> <span class="mf">0.0000</span><span class="p">,</span>
+        <span class="n">cross_l1</span><span class="o">=</span><span class="n">flags</span><span class="p">[</span><span class="s2">&quot;cross_l1&quot;</span><span class="p">]</span> <span class="k">if</span> <span class="s2">&quot;cross_l1&quot;</span> <span class="ow">in</span> <span class="n">flags</span> <span class="k">else</span> <span class="mf">0.0000</span><span class="p">,</span>
+        <span class="n">reg_kg</span><span class="o">=</span><span class="n">flags</span><span class="p">[</span><span class="s2">&quot;reg_kg&quot;</span><span class="p">]</span> <span class="k">if</span> <span class="s2">&quot;reg_kg&quot;</span> <span class="ow">in</span> <span class="n">flags</span> <span class="k">else</span> <span class="mf">0.0000</span><span class="p">,</span>
+        <span class="n">learning_rate</span><span class="o">=</span><span class="n">flags</span><span class="p">[</span><span class="s2">&quot;learning_rate&quot;</span><span class="p">]</span> <span class="k">if</span> <span class="s2">&quot;learning_rate&quot;</span> <span class="ow">in</span> <span class="n">flags</span> <span class="k">else</span> <span class="mf">0.001</span><span class="p">,</span>
+        <span class="n">lr_rs</span><span class="o">=</span><span class="n">flags</span><span class="p">[</span><span class="s2">&quot;lr_rs&quot;</span><span class="p">]</span> <span class="k">if</span> <span class="s2">&quot;lr_rs&quot;</span> <span class="ow">in</span> <span class="n">flags</span> <span class="k">else</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="n">lr_kg</span><span class="o">=</span><span class="n">flags</span><span class="p">[</span><span class="s2">&quot;lr_kg&quot;</span><span class="p">]</span> <span class="k">if</span> <span class="s2">&quot;lr_kg&quot;</span> <span class="ow">in</span> <span class="n">flags</span> <span class="k">else</span> <span class="mf">0.5</span><span class="p">,</span>
+        <span class="n">kg_training_interval</span><span class="o">=</span><span class="n">flags</span><span class="p">[</span><span class="s2">&quot;kg_training_interval&quot;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="s2">&quot;kg_training_interval&quot;</span> <span class="ow">in</span> <span class="n">flags</span>
+        <span class="k">else</span> <span class="mi">5</span><span class="p">,</span>
+        <span class="n">max_grad_norm</span><span class="o">=</span><span class="n">flags</span><span class="p">[</span><span class="s2">&quot;max_grad_norm&quot;</span><span class="p">]</span> <span class="k">if</span> <span class="s2">&quot;max_grad_norm&quot;</span> <span class="ow">in</span> <span class="n">flags</span> <span class="k">else</span> <span class="mi">2</span><span class="p">,</span>
+        <span class="n">is_clip_norm</span><span class="o">=</span><span class="n">flags</span><span class="p">[</span><span class="s2">&quot;is_clip_norm&quot;</span><span class="p">]</span> <span class="k">if</span> <span class="s2">&quot;is_clip_norm&quot;</span> <span class="ow">in</span> <span class="n">flags</span> <span class="k">else</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="n">dtype</span><span class="o">=</span><span class="n">flags</span><span class="p">[</span><span class="s2">&quot;dtype&quot;</span><span class="p">]</span> <span class="k">if</span> <span class="s2">&quot;dtype&quot;</span> <span class="ow">in</span> <span class="n">flags</span> <span class="k">else</span> <span class="mi">32</span><span class="p">,</span>
+        <span class="n">loss</span><span class="o">=</span><span class="n">flags</span><span class="p">[</span><span class="s2">&quot;loss&quot;</span><span class="p">]</span> <span class="k">if</span> <span class="s2">&quot;loss&quot;</span> <span class="ow">in</span> <span class="n">flags</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">optimizer</span><span class="o">=</span><span class="n">flags</span><span class="p">[</span><span class="s2">&quot;optimizer&quot;</span><span class="p">]</span> <span class="k">if</span> <span class="s2">&quot;optimizer&quot;</span> <span class="ow">in</span> <span class="n">flags</span> <span class="k">else</span> <span class="s2">&quot;adam&quot;</span><span class="p">,</span>
+        <span class="n">epochs</span><span class="o">=</span><span class="n">flags</span><span class="p">[</span><span class="s2">&quot;epochs&quot;</span><span class="p">]</span> <span class="k">if</span> <span class="s2">&quot;epochs&quot;</span> <span class="ow">in</span> <span class="n">flags</span> <span class="k">else</span> <span class="mi">10</span><span class="p">,</span>
+        <span class="n">batch_size</span><span class="o">=</span><span class="n">flags</span><span class="p">[</span><span class="s2">&quot;batch_size&quot;</span><span class="p">]</span> <span class="k">if</span> <span class="s2">&quot;batch_size&quot;</span> <span class="ow">in</span> <span class="n">flags</span> <span class="k">else</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="n">enable_BN</span><span class="o">=</span><span class="n">flags</span><span class="p">[</span><span class="s2">&quot;enable_BN&quot;</span><span class="p">]</span> <span class="k">if</span> <span class="s2">&quot;enable_BN&quot;</span> <span class="ow">in</span> <span class="n">flags</span> <span class="k">else</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="c1"># show info</span>
+        <span class="n">show_step</span><span class="o">=</span><span class="n">flags</span><span class="p">[</span><span class="s2">&quot;show_step&quot;</span><span class="p">]</span> <span class="k">if</span> <span class="s2">&quot;show_step&quot;</span> <span class="ow">in</span> <span class="n">flags</span> <span class="k">else</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="n">save_model</span><span class="o">=</span><span class="n">flags</span><span class="p">[</span><span class="s2">&quot;save_model&quot;</span><span class="p">]</span> <span class="k">if</span> <span class="s2">&quot;save_model&quot;</span> <span class="ow">in</span> <span class="n">flags</span> <span class="k">else</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="n">save_epoch</span><span class="o">=</span><span class="n">flags</span><span class="p">[</span><span class="s2">&quot;save_epoch&quot;</span><span class="p">]</span> <span class="k">if</span> <span class="s2">&quot;save_epoch&quot;</span> <span class="ow">in</span> <span class="n">flags</span> <span class="k">else</span> <span class="mi">5</span><span class="p">,</span>
+        <span class="n">metrics</span><span class="o">=</span><span class="n">flags</span><span class="p">[</span><span class="s2">&quot;metrics&quot;</span><span class="p">]</span> <span class="k">if</span> <span class="s2">&quot;metrics&quot;</span> <span class="ow">in</span> <span class="n">flags</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">write_tfevents</span><span class="o">=</span><span class="n">flags</span><span class="p">[</span><span class="s2">&quot;write_tfevents&quot;</span><span class="p">]</span> <span class="k">if</span> <span class="s2">&quot;write_tfevents&quot;</span> <span class="ow">in</span> <span class="n">flags</span> <span class="k">else</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="c1"># sequential</span>
+        <span class="n">item_embedding_dim</span><span class="o">=</span><span class="n">flags</span><span class="p">[</span><span class="s2">&quot;item_embedding_dim&quot;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="s2">&quot;item_embedding_dim&quot;</span> <span class="ow">in</span> <span class="n">flags</span>
+        <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">cate_embedding_dim</span><span class="o">=</span><span class="n">flags</span><span class="p">[</span><span class="s2">&quot;cate_embedding_dim&quot;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="s2">&quot;cate_embedding_dim&quot;</span> <span class="ow">in</span> <span class="n">flags</span>
+        <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">user_embedding_dim</span><span class="o">=</span><span class="n">flags</span><span class="p">[</span><span class="s2">&quot;user_embedding_dim&quot;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="s2">&quot;user_embedding_dim&quot;</span> <span class="ow">in</span> <span class="n">flags</span>
+        <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">train_num_ngs</span><span class="o">=</span><span class="n">flags</span><span class="p">[</span><span class="s2">&quot;train_num_ngs&quot;</span><span class="p">]</span> <span class="k">if</span> <span class="s2">&quot;train_num_ngs&quot;</span> <span class="ow">in</span> <span class="n">flags</span> <span class="k">else</span> <span class="mi">4</span><span class="p">,</span>
+        <span class="n">need_sample</span><span class="o">=</span><span class="n">flags</span><span class="p">[</span><span class="s2">&quot;need_sample&quot;</span><span class="p">]</span> <span class="k">if</span> <span class="s2">&quot;need_sample&quot;</span> <span class="ow">in</span> <span class="n">flags</span> <span class="k">else</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="n">embedding_dropout</span><span class="o">=</span><span class="n">flags</span><span class="p">[</span><span class="s2">&quot;embedding_dropout&quot;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="s2">&quot;embedding_dropout&quot;</span> <span class="ow">in</span> <span class="n">flags</span>
+        <span class="k">else</span> <span class="mf">0.0</span><span class="p">,</span>
+        <span class="n">user_vocab</span><span class="o">=</span><span class="n">flags</span><span class="p">[</span><span class="s2">&quot;user_vocab&quot;</span><span class="p">]</span> <span class="k">if</span> <span class="s2">&quot;user_vocab&quot;</span> <span class="ow">in</span> <span class="n">flags</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">item_vocab</span><span class="o">=</span><span class="n">flags</span><span class="p">[</span><span class="s2">&quot;item_vocab&quot;</span><span class="p">]</span> <span class="k">if</span> <span class="s2">&quot;item_vocab&quot;</span> <span class="ow">in</span> <span class="n">flags</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">cate_vocab</span><span class="o">=</span><span class="n">flags</span><span class="p">[</span><span class="s2">&quot;cate_vocab&quot;</span><span class="p">]</span> <span class="k">if</span> <span class="s2">&quot;cate_vocab&quot;</span> <span class="ow">in</span> <span class="n">flags</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">pairwise_metrics</span><span class="o">=</span><span class="n">flags</span><span class="p">[</span><span class="s2">&quot;pairwise_metrics&quot;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="s2">&quot;pairwise_metrics&quot;</span> <span class="ow">in</span> <span class="n">flags</span>
+        <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">EARLY_STOP</span><span class="o">=</span><span class="n">flags</span><span class="p">[</span><span class="s2">&quot;EARLY_STOP&quot;</span><span class="p">]</span> <span class="k">if</span> <span class="s2">&quot;EARLY_STOP&quot;</span> <span class="ow">in</span> <span class="n">flags</span> <span class="k">else</span> <span class="mi">100</span><span class="p">,</span>
+        <span class="c1"># gru4rec</span>
+        <span class="n">max_seq_length</span><span class="o">=</span><span class="n">flags</span><span class="p">[</span><span class="s2">&quot;max_seq_length&quot;</span><span class="p">]</span> <span class="k">if</span> <span class="s2">&quot;max_seq_length&quot;</span> <span class="ow">in</span> <span class="n">flags</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">hidden_size</span><span class="o">=</span><span class="n">flags</span><span class="p">[</span><span class="s2">&quot;hidden_size&quot;</span><span class="p">]</span> <span class="k">if</span> <span class="s2">&quot;hidden_size&quot;</span> <span class="ow">in</span> <span class="n">flags</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="c1"># caser,</span>
+        <span class="n">L</span><span class="o">=</span><span class="n">flags</span><span class="p">[</span><span class="s2">&quot;L&quot;</span><span class="p">]</span> <span class="k">if</span> <span class="s2">&quot;L&quot;</span> <span class="ow">in</span> <span class="n">flags</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">T</span><span class="o">=</span><span class="n">flags</span><span class="p">[</span><span class="s2">&quot;T&quot;</span><span class="p">]</span> <span class="k">if</span> <span class="s2">&quot;T&quot;</span> <span class="ow">in</span> <span class="n">flags</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">n_v</span><span class="o">=</span><span class="n">flags</span><span class="p">[</span><span class="s2">&quot;n_v&quot;</span><span class="p">]</span> <span class="k">if</span> <span class="s2">&quot;n_v&quot;</span> <span class="ow">in</span> <span class="n">flags</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">n_h</span><span class="o">=</span><span class="n">flags</span><span class="p">[</span><span class="s2">&quot;n_h&quot;</span><span class="p">]</span> <span class="k">if</span> <span class="s2">&quot;n_h&quot;</span> <span class="ow">in</span> <span class="n">flags</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">min_seq_length</span><span class="o">=</span><span class="n">flags</span><span class="p">[</span><span class="s2">&quot;min_seq_length&quot;</span><span class="p">]</span> <span class="k">if</span> <span class="s2">&quot;min_seq_length&quot;</span> <span class="ow">in</span> <span class="n">flags</span> <span class="k">else</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="c1"># sli_rec</span>
+        <span class="n">attention_size</span><span class="o">=</span><span class="n">flags</span><span class="p">[</span><span class="s2">&quot;attention_size&quot;</span><span class="p">]</span> <span class="k">if</span> <span class="s2">&quot;attention_size&quot;</span> <span class="ow">in</span> <span class="n">flags</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">att_fcn_layer_sizes</span><span class="o">=</span><span class="n">flags</span><span class="p">[</span><span class="s2">&quot;att_fcn_layer_sizes&quot;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="s2">&quot;att_fcn_layer_sizes&quot;</span> <span class="ow">in</span> <span class="n">flags</span>
+        <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="c1"># nextitnet</span>
+        <span class="n">dilations</span><span class="o">=</span><span class="n">flags</span><span class="p">[</span><span class="s2">&quot;dilations&quot;</span><span class="p">]</span> <span class="k">if</span> <span class="s2">&quot;dilations&quot;</span> <span class="ow">in</span> <span class="n">flags</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">kernel_size</span><span class="o">=</span><span class="n">flags</span><span class="p">[</span><span class="s2">&quot;kernel_size&quot;</span><span class="p">]</span> <span class="k">if</span> <span class="s2">&quot;kernel_size&quot;</span> <span class="ow">in</span> <span class="n">flags</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="c1"># lightgcn</span>
+        <span class="n">embed_size</span><span class="o">=</span><span class="n">flags</span><span class="p">[</span><span class="s2">&quot;embed_size&quot;</span><span class="p">]</span> <span class="k">if</span> <span class="s2">&quot;embed_size&quot;</span> <span class="ow">in</span> <span class="n">flags</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">n_layers</span><span class="o">=</span><span class="n">flags</span><span class="p">[</span><span class="s2">&quot;n_layers&quot;</span><span class="p">]</span> <span class="k">if</span> <span class="s2">&quot;n_layers&quot;</span> <span class="ow">in</span> <span class="n">flags</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">decay</span><span class="o">=</span><span class="n">flags</span><span class="p">[</span><span class="s2">&quot;decay&quot;</span><span class="p">]</span> <span class="k">if</span> <span class="s2">&quot;decay&quot;</span> <span class="ow">in</span> <span class="n">flags</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">eval_epoch</span><span class="o">=</span><span class="n">flags</span><span class="p">[</span><span class="s2">&quot;eval_epoch&quot;</span><span class="p">]</span> <span class="k">if</span> <span class="s2">&quot;eval_epoch&quot;</span> <span class="ow">in</span> <span class="n">flags</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">top_k</span><span class="o">=</span><span class="n">flags</span><span class="p">[</span><span class="s2">&quot;top_k&quot;</span><span class="p">]</span> <span class="k">if</span> <span class="s2">&quot;top_k&quot;</span> <span class="ow">in</span> <span class="n">flags</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="c1"># sum</span>
+        <span class="n">slots</span><span class="o">=</span><span class="n">flags</span><span class="p">[</span><span class="s2">&quot;slots&quot;</span><span class="p">]</span> <span class="k">if</span> <span class="s2">&quot;slots&quot;</span> <span class="ow">in</span> <span class="n">flags</span> <span class="k">else</span> <span class="mi">5</span><span class="p">,</span>
+        <span class="n">cell</span><span class="o">=</span><span class="n">flags</span><span class="p">[</span><span class="s2">&quot;cell&quot;</span><span class="p">]</span> <span class="k">if</span> <span class="s2">&quot;cell&quot;</span> <span class="ow">in</span> <span class="n">flags</span> <span class="k">else</span> <span class="s2">&quot;SUM&quot;</span><span class="p">,</span>
+    <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="prepare_hparams"><a class="viewcode-back" href="../../../../source/models.html#recommenders.models.deeprec.deeprec_utils.prepare_hparams">[docs]</a><span class="k">def</span> <span class="nf">prepare_hparams</span><span class="p">(</span><span class="n">yaml_file</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Prepare the model hyperparameters and check that all have the correct value.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        yaml_file (str): YAML file as configuration.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        tf.contrib.training.HParams: Hyperparameter object in TF.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">yaml_file</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">config</span> <span class="o">=</span> <span class="n">load_yaml</span><span class="p">(</span><span class="n">yaml_file</span><span class="p">)</span>
+        <span class="n">config</span> <span class="o">=</span> <span class="n">flat_config</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">config</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="k">if</span> <span class="n">kwargs</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">config</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+
+    <span class="n">check_nn_config</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">create_hparams</span><span class="p">(</span><span class="n">config</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="download_deeprec_resources"><a class="viewcode-back" href="../../../../source/models.html#recommenders.models.deeprec.deeprec_utils.download_deeprec_resources">[docs]</a><span class="k">def</span> <span class="nf">download_deeprec_resources</span><span class="p">(</span><span class="n">azure_container_url</span><span class="p">,</span> <span class="n">data_path</span><span class="p">,</span> <span class="n">remote_resource_name</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Download resources.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        azure_container_url (str): URL of Azure container.</span>
+<span class="sd">        data_path (str): Path to download the resources.</span>
+<span class="sd">        remote_resource_name (str): Name of the resource.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">data_path</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">remote_path</span> <span class="o">=</span> <span class="n">azure_container_url</span> <span class="o">+</span> <span class="n">remote_resource_name</span>
+    <span class="n">maybe_download</span><span class="p">(</span><span class="n">remote_path</span><span class="p">,</span> <span class="n">remote_resource_name</span><span class="p">,</span> <span class="n">data_path</span><span class="p">)</span>
+    <span class="n">zip_ref</span> <span class="o">=</span> <span class="n">zipfile</span><span class="o">.</span><span class="n">ZipFile</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">data_path</span><span class="p">,</span> <span class="n">remote_resource_name</span><span class="p">),</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span>
+    <span class="n">zip_ref</span><span class="o">.</span><span class="n">extractall</span><span class="p">(</span><span class="n">data_path</span><span class="p">)</span>
+    <span class="n">zip_ref</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">data_path</span><span class="p">,</span> <span class="n">remote_resource_name</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="mrr_score"><a class="viewcode-back" href="../../../../source/models.html#recommenders.models.deeprec.deeprec_utils.mrr_score">[docs]</a><span class="k">def</span> <span class="nf">mrr_score</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_score</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Computing mrr score metric.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        y_true (np.ndarray): Ground-truth labels.</span>
+<span class="sd">        y_score (np.ndarray): Predicted labels.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        numpy.ndarray: mrr scores.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">order</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">y_score</span><span class="p">)[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">y_true</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">take</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">order</span><span class="p">)</span>
+    <span class="n">rr_score</span> <span class="o">=</span> <span class="n">y_true</span> <span class="o">/</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">y_true</span><span class="p">))</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">rr_score</span><span class="p">)</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">y_true</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="ndcg_score"><a class="viewcode-back" href="../../../../source/models.html#recommenders.models.deeprec.deeprec_utils.ndcg_score">[docs]</a><span class="k">def</span> <span class="nf">ndcg_score</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_score</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mi">10</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Computing ndcg score metric at k.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        y_true (np.ndarray): Ground-truth labels.</span>
+<span class="sd">        y_score (np.ndarray): Predicted labels.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        numpy.ndarray: ndcg scores.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">best</span> <span class="o">=</span> <span class="n">dcg_score</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_true</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span>
+    <span class="n">actual</span> <span class="o">=</span> <span class="n">dcg_score</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_score</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">actual</span> <span class="o">/</span> <span class="n">best</span></div>
+
+
+<div class="viewcode-block" id="hit_score"><a class="viewcode-back" href="../../../../source/models.html#recommenders.models.deeprec.deeprec_utils.hit_score">[docs]</a><span class="k">def</span> <span class="nf">hit_score</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_score</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mi">10</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Computing hit score metric at k.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        y_true (np.ndarray): ground-truth labels.</span>
+<span class="sd">        y_score (np.ndarray): predicted labels.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        np.ndarray: hit score.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">ground_truth</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">y_true</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">argsort</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">y_score</span><span class="p">)[::</span><span class="o">-</span><span class="mi">1</span><span class="p">][:</span><span class="n">k</span><span class="p">]</span>
+    <span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="n">argsort</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">idx</span> <span class="ow">in</span> <span class="n">ground_truth</span><span class="p">:</span>
+            <span class="k">return</span> <span class="mi">1</span>
+    <span class="k">return</span> <span class="mi">0</span></div>
+
+
+<div class="viewcode-block" id="dcg_score"><a class="viewcode-back" href="../../../../source/models.html#recommenders.models.deeprec.deeprec_utils.dcg_score">[docs]</a><span class="k">def</span> <span class="nf">dcg_score</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_score</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mi">10</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Computing dcg score metric at k.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        y_true (np.ndarray): Ground-truth labels.</span>
+<span class="sd">        y_score (np.ndarray): Predicted labels.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        np.ndarray: dcg scores.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">k</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">y_true</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">k</span><span class="p">)</span>
+    <span class="n">order</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">y_score</span><span class="p">)[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">y_true</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">take</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">order</span><span class="p">[:</span><span class="n">k</span><span class="p">])</span>
+    <span class="n">gains</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">**</span> <span class="n">y_true</span> <span class="o">-</span> <span class="mi">1</span>
+    <span class="n">discounts</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log2</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">y_true</span><span class="p">))</span> <span class="o">+</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">gains</span> <span class="o">/</span> <span class="n">discounts</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="cal_metric"><a class="viewcode-back" href="../../../../source/models.html#recommenders.models.deeprec.deeprec_utils.cal_metric">[docs]</a><span class="k">def</span> <span class="nf">cal_metric</span><span class="p">(</span><span class="n">labels</span><span class="p">,</span> <span class="n">preds</span><span class="p">,</span> <span class="n">metrics</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Calculate metrics.</span>
+
+<span class="sd">    Available options are: `auc`, `rmse`, `logloss`, `acc` (accurary), `f1`, `mean_mrr`,</span>
+<span class="sd">    `ndcg` (format like: ndcg@2;4;6;8), `hit` (format like: hit@2;4;6;8), `group_auc`.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        labels (array-like): Labels.</span>
+<span class="sd">        preds (array-like): Predictions.</span>
+<span class="sd">        metrics (list): List of metric names.</span>
+
+<span class="sd">    Return:</span>
+<span class="sd">        dict: Metrics.</span>
+
+<span class="sd">    Examples:</span>
+<span class="sd">        &gt;&gt;&gt; cal_metric(labels, preds, [&quot;ndcg@2;4;6&quot;, &quot;group_auc&quot;])</span>
+<span class="sd">        {&#39;ndcg@2&#39;: 0.4026, &#39;ndcg@4&#39;: 0.4953, &#39;ndcg@6&#39;: 0.5346, &#39;group_auc&#39;: 0.8096}</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">metric</span> <span class="ow">in</span> <span class="n">metrics</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">metric</span> <span class="o">==</span> <span class="s2">&quot;auc&quot;</span><span class="p">:</span>
+            <span class="n">auc</span> <span class="o">=</span> <span class="n">roc_auc_score</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">labels</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">preds</span><span class="p">))</span>
+            <span class="n">res</span><span class="p">[</span><span class="s2">&quot;auc&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="n">auc</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">metric</span> <span class="o">==</span> <span class="s2">&quot;rmse&quot;</span><span class="p">:</span>
+            <span class="n">rmse</span> <span class="o">=</span> <span class="n">mean_squared_error</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">labels</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">preds</span><span class="p">))</span>
+            <span class="n">res</span><span class="p">[</span><span class="s2">&quot;rmse&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">rmse</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+        <span class="k">elif</span> <span class="n">metric</span> <span class="o">==</span> <span class="s2">&quot;logloss&quot;</span><span class="p">:</span>
+            <span class="c1"># avoid logloss nan</span>
+            <span class="n">preds</span> <span class="o">=</span> <span class="p">[</span><span class="nb">max</span><span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="mf">1.0</span> <span class="o">-</span> <span class="mf">10e-12</span><span class="p">),</span> <span class="mf">10e-12</span><span class="p">)</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">preds</span><span class="p">]</span>
+            <span class="n">logloss</span> <span class="o">=</span> <span class="n">log_loss</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">labels</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">preds</span><span class="p">))</span>
+            <span class="n">res</span><span class="p">[</span><span class="s2">&quot;logloss&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="n">logloss</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">metric</span> <span class="o">==</span> <span class="s2">&quot;acc&quot;</span><span class="p">:</span>
+            <span class="n">pred</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">preds</span><span class="p">)</span>
+            <span class="n">pred</span><span class="p">[</span><span class="n">pred</span> <span class="o">&gt;=</span> <span class="mf">0.5</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+            <span class="n">pred</span><span class="p">[</span><span class="n">pred</span> <span class="o">&lt;</span> <span class="mf">0.5</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="n">acc</span> <span class="o">=</span> <span class="n">accuracy_score</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">labels</span><span class="p">),</span> <span class="n">pred</span><span class="p">)</span>
+            <span class="n">res</span><span class="p">[</span><span class="s2">&quot;acc&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="n">acc</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">metric</span> <span class="o">==</span> <span class="s2">&quot;f1&quot;</span><span class="p">:</span>
+            <span class="n">pred</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">preds</span><span class="p">)</span>
+            <span class="n">pred</span><span class="p">[</span><span class="n">pred</span> <span class="o">&gt;=</span> <span class="mf">0.5</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+            <span class="n">pred</span><span class="p">[</span><span class="n">pred</span> <span class="o">&lt;</span> <span class="mf">0.5</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="n">f1</span> <span class="o">=</span> <span class="n">f1_score</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">labels</span><span class="p">),</span> <span class="n">pred</span><span class="p">)</span>
+            <span class="n">res</span><span class="p">[</span><span class="s2">&quot;f1&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="n">f1</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">metric</span> <span class="o">==</span> <span class="s2">&quot;mean_mrr&quot;</span><span class="p">:</span>
+            <span class="n">mean_mrr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span>
+                <span class="p">[</span>
+                    <span class="n">mrr_score</span><span class="p">(</span><span class="n">each_labels</span><span class="p">,</span> <span class="n">each_preds</span><span class="p">)</span>
+                    <span class="k">for</span> <span class="n">each_labels</span><span class="p">,</span> <span class="n">each_preds</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">labels</span><span class="p">,</span> <span class="n">preds</span><span class="p">)</span>
+                <span class="p">]</span>
+            <span class="p">)</span>
+            <span class="n">res</span><span class="p">[</span><span class="s2">&quot;mean_mrr&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="n">mean_mrr</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">metric</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;ndcg&quot;</span><span class="p">):</span>  <span class="c1"># format like:  ndcg@2;4;6;8</span>
+            <span class="n">ndcg_list</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>
+            <span class="n">ks</span> <span class="o">=</span> <span class="n">metric</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;@&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">ks</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="n">ndcg_list</span> <span class="o">=</span> <span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">token</span><span class="p">)</span> <span class="k">for</span> <span class="n">token</span> <span class="ow">in</span> <span class="n">ks</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;;&quot;</span><span class="p">)]</span>
+            <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">ndcg_list</span><span class="p">:</span>
+                <span class="n">ndcg_temp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span>
+                    <span class="p">[</span>
+                        <span class="n">ndcg_score</span><span class="p">(</span><span class="n">each_labels</span><span class="p">,</span> <span class="n">each_preds</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span>
+                        <span class="k">for</span> <span class="n">each_labels</span><span class="p">,</span> <span class="n">each_preds</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">labels</span><span class="p">,</span> <span class="n">preds</span><span class="p">)</span>
+                    <span class="p">]</span>
+                <span class="p">)</span>
+                <span class="n">res</span><span class="p">[</span><span class="s2">&quot;ndcg@</span><span class="si">{0}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">k</span><span class="p">)]</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="n">ndcg_temp</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">metric</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;hit&quot;</span><span class="p">):</span>  <span class="c1"># format like:  hit@2;4;6;8</span>
+            <span class="n">hit_list</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>
+            <span class="n">ks</span> <span class="o">=</span> <span class="n">metric</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;@&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">ks</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="n">hit_list</span> <span class="o">=</span> <span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">token</span><span class="p">)</span> <span class="k">for</span> <span class="n">token</span> <span class="ow">in</span> <span class="n">ks</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;;&quot;</span><span class="p">)]</span>
+            <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">hit_list</span><span class="p">:</span>
+                <span class="n">hit_temp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span>
+                    <span class="p">[</span>
+                        <span class="n">hit_score</span><span class="p">(</span><span class="n">each_labels</span><span class="p">,</span> <span class="n">each_preds</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span>
+                        <span class="k">for</span> <span class="n">each_labels</span><span class="p">,</span> <span class="n">each_preds</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">labels</span><span class="p">,</span> <span class="n">preds</span><span class="p">)</span>
+                    <span class="p">]</span>
+                <span class="p">)</span>
+                <span class="n">res</span><span class="p">[</span><span class="s2">&quot;hit@</span><span class="si">{0}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">k</span><span class="p">)]</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="n">hit_temp</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">metric</span> <span class="o">==</span> <span class="s2">&quot;group_auc&quot;</span><span class="p">:</span>
+            <span class="n">group_auc</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span>
+                <span class="p">[</span>
+                    <span class="n">roc_auc_score</span><span class="p">(</span><span class="n">each_labels</span><span class="p">,</span> <span class="n">each_preds</span><span class="p">)</span>
+                    <span class="k">for</span> <span class="n">each_labels</span><span class="p">,</span> <span class="n">each_preds</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">labels</span><span class="p">,</span> <span class="n">preds</span><span class="p">)</span>
+                <span class="p">]</span>
+            <span class="p">)</span>
+            <span class="n">res</span><span class="p">[</span><span class="s2">&quot;group_auc&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="n">group_auc</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Metric </span><span class="si">{0}</span><span class="s2"> not defined&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">metric</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">res</span></div>
+
+
+<div class="viewcode-block" id="load_dict"><a class="viewcode-back" href="../../../../source/models.html#recommenders.models.deeprec.deeprec_utils.load_dict">[docs]</a><span class="k">def</span> <span class="nf">load_dict</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Load the vocabularies.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        filename (str): Filename of user, item or category vocabulary.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        dict: A saved vocabulary.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s2">&quot;rb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="n">f_pkl</span> <span class="o">=</span> <span class="n">pkl</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">f_pkl</span></div>
+</pre></div>
+
+              </div>
+              
+        
+            
+
+
+
+<div class='prev-next-bottom'>
+    
+
+</div>
+        
+        </div>
+    </div>
+    <footer class="footer">
+    <div class="container">
+      <p>
+        
+          By The Jupyter Book community<br/>
+        
+            &copy; Copyright 2021.<br/>
+          <div class="extra_footer">
+            Don't forget to check out <a href= https://arxiv.org/abs/2108.02899>our paper from Document Intelligence Workshop at KDD 2021!</a>
+          </div>
+      </p>
+    </div>
+  </footer>
+</main>
+
+
+      </div>
+    </div>
+  
+  <script src="../../../../_static/js/index.1c5a1a01449ed65a7b51.js"></script>
+
+  
+  </body>
+</html>

@@ -1,0 +1,1135 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TF-IDF Content-Based Recommendation on the COVID-19 Open Research Dataset &#8212; &lt;h1 style=&#34;font-size:2em;text-align:center;color:#FF5733&#34;&gt;Recommenders&lt;/h1&gt;</title>
+    
+  <link href="../../_static/css/theme.css" rel="stylesheet" />
+  <link href="../../_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
+
+    
+  <link rel="stylesheet"
+    href="../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+
+    
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-book-theme.css?digest=c3fdc42140077d1ad13ad2f1588a4309" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/tabs.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    
+  <link rel="preload" as="script" href="../../_static/js/index.1c5a1a01449ed65a7b51.js">
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/togglebutton.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <script src="../../_static/tabs.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../../_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script>
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="../../_static/sphinx-thebe.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en" />
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="../../index.html">
+      
+      
+      
+      <h1 class="site-logo" id="site-title"><h1 style="font-size:2em;text-align:center;color:#FF5733">Recommenders</h1></h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="../../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        <p class="caption" role="heading">
+ <span class="caption-text">
+  Getting Started Notebooks
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="als_movielens.html">
+   Running ALS on MovieLens (PySpark)
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ncf_movielens.html">
+   Neural Collaborative Filtering on MovieLens dataset.
+  </a>
+ </li>
+</ul>
+
+    </div>
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="topbar container-xl fixed-top">
+    <div class="topbar-contents row">
+        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
+        <div class="col pl-md-4 topbar-main">
+            
+            <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+                data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+                aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
+                title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+                <i class="fas fa-bars"></i>
+                <i class="fas fa-arrow-left"></i>
+                <i class="fas fa-arrow-up"></i>
+            </button>
+            
+            
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
+            class="fas fa-download"></i></button>
+
+    <div class="dropdown-buttons">
+        <!-- ipynb file if we had a myst markdown file -->
+        
+        <!-- Download raw file -->
+        <a class="dropdown-buttons" href="../../_sources/examples/00_quick_start/tfidf_covid.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
+                data-placement="left">.ipynb</button></a>
+        <!-- Download PDF via print -->
+        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
+            onClick="window.print()" data-toggle="tooltip" data-placement="left">.pdf</button>
+    </div>
+</div>
+
+            <!-- Source interaction buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
+    <div class="dropdown-buttons sourcebuttons">
+        <a class="repository-button"
+            href="https://github.com/microsoft/genalog"><button type="button" class="btn btn-secondary topbarbtn"
+                data-toggle="tooltip" data-placement="left" title="Source repository"><i
+                    class="fab fa-github"></i>repository</button></a>
+        <a class="issues-button"
+            href="https://github.com/microsoft/genalog/issues/new?title=Issue%20on%20page%20%2Fexamples/00_quick_start/tfidf_covid.html&body=Your%20issue%20content%20here."><button
+                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
+                title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
+        
+    </div>
+</div>
+
+            <!-- Full screen (wrap in <a> to have style consistency -->
+
+<a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+        data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+        title="Fullscreen mode"><i
+            class="fas fa-expand"></i></button></a>
+
+            <!-- Launch buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Launch interactive content"><i class="fas fa-rocket"></i></button>
+    <div class="dropdown-buttons">
+        
+        <a class="binder-button" href="https://mybinder.org/v2/gh/microsoft/genalog/main?urlpath=tree/docs/genalog_docs/examples/00_quick_start/tfidf_covid.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Launch Binder" data-toggle="tooltip"
+                data-placement="left"><img class="binder-button-logo"
+                    src="../../_static/images/logo_binder.svg"
+                    alt="Interact on binder">Binder</button></a>
+        
+        
+        
+        
+    </div>
+</div>
+
+        </div>
+
+        <!-- Table of contents -->
+        <div class="d-none d-md-block col-md-2 bd-toc show">
+            
+            <div class="tocsection onthispage pt-5 pb-3">
+                <i class="fas fa-list"></i> Contents
+            </div>
+            <nav id="bd-toc-nav" aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#load-the-dataset-into-a-dataframe">
+   1. Load the dataset into a dataframe
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#extract-articles-in-the-public-domain">
+   2. Extract articles in the public domain
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#retrieve-full-article-text">
+   3. Retrieve full article text
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#instantiate-the-recommender">
+   4. Instantiate the recommender
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#prepare-text-for-use-in-the-tf-idf-recommender">
+   5. Prepare text for use in the TF-IDF recommender
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#recommend-articles-using-tf-idf">
+   6. Recommend articles using TF-IDF
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#display-top-recommendations-for-article-of-interest">
+   7. Display top recommendations for article of interest
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#conclusion">
+   Conclusion
+  </a>
+ </li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+        
+              <div>
+                
+  <p><i>Copyright (c) Microsoft Corporation. All rights reserved.</i></p>
+<p><i>Licensed under the MIT License.</i></p>
+<div class="tex2jax_ignore mathjax_ignore section" id="tf-idf-content-based-recommendation-on-the-covid-19-open-research-dataset">
+<h1>TF-IDF Content-Based Recommendation on the COVID-19 Open Research Dataset<a class="headerlink" href="#tf-idf-content-based-recommendation-on-the-covid-19-open-research-dataset" title="Permalink to this headline">¶</a></h1>
+<p>This demonstrates a simple implementation of Term Frequency Inverse Document Frequency (TF-IDF) content-based recommendation on the <a class="reference external" href="https://azure.microsoft.com/en-us/services/open-datasets/catalog/covid-19-open-research/">COVID-19 Open Research Dataset</a>, hosted through Azure Open Datasets.</p>
+<p>In this notebook, we will create a recommender which will return the top k recommended articles similar to any article of interest (query item) in the COVID-19 Open Reserach Dataset.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sys</span>
+<span class="c1"># Import functions</span>
+<span class="kn">from</span> <span class="nn">recommenders.datasets</span> <span class="kn">import</span> <span class="n">covid_utils</span>
+<span class="kn">from</span> <span class="nn">recommenders.models.tfidf.tfidf_utils</span> <span class="kn">import</span> <span class="n">TfidfRecommender</span>
+
+<span class="c1"># Print version</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;System version: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">version</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>System version: 3.6.11 | packaged by conda-forge | (default, Nov 27 2020, 18:57:37) 
+[GCC 9.3.0]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="load-the-dataset-into-a-dataframe">
+<h2>1. Load the dataset into a dataframe<a class="headerlink" href="#load-the-dataset-into-a-dataframe" title="Permalink to this headline">¶</a></h2>
+<p>Let’s begin by loading the metadata file for the dataset into a Pandas dataframe. This file contains metadata about each of the scientific articles included in the full dataset.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Specify container and metadata filename</span>
+<span class="n">container_name</span> <span class="o">=</span> <span class="s1">&#39;covid19temp&#39;</span>
+<span class="n">metadata_filename</span> <span class="o">=</span> <span class="s1">&#39;metadata.csv&#39;</span>
+<span class="n">sas_token</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>  <span class="c1"># please see Azure Open Datasets notebook for SAS token</span>
+
+<span class="c1"># Get metadata (may take around 1-2 min)</span>
+<span class="n">metadata</span> <span class="o">=</span> <span class="n">covid_utils</span><span class="o">.</span><span class="n">load_pandas_df</span><span class="p">(</span><span class="n">container_name</span><span class="o">=</span><span class="n">container_name</span><span class="p">,</span> <span class="n">metadata_filename</span><span class="o">=</span><span class="n">metadata_filename</span><span class="p">,</span> <span class="n">azure_storage_sas_token</span><span class="o">=</span><span class="n">sas_token</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/home/scgraham/miniconda3/envs/reco_base/lib/python3.6/site-packages/IPython/core/interactiveshell.py:3263: DtypeWarning: Columns (13,14) have mixed types.Specify dtype option on import or set low_memory=False.
+  if (await self.run_code(code, result,  async_=asy)):
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="extract-articles-in-the-public-domain">
+<h2>2. Extract articles in the public domain<a class="headerlink" href="#extract-articles-in-the-public-domain" title="Permalink to this headline">¶</a></h2>
+<p>The dataset contains articles using a variety of licenses. We will only be using articles that fall under the public domain (<a class="reference external" href="https://creativecommons.org/publicdomain/zero/1.0/">cc0</a>).</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># View distribution of license types in the dataset</span>
+<span class="n">metadata</span><span class="p">[</span><span class="s1">&#39;license&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">kind</span><span class="o">=</span><span class="s1">&#39;bar&#39;</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s1">&#39;License&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;AxesSubplot:title={&#39;center&#39;:&#39;License&#39;}&gt;
+</pre></div>
+</div>
+<img alt="../../_images/tfidf_covid_6_1.png" src="../../_images/tfidf_covid_6_1.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Extract metadata on public domain articles only</span>
+<span class="n">metadata_public</span> <span class="o">=</span> <span class="n">metadata</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">metadata</span><span class="p">[</span><span class="s1">&#39;license&#39;</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;cc0&#39;</span><span class="p">]</span>
+
+<span class="c1"># Clean dataframe</span>
+<span class="n">metadata_public</span> <span class="o">=</span> <span class="n">covid_utils</span><span class="o">.</span><span class="n">clean_dataframe</span><span class="p">(</span><span class="n">metadata_public</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Let’s look at the top few rows of this dataframe which contains metadata on public domain articles.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Preview metadata for public domain articles</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Number of articles in dataset: &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">metadata</span><span class="p">)))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Number of articles in dataset that fall under the public domain (cc0): &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">metadata_public</span><span class="p">)))</span>
+<span class="n">metadata_public</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Number of articles in dataset: 134206
+Number of articles in dataset that fall under the public domain (cc0): 274
+</pre></div>
+</div>
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>cord_uid</th>
+      <th>sha</th>
+      <th>source_x</th>
+      <th>title</th>
+      <th>doi</th>
+      <th>pmcid</th>
+      <th>pubmed_id</th>
+      <th>license</th>
+      <th>abstract</th>
+      <th>publish_time</th>
+      <th>authors</th>
+      <th>journal</th>
+      <th>mag_id</th>
+      <th>who_covidence_id</th>
+      <th>arxiv_id</th>
+      <th>pdf_json_files</th>
+      <th>pmc_json_files</th>
+      <th>url</th>
+      <th>s2_id</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>ej795nks</td>
+      <td>a3c3b7c38ad32e1042d78aae2027ca491e9f2197</td>
+      <td>PMC</td>
+      <td>Understanding the Spatial Clustering of Severe...</td>
+      <td>10.1289/ehp.7117</td>
+      <td>PMC1247620</td>
+      <td>15531441.0</td>
+      <td>cc0</td>
+      <td>We applied cartographic and geostatistical met...</td>
+      <td>2004-07-27</td>
+      <td>Lai, P.C.; Wong, C.M.; Hedley, A.J.; Lo, S.V.;...</td>
+      <td>Environ Health Perspect</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>document_parses/pdf_json/a3c3b7c38ad32e1042d78...</td>
+      <td>document_parses/pmc_json/PMC1247620.xml.json</td>
+      <td>https://www.ncbi.nlm.nih.gov/pmc/articles/PMC1...</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>9mzs5dl4</td>
+      <td>c1c6a98c21304f3788b20870b34afd8a115fa38c</td>
+      <td>PMC</td>
+      <td>The Application of the Haddon Matrix to Public...</td>
+      <td>10.1289/ehp.7491</td>
+      <td>PMC1257548</td>
+      <td>15866764.0</td>
+      <td>cc0</td>
+      <td>State and local health departments continue to...</td>
+      <td>2005-02-02</td>
+      <td>Barnett, Daniel J.; Balicer, Ran D.; Blodgett,...</td>
+      <td>Environ Health Perspect</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>document_parses/pdf_json/c1c6a98c21304f3788b20...</td>
+      <td>document_parses/pmc_json/PMC1257548.xml.json</td>
+      <td>https://www.ncbi.nlm.nih.gov/pmc/articles/PMC1...</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>u7lz3spe</td>
+      <td>c56ffdaf1cfbae5a6ed0abea495eaf7fa1cbc031</td>
+      <td>PMC</td>
+      <td>Cynomolgus Macaque as an Animal Model for Seve...</td>
+      <td>10.1371/journal.pmed.0030149</td>
+      <td>PMC1435788</td>
+      <td>16605302.0</td>
+      <td>cc0</td>
+      <td>BACKGROUND: The emergence of severe acute resp...</td>
+      <td>2006-04-18</td>
+      <td>Lawler, James V; Endy, Timothy P; Hensley, Lis...</td>
+      <td>PLoS Med</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>document_parses/pdf_json/c56ffdaf1cfbae5a6ed0a...</td>
+      <td>document_parses/pmc_json/PMC1435788.xml.json</td>
+      <td>https://www.ncbi.nlm.nih.gov/pmc/articles/PMC1...</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>na7z92i8</td>
+      <td>f38f3b112e4b702b60ba56be806d418bbb2b83c3</td>
+      <td>PMC</td>
+      <td>Immune Protection of Nonhuman Primates against...</td>
+      <td>10.1371/journal.pmed.0030177</td>
+      <td>PMC1459482</td>
+      <td>16683867.0</td>
+      <td>cc0</td>
+      <td>BACKGROUND: Ebola virus causes a hemorrhagic f...</td>
+      <td>2006-05-16</td>
+      <td>Sullivan, Nancy J; Geisbert, Thomas W; Geisber...</td>
+      <td>PLoS Med</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>document_parses/pdf_json/f38f3b112e4b702b60ba5...</td>
+      <td>document_parses/pmc_json/PMC1459482.xml.json</td>
+      <td>https://www.ncbi.nlm.nih.gov/pmc/articles/PMC1...</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>j35w1vsw</td>
+      <td>5dc0b8b662824323881c3a1ae3a1bae2a821484d</td>
+      <td>PMC</td>
+      <td>SARS: Systematic Review of Treatment Effects</td>
+      <td>10.1371/journal.pmed.0030343</td>
+      <td>PMC1564166</td>
+      <td>16968120.0</td>
+      <td>cc0</td>
+      <td>BACKGROUND: The SARS outbreak of 2002–2003 pre...</td>
+      <td>2006-09-12</td>
+      <td>Stockman, Lauren J; Bellamy, Richard; Garner, ...</td>
+      <td>PLoS Med</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>document_parses/pdf_json/5dc0b8b662824323881c3...</td>
+      <td>document_parses/pmc_json/PMC1564166.xml.json</td>
+      <td>https://www.ncbi.nlm.nih.gov/pmc/articles/PMC1...</td>
+      <td>NaN</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+</div>
+<div class="section" id="retrieve-full-article-text">
+<h2>3. Retrieve full article text<a class="headerlink" href="#retrieve-full-article-text" title="Permalink to this headline">¶</a></h2>
+<p>Now that we have the metadata for the public domain articles as its own dataframe, let’s retrieve the full text for each public domain scientific article.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Extract text from all public domain articles (may take 2-3 min)</span>
+<span class="n">all_text</span> <span class="o">=</span> <span class="n">covid_utils</span><span class="o">.</span><span class="n">get_public_domain_text</span><span class="p">(</span><span class="n">df</span><span class="o">=</span><span class="n">metadata_public</span><span class="p">,</span> <span class="n">container_name</span><span class="o">=</span><span class="n">container_name</span><span class="p">,</span> <span class="n">azure_storage_sas_token</span><span class="o">=</span><span class="n">sas_token</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Notice that <strong>all_text</strong> is the same as <strong>metadata_public</strong> but now has an additional column called <strong>full_text</strong> which contains the full text for each respective article.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Preview</span>
+<span class="n">all_text</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>index</th>
+      <th>cord_uid</th>
+      <th>doi</th>
+      <th>title</th>
+      <th>publish_time</th>
+      <th>authors</th>
+      <th>journal</th>
+      <th>url</th>
+      <th>abstract</th>
+      <th>full_text</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>0</td>
+      <td>ej795nks</td>
+      <td>10.1289/ehp.7117</td>
+      <td>Understanding the Spatial Clustering of Severe...</td>
+      <td>2004-07-27</td>
+      <td>Lai, P.C.; Wong, C.M.; Hedley, A.J.; Lo, S.V.;...</td>
+      <td>Environ Health Perspect</td>
+      <td>https://www.ncbi.nlm.nih.gov/pmc/articles/PMC1...</td>
+      <td>We applied cartographic and geostatistical met...</td>
+      <td>Since the emergence and rapid spread of the et...</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>1</td>
+      <td>9mzs5dl4</td>
+      <td>10.1289/ehp.7491</td>
+      <td>The Application of the Haddon Matrix to Public...</td>
+      <td>2005-02-02</td>
+      <td>Barnett, Daniel J.; Balicer, Ran D.; Blodgett,...</td>
+      <td>Environ Health Perspect</td>
+      <td>https://www.ncbi.nlm.nih.gov/pmc/articles/PMC1...</td>
+      <td>State and local health departments continue to...</td>
+      <td>sudden fever and dry cough, along with chills ...</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>2</td>
+      <td>u7lz3spe</td>
+      <td>10.1371/journal.pmed.0030149</td>
+      <td>Cynomolgus Macaque as an Animal Model for Seve...</td>
+      <td>2006-04-18</td>
+      <td>Lawler, James V; Endy, Timothy P; Hensley, Lis...</td>
+      <td>PLoS Med</td>
+      <td>https://www.ncbi.nlm.nih.gov/pmc/articles/PMC1...</td>
+      <td>BACKGROUND: The emergence of severe acute resp...</td>
+      <td>The emergence of severe acute respiratory synd...</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>3</td>
+      <td>na7z92i8</td>
+      <td>10.1371/journal.pmed.0030177</td>
+      <td>Immune Protection of Nonhuman Primates against...</td>
+      <td>2006-05-16</td>
+      <td>Sullivan, Nancy J; Geisbert, Thomas W; Geisber...</td>
+      <td>PLoS Med</td>
+      <td>https://www.ncbi.nlm.nih.gov/pmc/articles/PMC1...</td>
+      <td>BACKGROUND: Ebola virus causes a hemorrhagic f...</td>
+      <td>Background Ebola virus causes a hemorrhagic fe...</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>4</td>
+      <td>j35w1vsw</td>
+      <td>10.1371/journal.pmed.0030343</td>
+      <td>SARS: Systematic Review of Treatment Effects</td>
+      <td>2006-09-12</td>
+      <td>Stockman, Lauren J; Bellamy, Richard; Garner, ...</td>
+      <td>PLoS Med</td>
+      <td>https://www.ncbi.nlm.nih.gov/pmc/articles/PMC1...</td>
+      <td>BACKGROUND: The SARS outbreak of 2002–2003 pre...</td>
+      <td>The SARS outbreak of 2002-2003 presented clini...</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+</div>
+<div class="section" id="instantiate-the-recommender">
+<h2>4. Instantiate the recommender<a class="headerlink" href="#instantiate-the-recommender" title="Permalink to this headline">¶</a></h2>
+<p>All functions for data preparation and recommendation are contained within the <strong>TfidfRecommender</strong> class we have imported. Prior to running these functions, we must create an object of this class.</p>
+<p>Select one of the following tokenization methods to use in the model:</p>
+<table class="colwidths-auto table">
+<thead>
+<tr class="row-odd"><th class="text-align:left head"><p>tokenization_method</p></th>
+<th class="text-align:left head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-align:left"><p>‘none’</p></td>
+<td class="text-align:left"><p>No tokenization is applied. Each word is considered a token.</p></td>
+</tr>
+<tr class="row-odd"><td class="text-align:left"><p>‘nltk’</p></td>
+<td class="text-align:left"><p>Simple stemming is applied using NLTK.</p></td>
+</tr>
+<tr class="row-even"><td class="text-align:left"><p>‘bert’</p></td>
+<td class="text-align:left"><p>HuggingFace BERT word tokenization (‘bert-base-cased’) is applied.</p></td>
+</tr>
+<tr class="row-odd"><td class="text-align:left"><p>‘scibert’</p></td>
+<td class="text-align:left"><p>SciBERT word tokenization (‘allenai/scibert_scivocab_cased’) is applied.<br>This is recommended for scientific journal articles.</p></td>
+</tr>
+</tbody>
+</table>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create the recommender object</span>
+<span class="n">recommender</span> <span class="o">=</span> <span class="n">TfidfRecommender</span><span class="p">(</span><span class="n">id_col</span><span class="o">=</span><span class="s1">&#39;cord_uid&#39;</span><span class="p">,</span> <span class="n">tokenization_method</span><span class="o">=</span><span class="s1">&#39;scibert&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="prepare-text-for-use-in-the-tf-idf-recommender">
+<h2>5. Prepare text for use in the TF-IDF recommender<a class="headerlink" href="#prepare-text-for-use-in-the-tf-idf-recommender" title="Permalink to this headline">¶</a></h2>
+<p>The raw text retrieved for each article requires basic cleaning prior to being used in the TF-IDF model.</p>
+<p>Let’s look at the full_text from the first article in our dataframe as an example.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Preview the first 1000 characters of the full scientific text from one example</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">all_text</span><span class="p">[</span><span class="s1">&#39;full_text&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">][:</span><span class="mi">1000</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Since the emergence and rapid spread of the etiologic agent of severe acute respiratory syndrome (SARS)-SARS coronavirus (SARS-CoV)-in late 2002 and during the first 6 months of 2003, great progress has been made in understanding the biology, pathogenesis, and epidemiology of both the disease and the virus (SARS-CoV). Much remains to be done, however, including the development of effective therapeutic interventions and diagnostic tools with high sensitivity and specificity soon after the onset of clinical symptoms. The evaluation of key epidemiologic parameters and the impact of different public health interventions in the various settings that experienced minor or major epidemics is also needed (Affonso et al. 2004; Cui et al. 2003; Lau et al. 2004; Leung et al., in press) . In terms of outbreak control on the population level, many questions about &quot;superspreading events&quot; (SSEs) remain to be investigated. Such an SSE was responsible for &gt; 300 cases (out of a total of 1,755) in the Amo
+</pre></div>
+</div>
+</div>
+</div>
+<p>As seen above, there are some special characters (such as • ▲ ■ ≥ °) and punctuation which should be removed prior to using the text as input. Casing (capitalization) is preserved for <a class="reference external" href="https://huggingface.co/transformers/model_doc/bert.html">BERT-based tokenization methods</a>, but is removed for simple or no tokenization.</p>
+<p>Let’s join together the <strong>title</strong>, <strong>abstract</strong>, and <strong>full_text</strong> columns and clean them for future use in the TF-IDF model.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Assign columns to clean and combine</span>
+<span class="n">cols_to_clean</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;title&#39;</span><span class="p">,</span><span class="s1">&#39;abstract&#39;</span><span class="p">,</span><span class="s1">&#39;full_text&#39;</span><span class="p">]</span>
+<span class="n">clean_col</span> <span class="o">=</span> <span class="s1">&#39;cleaned_text&#39;</span>
+<span class="n">df_clean</span> <span class="o">=</span> <span class="n">recommender</span><span class="o">.</span><span class="n">clean_dataframe</span><span class="p">(</span><span class="n">all_text</span><span class="p">,</span> <span class="n">cols_to_clean</span><span class="p">,</span> <span class="n">clean_col</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Preview the dataframe with the cleaned text</span>
+<span class="n">df_clean</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>index</th>
+      <th>cord_uid</th>
+      <th>doi</th>
+      <th>title</th>
+      <th>publish_time</th>
+      <th>authors</th>
+      <th>journal</th>
+      <th>url</th>
+      <th>abstract</th>
+      <th>full_text</th>
+      <th>cleaned_text</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>0</td>
+      <td>ej795nks</td>
+      <td>10.1289/ehp.7117</td>
+      <td>Understanding the Spatial Clustering of Severe...</td>
+      <td>2004-07-27</td>
+      <td>Lai, P.C.; Wong, C.M.; Hedley, A.J.; Lo, S.V.;...</td>
+      <td>Environ Health Perspect</td>
+      <td>https://www.ncbi.nlm.nih.gov/pmc/articles/PMC1...</td>
+      <td>We applied cartographic and geostatistical met...</td>
+      <td>Since the emergence and rapid spread of the et...</td>
+      <td>Understanding the Spatial Clustering of Severe...</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>1</td>
+      <td>9mzs5dl4</td>
+      <td>10.1289/ehp.7491</td>
+      <td>The Application of the Haddon Matrix to Public...</td>
+      <td>2005-02-02</td>
+      <td>Barnett, Daniel J.; Balicer, Ran D.; Blodgett,...</td>
+      <td>Environ Health Perspect</td>
+      <td>https://www.ncbi.nlm.nih.gov/pmc/articles/PMC1...</td>
+      <td>State and local health departments continue to...</td>
+      <td>sudden fever and dry cough, along with chills ...</td>
+      <td>The Application of the Haddon Matrix to Public...</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>2</td>
+      <td>u7lz3spe</td>
+      <td>10.1371/journal.pmed.0030149</td>
+      <td>Cynomolgus Macaque as an Animal Model for Seve...</td>
+      <td>2006-04-18</td>
+      <td>Lawler, James V; Endy, Timothy P; Hensley, Lis...</td>
+      <td>PLoS Med</td>
+      <td>https://www.ncbi.nlm.nih.gov/pmc/articles/PMC1...</td>
+      <td>BACKGROUND: The emergence of severe acute resp...</td>
+      <td>The emergence of severe acute respiratory synd...</td>
+      <td>Cynomolgus Macaque as an Animal Model for Seve...</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>3</td>
+      <td>na7z92i8</td>
+      <td>10.1371/journal.pmed.0030177</td>
+      <td>Immune Protection of Nonhuman Primates against...</td>
+      <td>2006-05-16</td>
+      <td>Sullivan, Nancy J; Geisbert, Thomas W; Geisber...</td>
+      <td>PLoS Med</td>
+      <td>https://www.ncbi.nlm.nih.gov/pmc/articles/PMC1...</td>
+      <td>BACKGROUND: Ebola virus causes a hemorrhagic f...</td>
+      <td>Background Ebola virus causes a hemorrhagic fe...</td>
+      <td>Immune Protection of Nonhuman Primates against...</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>4</td>
+      <td>j35w1vsw</td>
+      <td>10.1371/journal.pmed.0030343</td>
+      <td>SARS: Systematic Review of Treatment Effects</td>
+      <td>2006-09-12</td>
+      <td>Stockman, Lauren J; Bellamy, Richard; Garner, ...</td>
+      <td>PLoS Med</td>
+      <td>https://www.ncbi.nlm.nih.gov/pmc/articles/PMC1...</td>
+      <td>BACKGROUND: The SARS outbreak of 2002–2003 pre...</td>
+      <td>The SARS outbreak of 2002-2003 presented clini...</td>
+      <td>SARS Systematic Review of Treatment Effects BA...</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Preview the first 1000 characters of the cleaned version of the previous example</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df_clean</span><span class="p">[</span><span class="n">clean_col</span><span class="p">][</span><span class="mi">0</span><span class="p">][:</span><span class="mi">1000</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Understanding the Spatial Clustering of Severe Acute Respiratory Syndrome SARS in Hong Kong We applied cartographic and geostatistical methods in analyzing the patterns of disease spread during the 2003 severe acute respiratory syndrome SARS outbreak in Hong Kong using geographic information system GIS technology We analyzed an integrated database that contained clinical and personal details on all 1755 patients confirmed to have SARS from 15 February to 22 June 2003 Elementary mapping of disease occurrences in space and time simultaneously revealed the geographic extent of spread throughout the territory Statistical surfaces created by the kernel method confirmed that SARS cases were highly clustered and identified distinct disease hot spots Contextual analysis of mean and standard deviation of different density classes indicated that the period from day 1 18 February through day 16 6 March was the prodrome of the epidemic whereas days 86 15 May to 106 4 June marked the declining phas
+</pre></div>
+</div>
+</div>
+</div>
+<p>Let’s also tokenize the cleaned text for use in the TF-IDF model. The tokens are stored within our TfidfRecommender object.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Tokenize text with tokenization_method specified in class instantiation</span>
+<span class="n">tf</span><span class="p">,</span> <span class="n">vectors_tokenized</span> <span class="o">=</span> <span class="n">recommender</span><span class="o">.</span><span class="n">tokenize_text</span><span class="p">(</span><span class="n">df_clean</span><span class="p">,</span> <span class="n">text_col</span><span class="o">=</span><span class="n">clean_col</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="recommend-articles-using-tf-idf">
+<h2>6. Recommend articles using TF-IDF<a class="headerlink" href="#recommend-articles-using-tf-idf" title="Permalink to this headline">¶</a></h2>
+<p>Let’s now fit the recommender model to the processed data (tokens) and retrieve the top k recommended articles.</p>
+<p>When creating our object, we specified k=5 so the <code class="docutils literal notranslate"><span class="pre">recommend_top_k_items</span></code> function will return the top 5 recommendations for each public domain article.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Fit the TF-IDF vectorizer</span>
+<span class="n">recommender</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">tf</span><span class="p">,</span> <span class="n">vectors_tokenized</span><span class="p">)</span>
+
+<span class="c1"># Get recommendations</span>
+<span class="n">top_k_recommendations</span> <span class="o">=</span> <span class="n">recommender</span><span class="o">.</span><span class="n">recommend_top_k_items</span><span class="p">(</span><span class="n">df_clean</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>In our recommendation table, each row represents a single recommendation.</p>
+<ul class="simple">
+<li><p><strong>cord_uid</strong> corresponds to the article that is being used to make recommendations from.</p></li>
+<li><p><strong>rec_rank</strong> contains the recommdation’s rank (e.g., rank of 1 means top recommendation).</p></li>
+<li><p><strong>rec_score</strong> is the cosine similarity score between the query article and the recommended article.</p></li>
+<li><p><strong>rec_cord_uid</strong> corresponds to the recommended article.</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Preview the recommendations</span>
+<span class="n">top_k_recommendations</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>cord_uid</th>
+      <th>rec_rank</th>
+      <th>rec_score</th>
+      <th>rec_cord_uid</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>ej795nks</td>
+      <td>1</td>
+      <td>0.142033</td>
+      <td>u7lz3spe</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>ej795nks</td>
+      <td>2</td>
+      <td>0.117743</td>
+      <td>j35w1vsw</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>ej795nks</td>
+      <td>3</td>
+      <td>0.100325</td>
+      <td>nt60lv2k</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>ej795nks</td>
+      <td>4</td>
+      <td>0.076779</td>
+      <td>vp9d9vmp</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>ej795nks</td>
+      <td>5</td>
+      <td>0.074392</td>
+      <td>05d1mhkq</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>1280</th>
+      <td>yetdnv6j</td>
+      <td>1</td>
+      <td>0.048499</td>
+      <td>9w9w0z4o</td>
+    </tr>
+    <tr>
+      <th>1281</th>
+      <td>yetdnv6j</td>
+      <td>2</td>
+      <td>0.046675</td>
+      <td>6nas74q1</td>
+    </tr>
+    <tr>
+      <th>1282</th>
+      <td>yetdnv6j</td>
+      <td>3</td>
+      <td>0.044476</td>
+      <td>7docv0dt</td>
+    </tr>
+    <tr>
+      <th>1283</th>
+      <td>yetdnv6j</td>
+      <td>4</td>
+      <td>0.040522</td>
+      <td>oj60pldq</td>
+    </tr>
+    <tr>
+      <th>1284</th>
+      <td>yetdnv6j</td>
+      <td>5</td>
+      <td>0.039635</td>
+      <td>jq1xumrh</td>
+    </tr>
+  </tbody>
+</table>
+<p>1285 rows × 4 columns</p>
+</div></div></div>
+</div>
+<p>Optionally, we can access the full recommendation dictionary, which contains full ranked lists for each public domain article.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Optionally view full recommendation list</span>
+<span class="n">full_rec_list</span> <span class="o">=</span> <span class="n">recommender</span><span class="o">.</span><span class="n">recommendations</span>
+
+<span class="n">article_of_interest</span> <span class="o">=</span> <span class="s1">&#39;ej795nks&#39;</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Number of recommended articles for &#39;</span> <span class="o">+</span> <span class="n">article_of_interest</span> <span class="o">+</span> <span class="s1">&#39;: &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">full_rec_list</span><span class="p">[</span><span class="n">article_of_interest</span><span class="p">])))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Number of recommended articles for ej795nks: 256
+</pre></div>
+</div>
+</div>
+</div>
+<p>Optionally, we can also view the tokens and stop words which were used in the recommender.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Optionally view tokens</span>
+<span class="n">tokens</span> <span class="o">=</span> <span class="n">recommender</span><span class="o">.</span><span class="n">get_tokens</span><span class="p">()</span>
+
+<span class="c1"># Preview 10 tokens</span>
+<span class="nb">print</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">tokens</span><span class="o">.</span><span class="n">keys</span><span class="p">())[:</span><span class="mi">10</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;understanding&#39;, &#39;spatial&#39;, &#39;clustering&#39;, &#39;severe&#39;, &#39;acute&#39;, &#39;respiratory&#39;, &#39;syndrome&#39;, &#39;sa&#39;, &#39;rs&#39;, &#39;hon&#39;]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Preview just the first 10 stop words sorted alphabetically</span>
+<span class="n">stop_words</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">recommender</span><span class="o">.</span><span class="n">get_stop_words</span><span class="p">())</span>
+<span class="n">stop_words</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">stop_words</span><span class="p">[:</span><span class="mi">10</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;a&#39;, &#39;about&#39;, &#39;above&#39;, &#39;across&#39;, &#39;after&#39;, &#39;afterwards&#39;, &#39;again&#39;, &#39;against&#39;, &#39;all&#39;, &#39;almost&#39;]
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="display-top-recommendations-for-article-of-interest">
+<h2>7. Display top recommendations for article of interest<a class="headerlink" href="#display-top-recommendations-for-article-of-interest" title="Permalink to this headline">¶</a></h2>
+<p>Now that we have the recommendation table containing IDs for both query and recommended articles, we can easily return the full metadata for the top k recommendations for any given article.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cols_to_keep</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;title&#39;</span><span class="p">,</span><span class="s1">&#39;authors&#39;</span><span class="p">,</span><span class="s1">&#39;journal&#39;</span><span class="p">,</span><span class="s1">&#39;publish_time&#39;</span><span class="p">,</span><span class="s1">&#39;url&#39;</span><span class="p">]</span>
+<span class="n">recommender</span><span class="o">.</span><span class="n">get_top_k_recommendations</span><span class="p">(</span><span class="n">metadata_public</span><span class="p">,</span><span class="n">article_of_interest</span><span class="p">,</span><span class="n">cols_to_keep</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><style  type="text/css" >
+</style><table id="T_677d096a_840e_11eb_9516_f18ad58d3cc8" ><thead>    <tr>        <th class="blank level0" ></th>        <th class="col_heading level0 col0" >rank</th>        <th class="col_heading level0 col1" >similarity_score</th>        <th class="col_heading level0 col2" >title</th>        <th class="col_heading level0 col3" >authors</th>        <th class="col_heading level0 col4" >journal</th>        <th class="col_heading level0 col5" >publish_time</th>        <th class="col_heading level0 col6" >url</th>    </tr></thead><tbody>
+                <tr>
+                        <th id="T_677d096a_840e_11eb_9516_f18ad58d3cc8level0_row0" class="row_heading level0 row0" >0</th>
+                        <td id="T_677d096a_840e_11eb_9516_f18ad58d3cc8row0_col0" class="data row0 col0" >1</td>
+                        <td id="T_677d096a_840e_11eb_9516_f18ad58d3cc8row0_col1" class="data row0 col1" >0.142033</td>
+                        <td id="T_677d096a_840e_11eb_9516_f18ad58d3cc8row0_col2" class="data row0 col2" >Cynomolgus Macaque as an Animal Model for Severe Acute Respiratory Syndrome</td>
+                        <td id="T_677d096a_840e_11eb_9516_f18ad58d3cc8row0_col3" class="data row0 col3" >Lawler, James V; Endy, Timothy P; Hensley, Lisa E; Garrison, Aura; Fritz, Elizabeth A; Lesar, May; Baric, Ralph S; Kulesh, David A; Norwood, David A; Wasieloski, Leonard P; Ulrich, Melanie P; Slezak, Tom R; Vitalis, Elizabeth; Huggins, John W; Jahrling, Peter B; Paragas, Jason</td>
+                        <td id="T_677d096a_840e_11eb_9516_f18ad58d3cc8row0_col4" class="data row0 col4" >PLoS Med</td>
+                        <td id="T_677d096a_840e_11eb_9516_f18ad58d3cc8row0_col5" class="data row0 col5" >2006-04-18</td>
+                        <td id="T_677d096a_840e_11eb_9516_f18ad58d3cc8row0_col6" class="data row0 col6" ><a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC1435788/">https://www.ncbi.nlm.nih.gov/pmc/articles/PMC1435788/</a></td>
+            </tr>
+            <tr>
+                        <th id="T_677d096a_840e_11eb_9516_f18ad58d3cc8level0_row1" class="row_heading level0 row1" >1</th>
+                        <td id="T_677d096a_840e_11eb_9516_f18ad58d3cc8row1_col0" class="data row1 col0" >2</td>
+                        <td id="T_677d096a_840e_11eb_9516_f18ad58d3cc8row1_col1" class="data row1 col1" >0.117743</td>
+                        <td id="T_677d096a_840e_11eb_9516_f18ad58d3cc8row1_col2" class="data row1 col2" >SARS: Systematic Review of Treatment Effects</td>
+                        <td id="T_677d096a_840e_11eb_9516_f18ad58d3cc8row1_col3" class="data row1 col3" >Stockman, Lauren J; Bellamy, Richard; Garner, Paul</td>
+                        <td id="T_677d096a_840e_11eb_9516_f18ad58d3cc8row1_col4" class="data row1 col4" >PLoS Med</td>
+                        <td id="T_677d096a_840e_11eb_9516_f18ad58d3cc8row1_col5" class="data row1 col5" >2006-09-12</td>
+                        <td id="T_677d096a_840e_11eb_9516_f18ad58d3cc8row1_col6" class="data row1 col6" ><a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC1564166/">https://www.ncbi.nlm.nih.gov/pmc/articles/PMC1564166/</a></td>
+            </tr>
+            <tr>
+                        <th id="T_677d096a_840e_11eb_9516_f18ad58d3cc8level0_row2" class="row_heading level0 row2" >2</th>
+                        <td id="T_677d096a_840e_11eb_9516_f18ad58d3cc8row2_col0" class="data row2 col0" >3</td>
+                        <td id="T_677d096a_840e_11eb_9516_f18ad58d3cc8row2_col1" class="data row2 col1" >0.100325</td>
+                        <td id="T_677d096a_840e_11eb_9516_f18ad58d3cc8row2_col2" class="data row2 col2" >A Network Integration Approach to Predict Conserved Regulators Related to Pathogenicity of Influenza and SARS-CoV Respiratory Viruses</td>
+                        <td id="T_677d096a_840e_11eb_9516_f18ad58d3cc8row2_col3" class="data row2 col3" >Mitchell, Hugh D.; Eisfeld, Amie J.; Sims, Amy C.; McDermott, Jason E.; Matzke, Melissa M.; Webb-Robertson, Bobbi-Jo M.; Tilton, Susan C.; Tchitchek, Nicolas; Josset, Laurence; Li, Chengjun; Ellis, Amy L.; Chang, Jean H.; Heegel, Robert A.; Luna, Maria L.; Schepmoes, Athena A.; Shukla, Anil K.; Metz, Thomas O.; Neumann, Gabriele; Benecke, Arndt G.; Smith, Richard D.; Baric, Ralph S.; Kawaoka, Yoshihiro; Katze, Michael G.; Waters, Katrina M.</td>
+                        <td id="T_677d096a_840e_11eb_9516_f18ad58d3cc8row2_col4" class="data row2 col4" >PLoS One</td>
+                        <td id="T_677d096a_840e_11eb_9516_f18ad58d3cc8row2_col5" class="data row2 col5" >2013-07-25</td>
+                        <td id="T_677d096a_840e_11eb_9516_f18ad58d3cc8row2_col6" class="data row2 col6" ><a href="https://doi.org/10.1371/journal.pone.0069374; https://www.ncbi.nlm.nih.gov/pubmed/23935999/">https://doi.org/10.1371/journal.pone.0069374; https://www.ncbi.nlm.nih.gov/pubmed/23935999/</a></td>
+            </tr>
+            <tr>
+                        <th id="T_677d096a_840e_11eb_9516_f18ad58d3cc8level0_row3" class="row_heading level0 row3" >3</th>
+                        <td id="T_677d096a_840e_11eb_9516_f18ad58d3cc8row3_col0" class="data row3 col0" >4</td>
+                        <td id="T_677d096a_840e_11eb_9516_f18ad58d3cc8row3_col1" class="data row3 col1" >0.076779</td>
+                        <td id="T_677d096a_840e_11eb_9516_f18ad58d3cc8row3_col2" class="data row3 col2" >Genome Wide Identification of SARS-CoV Susceptibility Loci Using the Collaborative Cross</td>
+                        <td id="T_677d096a_840e_11eb_9516_f18ad58d3cc8row3_col3" class="data row3 col3" >Gralinski, Lisa E.; Ferris, Martin T.; Aylor, David L.; Whitmore, Alan C.; Green, Richard; Frieman, Matthew B.; Deming, Damon; Menachery, Vineet D.; Miller, Darla R.; Buus, Ryan J.; Bell, Timothy A.; Churchill, Gary A.; Threadgill, David W.; Katze, Michael G.; McMillan, Leonard; Valdar, William; Heise, Mark T.; Pardo-Manuel de Villena, Fernando; Baric, Ralph S.</td>
+                        <td id="T_677d096a_840e_11eb_9516_f18ad58d3cc8row3_col4" class="data row3 col4" >PLoS Genet</td>
+                        <td id="T_677d096a_840e_11eb_9516_f18ad58d3cc8row3_col5" class="data row3 col5" >2015-10-09</td>
+                        <td id="T_677d096a_840e_11eb_9516_f18ad58d3cc8row3_col6" class="data row3 col6" ><a href="https://doi.org/10.1371/journal.pgen.1005504; https://www.ncbi.nlm.nih.gov/pubmed/26452100/">https://doi.org/10.1371/journal.pgen.1005504; https://www.ncbi.nlm.nih.gov/pubmed/26452100/</a></td>
+            </tr>
+            <tr>
+                        <th id="T_677d096a_840e_11eb_9516_f18ad58d3cc8level0_row4" class="row_heading level0 row4" >4</th>
+                        <td id="T_677d096a_840e_11eb_9516_f18ad58d3cc8row4_col0" class="data row4 col0" >5</td>
+                        <td id="T_677d096a_840e_11eb_9516_f18ad58d3cc8row4_col1" class="data row4 col1" >0.074392</td>
+                        <td id="T_677d096a_840e_11eb_9516_f18ad58d3cc8row4_col2" class="data row4 col2" >A Porcine Epidemic Diarrhea Virus Outbreak in One Geographic Region of the United States: Descriptive Epidemiology and Investigation of the Possibility of Airborne Virus Spread</td>
+                        <td id="T_677d096a_840e_11eb_9516_f18ad58d3cc8row4_col3" class="data row4 col3" >Beam, Andrea; Goede, Dane; Fox, Andrew; McCool, Mary Jane; Wall, Goldlin; Haley, Charles; Morrison, Robert</td>
+                        <td id="T_677d096a_840e_11eb_9516_f18ad58d3cc8row4_col4" class="data row4 col4" >PLoS One</td>
+                        <td id="T_677d096a_840e_11eb_9516_f18ad58d3cc8row4_col5" class="data row4 col5" >2015-12-28</td>
+                        <td id="T_677d096a_840e_11eb_9516_f18ad58d3cc8row4_col6" class="data row4 col6" ><a href="https://doi.org/10.1371/journal.pone.0144818; https://www.ncbi.nlm.nih.gov/pubmed/26709512/">https://doi.org/10.1371/journal.pone.0144818; https://www.ncbi.nlm.nih.gov/pubmed/26709512/</a></td>
+            </tr>
+    </tbody></table></div></div>
+</div>
+</div>
+<div class="section" id="conclusion">
+<h2>Conclusion<a class="headerlink" href="#conclusion" title="Permalink to this headline">¶</a></h2>
+<p>In this notebook, we have demonstrated how to create a TF-IDF recommender to recommend the top k (in this case 5) articles similar in content to an article of interest (in this example, article with <code class="docutils literal notranslate"><span class="pre">cord_uid='ej795nks'</span></code>).</p>
+</div>
+</div>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./examples/00_quick_start"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+              </div>
+              
+        
+            
+
+
+
+<div class='prev-next-bottom'>
+    
+
+</div>
+        
+        </div>
+    </div>
+    <footer class="footer">
+    <div class="container">
+      <p>
+        
+          By The Jupyter Book community<br/>
+        
+            &copy; Copyright 2021.<br/>
+      </p>
+    </div>
+  </footer>
+</main>
+
+
+      </div>
+    </div>
+  
+  <script src="../../_static/js/index.1c5a1a01449ed65a7b51.js"></script>
+
+  
+  </body>
+</html>

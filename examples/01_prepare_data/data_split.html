@@ -1,0 +1,1111 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Data split &#8212; &lt;h1 style=&#34;font-size:2em;text-align:center;color:#FF5733&#34;&gt;Recommenders&lt;/h1&gt;</title>
+    
+  <link href="../../_static/css/theme.css" rel="stylesheet" />
+  <link href="../../_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
+
+    
+  <link rel="stylesheet"
+    href="../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+
+    
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-book-theme.css?digest=c3fdc42140077d1ad13ad2f1588a4309" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/tabs.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    
+  <link rel="preload" as="script" href="../../_static/js/index.1c5a1a01449ed65a7b51.js">
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/togglebutton.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <script src="../../_static/tabs.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../../_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script>
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="../../_static/sphinx-thebe.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en" />
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="../../index.html">
+      
+      
+      
+      <h1 class="site-logo" id="site-title"><h1 style="font-size:2em;text-align:center;color:#FF5733">Recommenders</h1></h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="../../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        <p class="caption" role="heading">
+ <span class="caption-text">
+  Getting Started Notebooks
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../00_quick_start/als_movielens.html">
+   Running ALS on MovieLens (PySpark)
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../00_quick_start/ncf_movielens.html">
+   Neural Collaborative Filtering on MovieLens dataset.
+  </a>
+ </li>
+</ul>
+
+    </div>
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="topbar container-xl fixed-top">
+    <div class="topbar-contents row">
+        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
+        <div class="col pl-md-4 topbar-main">
+            
+            <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+                data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+                aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
+                title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+                <i class="fas fa-bars"></i>
+                <i class="fas fa-arrow-left"></i>
+                <i class="fas fa-arrow-up"></i>
+            </button>
+            
+            
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
+            class="fas fa-download"></i></button>
+
+    <div class="dropdown-buttons">
+        <!-- ipynb file if we had a myst markdown file -->
+        
+        <!-- Download raw file -->
+        <a class="dropdown-buttons" href="../../_sources/examples/01_prepare_data/data_split.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
+                data-placement="left">.ipynb</button></a>
+        <!-- Download PDF via print -->
+        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
+            onClick="window.print()" data-toggle="tooltip" data-placement="left">.pdf</button>
+    </div>
+</div>
+
+            <!-- Source interaction buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
+    <div class="dropdown-buttons sourcebuttons">
+        <a class="repository-button"
+            href="https://github.com/microsoft/genalog"><button type="button" class="btn btn-secondary topbarbtn"
+                data-toggle="tooltip" data-placement="left" title="Source repository"><i
+                    class="fab fa-github"></i>repository</button></a>
+        <a class="issues-button"
+            href="https://github.com/microsoft/genalog/issues/new?title=Issue%20on%20page%20%2Fexamples/01_prepare_data/data_split.html&body=Your%20issue%20content%20here."><button
+                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
+                title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
+        
+    </div>
+</div>
+
+            <!-- Full screen (wrap in <a> to have style consistency -->
+
+<a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+        data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+        title="Fullscreen mode"><i
+            class="fas fa-expand"></i></button></a>
+
+            <!-- Launch buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Launch interactive content"><i class="fas fa-rocket"></i></button>
+    <div class="dropdown-buttons">
+        
+        <a class="binder-button" href="https://mybinder.org/v2/gh/microsoft/genalog/main?urlpath=tree/docs/genalog_docs/examples/01_prepare_data/data_split.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Launch Binder" data-toggle="tooltip"
+                data-placement="left"><img class="binder-button-logo"
+                    src="../../_static/images/logo_binder.svg"
+                    alt="Interact on binder">Binder</button></a>
+        
+        
+        
+        
+    </div>
+</div>
+
+        </div>
+
+        <!-- Table of contents -->
+        <div class="d-none d-md-block col-md-2 bd-toc show">
+            
+            <div class="tocsection onthispage pt-5 pb-3">
+                <i class="fas fa-list"></i> Contents
+            </div>
+            <nav id="bd-toc-nav" aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#global-settings">
+   0 Global settings
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#data-preparation">
+   1 Data preparation
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#data-understanding">
+     1.1 Data understanding
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#data-transformation">
+     1.2 Data transformation
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#experimentation-protocol">
+   2 Experimentation protocol
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#id1">
+   3 Data split
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#random-split">
+     3.1 Random split
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#chronological-split">
+     3.2 Chronological split
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#filter-by">
+       3.2.1 “Filter by”
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#min-rating-filter">
+       3.3.2 Min-rating filter
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#stratified-split">
+     3.3 Stratified split
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#data-split-in-scale">
+     3.4 Data split in scale
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#references">
+   References
+  </a>
+ </li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+        
+              <div>
+                
+  <p><i>Copyright (c) Microsoft Corporation. All rights reserved.</i></p>
+<p><i>Licensed under the MIT License.</i></p>
+<div class="tex2jax_ignore mathjax_ignore section" id="data-split">
+<h1>Data split<a class="headerlink" href="#data-split" title="Permalink to this headline">¶</a></h1>
+<p>Data splitting is one of the most vital tasks in assessing recommendation systems. Splitting strategy greatly affects the evaluation protocol so that it should always be taken into careful consideration by practitioners.</p>
+<p>The code hereafter explains how one applies different splitting strategies for specific scenarios.</p>
+<div class="section" id="global-settings">
+<h2>0 Global settings<a class="headerlink" href="#global-settings" title="Permalink to this headline">¶</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># set the environment path to find Recommenders</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+
+<span class="kn">import</span> <span class="nn">pyspark</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">timedelta</span>
+
+<span class="kn">from</span> <span class="nn">recommenders.utils.spark_utils</span> <span class="kn">import</span> <span class="n">start_or_get_spark</span>
+<span class="kn">from</span> <span class="nn">recommenders.datasets.download_utils</span> <span class="kn">import</span> <span class="n">maybe_download</span>
+<span class="kn">from</span> <span class="nn">recommenders.datasets.python_splitters</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">python_random_split</span><span class="p">,</span> 
+    <span class="n">python_chrono_split</span><span class="p">,</span> 
+    <span class="n">python_stratified_split</span>
+<span class="p">)</span>
+<span class="kn">from</span> <span class="nn">recommenders.datasets.spark_splitters</span> <span class="kn">import</span> <span class="n">spark_random_split</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;System version: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">version</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Pyspark version: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">pyspark</span><span class="o">.</span><span class="n">__version__</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>System version: 3.6.0 | packaged by conda-forge | (default, Feb  9 2017, 14:36:55) 
+[GCC 4.8.2 20140120 (Red Hat 4.8.2-15)]
+Pyspark version: 2.2.1
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">DATA_URL</span> <span class="o">=</span> <span class="s2">&quot;http://files.grouplens.org/datasets/movielens/ml-100k/u.data&quot;</span>
+<span class="n">DATA_PATH</span> <span class="o">=</span> <span class="s2">&quot;ml-100k.data&quot;</span>
+
+<span class="n">COL_USER</span> <span class="o">=</span> <span class="s2">&quot;UserId&quot;</span>
+<span class="n">COL_ITEM</span> <span class="o">=</span> <span class="s2">&quot;MovieId&quot;</span>
+<span class="n">COL_RATING</span> <span class="o">=</span> <span class="s2">&quot;Rating&quot;</span>
+<span class="n">COL_PREDICTION</span> <span class="o">=</span> <span class="s2">&quot;Rating&quot;</span>
+<span class="n">COL_TIMESTAMP</span> <span class="o">=</span> <span class="s2">&quot;Timestamp&quot;</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="data-preparation">
+<h2>1 Data preparation<a class="headerlink" href="#data-preparation" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="data-understanding">
+<h3>1.1 Data understanding<a class="headerlink" href="#data-understanding" title="Permalink to this headline">¶</a></h3>
+<p>For illustration purpose, the data used in the examples below is the MovieLens-100K dataset.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">filepath</span> <span class="o">=</span> <span class="n">maybe_download</span><span class="p">(</span><span class="n">DATA_URL</span><span class="p">,</span> <span class="n">DATA_PATH</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="p">[</span><span class="n">COL_USER</span><span class="p">,</span> <span class="n">COL_ITEM</span><span class="p">,</span> <span class="n">COL_RATING</span><span class="p">,</span> <span class="n">COL_TIMESTAMP</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>A glimpse at the data</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>UserId</th>
+      <th>MovieId</th>
+      <th>Rating</th>
+      <th>Timestamp</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>196</td>
+      <td>242</td>
+      <td>3</td>
+      <td>881250949</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>186</td>
+      <td>302</td>
+      <td>3</td>
+      <td>891717742</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>22</td>
+      <td>377</td>
+      <td>1</td>
+      <td>878887116</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>244</td>
+      <td>51</td>
+      <td>2</td>
+      <td>880606923</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>166</td>
+      <td>346</td>
+      <td>1</td>
+      <td>886397596</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>A little more…</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data</span><span class="o">.</span><span class="n">describe</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>UserId</th>
+      <th>MovieId</th>
+      <th>Rating</th>
+      <th>Timestamp</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>count</th>
+      <td>100000.00000</td>
+      <td>100000.000000</td>
+      <td>100000.000000</td>
+      <td>1.000000e+05</td>
+    </tr>
+    <tr>
+      <th>mean</th>
+      <td>462.48475</td>
+      <td>425.530130</td>
+      <td>3.529860</td>
+      <td>8.835289e+08</td>
+    </tr>
+    <tr>
+      <th>std</th>
+      <td>266.61442</td>
+      <td>330.798356</td>
+      <td>1.125674</td>
+      <td>5.343856e+06</td>
+    </tr>
+    <tr>
+      <th>min</th>
+      <td>1.00000</td>
+      <td>1.000000</td>
+      <td>1.000000</td>
+      <td>8.747247e+08</td>
+    </tr>
+    <tr>
+      <th>25%</th>
+      <td>254.00000</td>
+      <td>175.000000</td>
+      <td>3.000000</td>
+      <td>8.794487e+08</td>
+    </tr>
+    <tr>
+      <th>50%</th>
+      <td>447.00000</td>
+      <td>322.000000</td>
+      <td>4.000000</td>
+      <td>8.828269e+08</td>
+    </tr>
+    <tr>
+      <th>75%</th>
+      <td>682.00000</td>
+      <td>631.000000</td>
+      <td>4.000000</td>
+      <td>8.882600e+08</td>
+    </tr>
+    <tr>
+      <th>max</th>
+      <td>943.00000</td>
+      <td>1682.000000</td>
+      <td>5.000000</td>
+      <td>8.932866e+08</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>And, more…</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span>
+    <span class="s2">&quot;Total number of ratings are</span><span class="se">\t</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span>
+    <span class="s2">&quot;Total number of users are</span><span class="se">\t</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">COL_USER</span><span class="p">]</span><span class="o">.</span><span class="n">nunique</span><span class="p">()),</span>
+    <span class="s2">&quot;Total number of items are</span><span class="se">\t</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">COL_ITEM</span><span class="p">]</span><span class="o">.</span><span class="n">nunique</span><span class="p">()),</span>
+    <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Total number of ratings are	100000
+Total number of users are	943
+Total number of items are	1682
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="data-transformation">
+<h3>1.2 Data transformation<a class="headerlink" href="#data-transformation" title="Permalink to this headline">¶</a></h3>
+<p>Original timestamps are converted to ISO format.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data</span><span class="p">[</span><span class="n">COL_TIMESTAMP</span><span class="p">]</span><span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span>
+    <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">datetime</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="n">datetime</span><span class="p">(</span><span class="mi">1970</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="o">+</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">seconds</span><span class="o">=</span><span class="n">x</span><span class="p">[</span><span class="n">COL_TIMESTAMP</span><span class="p">]</span><span class="o">.</span><span class="n">item</span><span class="p">()),</span> <span class="s2">&quot;%Y-%m-</span><span class="si">%d</span><span class="s2"> %H:%M:%S&quot;</span><span class="p">),</span> 
+    <span class="n">axis</span><span class="o">=</span><span class="mi">1</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>UserId</th>
+      <th>MovieId</th>
+      <th>Rating</th>
+      <th>Timestamp</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>196</td>
+      <td>242</td>
+      <td>3</td>
+      <td>1997-12-04 15:55:49</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>186</td>
+      <td>302</td>
+      <td>3</td>
+      <td>1998-04-04 19:22:22</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>22</td>
+      <td>377</td>
+      <td>1</td>
+      <td>1997-11-07 07:18:36</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>244</td>
+      <td>51</td>
+      <td>2</td>
+      <td>1997-11-27 05:02:03</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>166</td>
+      <td>346</td>
+      <td>1</td>
+      <td>1998-02-02 05:33:16</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+</div>
+</div>
+<div class="section" id="experimentation-protocol">
+<h2>2 Experimentation protocol<a class="headerlink" href="#experimentation-protocol" title="Permalink to this headline">¶</a></h2>
+<p>Experimentation protocol is usually set up to favor a reasonable evaluation for a specific recommendation scenario. For example,</p>
+<ul class="simple">
+<li><p><em>Recommender-A</em> is to recommend movies to people by taking people’s collaborative rating similarities. To make sure the evaluation is statisically sound, the same set of users for both model building and testing should be used (to avoid any cold-ness of users), and a stratified splitting strategy should be taken.</p></li>
+<li><p><em>Recommender-B</em> is to recommend fashion products to customers. It makes sense that evaluation of the recommender considers time-dependency of customer purchases, as apparently, tastes of the customers in fashion items may be drifting over time. In this case, a chronologically splitting should be used.</p></li>
+</ul>
+</div>
+<div class="section" id="id1">
+<h2>3 Data split<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="random-split">
+<h3>3.1 Random split<a class="headerlink" href="#random-split" title="Permalink to this headline">¶</a></h3>
+<p>Random split simply takes in a data set and outputs the splits of the data, given the split ratios.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data_train</span><span class="p">,</span> <span class="n">data_test</span> <span class="o">=</span> <span class="n">python_random_split</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">ratio</span><span class="o">=</span><span class="mf">0.7</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data_train</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">data_test</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(70000, 30000)
+</pre></div>
+</div>
+</div>
+</div>
+<p>Sometimes a multi-split is needed.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data_train</span><span class="p">,</span> <span class="n">data_validate</span><span class="p">,</span> <span class="n">data_test</span> <span class="o">=</span> <span class="n">python_random_split</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">ratio</span><span class="o">=</span><span class="p">[</span><span class="mf">0.6</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data_train</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">data_validate</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">data_test</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(60000, 20000, 20000)
+</pre></div>
+</div>
+</div>
+</div>
+<p>Ratios can be integers as well.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data_train</span><span class="p">,</span> <span class="n">data_validate</span><span class="p">,</span> <span class="n">data_test</span> <span class="o">=</span> <span class="n">python_random_split</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">ratio</span><span class="o">=</span><span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>For producing the same results.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data_train</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">data_validate</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">data_test</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(60000, 20000, 20000)
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="chronological-split">
+<h3>3.2 Chronological split<a class="headerlink" href="#chronological-split" title="Permalink to this headline">¶</a></h3>
+<p>Chronogically splitting method takes in a dataset and splits it on timestamp.</p>
+<div class="section" id="filter-by">
+<h4>3.2.1 “Filter by”<a class="headerlink" href="#filter-by" title="Permalink to this headline">¶</a></h4>
+<p>Chrono splitting can be either by “user” or “item”. For example, if it is by “user” and the splitting ratio is 0.7, it means that first 70% ratings for each user in the data will be put into one split while the other 30% is in another. It is worth noting that a chronological split is not “random” because splitting is timestamp-dependent.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data_train</span><span class="p">,</span> <span class="n">data_test</span> <span class="o">=</span> <span class="n">python_chrono_split</span><span class="p">(</span>
+    <span class="n">data</span><span class="p">,</span> <span class="n">ratio</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span> <span class="n">filter_by</span><span class="o">=</span><span class="s2">&quot;user&quot;</span><span class="p">,</span>
+    <span class="n">col_user</span><span class="o">=</span><span class="n">COL_USER</span><span class="p">,</span> <span class="n">col_item</span><span class="o">=</span><span class="n">COL_ITEM</span><span class="p">,</span> <span class="n">col_timestamp</span><span class="o">=</span><span class="n">COL_TIMESTAMP</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Take a look at the results for one particular user:</p>
+<ul class="simple">
+<li><p>The last 10 rows of the train data:</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data_train</span><span class="p">[</span><span class="n">data_train</span><span class="p">[</span><span class="n">COL_USER</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">tail</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>UserId</th>
+      <th>MovieId</th>
+      <th>Rating</th>
+      <th>Timestamp</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>1989</th>
+      <td>1</td>
+      <td>90</td>
+      <td>4</td>
+      <td>1997-11-03 07:31:40</td>
+    </tr>
+    <tr>
+      <th>11807</th>
+      <td>1</td>
+      <td>219</td>
+      <td>1</td>
+      <td>1997-11-03 07:32:07</td>
+    </tr>
+    <tr>
+      <th>50026</th>
+      <td>1</td>
+      <td>167</td>
+      <td>2</td>
+      <td>1997-11-03 07:33:03</td>
+    </tr>
+    <tr>
+      <th>43280</th>
+      <td>1</td>
+      <td>162</td>
+      <td>4</td>
+      <td>1997-11-03 07:33:40</td>
+    </tr>
+    <tr>
+      <th>51295</th>
+      <td>1</td>
+      <td>35</td>
+      <td>1</td>
+      <td>1997-11-03 07:33:40</td>
+    </tr>
+    <tr>
+      <th>16314</th>
+      <td>1</td>
+      <td>230</td>
+      <td>4</td>
+      <td>1997-11-03 07:33:40</td>
+    </tr>
+    <tr>
+      <th>202</th>
+      <td>1</td>
+      <td>61</td>
+      <td>4</td>
+      <td>1997-11-03 07:33:40</td>
+    </tr>
+    <tr>
+      <th>820</th>
+      <td>1</td>
+      <td>265</td>
+      <td>4</td>
+      <td>1997-11-03 07:34:01</td>
+    </tr>
+    <tr>
+      <th>11154</th>
+      <td>1</td>
+      <td>112</td>
+      <td>1</td>
+      <td>1997-11-03 07:34:01</td>
+    </tr>
+    <tr>
+      <th>45732</th>
+      <td>1</td>
+      <td>57</td>
+      <td>5</td>
+      <td>1997-11-03 07:34:19</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<ul class="simple">
+<li><p>The first 10 rows of the test data:</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data_test</span><span class="p">[</span><span class="n">data_test</span><span class="p">[</span><span class="n">COL_USER</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>UserId</th>
+      <th>MovieId</th>
+      <th>Rating</th>
+      <th>Timestamp</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>5682</th>
+      <td>1</td>
+      <td>49</td>
+      <td>3</td>
+      <td>1997-11-03 07:34:38</td>
+    </tr>
+    <tr>
+      <th>24493</th>
+      <td>1</td>
+      <td>30</td>
+      <td>3</td>
+      <td>1997-11-03 07:35:15</td>
+    </tr>
+    <tr>
+      <th>39865</th>
+      <td>1</td>
+      <td>131</td>
+      <td>1</td>
+      <td>1997-11-03 07:35:52</td>
+    </tr>
+    <tr>
+      <th>6234</th>
+      <td>1</td>
+      <td>233</td>
+      <td>2</td>
+      <td>1997-11-03 07:35:52</td>
+    </tr>
+    <tr>
+      <th>96699</th>
+      <td>1</td>
+      <td>152</td>
+      <td>5</td>
+      <td>1997-11-03 07:36:29</td>
+    </tr>
+    <tr>
+      <th>4280</th>
+      <td>1</td>
+      <td>82</td>
+      <td>5</td>
+      <td>1997-11-03 07:36:29</td>
+    </tr>
+    <tr>
+      <th>25721</th>
+      <td>1</td>
+      <td>141</td>
+      <td>3</td>
+      <td>1997-11-03 07:36:48</td>
+    </tr>
+    <tr>
+      <th>5842</th>
+      <td>1</td>
+      <td>72</td>
+      <td>4</td>
+      <td>1997-11-03 07:37:58</td>
+    </tr>
+    <tr>
+      <th>37810</th>
+      <td>1</td>
+      <td>158</td>
+      <td>3</td>
+      <td>1997-11-03 07:38:19</td>
+    </tr>
+    <tr>
+      <th>333</th>
+      <td>1</td>
+      <td>33</td>
+      <td>4</td>
+      <td>1997-11-03 07:38:19</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>Timestamps of train data are all precedent to those in test data.</p>
+</div>
+<div class="section" id="min-rating-filter">
+<h4>3.3.2 Min-rating filter<a class="headerlink" href="#min-rating-filter" title="Permalink to this headline">¶</a></h4>
+<p>A min-rating filter is applied to data before it is split by using chronological splitter. The reason of doing this is that, for multi-split, there should be sufficient number of ratings for user/item in the data.</p>
+<p>For example, the following means splitting only applies to users that have at least 10 ratings.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data_train</span><span class="p">,</span> <span class="n">data_test</span> <span class="o">=</span> <span class="n">python_chrono_split</span><span class="p">(</span>
+    <span class="n">data</span><span class="p">,</span> <span class="n">filter_by</span><span class="o">=</span><span class="s2">&quot;user&quot;</span><span class="p">,</span> <span class="n">min_rating</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">ratio</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span>
+    <span class="n">col_user</span><span class="o">=</span><span class="n">COL_USER</span><span class="p">,</span> <span class="n">col_item</span><span class="o">=</span><span class="n">COL_ITEM</span><span class="p">,</span> <span class="n">col_timestamp</span><span class="o">=</span><span class="n">COL_TIMESTAMP</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Number of rows in the yielded splits of data may not sum to the original ones as users with fewer than 10 ratings are filtered out in the splitting.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data_train</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">data_test</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(100000, 100000)
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="stratified-split">
+<h3>3.3 Stratified split<a class="headerlink" href="#stratified-split" title="Permalink to this headline">¶</a></h3>
+<p>Chronogically splitting method takes in a dataset and splits it by either user or item. The split is stratified so that the same set of users or items will appear in both training and testing data sets.</p>
+<p>Similar to chronological splitter, <code class="docutils literal notranslate"><span class="pre">filter_by</span></code> and <code class="docutils literal notranslate"><span class="pre">min_rating_filter</span></code> also apply to the stratified splitter.</p>
+<p>The following example shows the split of the sample data with a ratio of 0.7, and for each user there should be at least 10 ratings.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data_train</span><span class="p">,</span> <span class="n">data_test</span> <span class="o">=</span> <span class="n">python_stratified_split</span><span class="p">(</span>
+    <span class="n">data</span><span class="p">,</span> <span class="n">filter_by</span><span class="o">=</span><span class="s2">&quot;user&quot;</span><span class="p">,</span> <span class="n">min_rating</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">ratio</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span>
+    <span class="n">col_user</span><span class="o">=</span><span class="n">COL_USER</span><span class="p">,</span> <span class="n">col_item</span><span class="o">=</span><span class="n">COL_ITEM</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data_train</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">data_test</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(100000, 100000)
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="data-split-in-scale">
+<h3>3.4 Data split in scale<a class="headerlink" href="#data-split-in-scale" title="Permalink to this headline">¶</a></h3>
+<p>Spark DataFrame is used for scalable splitting. This allows splitting operation performed on large dataset that is distributed across Spark cluster.</p>
+<p>For example, the below illustrates how to do a random split on the given Spark DataFrame. For simplicity reason, the same MovieLens data, which is in Pandas DataFrame, is transformed into Spark DataFrame and used for splitting.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">spark</span> <span class="o">=</span> <span class="n">start_or_get_spark</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data_spark</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">read</span><span class="o">.</span><span class="n">csv</span><span class="p">(</span><span class="n">filepath</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data_spark_train</span><span class="p">,</span> <span class="n">data_spark_test</span> <span class="o">=</span> <span class="n">spark_random_split</span><span class="p">(</span><span class="n">data_spark</span><span class="p">,</span> <span class="n">ratio</span><span class="o">=</span><span class="mf">0.7</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Interestingly, it was noticed that Spark random split does not guarantee a deterministic result. This sometimes leads to issues when data is relatively small while users seek for a precision split.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data_spark_train</span><span class="o">.</span><span class="n">count</span><span class="p">(),</span> <span class="n">data_spark_test</span><span class="o">.</span><span class="n">count</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(69995, 30005)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">spark</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="references">
+<h2>References<a class="headerlink" href="#references" title="Permalink to this headline">¶</a></h2>
+<ol class="simple">
+<li><p>Dimitris Paraschakis et al, “Comparative Evaluation of Top-N Recommenders in e-Commerce: An Industrial Perspective”, IEEE ICMLA, 2015, Miami, FL, USA.</p></li>
+<li><p>Guy Shani and Asela Gunawardana, “Evaluating Recommendation Systems”, Recommender Systems Handbook, Springer, 2015.</p></li>
+<li><p>Apache Spark, url: <a class="reference external" href="https://spark.apache.org/">https://spark.apache.org/</a>.</p></li>
+</ol>
+</div>
+</div>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "recommender"
+        },
+        kernelOptions: {
+            kernelName: "recommender",
+            path: "./examples/01_prepare_data"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'recommender'</script>
+
+              </div>
+              
+        
+            
+
+
+
+<div class='prev-next-bottom'>
+    
+
+</div>
+        
+        </div>
+    </div>
+    <footer class="footer">
+    <div class="container">
+      <p>
+        
+          By The Jupyter Book community<br/>
+        
+            &copy; Copyright 2021.<br/>
+      </p>
+    </div>
+  </footer>
+</main>
+
+
+      </div>
+    </div>
+  
+  <script src="../../_static/js/index.1c5a1a01449ed65a7b51.js"></script>
+
+  
+  </body>
+</html>

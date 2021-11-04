@@ -1,0 +1,842 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Estimating Baseline Performance &#8212; &lt;h1 style=&#34;font-size:2em;text-align:center;color:#FF5733&#34;&gt;Recommenders&lt;/h1&gt;</title>
+    
+  <link href="../../_static/css/theme.css" rel="stylesheet" />
+  <link href="../../_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
+
+    
+  <link rel="stylesheet"
+    href="../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+
+    
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-book-theme.css?digest=c3fdc42140077d1ad13ad2f1588a4309" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/tabs.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    
+  <link rel="preload" as="script" href="../../_static/js/index.1c5a1a01449ed65a7b51.js">
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/togglebutton.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <script src="../../_static/tabs.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../../_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script>
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="../../_static/sphinx-thebe.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en" />
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="../../index.html">
+      
+      
+      
+      <h1 class="site-logo" id="site-title"><h1 style="font-size:2em;text-align:center;color:#FF5733">Recommenders</h1></h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="../../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        <p class="caption" role="heading">
+ <span class="caption-text">
+  Getting Started Notebooks
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../00_quick_start/als_movielens.html">
+   Running ALS on MovieLens (PySpark)
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../00_quick_start/ncf_movielens.html">
+   Neural Collaborative Filtering on MovieLens dataset.
+  </a>
+ </li>
+</ul>
+
+    </div>
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="topbar container-xl fixed-top">
+    <div class="topbar-contents row">
+        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
+        <div class="col pl-md-4 topbar-main">
+            
+            <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+                data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+                aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
+                title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+                <i class="fas fa-bars"></i>
+                <i class="fas fa-arrow-left"></i>
+                <i class="fas fa-arrow-up"></i>
+            </button>
+            
+            
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
+            class="fas fa-download"></i></button>
+
+    <div class="dropdown-buttons">
+        <!-- ipynb file if we had a myst markdown file -->
+        
+        <!-- Download raw file -->
+        <a class="dropdown-buttons" href="../../_sources/examples/02_model_collaborative_filtering/baseline_deep_dive.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
+                data-placement="left">.ipynb</button></a>
+        <!-- Download PDF via print -->
+        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
+            onClick="window.print()" data-toggle="tooltip" data-placement="left">.pdf</button>
+    </div>
+</div>
+
+            <!-- Source interaction buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
+    <div class="dropdown-buttons sourcebuttons">
+        <a class="repository-button"
+            href="https://github.com/microsoft/genalog"><button type="button" class="btn btn-secondary topbarbtn"
+                data-toggle="tooltip" data-placement="left" title="Source repository"><i
+                    class="fab fa-github"></i>repository</button></a>
+        <a class="issues-button"
+            href="https://github.com/microsoft/genalog/issues/new?title=Issue%20on%20page%20%2Fexamples/02_model_collaborative_filtering/baseline_deep_dive.html&body=Your%20issue%20content%20here."><button
+                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
+                title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
+        
+    </div>
+</div>
+
+            <!-- Full screen (wrap in <a> to have style consistency -->
+
+<a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+        data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+        title="Fullscreen mode"><i
+            class="fas fa-expand"></i></button></a>
+
+            <!-- Launch buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Launch interactive content"><i class="fas fa-rocket"></i></button>
+    <div class="dropdown-buttons">
+        
+        <a class="binder-button" href="https://mybinder.org/v2/gh/microsoft/genalog/main?urlpath=tree/docs/genalog_docs/examples/02_model_collaborative_filtering/baseline_deep_dive.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Launch Binder" data-toggle="tooltip"
+                data-placement="left"><img class="binder-button-logo"
+                    src="../../_static/images/logo_binder.svg"
+                    alt="Interact on binder">Binder</button></a>
+        
+        
+        
+        
+    </div>
+</div>
+
+        </div>
+
+        <!-- Table of contents -->
+        <div class="d-none d-md-block col-md-2 bd-toc show">
+            
+            <div class="tocsection onthispage pt-5 pb-3">
+                <i class="fas fa-list"></i> Contents
+            </div>
+            <nav id="bd-toc-nav" aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#why-does-baseline-performance-matter">
+   Why does baseline performance matter?
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#how-can-we-estimate-the-baseline-performance">
+   How can we estimate the baseline performance?
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#rating-prediction-baseline">
+   1. Rating prediction baseline
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#top-k-recommendation-baseline">
+   2. Top-k recommendation baseline
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#concluding-remarks">
+   Concluding remarks
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#references">
+   References
+  </a>
+ </li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+        
+              <div>
+                
+  <p><i>Copyright (c) Microsoft Corporation. All rights reserved.</i></p>
+<p><i>Licensed under the MIT License.</i></p>
+<div class="tex2jax_ignore mathjax_ignore section" id="estimating-baseline-performance">
+<h1>Estimating Baseline Performance<a class="headerlink" href="#estimating-baseline-performance" title="Permalink to this headline">¶</a></h1>
+<br>
+Estimating baseline performance is as important as choosing right metrics for model evaluation. In this notebook, we briefly discuss about why do we care about baseline performance and how to measure it.
+<p>The notebook covers two example scenarios under the context of movie recommendation: 1) rating prediction and 2) top-k recommendation.</p>
+<div class="section" id="why-does-baseline-performance-matter">
+<h2>Why does baseline performance matter?<a class="headerlink" href="#why-does-baseline-performance-matter" title="Permalink to this headline">¶</a></h2>
+<br>
+Before we go deep dive into baseline performance estimation, it is worth to think about why we need that.
+<p>As we can simply see from the definition of the word ‘baseline’, <b>baseline performance</b> is a minimum performance we expect to achieve by a model or starting point used for model comparisons.</p>
+<p>Once we train a model and get results from evaluation metrics we choose, we will wonder how should we interpret the metrics or even wonder if the trained model is better than a simple rule-based model. Baseline results help us to understand those.</p>
+<p>Let’s say we are building a food recommender. We evaluated the model on the test set and got nDCG (at 10) = 0.3. At that moment, we would not know if the model is good or bad. But once we find out that a simple rule of <i>’recommending top-10 most popular foods to all users’</i> can achieve nDCG = 0.4, we see that our model is not good enough. Maybe the model is not trained well, or maybe we should think about if nDCG is the right metric for prediction of user behaviors in the given problem.</p>
+</div>
+<div class="section" id="how-can-we-estimate-the-baseline-performance">
+<h2>How can we estimate the baseline performance?<a class="headerlink" href="#how-can-we-estimate-the-baseline-performance" title="Permalink to this headline">¶</a></h2>
+<br>
+To estimate the baseline performance, we first pick a baseline model and evaluate it by using the same evaluation metrics we will use for our main model. In general, a very simple rule or even <b>zero rule</b>--<i>predicts the mean for regression or the mode for classification</i>--will be a enough as a baseline model (Random-prediction might be okay for certain problems, but usually it performs poor than the zero rule). If we already have a running model in hand and now trying to improve that, we can use the previous results as a baseline performance for sure.
+<p>Most importantly, <b>different baseline approaches should be taken for different problems and business goals</b>. For example, recommending the previously purchased items could be used as a baseline model for food or restaurant recommendation since people tend to eat the same foods repeatedly. For TV show and/or movie recommendation, on the other hand, recommending previously watched items does not make sense. Probably recommending the most popular (most watched or highly rated) items is more likely useful as a baseline.</p>
+<p>In this notebook, we demonstrate how to estimate the baseline performance for the movie recommendation with MovieLens dataset. We use the mean for rating prediction, i.e. our baseline model will predict a user’s rating of a movie by averaging the ratings the user previously submitted for other movies. For the top-k recommendation problem, we use top-k most-rated movies as the baseline model. We choose the number of ratings here because we regard the binary signal of ‘rated vs. not-rated’ as user’s implicit preference when evaluating ranking metrics.</p>
+<p>Now, let’s jump into the implementation!</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sys</span>
+
+<span class="kn">import</span> <span class="nn">itertools</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+
+<span class="kn">from</span> <span class="nn">recommenders.utils.notebook_utils</span> <span class="kn">import</span> <span class="n">is_jupyter</span>
+<span class="kn">from</span> <span class="nn">recommenders.datasets</span> <span class="kn">import</span> <span class="n">movielens</span>
+<span class="kn">from</span> <span class="nn">recommenders.datasets.python_splitters</span> <span class="kn">import</span> <span class="n">python_random_split</span>
+<span class="kn">from</span> <span class="nn">recommenders.datasets.pandas_df_utils</span> <span class="kn">import</span> <span class="n">filter_by</span>
+<span class="kn">from</span> <span class="nn">recommenders.evaluation.python_evaluation</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">rmse</span><span class="p">,</span> <span class="n">mae</span><span class="p">,</span> <span class="n">rsquared</span><span class="p">,</span> <span class="n">exp_var</span><span class="p">,</span>
+    <span class="n">map_at_k</span><span class="p">,</span> <span class="n">ndcg_at_k</span><span class="p">,</span> <span class="n">precision_at_k</span><span class="p">,</span> <span class="n">recall_at_k</span>
+<span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;System version: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">version</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Pandas version: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">__version__</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>System version: 3.6.8 |Anaconda, Inc.| (default, Feb 11 2019, 15:03:47) [MSC v.1915 64 bit (AMD64)]
+Pandas version: 0.24.1
+</pre></div>
+</div>
+</div>
+</div>
+<p>First, let’s prepare training and test data sets.</p>
+<div class="cell tag_parameters docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">MOVIELENS_DATA_SIZE</span> <span class="o">=</span> <span class="s1">&#39;100k&#39;</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data</span> <span class="o">=</span> <span class="n">movielens</span><span class="o">.</span><span class="n">load_pandas_df</span><span class="p">(</span>
+    <span class="n">size</span><span class="o">=</span><span class="n">MOVIELENS_DATA_SIZE</span><span class="p">,</span>
+    <span class="n">header</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;UserId&#39;</span><span class="p">,</span> <span class="s1">&#39;MovieId&#39;</span><span class="p">,</span> <span class="s1">&#39;Rating&#39;</span><span class="p">,</span> <span class="s1">&#39;Timestamp&#39;</span><span class="p">]</span>
+<span class="p">)</span>
+
+<span class="n">data</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>UserId</th>
+      <th>MovieId</th>
+      <th>Rating</th>
+      <th>Timestamp</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>196</td>
+      <td>242</td>
+      <td>3.0</td>
+      <td>881250949</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>186</td>
+      <td>302</td>
+      <td>3.0</td>
+      <td>891717742</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>22</td>
+      <td>377</td>
+      <td>1.0</td>
+      <td>878887116</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>244</td>
+      <td>51</td>
+      <td>2.0</td>
+      <td>880606923</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>166</td>
+      <td>346</td>
+      <td>1.0</td>
+      <td>886397596</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">train</span><span class="p">,</span> <span class="n">test</span> <span class="o">=</span> <span class="n">python_random_split</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">ratio</span><span class="o">=</span><span class="mf">0.75</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="rating-prediction-baseline">
+<h2>1. Rating prediction baseline<a class="headerlink" href="#rating-prediction-baseline" title="Permalink to this headline">¶</a></h2>
+<p>As we discussed earlier, we use each user’s <strong>mean rating</strong> as the baseline prediction.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Calculate avg ratings from the training set</span>
+<span class="n">users_ratings</span> <span class="o">=</span> <span class="n">train</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">&#39;UserId&#39;</span><span class="p">])[</span><span class="s1">&#39;Rating&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+<span class="n">users_ratings</span> <span class="o">=</span> <span class="n">users_ratings</span><span class="o">.</span><span class="n">to_frame</span><span class="p">()</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
+<span class="n">users_ratings</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;Rating&#39;</span><span class="p">:</span> <span class="s1">&#39;AvgRating&#39;</span><span class="p">},</span> <span class="n">inplace</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+
+<span class="n">users_ratings</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>UserId</th>
+      <th>AvgRating</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1</td>
+      <td>3.696970</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2</td>
+      <td>3.837209</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>3</td>
+      <td>2.744186</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>4</td>
+      <td>4.500000</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>5</td>
+      <td>2.868217</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Generate prediction for the test set</span>
+<span class="n">baseline_predictions</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">test</span><span class="p">,</span> <span class="n">users_ratings</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;UserId&#39;</span><span class="p">],</span> <span class="n">how</span><span class="o">=</span><span class="s1">&#39;inner&#39;</span><span class="p">)</span>
+
+<span class="n">baseline_predictions</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">baseline_predictions</span><span class="p">[</span><span class="s1">&#39;UserId&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>UserId</th>
+      <th>MovieId</th>
+      <th>Rating</th>
+      <th>Timestamp</th>
+      <th>AvgRating</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>12215</th>
+      <td>1</td>
+      <td>233</td>
+      <td>2.0</td>
+      <td>878542552</td>
+      <td>3.69697</td>
+    </tr>
+    <tr>
+      <th>12216</th>
+      <td>1</td>
+      <td>159</td>
+      <td>3.0</td>
+      <td>875073180</td>
+      <td>3.69697</td>
+    </tr>
+    <tr>
+      <th>12217</th>
+      <td>1</td>
+      <td>238</td>
+      <td>4.0</td>
+      <td>875072235</td>
+      <td>3.69697</td>
+    </tr>
+    <tr>
+      <th>12218</th>
+      <td>1</td>
+      <td>100</td>
+      <td>5.0</td>
+      <td>878543541</td>
+      <td>3.69697</td>
+    </tr>
+    <tr>
+      <th>12219</th>
+      <td>1</td>
+      <td>63</td>
+      <td>2.0</td>
+      <td>878543196</td>
+      <td>3.69697</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>Now, let’s evaluate how our baseline model will perform on regression metrics</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">baseline_predictions</span> <span class="o">=</span> <span class="n">baseline_predictions</span><span class="p">[[</span><span class="s1">&#39;UserId&#39;</span><span class="p">,</span> <span class="s1">&#39;MovieId&#39;</span><span class="p">,</span> <span class="s1">&#39;AvgRating&#39;</span><span class="p">]]</span>
+
+<span class="n">cols</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;col_user&#39;</span><span class="p">:</span> <span class="s1">&#39;UserId&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;col_item&#39;</span><span class="p">:</span> <span class="s1">&#39;MovieId&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;col_rating&#39;</span><span class="p">:</span> <span class="s1">&#39;Rating&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;col_prediction&#39;</span><span class="p">:</span> <span class="s1">&#39;AvgRating&#39;</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="n">eval_rmse</span> <span class="o">=</span> <span class="n">rmse</span><span class="p">(</span><span class="n">test</span><span class="p">,</span> <span class="n">baseline_predictions</span><span class="p">,</span> <span class="o">**</span><span class="n">cols</span><span class="p">)</span>
+<span class="n">eval_mae</span> <span class="o">=</span> <span class="n">mae</span><span class="p">(</span><span class="n">test</span><span class="p">,</span> <span class="n">baseline_predictions</span><span class="p">,</span> <span class="o">**</span><span class="n">cols</span><span class="p">)</span>
+<span class="n">eval_rsquared</span> <span class="o">=</span> <span class="n">rsquared</span><span class="p">(</span><span class="n">test</span><span class="p">,</span> <span class="n">baseline_predictions</span><span class="p">,</span> <span class="o">**</span><span class="n">cols</span><span class="p">)</span>
+<span class="n">eval_exp_var</span> <span class="o">=</span> <span class="n">exp_var</span><span class="p">(</span><span class="n">test</span><span class="p">,</span> <span class="n">baseline_predictions</span><span class="p">,</span> <span class="o">**</span><span class="n">cols</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;RMSE:</span><span class="se">\t\t</span><span class="si">%f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">eval_rmse</span><span class="p">,</span>
+      <span class="s2">&quot;MAE:</span><span class="se">\t\t</span><span class="si">%f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">eval_mae</span><span class="p">,</span>
+      <span class="s2">&quot;rsquared:</span><span class="se">\t</span><span class="si">%f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">eval_rsquared</span><span class="p">,</span>
+      <span class="s2">&quot;exp var:</span><span class="se">\t</span><span class="si">%f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">eval_exp_var</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>RMSE:		1.044885
+MAE:		0.836925
+rsquared:	0.136491
+exp var:	0.136496
+</pre></div>
+</div>
+</div>
+</div>
+<p>As you can see, our baseline model actually performed quite well on the metrics. E.g. MAE (Mean Absolute Error) was around 0.84 on MovieLens 100k data, saying that users actual ratings would be within +-0.84 of their mean ratings. This also gives us an insight that users’ rating could be biased where some users tend to give high ratings for all movies while others give low ratings.</p>
+<p>Now, next time we build our machine-learning model, we will want to make the model performs better than this baseline.</p>
+</div>
+<div class="section" id="top-k-recommendation-baseline">
+<h2>2. Top-k recommendation baseline<a class="headerlink" href="#top-k-recommendation-baseline" title="Permalink to this headline">¶</a></h2>
+<p>Recommending the <strong>most popular items</strong> is intuitive and simple approach that works for many of recommendation scenarios. Here, we use top-k most-rated movies as the baseline model as we discussed earlier.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">item_counts</span> <span class="o">=</span> <span class="n">train</span><span class="p">[</span><span class="s1">&#39;MovieId&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span><span class="o">.</span><span class="n">to_frame</span><span class="p">()</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
+<span class="n">item_counts</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;MovieId&#39;</span><span class="p">,</span> <span class="s1">&#39;Count&#39;</span><span class="p">]</span>
+<span class="n">item_counts</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>MovieId</th>
+      <th>Count</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>50</td>
+      <td>419</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>181</td>
+      <td>382</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>100</td>
+      <td>381</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>258</td>
+      <td>377</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>288</td>
+      <td>371</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">user_item_col</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;UserId&#39;</span><span class="p">,</span> <span class="s1">&#39;MovieId&#39;</span><span class="p">]</span>
+
+<span class="c1"># Cross join users and items</span>
+<span class="n">test_users</span> <span class="o">=</span> <span class="n">test</span><span class="p">[</span><span class="s1">&#39;UserId&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">()</span>
+<span class="n">user_item_list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">itertools</span><span class="o">.</span><span class="n">product</span><span class="p">(</span><span class="n">test_users</span><span class="p">,</span> <span class="n">item_counts</span><span class="p">[</span><span class="s1">&#39;MovieId&#39;</span><span class="p">]))</span>
+<span class="n">users_items</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">user_item_list</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="n">user_item_col</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Number of user-item pairs:&quot;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">users_items</span><span class="p">))</span>
+
+<span class="c1"># Remove seen items (items in the train set) as we will not recommend those again to the users</span>
+<span class="n">users_items_remove_seen</span> <span class="o">=</span> <span class="n">filter_by</span><span class="p">(</span><span class="n">users_items</span><span class="p">,</span> <span class="n">train</span><span class="p">,</span> <span class="n">user_item_col</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;After remove seen items:&quot;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">users_items_remove_seen</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Number of user-item pairs: 1546764
+After remove seen items: 1471784
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Generate recommendations</span>
+<span class="n">baseline_recommendations</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">item_counts</span><span class="p">,</span> <span class="n">users_items_remove_seen</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;MovieId&#39;</span><span class="p">],</span> <span class="n">how</span><span class="o">=</span><span class="s1">&#39;inner&#39;</span><span class="p">)</span>
+<span class="n">baseline_recommendations</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>MovieId</th>
+      <th>Count</th>
+      <th>UserId</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>50</td>
+      <td>419</td>
+      <td>877</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>50</td>
+      <td>419</td>
+      <td>815</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>50</td>
+      <td>419</td>
+      <td>416</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>50</td>
+      <td>419</td>
+      <td>259</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>50</td>
+      <td>419</td>
+      <td>598</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">k</span> <span class="o">=</span> <span class="mi">10</span>
+
+<span class="n">cols</span><span class="p">[</span><span class="s1">&#39;col_prediction&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;Count&#39;</span>
+
+<span class="n">eval_map</span> <span class="o">=</span> <span class="n">map_at_k</span><span class="p">(</span><span class="n">test</span><span class="p">,</span> <span class="n">baseline_recommendations</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="n">k</span><span class="p">,</span> <span class="o">**</span><span class="n">cols</span><span class="p">)</span>
+<span class="n">eval_ndcg</span> <span class="o">=</span> <span class="n">ndcg_at_k</span><span class="p">(</span><span class="n">test</span><span class="p">,</span> <span class="n">baseline_recommendations</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="n">k</span><span class="p">,</span> <span class="o">**</span><span class="n">cols</span><span class="p">)</span>
+<span class="n">eval_precision</span> <span class="o">=</span> <span class="n">precision_at_k</span><span class="p">(</span><span class="n">test</span><span class="p">,</span> <span class="n">baseline_recommendations</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="n">k</span><span class="p">,</span> <span class="o">**</span><span class="n">cols</span><span class="p">)</span>
+<span class="n">eval_recall</span> <span class="o">=</span> <span class="n">recall_at_k</span><span class="p">(</span><span class="n">test</span><span class="p">,</span> <span class="n">baseline_recommendations</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="n">k</span><span class="p">,</span> <span class="o">**</span><span class="n">cols</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;MAP:</span><span class="se">\t</span><span class="si">%f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">eval_map</span><span class="p">,</span>
+      <span class="s2">&quot;NDCG@K:</span><span class="se">\t</span><span class="si">%f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">eval_ndcg</span><span class="p">,</span>
+      <span class="s2">&quot;Precision@K:</span><span class="se">\t</span><span class="si">%f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">eval_precision</span><span class="p">,</span>
+      <span class="s2">&quot;Recall@K:</span><span class="se">\t</span><span class="si">%f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">eval_recall</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>MAP:	0.055007
+NDCG@K:	0.252864
+Precision@K:	0.224628
+Recall@K:	0.111736
+</pre></div>
+</div>
+</div>
+</div>
+<p>Again, the baseline is quite high, nDCG = 0.25 and Precision = 0.22.</p>
+<br>
+</div>
+<div class="section" id="concluding-remarks">
+<h2>Concluding remarks<a class="headerlink" href="#concluding-remarks" title="Permalink to this headline">¶</a></h2>
+<p>In this notebook, we discussed how to measure baseline performance for the movie recommendation example.
+We covered very naive approaches as baselines, but still they are useful in a sense that they can provide reference numbers to estimate the complexity of the given problem as well as the relative performance of the recommender models we are building.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="n">is_jupyter</span><span class="p">():</span>
+    <span class="c1"># Record results with papermill for unit-tests</span>
+    <span class="kn">import</span> <span class="nn">papermill</span> <span class="k">as</span> <span class="nn">pm</span>
+    <span class="kn">import</span> <span class="nn">scrapbook</span> <span class="k">as</span> <span class="nn">sb</span>
+    <span class="n">sb</span><span class="o">.</span><span class="n">glue</span><span class="p">(</span><span class="s2">&quot;map&quot;</span><span class="p">,</span> <span class="n">eval_map</span><span class="p">)</span>
+    <span class="n">sb</span><span class="o">.</span><span class="n">glue</span><span class="p">(</span><span class="s2">&quot;ndcg&quot;</span><span class="p">,</span> <span class="n">eval_ndcg</span><span class="p">)</span>
+    <span class="n">sb</span><span class="o">.</span><span class="n">glue</span><span class="p">(</span><span class="s2">&quot;precision&quot;</span><span class="p">,</span> <span class="n">eval_precision</span><span class="p">)</span>
+    <span class="n">sb</span><span class="o">.</span><span class="n">glue</span><span class="p">(</span><span class="s2">&quot;recall&quot;</span><span class="p">,</span> <span class="n">eval_recall</span><span class="p">)</span>
+    <span class="n">sb</span><span class="o">.</span><span class="n">glue</span><span class="p">(</span><span class="s2">&quot;rmse&quot;</span><span class="p">,</span> <span class="n">eval_rmse</span><span class="p">)</span>
+    <span class="n">sb</span><span class="o">.</span><span class="n">glue</span><span class="p">(</span><span class="s2">&quot;mae&quot;</span><span class="p">,</span> <span class="n">eval_mae</span><span class="p">)</span>
+    <span class="n">sb</span><span class="o">.</span><span class="n">glue</span><span class="p">(</span><span class="s2">&quot;exp_var&quot;</span><span class="p">,</span> <span class="n">eval_exp_var</span><span class="p">)</span>
+    <span class="n">sb</span><span class="o">.</span><span class="n">glue</span><span class="p">(</span><span class="s2">&quot;rsquared&quot;</span><span class="p">,</span> <span class="n">eval_rsquared</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+</div>
+</div>
+</div>
+<div class="section" id="references">
+<h2>References<a class="headerlink" href="#references" title="Permalink to this headline">¶</a></h2>
+<p>[<a class="reference external" href="https://dl.acm.org/citation.cfm?id=1401944">1</a>] Yehuda Koren,	Factorization meets the neighborhood: a multifaceted collaborative filtering model, KDD ‘08 pp. 426-434 2008.<br />
+[<a class="reference external" href="https://surprise.readthedocs.io/en/stable/basic_algorithms.html">2</a>] Surprise lib, Basic algorithms</p>
+</div>
+</div>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "reco_base"
+        },
+        kernelOptions: {
+            kernelName: "reco_base",
+            path: "./examples/02_model_collaborative_filtering"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'reco_base'</script>
+
+              </div>
+              
+        
+            
+
+
+
+<div class='prev-next-bottom'>
+    
+
+</div>
+        
+        </div>
+    </div>
+    <footer class="footer">
+    <div class="container">
+      <p>
+        
+          By The Jupyter Book community<br/>
+        
+            &copy; Copyright 2021.<br/>
+      </p>
+    </div>
+  </footer>
+</main>
+
+
+      </div>
+    </div>
+  
+  <script src="../../_static/js/index.1c5a1a01449ed65a7b51.js"></script>
+
+  
+  </body>
+</html>

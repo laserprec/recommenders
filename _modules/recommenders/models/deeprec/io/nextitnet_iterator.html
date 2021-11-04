@@ -1,0 +1,456 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>recommenders.models.deeprec.io.nextitnet_iterator &#8212; &lt;h1 style=&#34;font-size:2em;text-align:center;color:#FF5733&#34;&gt;Recommenders&lt;/h1&gt;</title>
+    
+  <link href="../../../../../_static/css/theme.css" rel="stylesheet" />
+  <link href="../../../../../_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
+
+    
+  <link rel="stylesheet"
+    href="../../../../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../../../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../../../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+
+    
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/sphinx-book-theme.css?digest=c3fdc42140077d1ad13ad2f1588a4309" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/tabs.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    
+  <link rel="preload" as="script" href="../../../../../_static/js/index.1c5a1a01449ed65a7b51.js">
+
+    <script data-url_root="../../../../../" id="documentation_options" src="../../../../../_static/documentation_options.js"></script>
+    <script src="../../../../../_static/jquery.js"></script>
+    <script src="../../../../../_static/underscore.js"></script>
+    <script src="../../../../../_static/doctools.js"></script>
+    <script src="../../../../../_static/togglebutton.js"></script>
+    <script src="../../../../../_static/clipboard.min.js"></script>
+    <script src="../../../../../_static/copybutton.js"></script>
+    <script src="../../../../../_static/tabs.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../../../../../_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
+    <link rel="canonical" href="https://microsoft.github.io/genalog/_modules/recommenders/models/deeprec/io/nextitnet_iterator.html" />
+    <link rel="index" title="Index" href="../../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../../search.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en" />
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="../../../../../index.html">
+      
+      
+      
+      <h1 class="site-logo" id="site-title"><h1 style="font-size:2em;text-align:center;color:#FF5733">Recommenders</h1></h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="../../../../../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        
+    </div>
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="topbar container-xl fixed-top">
+    <div class="topbar-contents row">
+        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
+        <div class="col pl-md-4 topbar-main">
+            
+            <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+                data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+                aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
+                title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+                <i class="fas fa-bars"></i>
+                <i class="fas fa-arrow-left"></i>
+                <i class="fas fa-arrow-up"></i>
+            </button>
+            
+            
+            <!-- Source interaction buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
+    <div class="dropdown-buttons sourcebuttons">
+        <a class="repository-button"
+            href="https://github.com/microsoft/genalog"><button type="button" class="btn btn-secondary topbarbtn"
+                data-toggle="tooltip" data-placement="left" title="Source repository"><i
+                    class="fab fa-github"></i>repository</button></a>
+        <a class="issues-button"
+            href="https://github.com/microsoft/genalog/issues/new?title=Issue%20on%20page%20%2F_modules/recommenders/models/deeprec/io/nextitnet_iterator.html&body=Your%20issue%20content%20here."><button
+                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
+                title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
+        
+    </div>
+</div>
+
+            <!-- Full screen (wrap in <a> to have style consistency -->
+
+<a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+        data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+        title="Fullscreen mode"><i
+            class="fas fa-expand"></i></button></a>
+
+            <!-- Launch buttons -->
+
+        </div>
+
+        <!-- Table of contents -->
+        <div class="d-none d-md-block col-md-2 bd-toc show">
+            
+        </div>
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+        
+              <div>
+                
+  <h1>Source code for recommenders.models.deeprec.io.nextitnet_iterator</h1><div class="highlight"><pre>
+<span></span><span class="c1"># Copyright (c) Microsoft Corporation. All rights reserved.</span>
+<span class="c1"># Licensed under the MIT License.</span>
+
+<span class="kn">import</span> <span class="nn">tensorflow</span> <span class="k">as</span> <span class="nn">tf</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">random</span>
+
+<span class="kn">from</span> <span class="nn">recommenders.models.deeprec.io.sequential_iterator</span> <span class="kn">import</span> <span class="n">SequentialIterator</span>
+<span class="kn">from</span> <span class="nn">recommenders.models.deeprec.deeprec_utils</span> <span class="kn">import</span> <span class="n">load_dict</span>
+
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;NextItNetIterator&quot;</span><span class="p">]</span>
+
+
+<div class="viewcode-block" id="NextItNetIterator"><a class="viewcode-back" href="../../../../../source/models.html#recommenders.models.deeprec.io.nextitnet_iterator.NextItNetIterator">[docs]</a><span class="k">class</span> <span class="nc">NextItNetIterator</span><span class="p">(</span><span class="n">SequentialIterator</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Data loader for the NextItNet model.</span>
+
+<span class="sd">    NextItNet requires a special type of data format. In training stage, each instance will</span>
+<span class="sd">    produce `(sequence_length * train_num_ngs)` target items and labels, to let NextItNet</span>
+<span class="sd">    output predictions of every item in a sequence except only of the last item.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">hparams</span><span class="p">,</span> <span class="n">graph</span><span class="p">,</span> <span class="n">col_spliter</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Initialize an iterator. Create necessary placeholders for the model.</span>
+<span class="sd">        Different from sequential iterator</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            hparams (object): Global hyper-parameters. Some key settings such as #_feature and #_field are there.</span>
+<span class="sd">            graph (object): The running graph. All created placeholder will be added to this graph.</span>
+<span class="sd">            col_spliter (str): Column splitter in one line.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">col_spliter</span> <span class="o">=</span> <span class="n">col_spliter</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">userdict</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">itemdict</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">catedict</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">load_dict</span><span class="p">(</span><span class="n">hparams</span><span class="o">.</span><span class="n">user_vocab</span><span class="p">),</span>
+            <span class="n">load_dict</span><span class="p">(</span><span class="n">hparams</span><span class="o">.</span><span class="n">item_vocab</span><span class="p">),</span>
+            <span class="n">load_dict</span><span class="p">(</span><span class="n">hparams</span><span class="o">.</span><span class="n">cate_vocab</span><span class="p">),</span>
+        <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">max_seq_length</span> <span class="o">=</span> <span class="n">hparams</span><span class="o">.</span><span class="n">max_seq_length</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">batch_size</span> <span class="o">=</span> <span class="n">hparams</span><span class="o">.</span><span class="n">batch_size</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">iter_data</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">graph</span> <span class="o">=</span> <span class="n">graph</span>
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">as_default</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">labels</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">placeholder</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">float32</span><span class="p">,</span> <span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">],</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;label&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">users</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">placeholder</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">int32</span><span class="p">,</span> <span class="p">[</span><span class="kc">None</span><span class="p">],</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;users&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">items</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">placeholder</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">int32</span><span class="p">,</span> <span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">],</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;items&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">cates</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">placeholder</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">int32</span><span class="p">,</span> <span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">],</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;cates&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">item_history</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">placeholder</span><span class="p">(</span>
+                <span class="n">tf</span><span class="o">.</span><span class="n">int32</span><span class="p">,</span> <span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_seq_length</span><span class="p">],</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;item_history&quot;</span>
+            <span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">item_cate_history</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">placeholder</span><span class="p">(</span>
+                <span class="n">tf</span><span class="o">.</span><span class="n">int32</span><span class="p">,</span> <span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_seq_length</span><span class="p">],</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;item_cate_history&quot;</span>
+            <span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">mask</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">placeholder</span><span class="p">(</span>
+                <span class="n">tf</span><span class="o">.</span><span class="n">int32</span><span class="p">,</span> <span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_seq_length</span><span class="p">],</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;mask&quot;</span>
+            <span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">time</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">placeholder</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">float32</span><span class="p">,</span> <span class="p">[</span><span class="kc">None</span><span class="p">],</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;time&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">time_diff</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">placeholder</span><span class="p">(</span>
+                <span class="n">tf</span><span class="o">.</span><span class="n">float32</span><span class="p">,</span> <span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_seq_length</span><span class="p">],</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;time_diff&quot;</span>
+            <span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">time_from_first_action</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">placeholder</span><span class="p">(</span>
+                <span class="n">tf</span><span class="o">.</span><span class="n">float32</span><span class="p">,</span> <span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_seq_length</span><span class="p">],</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;time_from_first_action&quot;</span>
+            <span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">time_to_now</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">placeholder</span><span class="p">(</span>
+                <span class="n">tf</span><span class="o">.</span><span class="n">float32</span><span class="p">,</span> <span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_seq_length</span><span class="p">],</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;time_to_now&quot;</span>
+            <span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_convert_data</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">label_list</span><span class="p">,</span>
+        <span class="n">user_list</span><span class="p">,</span>
+        <span class="n">item_list</span><span class="p">,</span>
+        <span class="n">item_cate_list</span><span class="p">,</span>
+        <span class="n">item_history_batch</span><span class="p">,</span>
+        <span class="n">item_cate_history_batch</span><span class="p">,</span>
+        <span class="n">time_list</span><span class="p">,</span>
+        <span class="n">time_diff_list</span><span class="p">,</span>
+        <span class="n">time_from_first_action_list</span><span class="p">,</span>
+        <span class="n">time_to_now_list</span><span class="p">,</span>
+        <span class="n">batch_num_ngs</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Convert data into numpy arrays that are good for further model operation.</span>
+<span class="sd">        Note: This is different from `sequential_iterator`.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            label_list (list): A list of ground-truth labels.</span>
+<span class="sd">            user_list (list): A list of user indexes.</span>
+<span class="sd">            item_list (list): A list of item indexes.</span>
+<span class="sd">            item_cate_list (list): A list of category indexes.</span>
+<span class="sd">            item_history_batch (list): A list of item history indexes.</span>
+<span class="sd">            item_cate_history_batch (list): A list of category history indexes.</span>
+<span class="sd">            time_list (list): A list of current timestamp.</span>
+<span class="sd">            time_diff_list (list): A list of timestamp between each sequential opertions.</span>
+<span class="sd">            time_from_first_action_list (list): A list of timestamp from the first opertion.</span>
+<span class="sd">            time_to_now_list (list): A list of timestamp to the current time.</span>
+<span class="sd">            batch_num_ngs (int): The number of negative sampling while training in mini-batch.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            dict: A dictionary, contains multiple numpy arrays that are convenient for further operation.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">batch_num_ngs</span><span class="p">:</span>
+            <span class="n">instance_cnt</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">label_list</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">instance_cnt</span> <span class="o">&lt;</span> <span class="mi">5</span><span class="p">:</span>
+                <span class="k">return</span>
+
+            <span class="n">label_list_all</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">item_list_all</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">item_cate_list_all</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">user_list_all</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span>
+                <span class="p">[[</span><span class="n">user</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="n">batch_num_ngs</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="k">for</span> <span class="n">user</span> <span class="ow">in</span> <span class="n">user_list</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int32</span>
+            <span class="p">)</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+            <span class="n">time_list_all</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span>
+                <span class="p">[[</span><span class="n">t</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="n">batch_num_ngs</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">time_list</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span>
+            <span class="p">)</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+
+            <span class="n">history_lengths</span> <span class="o">=</span> <span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">item_history_batch</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">instance_cnt</span><span class="p">)]</span>
+            <span class="n">max_seq_length_batch</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_seq_length</span>
+            <span class="n">item_history_batch_all</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span>
+                <span class="p">(</span><span class="n">instance_cnt</span> <span class="o">*</span> <span class="p">(</span><span class="n">batch_num_ngs</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span> <span class="n">max_seq_length_batch</span><span class="p">),</span>
+                <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int32</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="n">item_cate_history_batch_all</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span>
+                <span class="p">(</span><span class="n">instance_cnt</span> <span class="o">*</span> <span class="p">(</span><span class="n">batch_num_ngs</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span> <span class="n">max_seq_length_batch</span><span class="p">),</span>
+                <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int32</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="n">time_diff_batch</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span>
+                <span class="p">(</span><span class="n">instance_cnt</span> <span class="o">*</span> <span class="p">(</span><span class="n">batch_num_ngs</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span> <span class="n">max_seq_length_batch</span><span class="p">),</span>
+                <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="n">time_from_first_action_batch</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span>
+                <span class="p">(</span><span class="n">instance_cnt</span> <span class="o">*</span> <span class="p">(</span><span class="n">batch_num_ngs</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span> <span class="n">max_seq_length_batch</span><span class="p">),</span>
+                <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="n">time_to_now_batch</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span>
+                <span class="p">(</span><span class="n">instance_cnt</span> <span class="o">*</span> <span class="p">(</span><span class="n">batch_num_ngs</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span> <span class="n">max_seq_length_batch</span><span class="p">),</span>
+                <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="n">mask</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span>
+                <span class="p">(</span><span class="n">instance_cnt</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">batch_num_ngs</span><span class="p">),</span> <span class="n">max_seq_length_batch</span><span class="p">),</span>
+                <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">,</span>
+            <span class="p">)</span>
+
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">instance_cnt</span><span class="p">):</span>
+                <span class="n">this_length</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">history_lengths</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">max_seq_length_batch</span><span class="p">)</span>
+                <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">batch_num_ngs</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+                    <span class="n">item_history_batch_all</span><span class="p">[</span>
+                        <span class="n">i</span> <span class="o">*</span> <span class="p">(</span><span class="n">batch_num_ngs</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="n">index</span><span class="p">,</span> <span class="o">-</span><span class="n">this_length</span><span class="p">:</span>
+                    <span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">item_history_batch</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="o">-</span><span class="n">this_length</span><span class="p">:],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int32</span><span class="p">)</span>
+                    <span class="n">item_cate_history_batch_all</span><span class="p">[</span>
+                        <span class="n">i</span> <span class="o">*</span> <span class="p">(</span><span class="n">batch_num_ngs</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="n">index</span><span class="p">,</span> <span class="o">-</span><span class="n">this_length</span><span class="p">:</span>
+                    <span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span>
+                        <span class="n">item_cate_history_batch</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="o">-</span><span class="n">this_length</span><span class="p">:],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int32</span>
+                    <span class="p">)</span>
+                    <span class="n">mask</span><span class="p">[</span><span class="n">i</span> <span class="o">*</span> <span class="p">(</span><span class="n">batch_num_ngs</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="n">index</span><span class="p">,</span> <span class="o">-</span><span class="n">this_length</span><span class="p">:]</span> <span class="o">=</span> <span class="mf">1.0</span>
+                    <span class="n">time_diff_batch</span><span class="p">[</span>
+                        <span class="n">i</span> <span class="o">*</span> <span class="p">(</span><span class="n">batch_num_ngs</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="n">index</span><span class="p">,</span> <span class="o">-</span><span class="n">this_length</span><span class="p">:</span>
+                    <span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">time_diff_list</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="o">-</span><span class="n">this_length</span><span class="p">:],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+                    <span class="n">time_from_first_action_batch</span><span class="p">[</span>
+                        <span class="n">i</span> <span class="o">*</span> <span class="p">(</span><span class="n">batch_num_ngs</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="n">index</span><span class="p">,</span> <span class="o">-</span><span class="n">this_length</span><span class="p">:</span>
+                    <span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span>
+                        <span class="n">time_from_first_action_list</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="o">-</span><span class="n">this_length</span><span class="p">:],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span>
+                    <span class="p">)</span>
+                    <span class="n">time_to_now_batch</span><span class="p">[</span>
+                        <span class="n">i</span> <span class="o">*</span> <span class="p">(</span><span class="n">batch_num_ngs</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="n">index</span><span class="p">,</span> <span class="o">-</span><span class="n">this_length</span><span class="p">:</span>
+                    <span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">time_to_now_list</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="o">-</span><span class="n">this_length</span><span class="p">:],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">instance_cnt</span><span class="p">):</span>
+                <span class="n">positive_item</span> <span class="o">=</span> <span class="p">[</span>
+                    <span class="o">*</span><span class="n">item_history_batch_all</span><span class="p">[</span><span class="n">i</span> <span class="o">*</span> <span class="p">(</span><span class="n">batch_num_ngs</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)][</span><span class="mi">1</span><span class="p">:],</span>
+                    <span class="n">item_list</span><span class="p">[</span><span class="n">i</span><span class="p">],</span>
+                <span class="p">]</span>
+                <span class="n">positive_item_cate</span> <span class="o">=</span> <span class="p">[</span>
+                    <span class="o">*</span><span class="n">item_cate_history_batch_all</span><span class="p">[</span><span class="n">i</span> <span class="o">*</span> <span class="p">(</span><span class="n">batch_num_ngs</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)][</span><span class="mi">1</span><span class="p">:],</span>
+                    <span class="n">item_cate_list</span><span class="p">[</span><span class="n">i</span><span class="p">],</span>
+                <span class="p">]</span>
+                <span class="n">label_list_all</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">max_seq_length_batch</span><span class="p">)</span>
+                <span class="n">item_list_all</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">positive_item</span><span class="p">)</span>
+                <span class="n">item_cate_list_all</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">positive_item_cate</span><span class="p">)</span>
+
+                <span class="n">count</span> <span class="o">=</span> <span class="mi">0</span>
+                <span class="k">while</span> <span class="n">count</span> <span class="o">&lt;</span> <span class="n">batch_num_ngs</span><span class="p">:</span>
+                    <span class="n">negative_item_list</span> <span class="o">=</span> <span class="p">[]</span>
+                    <span class="n">negative_item_cate_list</span> <span class="o">=</span> <span class="p">[]</span>
+                    <span class="n">count_inner</span> <span class="o">=</span> <span class="mi">1</span>
+                    <span class="k">while</span> <span class="n">count_inner</span> <span class="o">&lt;=</span> <span class="n">max_seq_length_batch</span><span class="p">:</span>
+                        <span class="n">random_value</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">instance_cnt</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+                        <span class="n">negative_item</span> <span class="o">=</span> <span class="n">item_list</span><span class="p">[</span><span class="n">random_value</span><span class="p">]</span>
+                        <span class="k">if</span> <span class="n">negative_item</span> <span class="o">==</span> <span class="n">positive_item</span><span class="p">[</span><span class="n">count_inner</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]:</span>
+                            <span class="k">continue</span>
+                        <span class="n">negative_item_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">negative_item</span><span class="p">)</span>
+                        <span class="n">negative_item_cate_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">item_cate_list</span><span class="p">[</span><span class="n">random_value</span><span class="p">])</span>
+                        <span class="n">count_inner</span> <span class="o">+=</span> <span class="mi">1</span>
+
+                    <span class="n">label_list_all</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">max_seq_length_batch</span><span class="p">)</span>
+                    <span class="n">item_list_all</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">negative_item_list</span><span class="p">)</span>
+                    <span class="n">item_cate_list_all</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">negative_item_cate_list</span><span class="p">)</span>
+                    <span class="n">count</span> <span class="o">+=</span> <span class="mi">1</span>
+
+            <span class="n">res</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="n">res</span><span class="p">[</span><span class="s2">&quot;labels&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span>
+                <span class="n">label_list_all</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span>
+            <span class="p">)</span>  <span class="c1"># .reshape(-1,1)</span>
+            <span class="n">res</span><span class="p">[</span><span class="s2">&quot;users&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">user_list_all</span>
+            <span class="n">res</span><span class="p">[</span><span class="s2">&quot;items&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">item_list_all</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int32</span><span class="p">)</span>
+            <span class="n">res</span><span class="p">[</span><span class="s2">&quot;cates&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">item_cate_list_all</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int32</span><span class="p">)</span>
+            <span class="n">res</span><span class="p">[</span><span class="s2">&quot;item_history&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">item_history_batch_all</span>
+            <span class="n">res</span><span class="p">[</span><span class="s2">&quot;item_cate_history&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">item_cate_history_batch_all</span>
+            <span class="n">res</span><span class="p">[</span><span class="s2">&quot;mask&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">mask</span>
+            <span class="n">res</span><span class="p">[</span><span class="s2">&quot;time&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">time_list_all</span>
+            <span class="n">res</span><span class="p">[</span><span class="s2">&quot;time_diff&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">time_diff_batch</span>
+            <span class="n">res</span><span class="p">[</span><span class="s2">&quot;time_from_first_action&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">time_from_first_action_batch</span>
+            <span class="n">res</span><span class="p">[</span><span class="s2">&quot;time_to_now&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">time_to_now_batch</span>
+
+            <span class="k">return</span> <span class="n">res</span>
+
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">instance_cnt</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">label_list</span><span class="p">)</span>
+            <span class="n">history_lengths</span> <span class="o">=</span> <span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">item_history_batch</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">instance_cnt</span><span class="p">)]</span>
+            <span class="n">max_seq_length_batch</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_seq_length</span>
+            <span class="n">item_history_batch_all</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span>
+                <span class="p">(</span><span class="n">instance_cnt</span><span class="p">,</span> <span class="n">max_seq_length_batch</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int32</span>
+            <span class="p">)</span>
+            <span class="n">item_cate_history_batch_all</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span>
+                <span class="p">(</span><span class="n">instance_cnt</span><span class="p">,</span> <span class="n">max_seq_length_batch</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int32</span>
+            <span class="p">)</span>
+            <span class="n">time_diff_batch</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span>
+                <span class="p">(</span><span class="n">instance_cnt</span><span class="p">,</span> <span class="n">max_seq_length_batch</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span>
+            <span class="p">)</span>
+            <span class="n">time_from_first_action_batch</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span>
+                <span class="p">(</span><span class="n">instance_cnt</span><span class="p">,</span> <span class="n">max_seq_length_batch</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span>
+            <span class="p">)</span>
+            <span class="n">time_to_now_batch</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span>
+                <span class="p">(</span><span class="n">instance_cnt</span><span class="p">,</span> <span class="n">max_seq_length_batch</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span>
+            <span class="p">)</span>
+            <span class="n">mask</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">instance_cnt</span><span class="p">,</span> <span class="n">max_seq_length_batch</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">instance_cnt</span><span class="p">):</span>
+                <span class="n">this_length</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">history_lengths</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">max_seq_length_batch</span><span class="p">)</span>
+                <span class="n">item_history_batch_all</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="o">-</span><span class="n">this_length</span><span class="p">:]</span> <span class="o">=</span> <span class="n">item_history_batch</span><span class="p">[</span><span class="n">i</span><span class="p">][</span>
+                    <span class="o">-</span><span class="n">this_length</span><span class="p">:</span>
+                <span class="p">]</span>
+                <span class="n">item_cate_history_batch_all</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="o">-</span><span class="n">this_length</span><span class="p">:]</span> <span class="o">=</span> <span class="n">item_cate_history_batch</span><span class="p">[</span>
+                    <span class="n">i</span>
+                <span class="p">][</span><span class="o">-</span><span class="n">this_length</span><span class="p">:]</span>
+                <span class="n">mask</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="o">-</span><span class="n">this_length</span><span class="p">:]</span> <span class="o">=</span> <span class="mf">1.0</span>
+                <span class="n">time_diff_batch</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="o">-</span><span class="n">this_length</span><span class="p">:]</span> <span class="o">=</span> <span class="n">time_diff_list</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="o">-</span><span class="n">this_length</span><span class="p">:]</span>
+                <span class="n">time_from_first_action_batch</span><span class="p">[</span>
+                    <span class="n">i</span><span class="p">,</span> <span class="o">-</span><span class="n">this_length</span><span class="p">:</span>
+                <span class="p">]</span> <span class="o">=</span> <span class="n">time_from_first_action_list</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="o">-</span><span class="n">this_length</span><span class="p">:]</span>
+                <span class="n">time_to_now_batch</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="o">-</span><span class="n">this_length</span><span class="p">:]</span> <span class="o">=</span> <span class="n">time_to_now_list</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="o">-</span><span class="n">this_length</span><span class="p">:]</span>
+
+            <span class="n">res</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="n">res</span><span class="p">[</span><span class="s2">&quot;labels&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">label_list</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">([</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+            <span class="n">res</span><span class="p">[</span><span class="s2">&quot;users&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">user_list</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+            <span class="n">res</span><span class="p">[</span><span class="s2">&quot;items&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">item_list</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int32</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">([</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+            <span class="n">res</span><span class="p">[</span><span class="s2">&quot;cates&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">item_cate_list</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int32</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">([</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+            <span class="n">res</span><span class="p">[</span><span class="s2">&quot;item_history&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">item_history_batch_all</span>
+            <span class="n">res</span><span class="p">[</span><span class="s2">&quot;item_cate_history&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">item_cate_history_batch_all</span>
+            <span class="n">res</span><span class="p">[</span><span class="s2">&quot;mask&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">mask</span>
+            <span class="n">res</span><span class="p">[</span><span class="s2">&quot;time&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">time_list</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+            <span class="n">res</span><span class="p">[</span><span class="s2">&quot;time_diff&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">time_diff_batch</span>
+            <span class="n">res</span><span class="p">[</span><span class="s2">&quot;time_from_first_action&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">time_from_first_action_batch</span>
+            <span class="n">res</span><span class="p">[</span><span class="s2">&quot;time_to_now&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">time_to_now_batch</span>
+            <span class="k">return</span> <span class="n">res</span></div>
+</pre></div>
+
+              </div>
+              
+        
+            
+
+
+
+<div class='prev-next-bottom'>
+    
+
+</div>
+        
+        </div>
+    </div>
+    <footer class="footer">
+    <div class="container">
+      <p>
+        
+          By The Jupyter Book community<br/>
+        
+            &copy; Copyright 2021.<br/>
+          <div class="extra_footer">
+            Don't forget to check out <a href= https://arxiv.org/abs/2108.02899>our paper from Document Intelligence Workshop at KDD 2021!</a>
+          </div>
+      </p>
+    </div>
+  </footer>
+</main>
+
+
+      </div>
+    </div>
+  
+  <script src="../../../../../_static/js/index.1c5a1a01449ed65a7b51.js"></script>
+
+  
+  </body>
+</html>

@@ -1,0 +1,1013 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Deploying a Real-Time Content Based Personalization Model &#8212; &lt;h1 style=&#34;font-size:2em;text-align:center;color:#FF5733&#34;&gt;Recommenders&lt;/h1&gt;</title>
+    
+  <link href="../../_static/css/theme.css" rel="stylesheet" />
+  <link href="../../_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
+
+    
+  <link rel="stylesheet"
+    href="../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+
+    
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-book-theme.css?digest=c3fdc42140077d1ad13ad2f1588a4309" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/tabs.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    
+  <link rel="preload" as="script" href="../../_static/js/index.1c5a1a01449ed65a7b51.js">
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/togglebutton.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <script src="../../_static/tabs.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../../_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script>
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="../../_static/sphinx-thebe.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en" />
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="../../index.html">
+      
+      
+      
+      <h1 class="site-logo" id="site-title"><h1 style="font-size:2em;text-align:center;color:#FF5733">Recommenders</h1></h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="../../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        <p class="caption" role="heading">
+ <span class="caption-text">
+  Getting Started Notebooks
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../00_quick_start/als_movielens.html">
+   Running ALS on MovieLens (PySpark)
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../00_quick_start/ncf_movielens.html">
+   Neural Collaborative Filtering on MovieLens dataset.
+  </a>
+ </li>
+</ul>
+
+    </div>
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="topbar container-xl fixed-top">
+    <div class="topbar-contents row">
+        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
+        <div class="col pl-md-4 topbar-main">
+            
+            <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+                data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+                aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
+                title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+                <i class="fas fa-bars"></i>
+                <i class="fas fa-arrow-left"></i>
+                <i class="fas fa-arrow-up"></i>
+            </button>
+            
+            
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
+            class="fas fa-download"></i></button>
+
+    <div class="dropdown-buttons">
+        <!-- ipynb file if we had a myst markdown file -->
+        
+        <!-- Download raw file -->
+        <a class="dropdown-buttons" href="../../_sources/examples/05_operationalize/lightgbm_criteo_o16n.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
+                data-placement="left">.ipynb</button></a>
+        <!-- Download PDF via print -->
+        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
+            onClick="window.print()" data-toggle="tooltip" data-placement="left">.pdf</button>
+    </div>
+</div>
+
+            <!-- Source interaction buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
+    <div class="dropdown-buttons sourcebuttons">
+        <a class="repository-button"
+            href="https://github.com/microsoft/genalog"><button type="button" class="btn btn-secondary topbarbtn"
+                data-toggle="tooltip" data-placement="left" title="Source repository"><i
+                    class="fab fa-github"></i>repository</button></a>
+        <a class="issues-button"
+            href="https://github.com/microsoft/genalog/issues/new?title=Issue%20on%20page%20%2Fexamples/05_operationalize/lightgbm_criteo_o16n.html&body=Your%20issue%20content%20here."><button
+                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
+                title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
+        
+    </div>
+</div>
+
+            <!-- Full screen (wrap in <a> to have style consistency -->
+
+<a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+        data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+        title="Fullscreen mode"><i
+            class="fas fa-expand"></i></button></a>
+
+            <!-- Launch buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Launch interactive content"><i class="fas fa-rocket"></i></button>
+    <div class="dropdown-buttons">
+        
+        <a class="binder-button" href="https://mybinder.org/v2/gh/microsoft/genalog/main?urlpath=tree/docs/genalog_docs/examples/05_operationalize/lightgbm_criteo_o16n.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Launch Binder" data-toggle="tooltip"
+                data-placement="left"><img class="binder-button-logo"
+                    src="../../_static/images/logo_binder.svg"
+                    alt="Interact on binder">Binder</button></a>
+        
+        
+        
+        
+    </div>
+</div>
+
+        </div>
+
+        <!-- Table of contents -->
+        <div class="d-none d-md-block col-md-2 bd-toc show">
+            
+            <div class="tocsection onthispage pt-5 pb-3">
+                <i class="fas fa-list"></i> Contents
+            </div>
+            <nav id="bd-toc-nav" aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#">
+   Deploying a Real-Time Content Based Personalization Model
+  </a>
+  <ul class="visible nav section-nav flex-column">
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#architecture">
+     Architecture
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#components">
+     Components
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#assumptions">
+   Assumptions
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#score-service-steps">
+   Score Service Steps
+  </a>
+  <ul class="visible nav section-nav flex-column">
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#setup-libraries-and-variables">
+     Setup libraries and variables
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#configure-scoring-service-variables">
+   Configure Scoring Service Variables
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#setup-azureml-workspace">
+   Setup AzureML Workspace
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#prepare-the-serialized-model">
+   Prepare the Serialized Model
+  </a>
+  <ul class="visible nav section-nav flex-column">
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#input-schema">
+     Input Schema
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#copy-the-model-from-dbfs-to-local">
+     Copy the model from dbfs to local
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#register-the-model">
+     Register the Model
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#define-the-scoring-script">
+   Define the Scoring Script
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#define-dependencies">
+   Define Dependencies
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#create-the-image">
+   Create the Image
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#create-the-service">
+   Create the Service
+  </a>
+  <ul class="visible nav section-nav flex-column">
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#setup-and-planning">
+     Setup and Planning
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#provision-azure-kubernetes-service">
+     Provision Azure Kubernetes Service
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#consideration">
+     Consideration
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#create-the-webservice">
+     Create the Webservice
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#test-the-service">
+   Test the Service
+  </a>
+  <ul class="visible nav section-nav flex-column">
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#delete-the-service">
+     Delete the Service
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+        
+              <div>
+                
+  <p>Copyright (c) Microsoft Corporation. All rights reserved.</p>
+<p>Licensed under the MIT License.</p>
+<div class="section" id="deploying-a-real-time-content-based-personalization-model">
+<h1>Deploying a Real-Time Content Based Personalization Model<a class="headerlink" href="#deploying-a-real-time-content-based-personalization-model" title="Permalink to this headline">¶</a></h1>
+<p>This notebook provides an example for how a business can use machine learning to automate content based personalization for their customers by using a recommendation system. Azure Databricks is used to train a model that predicts the probability a user will engage with an item. In turn, this estimate can be used to rank items based on the content that a user is most likely to consume.<br><br>
+This notebook creates a scalable real-time scoring service for the Spark based models such as the Content Based Personalization model trained in the <a class="reference internal" href="../02_model_content_based_filtering/mmlspark_lightgbm_criteo.html"><span class="doc std std-doc">MMLSpark-LightGBM-Criteo notebook</span></a>.
+<br><br></p>
+<div class="section" id="architecture">
+<h2>Architecture<a class="headerlink" href="#architecture" title="Permalink to this headline">¶</a></h2>
+<img src="https://recodatasets.z20.web.core.windows.net/images/lightgbm_criteo_arch.svg" alt="Architecture">
+</div>
+<div class="section" id="components">
+<h2>Components<a class="headerlink" href="#components" title="Permalink to this headline">¶</a></h2>
+<p>The following components are used in this architecture:<br></p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://azure.microsoft.com/en-us/services/storage/blobs/">Azure Blob Storage</a> is a storage service optimized for storing massive amounts of unstructured data. In this case, the input data is stored here.<br></p></li>
+<li><p><a class="reference external" href="https://azure.microsoft.com/en-us/services/databricks/">Azure Databricks</a> is a managed Apache Spark cluster where model training and evaluating is performed.<br></p></li>
+<li><p><a class="reference external" href="https://azure.microsoft.com/en-us/services/machine-learning-service/">Azure Machine Learning service</a> is used in this scenario to register the machine learning model. <br></p></li>
+<li><p><a class="reference external" href="https://azure.microsoft.com/en-us/services/container-registry/">Azure Container Registry</a> is used to package the scoring script as a container image which is used to serve the model in production. <br></p></li>
+<li><p><a class="reference external" href="https://azure.microsoft.com/en-us/services/kubernetes-service/">Azure Kubernetes Service</a> is used to deploy the trained models to web or app services. <br></p></li>
+</ul>
+</div>
+</div>
+<div class="section" id="assumptions">
+<h1>Assumptions<a class="headerlink" href="#assumptions" title="Permalink to this headline">¶</a></h1>
+<p>In order to execute this notebook the following items are assumed:</p>
+<ol class="simple">
+<li><p>A model has previously been trained as shown in the <a class="reference internal" href="../02_model_content_based_filtering/mmlspark_lightgbm_criteo.html"><span class="doc std std-doc">mmlspark_lightgbm_criteo</span></a> notebook</p></li>
+<li><p>This notebook is running in the same Azure Databricks workspace used to run the notebook in Assumption 1.</p></li>
+<li><p>The Databricks cluster used has been prepared for operationalization (MML Spark and recommenders are both installed)</p></li>
+</ol>
+<ul class="simple">
+<li><p>See <span class="xref myst">Setup</span> instructions for details</p></li>
+</ul>
+<ol class="simple">
+<li><p>An Azure Machine Learning Service workspace has been setup in the same region as the Azure Databricks workspace used for model training</p></li>
+</ol>
+<ul class="simple">
+<li><p>See <a class="reference external" href="https://docs.microsoft.com/en-us/azure/machine-learning/service/setup-create-workspace">Create A Workspace</a> for more details</p></li>
+</ul>
+<ol class="simple">
+<li><p>The Azure ML Workspace config.json has been uploaded to databrics at <code class="docutils literal notranslate"><span class="pre">dbfs:/aml_config/config.json</span></code></p></li>
+</ol>
+<ul class="simple">
+<li><p>See <a class="reference external" href="https://docs.microsoft.com/en-us/azure/machine-learning/service/how-to-configure-environment">Configure Environment</a> and <a class="reference external" href="https://docs.databricks.com/user-guide/dbfs-databricks-file-system.html#access-dbfs-with-the-databricks-cli">Databricks CLI</a></p></li>
+</ul>
+<ol class="simple">
+<li><p>An Azure Container Instance (ACI) has been registered for use your Azure subscription</p></li>
+</ol>
+<ul class="simple">
+<li><p>See <a class="reference external" href="https://docs.microsoft.com/en-us/azure/azure-resource-manager/resource-manager-supported-services#portal">Supported Services</a> for more details</p></li>
+</ul>
+</div>
+<div class="section" id="score-service-steps">
+<h1>Score Service Steps<a class="headerlink" href="#score-service-steps" title="Permalink to this headline">¶</a></h1>
+<p>In this example, a “scoring service” is a function that is executed by a docker container. It takes in a post request with JSON formatted payload and produces a score based on a previously estimated model. In our case, we will use the model we estimated earlier that predicts the probability of a user-item interaction based on a set of numeric and categorical features. Because that model was trained using PySpark we will create a Spark session on a single instance (within the docker container) which will use <a class="reference external" href="https://github.com/Azure/mmlspark/blob/master/docs/mmlspark-serving.md">MML Spark Serving</a> to execute the model on the received input data and return the probability of interaction. We will use Azure Machine Learning to create and run the docker container.</p>
+<p>In order to create a scoring service, we will do the following steps:</p>
+<ol class="simple">
+<li><p>Setup and authorize the Azure Machine Learning Workspace</p></li>
+<li><p>Serialize the previously trained model and add it to the Azure Model Registry</p></li>
+<li><p>Define the ‘scoring service’ script to execute the model</p></li>
+<li><p>Define all the pre-requisites that that script requires</p></li>
+<li><p>Use the model, the driver script, and the pre-requisites to create a Azure Container Image</p></li>
+<li><p>Deploy the container image on a scalable platform Azure Kubernetes Service</p></li>
+<li><p>Test the service</p></li>
+</ol>
+<div class="section" id="setup-libraries-and-variables">
+<h2>Setup libraries and variables<a class="headerlink" href="#setup-libraries-and-variables" title="Permalink to this headline">¶</a></h2>
+<p>The next few cells initialize the environment and variables: we import relevant libraries and set variables.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">shutil</span>
+
+<span class="kn">from</span> <span class="nn">recommenders.datasets.criteo</span> <span class="kn">import</span> <span class="n">get_spark_schema</span><span class="p">,</span> <span class="n">load_spark_df</span>
+<span class="kn">from</span> <span class="nn">recommenders.utils.k8s_utils</span> <span class="kn">import</span> <span class="n">qps_to_replicas</span><span class="p">,</span> <span class="n">replicas_to_qps</span><span class="p">,</span> <span class="n">nodes_to_replicas</span>
+
+<span class="kn">from</span> <span class="nn">azureml.core</span> <span class="kn">import</span> <span class="n">Workspace</span>
+<span class="kn">from</span> <span class="nn">azureml.core</span> <span class="kn">import</span> <span class="n">VERSION</span> <span class="k">as</span> <span class="n">azureml_version</span>
+
+<span class="kn">from</span> <span class="nn">azureml.core.model</span> <span class="kn">import</span> <span class="n">Model</span>
+<span class="kn">from</span> <span class="nn">azureml.core.conda_dependencies</span> <span class="kn">import</span> <span class="n">CondaDependencies</span> 
+<span class="kn">from</span> <span class="nn">azureml.core.webservice</span> <span class="kn">import</span> <span class="n">Webservice</span><span class="p">,</span> <span class="n">AksWebservice</span>
+<span class="kn">from</span> <span class="nn">azureml.core.image</span> <span class="kn">import</span> <span class="n">ContainerImage</span>
+<span class="kn">from</span> <span class="nn">azureml.core.compute</span> <span class="kn">import</span> <span class="n">AksCompute</span><span class="p">,</span> <span class="n">ComputeTarget</span>
+
+<span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">floor</span>
+
+<span class="c1"># Check core SDK version number</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Azure ML SDK version: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">azureml_version</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Azure ML SDK version: 1.0.18
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="configure-scoring-service-variables">
+<h1>Configure Scoring Service Variables<a class="headerlink" href="#configure-scoring-service-variables" title="Permalink to this headline">¶</a></h1>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">MODEL_NAME</span> <span class="o">=</span> <span class="s1">&#39;lightgbm_criteo.mml&#39;</span>  <span class="c1"># this name must exactly match the name used to save the pipeline model in the estimation notebook</span>
+<span class="n">MODEL_DESCRIPTION</span> <span class="o">=</span> <span class="s1">&#39;LightGBM Criteo Model&#39;</span>
+
+<span class="c1"># Setup AzureML assets (names must be lower case alphanumeric without spaces and between 3 and 32 characters)</span>
+<span class="c1"># Azure ML Webservice</span>
+<span class="n">SERVICE_NAME</span> <span class="o">=</span> <span class="s1">&#39;lightgbm-criteo&#39;</span>
+<span class="c1"># Azure ML Container Image</span>
+<span class="n">CONTAINER_NAME</span> <span class="o">=</span> <span class="n">SERVICE_NAME</span>
+<span class="n">CONTAINER_RUN_TIME</span> <span class="o">=</span> <span class="s1">&#39;spark-PY&#39;</span>
+<span class="c1"># Azure Kubernetes Service (AKS)</span>
+<span class="n">AKS_NAME</span> <span class="o">=</span> <span class="s1">&#39;predict-aks&#39;</span>
+
+<span class="c1"># Names of other files that are used below</span>
+<span class="n">CONDA_FILE</span> <span class="o">=</span> <span class="s2">&quot;deploy_conda.yaml&quot;</span>
+<span class="n">DRIVER_FILE</span> <span class="o">=</span> <span class="s2">&quot;mmlspark_serving.py&quot;</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="setup-azureml-workspace">
+<h1>Setup AzureML Workspace<a class="headerlink" href="#setup-azureml-workspace" title="Permalink to this headline">¶</a></h1>
+<p>Workspace configuration can be retrieved from the portal and uploaded to Databricks<br>
+See <a class="reference external" href="https://docs.microsoft.com/en-us/azure/machine-learning/service/how-to-configure-environment#azure-databricks">AzureML on Databricks</a></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ws</span> <span class="o">=</span> <span class="n">Workspace</span><span class="o">.</span><span class="n">from_config</span><span class="p">(</span><span class="s1">&#39;/dbfs/aml_config/config.json&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="prepare-the-serialized-model">
+<h1>Prepare the Serialized Model<a class="headerlink" href="#prepare-the-serialized-model" title="Permalink to this headline">¶</a></h1>
+<p>In order to create the docker container, the first thing we will do is to prepare the model we estimated in a prior step so that the docker container we are creating will be able to access it. We do this by <em>registering</em> the model to the workspace (see the Azure ML <a class="reference external" href="https://docs.microsoft.com/en-us/azure/machine-learning/service/concept-model-management-and-deployment">documentation</a> for additional details).</p>
+<p>The model has been stored as a directory on dbfs, and before we register it, we do a few additional steps to facilitate the process.</p>
+<div class="section" id="input-schema">
+<h2>Input Schema<a class="headerlink" href="#input-schema" title="Permalink to this headline">¶</a></h2>
+<p>Spark Serving requires the schema of the raw input data. Therefore, we get the schema and
+store it as an additional file in the model directory.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">raw_schema</span> <span class="o">=</span> <span class="n">get_spark_schema</span><span class="p">()</span>
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s1">&#39;/dbfs&#39;</span><span class="p">,</span> <span class="n">MODEL_NAME</span><span class="p">,</span> <span class="s1">&#39;schema.json&#39;</span><span class="p">),</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+  <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">raw_schema</span><span class="o">.</span><span class="n">json</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><style scoped>
+  .ansiout {
+    display: block;
+    unicode-bidi: embed;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    word-break: break-all;
+    font-family: "Source Code Pro", "Menlo", monospace;;
+    font-size: 13px;
+    color: #555;
+    margin-left: 4px;
+    line-height: 19px;
+  }
+</style>
+<div class="ansiout"></div></div></div>
+</div>
+</div>
+<div class="section" id="copy-the-model-from-dbfs-to-local">
+<h2>Copy the model from dbfs to local<a class="headerlink" href="#copy-the-model-from-dbfs-to-local" title="Permalink to this headline">¶</a></h2>
+<p>While you can access files on DBFS with local file APIs, it is safer to explicitly copy saved models to and from dbfs, because the local file APIs can only access files smaller than 2 GB (see details <a class="reference external" href="https://docs.databricks.com/user-guide/dbfs-databricks-file-system.html#access-dbfs-using-local-file-apis">here</a>).</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model_local</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">(),</span> <span class="n">MODEL_NAME</span><span class="p">)</span>
+<span class="n">dbutils</span><span class="o">.</span><span class="n">fs</span><span class="o">.</span><span class="n">cp</span><span class="p">(</span><span class="s1">&#39;dbfs:/&#39;</span> <span class="o">+</span> <span class="n">MODEL_NAME</span><span class="p">,</span> <span class="s1">&#39;file:&#39;</span> <span class="o">+</span> <span class="n">model_local</span><span class="p">,</span> <span class="n">recurse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><style scoped>
+  .ansiout {
+    display: block;
+    unicode-bidi: embed;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    word-break: break-all;
+    font-family: "Source Code Pro", "Menlo", monospace;;
+    font-size: 13px;
+    color: #555;
+    margin-left: 4px;
+    line-height: 19px;
+  }
+</style>
+<div class="ansiout"><span class="ansired">Out[</span><span class="ansired">6</span><span class="ansired">]: </span>True
+</div></div></div>
+</div>
+</div>
+<div class="section" id="register-the-model">
+<h2>Register the Model<a class="headerlink" href="#register-the-model" title="Permalink to this headline">¶</a></h2>
+<p>Now we are ready to register the model in the Azure Machine Learning Workspace.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># First the model directory is compressed to minimize data transfer</span>
+<span class="n">zip_file</span> <span class="o">=</span> <span class="n">shutil</span><span class="o">.</span><span class="n">make_archive</span><span class="p">(</span><span class="n">base_name</span><span class="o">=</span><span class="n">MODEL_NAME</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;zip&#39;</span><span class="p">,</span> <span class="n">root_dir</span><span class="o">=</span><span class="n">model_local</span><span class="p">)</span>
+
+<span class="c1"># Register the model</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">Model</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">model_path</span><span class="o">=</span><span class="n">zip_file</span><span class="p">,</span>  <span class="c1"># this points to a local file</span>
+                       <span class="n">model_name</span><span class="o">=</span><span class="n">MODEL_NAME</span><span class="p">,</span>  <span class="c1"># this is the name the model is registered as</span>
+                       <span class="n">description</span><span class="o">=</span><span class="n">MODEL_DESCRIPTION</span><span class="p">,</span>
+                       <span class="n">workspace</span><span class="o">=</span><span class="n">ws</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">model</span><span class="o">.</span><span class="n">description</span><span class="p">,</span> <span class="n">model</span><span class="o">.</span><span class="n">version</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><style scoped>
+  .ansiout {
+    display: block;
+    unicode-bidi: embed;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    word-break: break-all;
+    font-family: "Source Code Pro", "Menlo", monospace;;
+    font-size: 13px;
+    color: #555;
+    margin-left: 4px;
+    line-height: 19px;
+  }
+</style>
+<div class="ansiout">Registering model lightgbm_criteo.mml
+lightgbm_criteo.mml LightGBM Criteo Model 4
+</div></div></div>
+</div>
+</div>
+</div>
+<div class="section" id="define-the-scoring-script">
+<h1>Define the Scoring Script<a class="headerlink" href="#define-the-scoring-script" title="Permalink to this headline">¶</a></h1>
+<p>Next, we need to create the driver script that will be executed when the service is called. The functions that need to be defined for scoring are <code class="docutils literal notranslate"><span class="pre">init()</span></code> and <code class="docutils literal notranslate"><span class="pre">run()</span></code>. The <code class="docutils literal notranslate"><span class="pre">init()</span></code> function is run when the service is created, and the <code class="docutils literal notranslate"><span class="pre">run()</span></code> function is run each time the service is called.</p>
+<p>In our example, we use the <code class="docutils literal notranslate"><span class="pre">init()</span></code> function to load all the libraries, initialize the spark session, start the spark streaming service and load the model pipeline. We use the <code class="docutils literal notranslate"><span class="pre">run()</span></code> method to route the input to the spark streaming service to generate predictions (in this case the probability of an interaction) then return the output.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">driver_file</span> <span class="o">=</span> <span class="s1">&#39;&#39;&#39;</span>
+<span class="s1">import os</span>
+<span class="s1">import json</span>
+<span class="s1">from time import sleep</span>
+<span class="s1">from uuid import uuid4</span>
+<span class="s1">from zipfile import ZipFile</span>
+
+<span class="s1">from azureml.core.model import Model</span>
+<span class="s1">from pyspark.ml import PipelineModel</span>
+<span class="s1">from pyspark.sql import SparkSession</span>
+<span class="s1">from pyspark.sql.types import StructType</span>
+<span class="s1">import requests</span>
+
+
+<span class="s1">def init():</span>
+<span class="s1">    &quot;&quot;&quot;One time initialization of pyspark and model server&quot;&quot;&quot;</span>
+
+<span class="s1">    spark = SparkSession.builder.appName(&quot;Model Server&quot;).getOrCreate()</span>
+<span class="s1">    import mmlspark  # this is needed to load mmlspark libraries</span>
+
+<span class="s1">    # extract and load model</span>
+<span class="s1">    model_path = Model.get_model_path(&#39;</span><span class="si">{model_name}</span><span class="s1">&#39;)</span>
+<span class="s1">    with ZipFile(model_path, &#39;r&#39;) as f:</span>
+<span class="s1">        f.extractall(&#39;model&#39;)</span>
+<span class="s1">    model = PipelineModel.load(&#39;model&#39;)</span>
+
+<span class="s1">    # load data schema saved with model</span>
+<span class="s1">    with open(os.path.join(&#39;model&#39;, &#39;schema.json&#39;), &#39;r&#39;) as f:</span>
+<span class="s1">        schema = StructType.fromJson(json.load(f))</span>
+
+<span class="s1">    input_df = (</span>
+<span class="s1">        spark.readStream.continuousServer()</span>
+<span class="s1">        .address(&quot;localhost&quot;, 8089, &quot;predict&quot;)</span>
+<span class="s1">        .load()</span>
+<span class="s1">        .parseRequest(schema)</span>
+<span class="s1">    )</span>
+
+<span class="s1">    output_df = (</span>
+<span class="s1">        model.transform(input_df)</span>
+<span class="s1">        .makeReply(&quot;probability&quot;)</span>
+<span class="s1">    )</span>
+
+<span class="s1">    checkpoint = os.path.join(&#39;/tmp&#39;, &#39;checkpoints&#39;, uuid4().hex)</span>
+<span class="s1">    server = (</span>
+<span class="s1">        output_df.writeStream.continuousServer()</span>
+<span class="s1">        .trigger(continuous=&quot;30 seconds&quot;)</span>
+<span class="s1">        .replyTo(&quot;predict&quot;)</span>
+<span class="s1">        .queryName(&quot;prediction&quot;)</span>
+<span class="s1">        .option(&quot;checkpointLocation&quot;, checkpoint)</span>
+<span class="s1">        .start()</span>
+<span class="s1">    )</span>
+
+<span class="s1">    # let the server finish starting</span>
+<span class="s1">    sleep(1)</span>
+
+
+<span class="s1">def run(input_json):</span>
+<span class="s1">    try:</span>
+<span class="s1">        response = requests.post(data=input_json, url=&#39;http://localhost:8089/predict&#39;)</span>
+<span class="s1">        result = response.json()[&#39;probability&#39;][&#39;values&#39;][1]</span>
+<span class="s1">    except Exception as e:</span>
+<span class="s1">        result = str(e)</span>
+<span class="s1">    </span>
+<span class="s1">    return json.dumps({{&quot;result&quot;: result}})</span>
+<span class="s1">    </span>
+<span class="s1">&#39;&#39;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">model_name</span><span class="o">=</span><span class="n">MODEL_NAME</span><span class="p">)</span>
+
+<span class="c1"># check syntax</span>
+<span class="n">exec</span><span class="p">(</span><span class="n">driver_file</span><span class="p">)</span>
+
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">DRIVER_FILE</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">driver_file</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><style scoped>
+  .ansiout {
+    display: block;
+    unicode-bidi: embed;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    word-break: break-all;
+    font-family: "Source Code Pro", "Menlo", monospace;;
+    font-size: 13px;
+    color: #555;
+    margin-left: 4px;
+    line-height: 19px;
+  }
+</style>
+<div class="ansiout"></div></div></div>
+</div>
+</div>
+<div class="section" id="define-dependencies">
+<h1>Define Dependencies<a class="headerlink" href="#define-dependencies" title="Permalink to this headline">¶</a></h1>
+<p>Next, we define the dependencies that are required by the driver script.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># azureml-sdk is required to load the registered model</span>
+<span class="n">conda_file</span> <span class="o">=</span> <span class="n">CondaDependencies</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">pip_packages</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;azureml-sdk&#39;</span><span class="p">,</span> <span class="s1">&#39;requests&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">serialize_to_string</span><span class="p">()</span>
+
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">CONDA_FILE</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">conda_file</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><style scoped>
+  .ansiout {
+    display: block;
+    unicode-bidi: embed;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    word-break: break-all;
+    font-family: "Source Code Pro", "Menlo", monospace;;
+    font-size: 13px;
+    color: #555;
+    margin-left: 4px;
+    line-height: 19px;
+  }
+</style>
+<div class="ansiout"></div></div></div>
+</div>
+</div>
+<div class="section" id="create-the-image">
+<h1>Create the Image<a class="headerlink" href="#create-the-image" title="Permalink to this headline">¶</a></h1>
+<p>We use the <code class="docutils literal notranslate"><span class="pre">ContainerImage</span></code> class to first configure the image with the defined driver and dependencies, then to create the image for use later.<br>
+Building the image allows it to be downloaded and debugged locally using docker, see <a class="reference external" href="https://docs.microsoft.com/en-us/azure/machine-learning/service/how-to-troubleshoot-deployment">troubleshooting instructions</a></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">image_config</span> <span class="o">=</span> <span class="n">ContainerImage</span><span class="o">.</span><span class="n">image_configuration</span><span class="p">(</span><span class="n">execution_script</span><span class="o">=</span><span class="n">DRIVER_FILE</span><span class="p">,</span> 
+                                                  <span class="n">runtime</span><span class="o">=</span><span class="n">CONTAINER_RUN_TIME</span><span class="p">,</span>
+                                                  <span class="n">conda_file</span><span class="o">=</span><span class="n">CONDA_FILE</span><span class="p">,</span>
+                                                  <span class="n">tags</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;runtime&quot;</span><span class="p">:</span><span class="n">CONTAINER_RUN_TIME</span><span class="p">,</span> <span class="s2">&quot;model&quot;</span><span class="p">:</span> <span class="n">MODEL_NAME</span><span class="p">})</span>
+
+<span class="n">image</span> <span class="o">=</span> <span class="n">ContainerImage</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">CONTAINER_NAME</span><span class="p">,</span>
+                              <span class="n">models</span><span class="o">=</span><span class="p">[</span><span class="n">model</span><span class="p">],</span>
+                              <span class="n">image_config</span><span class="o">=</span><span class="n">image_config</span><span class="p">,</span>
+                              <span class="n">workspace</span><span class="o">=</span><span class="n">ws</span><span class="p">)</span>
+
+<span class="n">image</span><span class="o">.</span><span class="n">wait_for_creation</span><span class="p">(</span><span class="n">show_output</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><style scoped>
+  .ansiout {
+    display: block;
+    unicode-bidi: embed;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    word-break: break-all;
+    font-family: "Source Code Pro", "Menlo", monospace;;
+    font-size: 13px;
+    color: #555;
+    margin-left: 4px;
+    line-height: 19px;
+  }
+</style>
+<div class="ansiout">Creating image
+Running......................
+SucceededImage creation operation finished for image lightgbm-criteo:3, operation &quot;Succeeded&quot;
+</div></div></div>
+</div>
+</div>
+<div class="section" id="create-the-service">
+<h1>Create the Service<a class="headerlink" href="#create-the-service" title="Permalink to this headline">¶</a></h1>
+<p>Once we have created an image, we configure an Azure Kubernetes Service (AKS) and deploy the image as an AKS Webservice.</p>
+<p><strong>NOTE</strong> We <em>can</em> create a service directly from the registered model and image_configuration with the <code class="docutils literal notranslate"><span class="pre">Webservice.deploy_from_model()</span></code> function.
+We create the image here explicitly and use <code class="docutils literal notranslate"><span class="pre">deploy_from_image()</span></code> for three reasons:</p>
+<ol class="simple">
+<li><p>It provides more transparency in terms of the actual steps that are taking place</p></li>
+<li><p>It provides more flexibility and control. For example, you can create images with names that are independent of the service that you are creating. This can be useful in cases where your images are used across multiple services.</p></li>
+<li><p>It has potential for faster iteration and for more portability. Once we have an image, we can create a new deployment with the exact same code.</p></li>
+</ol>
+<div class="section" id="setup-and-planning">
+<h2>Setup and Planning<a class="headerlink" href="#setup-and-planning" title="Permalink to this headline">¶</a></h2>
+<p>When we are setting up a production service, we should start by estimating the load we would like to support. In order to estimate that, we need to estimate how long a single call is likely to take. In this example, we have done some local tests, and we have estimated that a single query may take approximately 100 ms to process.</p>
+<p>Based on a few additional assumptions, we can estimate how many replicas are required to support a targetted number of queries per second (qps).</p>
+<p><strong>Note:</strong> This estimate should be used as a ballpark figure to get started, and we can verify performance with subsequent load testing to hone in on better estimates. See this <a class="reference external" href="https://docs.microsoft.com/en-us/azure/machine-learning/service/how-to-deploy-and-where#aks">documentation</a> for more details.</p>
+<p>We have written some helper functions to support this type of calculation, and we will use them to estimate the number of replicas required to support loads of 25, 50, 100, 200, and 350 queries per second, using 100 ms as our estimate of the time to complete a single query.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">all_target_qps</span> <span class="o">=</span> <span class="p">[</span><span class="mi">25</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="mi">350</span><span class="p">]</span>
+<span class="n">query_processing_time</span> <span class="o">=</span> <span class="mf">0.1</span>  <span class="c1">## in seconds</span>
+<span class="n">replica_estimates</span> <span class="o">=</span> <span class="p">{</span><span class="n">t</span><span class="p">:</span> <span class="n">qps_to_replicas</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">query_processing_time</span><span class="p">)</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">all_target_qps</span><span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Based on the size of our customer base and other considerations (e.g. upcoming announcements that may boost traffic, etc), we make a decision on the maximum load we want to support. In this example, we will say we want to support 100 queries per second, and that will indicate that we should use the corresponding number of replicas (15 based on the estimates above).</p>
+<p>Once we have the number of replicas, we then need to make sure we have enough resources (Cores and Memory) within our Azure Kubernetes Service to support that number of replicas. In order to estimate that number, we need to know how many cores are going to be assigned to each replica. This number can be fractional, because there are many use-cases where there are multiple replicas per core. You can see additional details <a class="reference external" href="https://kubernetes.io/docs/tasks/configure-pod-container/assign-cpu-resource/#cpu-units">here</a>. When we create the Webservice below, we will allocate 0.3 <code class="docutils literal notranslate"><span class="pre">cpu_cores</span></code> and 0.5 GB of memory to each replica. To support 15 replicas, we need <code class="docutils literal notranslate"><span class="pre">15*0.3</span></code> cores and <code class="docutils literal notranslate"><span class="pre">15*0.5</span></code> GB of memory.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cpu_cores_per_replica</span> <span class="o">=</span> <span class="mf">0.3</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{}</span><span class="s1"> cores required&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">replica_estimates</span><span class="p">[</span><span class="mi">100</span><span class="p">]</span><span class="o">*</span><span class="n">cpu_cores_per_replica</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{}</span><span class="s1"> GB of memory required&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">replica_estimates</span><span class="p">[</span><span class="mi">100</span><span class="p">]</span><span class="o">*</span><span class="mf">0.5</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4.5 cores required
+7.5 GB of memory required
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="provision-azure-kubernetes-service">
+<h2>Provision Azure Kubernetes Service<a class="headerlink" href="#provision-azure-kubernetes-service" title="Permalink to this headline">¶</a></h2>
+<p>Now that we have an estimate of the number of cores and amount of memory we need, we will configure and create the AKS cluster. By default, <code class="docutils literal notranslate"><span class="pre">AksCompute.provisioning_configuration()</span></code> will create a configuration that has 3 agents with <code class="docutils literal notranslate"><span class="pre">vm_size='Standard_D3_v2'</span></code>. Each Standard_D3_v2 virtual machine has 4 cores and 14 GB of memory, so the defaults result in a cluster with a combined 12 cores and 42 GB of memory, which are both sufficient to meet our estimated load requirements.</p>
+<p><strong>Note</strong>: In this particular case, even though our load requirements are just 4.5 cores, we should <strong>not</strong> go below 12 cores in the AKS cluster. 12 cores is the minimum number of cores in AKS required for web services. See documentation for <a class="reference external" href="https://docs.microsoft.com/en-us/azure/machine-learning/service/how-to-deploy-and-where#aks">details</a>. We can use the <code class="docutils literal notranslate"><span class="pre">agent_count</span></code> and <code class="docutils literal notranslate"><span class="pre">vm_size</span></code> parameters to increase the number of cores above 12 if our load requirements demand it, but we should not use them to go below.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create AKS compute first</span>
+
+<span class="c1"># Use the default configuration (can also provide parameters to customize)</span>
+<span class="n">prov_config</span> <span class="o">=</span> <span class="n">AksCompute</span><span class="o">.</span><span class="n">provisioning_configuration</span><span class="p">()</span>
+
+<span class="c1"># Create the cluster</span>
+<span class="n">aks_target</span> <span class="o">=</span> <span class="n">ComputeTarget</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+  <span class="n">workspace</span><span class="o">=</span><span class="n">ws</span><span class="p">,</span> 
+  <span class="n">name</span><span class="o">=</span><span class="n">AKS_NAME</span><span class="p">,</span> 
+  <span class="n">provisioning_configuration</span><span class="o">=</span><span class="n">prov_config</span>
+<span class="p">)</span>
+
+<span class="n">aks_target</span><span class="o">.</span><span class="n">wait_for_completion</span><span class="p">(</span><span class="n">show_output</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">aks_target</span><span class="o">.</span><span class="n">provisioning_state</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">aks_target</span><span class="o">.</span><span class="n">provisioning_errors</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="consideration">
+<h2>Consideration<a class="headerlink" href="#consideration" title="Permalink to this headline">¶</a></h2>
+<p>Because our estimated load requirements are less than the minimums set by Azure Machine Learning, we should consider an alternate approach to estimating the number of replicas to use for the web service. If this is the only service that will run on the AKS cluster, then we are potentially wasting resources by not leveraging all of the compute resources. Initially, we used the expected load to estimate the number of replicas that should be used. Instead of that approach, we can also use the  number of cores in our cluster to estimate the maximum number of replicas that could be supported.</p>
+<p>In order to estimate the maximum number of replicas, we do need to consider that there is some overhead on each node for the base kubernetes operations as well as the node’s operating system and core functionality. We assume 10% overhead in this case, but you can find more details <a class="reference external" href="https://docs.microsoft.com/en-us/azure/aks/concepts-clusters-workloads">here</a>.</p>
+<p><strong>Note</strong> we are using cores in this example, but we could also leverage memory requirements instead.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">max_replicas_12_cores</span> <span class="o">=</span> <span class="n">nodes_to_replicas</span><span class="p">(</span>
+    <span class="n">n_cores_per_node</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">n_nodes</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">cpu_cores_per_replica</span><span class="o">=</span><span class="n">cpu_cores_per_replica</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Once we have the number of replicas our cluster will support, we can then estimate the queries per second we believe the AKS cluster could support.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">replicas_to_qps</span><span class="p">(</span><span class="n">max_replicas_12_cores</span><span class="p">,</span> <span class="n">query_processing_time</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>140
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="create-the-webservice">
+<h2>Create the Webservice<a class="headerlink" href="#create-the-webservice" title="Permalink to this headline">¶</a></h2>
+<p>Next, we will configure and create the webservice. In this configuration, we will say each replica will set <code class="docutils literal notranslate"><span class="pre">cpu_cores=cpu_cores_per_replica</span></code> (default <code class="docutils literal notranslate"><span class="pre">cpu_cores=0.1</span></code>). We are adjusting this value based on experience and prior testing with this service.</p>
+<p>If no arguments are passed to <code class="docutils literal notranslate"><span class="pre">AksWebservice.deploy_configuration()</span></code>, it uses <code class="docutils literal notranslate"><span class="pre">autoscale_enabled=True</span></code> with <code class="docutils literal notranslate"><span class="pre">autoscale_min_replicas=1</span></code> and <code class="docutils literal notranslate"><span class="pre">autoscale_max_replicas=10</span></code>. The max value does not meet our minimum requirements to support 100 queries per second, so we need to adjust it. We can adjust this value to either our estimate based on load (15) or our estimate based on the number that can be supported by the AKS cluster (36). In this example, we will set it to the value based on load to allow the AKS cluster to be used for other tasks or services.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">webservice_config</span> <span class="o">=</span> <span class="n">AksWebservice</span><span class="o">.</span><span class="n">deploy_configuration</span><span class="p">(</span><span class="n">cpu_cores</span><span class="o">=</span><span class="n">cpu_cores_per_replica</span><span class="p">,</span>
+                                                       <span class="n">autoscale_enabled</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                                                       <span class="n">autoscale_max_replicas</span><span class="o">=</span><span class="n">replica_estimates</span><span class="p">[</span><span class="mi">100</span><span class="p">])</span>
+
+<span class="c1"># Deploy service using created image</span>
+<span class="n">aks_service</span> <span class="o">=</span> <span class="n">Webservice</span><span class="o">.</span><span class="n">deploy_from_image</span><span class="p">(</span>
+  <span class="n">workspace</span><span class="o">=</span><span class="n">ws</span><span class="p">,</span> 
+  <span class="n">name</span><span class="o">=</span><span class="n">SERVICE_NAME</span><span class="p">,</span>
+  <span class="n">deployment_config</span><span class="o">=</span><span class="n">webservice_config</span><span class="p">,</span>
+  <span class="n">image</span><span class="o">=</span><span class="n">image</span><span class="p">,</span>
+  <span class="n">deployment_target</span><span class="o">=</span><span class="n">aks_target</span>
+<span class="p">)</span>
+
+<span class="n">aks_service</span><span class="o">.</span><span class="n">wait_for_deployment</span><span class="p">(</span><span class="n">show_output</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="test-the-service">
+<h1>Test the Service<a class="headerlink" href="#test-the-service" title="Permalink to this headline">¶</a></h1>
+<p>Next, we can use data from the <code class="docutils literal notranslate"><span class="pre">sample</span></code> data to test the service.</p>
+<p>The service expects JSON as its payload, so we take the sample data, convert to a dictionary, then submit to the service endpoint.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># View the URI</span>
+<span class="n">url</span> <span class="o">=</span> <span class="n">aks_service</span><span class="o">.</span><span class="n">scoring_uri</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;AKS URI: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">url</span><span class="p">))</span>
+
+<span class="c1"># Setup authentication using one of the keys from aks_service</span>
+<span class="n">headers</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">Authorization</span><span class="o">=</span><span class="s1">&#39;Bearer </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">aks_service</span><span class="o">.</span><span class="n">get_keys</span><span class="p">()[</span><span class="mi">0</span><span class="p">]))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Grab some sample data</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">load_spark_df</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="s1">&#39;sample&#39;</span><span class="p">,</span> <span class="n">spark</span><span class="o">=</span><span class="n">spark</span><span class="p">,</span> <span class="n">dbutils</span><span class="o">=</span><span class="n">dbutils</span><span class="p">)</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span><span class="o">.</span><span class="n">asDict</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Send a request to the AKS cluster</span>
+<span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="n">url</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="n">data</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="delete-the-service">
+<h2>Delete the Service<a class="headerlink" href="#delete-the-service" title="Permalink to this headline">¶</a></h2>
+<p>When you are done, you can delete the service to minimize costs. You can always redeploy from the image using the same command above.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Uncomment the following line to delete the web service</span>
+<span class="c1"># aks_service.delete()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><style scoped>
+  .ansiout {
+    display: block;
+    unicode-bidi: embed;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    word-break: break-all;
+    font-family: "Source Code Pro", "Menlo", monospace;;
+    font-size: 13px;
+    color: #555;
+    margin-left: 4px;
+    line-height: 19px;
+  }
+</style>
+<div class="ansiout"></div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">aks_service</span><span class="o">.</span><span class="n">state</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><style scoped>
+  .ansiout {
+    display: block;
+    unicode-bidi: embed;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    word-break: break-all;
+    font-family: "Source Code Pro", "Menlo", monospace;;
+    font-size: 13px;
+    color: #555;
+    margin-left: 4px;
+    line-height: 19px;
+  }
+</style>
+<div class="ansiout"><span class="ansired">Out[</span><span class="ansired">34</span><span class="ansired">]: </span>&apos;Deleting&apos;
+</div></div></div>
+</div>
+</div>
+</div>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "reco_base"
+        },
+        kernelOptions: {
+            kernelName: "reco_base",
+            path: "./examples/05_operationalize"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'reco_base'</script>
+
+              </div>
+              
+        
+            
+
+
+
+<div class='prev-next-bottom'>
+    
+
+</div>
+        
+        </div>
+    </div>
+    <footer class="footer">
+    <div class="container">
+      <p>
+        
+          By The Jupyter Book community<br/>
+        
+            &copy; Copyright 2021.<br/>
+      </p>
+    </div>
+  </footer>
+</main>
+
+
+      </div>
+    </div>
+  
+  <script src="../../_static/js/index.1c5a1a01449ed65a7b51.js"></script>
+
+  
+  </body>
+</html>

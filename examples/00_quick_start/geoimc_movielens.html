@@ -1,0 +1,525 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Geometry Aware Inductive Matrix Completion (GeoIMC) &#8212; &lt;h1 style=&#34;font-size:2em;text-align:center;color:#FF5733&#34;&gt;Recommenders&lt;/h1&gt;</title>
+    
+  <link href="../../_static/css/theme.css" rel="stylesheet" />
+  <link href="../../_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
+
+    
+  <link rel="stylesheet"
+    href="../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+
+    
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-book-theme.css?digest=c3fdc42140077d1ad13ad2f1588a4309" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/tabs.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    
+  <link rel="preload" as="script" href="../../_static/js/index.1c5a1a01449ed65a7b51.js">
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/togglebutton.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <script src="../../_static/tabs.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../../_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script>
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="../../_static/sphinx-thebe.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en" />
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="../../index.html">
+      
+      
+      
+      <h1 class="site-logo" id="site-title"><h1 style="font-size:2em;text-align:center;color:#FF5733">Recommenders</h1></h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="../../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        <p class="caption" role="heading">
+ <span class="caption-text">
+  Getting Started Notebooks
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="als_movielens.html">
+   Running ALS on MovieLens (PySpark)
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ncf_movielens.html">
+   Neural Collaborative Filtering on MovieLens dataset.
+  </a>
+ </li>
+</ul>
+
+    </div>
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="topbar container-xl fixed-top">
+    <div class="topbar-contents row">
+        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
+        <div class="col pl-md-4 topbar-main">
+            
+            <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+                data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+                aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
+                title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+                <i class="fas fa-bars"></i>
+                <i class="fas fa-arrow-left"></i>
+                <i class="fas fa-arrow-up"></i>
+            </button>
+            
+            
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
+            class="fas fa-download"></i></button>
+
+    <div class="dropdown-buttons">
+        <!-- ipynb file if we had a myst markdown file -->
+        
+        <!-- Download raw file -->
+        <a class="dropdown-buttons" href="../../_sources/examples/00_quick_start/geoimc_movielens.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
+                data-placement="left">.ipynb</button></a>
+        <!-- Download PDF via print -->
+        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
+            onClick="window.print()" data-toggle="tooltip" data-placement="left">.pdf</button>
+    </div>
+</div>
+
+            <!-- Source interaction buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
+    <div class="dropdown-buttons sourcebuttons">
+        <a class="repository-button"
+            href="https://github.com/microsoft/genalog"><button type="button" class="btn btn-secondary topbarbtn"
+                data-toggle="tooltip" data-placement="left" title="Source repository"><i
+                    class="fab fa-github"></i>repository</button></a>
+        <a class="issues-button"
+            href="https://github.com/microsoft/genalog/issues/new?title=Issue%20on%20page%20%2Fexamples/00_quick_start/geoimc_movielens.html&body=Your%20issue%20content%20here."><button
+                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
+                title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
+        
+    </div>
+</div>
+
+            <!-- Full screen (wrap in <a> to have style consistency -->
+
+<a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+        data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+        title="Fullscreen mode"><i
+            class="fas fa-expand"></i></button></a>
+
+            <!-- Launch buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Launch interactive content"><i class="fas fa-rocket"></i></button>
+    <div class="dropdown-buttons">
+        
+        <a class="binder-button" href="https://mybinder.org/v2/gh/microsoft/genalog/main?urlpath=tree/docs/genalog_docs/examples/00_quick_start/geoimc_movielens.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Launch Binder" data-toggle="tooltip"
+                data-placement="left"><img class="binder-button-logo"
+                    src="../../_static/images/logo_binder.svg"
+                    alt="Interact on binder">Binder</button></a>
+        
+        
+        
+        
+    </div>
+</div>
+
+        </div>
+
+        <!-- Table of contents -->
+        <div class="d-none d-md-block col-md-2 bd-toc show">
+            
+            <div class="tocsection onthispage pt-5 pb-3">
+                <i class="fas fa-list"></i> Contents
+            </div>
+            <nav id="bd-toc-nav" aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#download-ml100k-dataset-and-features">
+   1. Download ML100K dataset and features
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#load-the-dataset-using-the-example-features-provided-in-helpers">
+   2. Load the dataset using the example features provided in helpers
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#initialize-the-imc-problem">
+   3. Initialize the IMC problem
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#references">
+   References
+  </a>
+ </li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+        
+              <div>
+                
+  <div class="tex2jax_ignore mathjax_ignore section" id="geometry-aware-inductive-matrix-completion-geoimc">
+<h1>Geometry Aware Inductive Matrix Completion (GeoIMC)<a class="headerlink" href="#geometry-aware-inductive-matrix-completion-geoimc" title="Permalink to this headline">¶</a></h1>
+<p>GeoIMC is an inductive matrix completion algorithm based on the works by Jawanpuria et al. (2019)</p>
+<p>Consider the case of MovieLens-100K (ML100K), Let <span class="math notranslate nohighlight">\(X \in R^{m \times d_1}, Z \in R^{n \times d_2} \)</span> be the features of users and movies respectively. Let <span class="math notranslate nohighlight">\(M \in R^{m \times n}\)</span>, be the partially observed ratings matrix. GeoIMC models this matrix as <span class="math notranslate nohighlight">\(M = XUBV^TZ^T\)</span>, where <span class="math notranslate nohighlight">\(U \in R^{d_1 \times k}, V \in R^{d_2 \times k}, B \in R^{k \times k}\)</span> are Orthogonal, Orthogonal, Symmetric Positive-Definite matrices respectively. This Optimization problem is solved by using Pymanopt.</p>
+<p>This notebook provides an example of how to utilize and evaluate GeoIMC implementation in <strong>recommenders</strong></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">tempfile</span>
+<span class="kn">import</span> <span class="nn">zipfile</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">papermill</span> <span class="k">as</span> <span class="nn">pm</span>
+<span class="kn">import</span> <span class="nn">scrapbook</span> <span class="k">as</span> <span class="nn">sb</span>
+
+<span class="kn">from</span> <span class="nn">recommenders.datasets</span> <span class="kn">import</span> <span class="n">movielens</span>
+<span class="kn">from</span> <span class="nn">recommenders.models.geoimc.geoimc_data</span> <span class="kn">import</span> <span class="n">ML_100K</span>
+<span class="kn">from</span> <span class="nn">recommenders.models.geoimc.geoimc_algorithm</span> <span class="kn">import</span> <span class="n">IMCProblem</span>
+<span class="kn">from</span> <span class="nn">recommenders.models.geoimc.geoimc_predict</span> <span class="kn">import</span> <span class="n">Inferer</span>
+<span class="kn">from</span> <span class="nn">recommenders.evaluation.python_evaluation</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">rmse</span><span class="p">,</span> <span class="n">mae</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Choose the MovieLens dataset</span>
+<span class="n">MOVIELENS_DATA_SIZE</span> <span class="o">=</span> <span class="s1">&#39;100k&#39;</span>
+<span class="c1"># Normalize user, item features</span>
+<span class="n">normalize</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="c1"># Rank (k) of the model</span>
+<span class="n">rank</span> <span class="o">=</span> <span class="mi">300</span>
+<span class="c1"># Regularization parameter</span>
+<span class="n">regularizer</span> <span class="o">=</span> <span class="mf">1e-3</span>
+
+<span class="c1"># Parameters for algorithm convergence</span>
+<span class="n">max_iters</span> <span class="o">=</span> <span class="mi">150000</span>
+<span class="n">max_time</span> <span class="o">=</span> <span class="mi">1000</span>
+<span class="n">verbosity</span> <span class="o">=</span> <span class="mi">1</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="download-ml100k-dataset-and-features">
+<h2>1. Download ML100K dataset and features<a class="headerlink" href="#download-ml100k-dataset-and-features" title="Permalink to this headline">¶</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create a directory to download ML100K</span>
+<span class="n">dp</span> <span class="o">=</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">mkdtemp</span><span class="p">(</span><span class="n">suffix</span><span class="o">=</span><span class="s1">&#39;-geoimc&#39;</span><span class="p">)</span>
+<span class="n">movielens</span><span class="o">.</span><span class="n">download_movielens</span><span class="p">(</span><span class="n">MOVIELENS_DATA_SIZE</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">dp</span><span class="si">}</span><span class="s2">/ml-100k.zip&quot;</span><span class="p">)</span>
+<span class="k">with</span> <span class="n">zipfile</span><span class="o">.</span><span class="n">ZipFile</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">dp</span><span class="si">}</span><span class="s2">/ml-100k.zip&quot;</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">z</span><span class="p">:</span>
+    <span class="n">z</span><span class="o">.</span><span class="n">extractall</span><span class="p">(</span><span class="n">dp</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>100%|██████████| 4.81k/4.81k [00:09&lt;00:00, 519KB/s]
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="load-the-dataset-using-the-example-features-provided-in-helpers">
+<h2>2. Load the dataset using the example features provided in helpers<a class="headerlink" href="#load-the-dataset-using-the-example-features-provided-in-helpers" title="Permalink to this headline">¶</a></h2>
+<p>The features were generated using the same method as the work by Xin Dong et al. (2017)</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dataset</span> <span class="o">=</span> <span class="n">ML_100K</span><span class="p">(</span>
+    <span class="n">normalize</span><span class="o">=</span><span class="n">normalize</span><span class="p">,</span>
+    <span class="n">target_transform</span><span class="o">=</span><span class="s1">&#39;binarize&#39;</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dataset</span><span class="o">.</span><span class="n">load_data</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">dp</span><span class="si">}</span><span class="s2">/ml-100k/&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;&quot;&quot;Characteristics:</span>
+
+<span class="s2">              target: </span><span class="si">{</span><span class="n">dataset</span><span class="o">.</span><span class="n">training_data</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2"></span>
+<span class="s2">              entities: </span><span class="si">{</span><span class="n">dataset</span><span class="o">.</span><span class="n">entities</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="n">dataset</span><span class="o">.</span><span class="n">entities</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2"></span>
+
+<span class="s2">              training: </span><span class="si">{</span><span class="n">dataset</span><span class="o">.</span><span class="n">training_data</span><span class="o">.</span><span class="n">get_data</span><span class="p">()</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2"></span>
+<span class="s2">              training_entities: </span><span class="si">{</span><span class="n">dataset</span><span class="o">.</span><span class="n">training_data</span><span class="o">.</span><span class="n">get_entity</span><span class="p">(</span><span class="s2">&quot;row&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="n">dataset</span><span class="o">.</span><span class="n">training_data</span><span class="o">.</span><span class="n">get_entity</span><span class="p">(</span><span class="s2">&quot;col&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2"></span>
+
+<span class="s2">              testing: </span><span class="si">{</span><span class="n">dataset</span><span class="o">.</span><span class="n">test_data</span><span class="o">.</span><span class="n">get_data</span><span class="p">()</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2"></span>
+<span class="s2">              test_entities: </span><span class="si">{</span><span class="n">dataset</span><span class="o">.</span><span class="n">test_data</span><span class="o">.</span><span class="n">get_entity</span><span class="p">(</span><span class="s2">&quot;row&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="n">dataset</span><span class="o">.</span><span class="n">test_data</span><span class="o">.</span><span class="n">get_entity</span><span class="p">(</span><span class="s2">&quot;col&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2"></span>
+<span class="s2">&quot;&quot;&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Characteristics:
+
+              target: (943, 1682)
+              entities: (943, 1822), (1682, 1925)
+
+              training: (80000,)
+              training_entities: (943, 1822), (1682, 1925)
+
+              testing: (20000,)
+              test_entities: (943, 1822), (1682, 1925)
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="initialize-the-imc-problem">
+<h2>3. Initialize the IMC problem<a class="headerlink" href="#initialize-the-imc-problem" title="Permalink to this headline">¶</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">prblm</span> <span class="o">=</span> <span class="n">IMCProblem</span><span class="p">(</span>
+    <span class="n">dataset</span><span class="o">.</span><span class="n">training_data</span><span class="p">,</span>
+    <span class="n">lambda1</span><span class="o">=</span><span class="n">regularizer</span><span class="p">,</span>
+    <span class="n">rank</span><span class="o">=</span><span class="n">rank</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Solve the Optimization problem</span>
+<span class="n">prblm</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span>
+    <span class="n">max_time</span><span class="p">,</span>
+    <span class="n">max_iters</span><span class="p">,</span>
+    <span class="n">verbosity</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Optimizing...
+Terminated - max time reached after 1753 iterations.
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Initialize an inferer</span>
+<span class="n">inferer</span> <span class="o">=</span> <span class="n">Inferer</span><span class="p">(</span>
+    <span class="n">method</span><span class="o">=</span><span class="s1">&#39;dot&#39;</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Predict using the parametrized matrices</span>
+<span class="n">predictions</span> <span class="o">=</span> <span class="n">inferer</span><span class="o">.</span><span class="n">infer</span><span class="p">(</span>
+    <span class="n">dataset</span><span class="o">.</span><span class="n">test_data</span><span class="p">,</span>
+    <span class="n">prblm</span><span class="o">.</span><span class="n">W</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Prepare the test, predicted dataframes</span>
+<span class="n">user_ids</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">test_data</span><span class="o">.</span><span class="n">get_data</span><span class="p">()</span><span class="o">.</span><span class="n">tocoo</span><span class="p">()</span><span class="o">.</span><span class="n">row</span>
+<span class="n">item_ids</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">test_data</span><span class="o">.</span><span class="n">get_data</span><span class="p">()</span><span class="o">.</span><span class="n">tocoo</span><span class="p">()</span><span class="o">.</span><span class="n">col</span>
+<span class="n">test_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
+    <span class="n">data</span><span class="o">=</span><span class="p">{</span>
+        <span class="s2">&quot;userID&quot;</span><span class="p">:</span> <span class="n">user_ids</span><span class="p">,</span>
+        <span class="s2">&quot;itemID&quot;</span><span class="p">:</span> <span class="n">item_ids</span><span class="p">,</span>
+        <span class="s2">&quot;rating&quot;</span><span class="p">:</span> <span class="n">dataset</span><span class="o">.</span><span class="n">test_data</span><span class="o">.</span><span class="n">get_data</span><span class="p">()</span><span class="o">.</span><span class="n">data</span>
+    <span class="p">}</span>
+<span class="p">)</span>
+<span class="n">predictions_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
+    <span class="n">data</span><span class="o">=</span><span class="p">{</span>
+        <span class="s2">&quot;userID&quot;</span><span class="p">:</span> <span class="n">user_ids</span><span class="p">,</span>
+        <span class="s2">&quot;itemID&quot;</span><span class="p">:</span> <span class="n">item_ids</span><span class="p">,</span>
+        <span class="s2">&quot;prediction&quot;</span><span class="p">:</span> <span class="p">[</span><span class="n">predictions</span><span class="p">[</span><span class="n">uid</span><span class="p">,</span> <span class="n">iid</span><span class="p">]</span> <span class="k">for</span> <span class="n">uid</span><span class="p">,</span> <span class="n">iid</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">user_ids</span><span class="p">,</span> <span class="n">item_ids</span><span class="p">))]</span>
+    <span class="p">}</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Calculate RMSE</span>
+<span class="n">RMSE</span> <span class="o">=</span> <span class="n">rmse</span><span class="p">(</span>
+    <span class="n">test_df</span><span class="p">,</span>
+    <span class="n">predictions_df</span>
+<span class="p">)</span>
+<span class="c1"># Calculate MAE</span>
+<span class="n">MAE</span> <span class="o">=</span> <span class="n">mae</span><span class="p">(</span>
+    <span class="n">test_df</span><span class="p">,</span>
+    <span class="n">predictions_df</span>
+<span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">RMSE: </span><span class="si">{</span><span class="n">RMSE</span><span class="si">}</span><span class="s2"></span>
+<span class="s2">MAE: </span><span class="si">{</span><span class="n">MAE</span><span class="si">}</span><span class="s2"></span>
+<span class="s2">&quot;&quot;&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>RMSE: 0.496351244012414
+MAE: 0.47524594431584
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sb</span><span class="o">.</span><span class="n">glue</span><span class="p">(</span><span class="s2">&quot;rmse&quot;</span><span class="p">,</span> <span class="n">RMSE</span><span class="p">)</span>
+<span class="n">sb</span><span class="o">.</span><span class="n">glue</span><span class="p">(</span><span class="s2">&quot;mae&quot;</span><span class="p">,</span> <span class="n">MAE</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="references">
+<h2>References<a class="headerlink" href="#references" title="Permalink to this headline">¶</a></h2>
+<p>[1] Pratik Jawanpuria, Arjun Balgovind, Anoop Kunchukuttan, Bamdev Mishra. <em><a class="reference external" href="https://www.mitpressjournals.org/doi/full/10.1162/tacl_a_00257">Learning Multilingual Word Embeddings in Latent Metric Space: A Geometric Approach</a></em>. Transaction of the Association for Computational Linguistics (TACL), Volume 7, p.107-120, 2019.</p>
+<p>[2] Xin Dong, Lei Yu, Zhonghuo Wu, Yuxia Sun, Lingfeng Yuan, Fangxi Zhang. <a class="reference external" href="https://aaai.org/ocs/index.php/AAAI/AAAI17/paper/view/14676/13916">A Hybrid Collaborative Filtering Model withDeep Structure for Recommender Systems</a>.
+Proceedings of the Thirty-First AAAI Conference on Artificial Intelligence (AAAI-17), p.1309-1315, 2017.</p>
+</div>
+</div>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "reco_base"
+        },
+        kernelOptions: {
+            kernelName: "reco_base",
+            path: "./examples/00_quick_start"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'reco_base'</script>
+
+              </div>
+              
+        
+            
+
+
+
+<div class='prev-next-bottom'>
+    
+
+</div>
+        
+        </div>
+    </div>
+    <footer class="footer">
+    <div class="container">
+      <p>
+        
+          By The Jupyter Book community<br/>
+        
+            &copy; Copyright 2021.<br/>
+      </p>
+    </div>
+  </footer>
+</main>
+
+
+      </div>
+    </div>
+  
+  <script src="../../_static/js/index.1c5a1a01449ed65a7b51.js"></script>
+
+  
+  </body>
+</html>

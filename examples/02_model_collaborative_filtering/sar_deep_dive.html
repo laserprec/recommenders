@@ -1,0 +1,800 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SAR Single Node on MovieLens (Python, CPU) &#8212; &lt;h1 style=&#34;font-size:2em;text-align:center;color:#FF5733&#34;&gt;Recommenders&lt;/h1&gt;</title>
+    
+  <link href="../../_static/css/theme.css" rel="stylesheet" />
+  <link href="../../_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
+
+    
+  <link rel="stylesheet"
+    href="../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+
+    
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-book-theme.css?digest=c3fdc42140077d1ad13ad2f1588a4309" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/tabs.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    
+  <link rel="preload" as="script" href="../../_static/js/index.1c5a1a01449ed65a7b51.js">
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/togglebutton.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <script src="../../_static/tabs.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../../_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script>
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="../../_static/sphinx-thebe.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en" />
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="../../index.html">
+      
+      
+      
+      <h1 class="site-logo" id="site-title"><h1 style="font-size:2em;text-align:center;color:#FF5733">Recommenders</h1></h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="../../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        <p class="caption" role="heading">
+ <span class="caption-text">
+  Getting Started Notebooks
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../00_quick_start/als_movielens.html">
+   Running ALS on MovieLens (PySpark)
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../00_quick_start/ncf_movielens.html">
+   Neural Collaborative Filtering on MovieLens dataset.
+  </a>
+ </li>
+</ul>
+
+    </div>
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="topbar container-xl fixed-top">
+    <div class="topbar-contents row">
+        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
+        <div class="col pl-md-4 topbar-main">
+            
+            <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+                data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+                aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
+                title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+                <i class="fas fa-bars"></i>
+                <i class="fas fa-arrow-left"></i>
+                <i class="fas fa-arrow-up"></i>
+            </button>
+            
+            
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
+            class="fas fa-download"></i></button>
+
+    <div class="dropdown-buttons">
+        <!-- ipynb file if we had a myst markdown file -->
+        
+        <!-- Download raw file -->
+        <a class="dropdown-buttons" href="../../_sources/examples/02_model_collaborative_filtering/sar_deep_dive.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
+                data-placement="left">.ipynb</button></a>
+        <!-- Download PDF via print -->
+        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
+            onClick="window.print()" data-toggle="tooltip" data-placement="left">.pdf</button>
+    </div>
+</div>
+
+            <!-- Source interaction buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
+    <div class="dropdown-buttons sourcebuttons">
+        <a class="repository-button"
+            href="https://github.com/microsoft/genalog"><button type="button" class="btn btn-secondary topbarbtn"
+                data-toggle="tooltip" data-placement="left" title="Source repository"><i
+                    class="fab fa-github"></i>repository</button></a>
+        <a class="issues-button"
+            href="https://github.com/microsoft/genalog/issues/new?title=Issue%20on%20page%20%2Fexamples/02_model_collaborative_filtering/sar_deep_dive.html&body=Your%20issue%20content%20here."><button
+                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
+                title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
+        
+    </div>
+</div>
+
+            <!-- Full screen (wrap in <a> to have style consistency -->
+
+<a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+        data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+        title="Fullscreen mode"><i
+            class="fas fa-expand"></i></button></a>
+
+            <!-- Launch buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Launch interactive content"><i class="fas fa-rocket"></i></button>
+    <div class="dropdown-buttons">
+        
+        <a class="binder-button" href="https://mybinder.org/v2/gh/microsoft/genalog/main?urlpath=tree/docs/genalog_docs/examples/02_model_collaborative_filtering/sar_deep_dive.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Launch Binder" data-toggle="tooltip"
+                data-placement="left"><img class="binder-button-logo"
+                    src="../../_static/images/logo_binder.svg"
+                    alt="Interact on binder">Binder</button></a>
+        
+        
+        
+        
+    </div>
+</div>
+
+        </div>
+
+        <!-- Table of contents -->
+        <div class="d-none d-md-block col-md-2 bd-toc show">
+            
+            <div class="tocsection onthispage pt-5 pb-3">
+                <i class="fas fa-list"></i> Contents
+            </div>
+            <nav id="bd-toc-nav" aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#sar-algorithm">
+   1 SAR algorithm
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#compute-item-co-occurrence-and-item-similarity">
+     1.1 Compute item co-occurrence and item similarity
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#compute-user-affinity-scores">
+     1.2 Compute user affinity scores
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#remove-seen-item">
+     1.3 Remove seen item
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#top-k-item-calculation">
+     1.4 Top-k item calculation
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#sar-single-node-implementation">
+   2 SAR single-node implementation
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#sar-single-node-based-movie-recommender">
+   3 SAR single-node based movie recommender
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#load-data">
+     3.1 Load Data
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#split-the-data-using-the-python-random-splitter-provided-in-utilities">
+     3.2 Split the data using the python random splitter provided in utilities:
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#evaluate-the-results">
+     3.3 Evaluate the results
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#references">
+   References
+  </a>
+ </li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+        
+              <div>
+                
+  <p><i>Copyright (c) Microsoft Corporation. All rights reserved.</i></p>
+<p><i>Licensed under the MIT License.</i></p>
+<div class="tex2jax_ignore mathjax_ignore section" id="sar-single-node-on-movielens-python-cpu">
+<h1>SAR Single Node on MovieLens (Python, CPU)<a class="headerlink" href="#sar-single-node-on-movielens-python-cpu" title="Permalink to this headline">¶</a></h1>
+<p>In this example, we will walk through each step of the Simple Algorithm for Recommendation (SAR) algorithm using a Python single-node implementation.</p>
+<p>SAR is a fast, scalable, adaptive algorithm for personalized recommendations based on user transaction history. It is powered by understanding the similarity between items, and recommending similar items to those a user has an existing affinity for.</p>
+<div class="section" id="sar-algorithm">
+<h2>1 SAR algorithm<a class="headerlink" href="#sar-algorithm" title="Permalink to this headline">¶</a></h2>
+<p>The following figure presents a high-level architecture of SAR.</p>
+<p>At a very high level, two intermediate matrices are created and used to generate a set of recommendation scores:</p>
+<ul class="simple">
+<li><p>An item similarity matrix <span class="math notranslate nohighlight">\(S\)</span> estimates item-item relationships.</p></li>
+<li><p>An affinity matrix <span class="math notranslate nohighlight">\(A\)</span> estimates user-item relationships.</p></li>
+</ul>
+<p>Recommendation scores are then created by computing the matrix multiplication <span class="math notranslate nohighlight">\(A\times S\)</span>.</p>
+<p>Optional steps (e.g. “time decay” and “remove seen items”) are described in the details below.</p>
+<img src="https://recodatasets.z20.web.core.windows.net/images/sar_schema.svg?sanitize=true">
+<div class="section" id="compute-item-co-occurrence-and-item-similarity">
+<h3>1.1 Compute item co-occurrence and item similarity<a class="headerlink" href="#compute-item-co-occurrence-and-item-similarity" title="Permalink to this headline">¶</a></h3>
+<p>SAR defines similarity based on item-to-item co-occurrence data. Co-occurrence is defined as the number of times two items appear together for a given user. We can represent the co-occurrence of all items as a <span class="math notranslate nohighlight">\(m\times m\)</span> matrix <span class="math notranslate nohighlight">\(C\)</span>, where <span class="math notranslate nohighlight">\(c_{i,j}\)</span> is the number of times item <span class="math notranslate nohighlight">\(i\)</span> occurred with item <span class="math notranslate nohighlight">\(j\)</span>, and <span class="math notranslate nohighlight">\(m\)</span> is the total number of items.</p>
+<p>The co-occurence matric <span class="math notranslate nohighlight">\(C\)</span> has the following properties:</p>
+<ul class="simple">
+<li><p>It is symmetric, so <span class="math notranslate nohighlight">\(c_{i,j} = c_{j,i}\)</span></p></li>
+<li><p>It is nonnegative: <span class="math notranslate nohighlight">\(c_{i,j} \geq 0\)</span></p></li>
+<li><p>The occurrences are at least as large as the co-occurrences. I.e., the largest element for each row (and column) is on the main diagonal: <span class="math notranslate nohighlight">\(\forall(i,j) C_{i,i},C_{j,j} \geq C_{i,j}\)</span>.</p></li>
+</ul>
+<p>Once we have a co-occurrence matrix, an item similarity matrix <span class="math notranslate nohighlight">\(S\)</span> can be obtained by rescaling the co-occurrences according to a given metric. Options for the metric include <code class="docutils literal notranslate"><span class="pre">Jaccard</span></code>, <code class="docutils literal notranslate"><span class="pre">lift</span></code>, and <code class="docutils literal notranslate"><span class="pre">counts</span></code> (meaning no rescaling).</p>
+<p>If <span class="math notranslate nohighlight">\(c_{ii}\)</span> and <span class="math notranslate nohighlight">\(c_{jj}\)</span> are the <span class="math notranslate nohighlight">\(i\)</span>th and <span class="math notranslate nohighlight">\(j\)</span>th diagonal elements of <span class="math notranslate nohighlight">\(C\)</span>, the rescaling options are:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">Jaccard</span></code>: <span class="math notranslate nohighlight">\(s_{ij}=\frac{c_{ij}}{(c_{ii}+c_{jj}-c_{ij})}\)</span></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">lift</span></code>: <span class="math notranslate nohighlight">\(s_{ij}=\frac{c_{ij}}{(c_{ii} \times c_{jj})}\)</span></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">counts</span></code>: <span class="math notranslate nohighlight">\(s_{ij}=c_{ij}\)</span></p></li>
+</ul>
+<p>In general, using <code class="docutils literal notranslate"><span class="pre">counts</span></code> as a similarity metric favours predictability, meaning that the most popular items will be recommended most of the time. <code class="docutils literal notranslate"><span class="pre">lift</span></code> by contrast favours discoverability/serendipity: an item that is less popular overall but highly favoured by a small subset of users is more likely to be recommended. <code class="docutils literal notranslate"><span class="pre">Jaccard</span></code> is a compromise between the two.</p>
+</div>
+<div class="section" id="compute-user-affinity-scores">
+<h3>1.2 Compute user affinity scores<a class="headerlink" href="#compute-user-affinity-scores" title="Permalink to this headline">¶</a></h3>
+<p>The affinity matrix in SAR captures the strength of the relationship between each individual user and the items that user has already interacted with. SAR incorporates two factors that can impact users’ affinities:</p>
+<ul class="simple">
+<li><p>It can consider information about the <strong>type</strong> of user-item interaction through differential weighting of different events (e.g. it may weigh events in which a user rated a particular item more heavily than events in which a user viewed the item).</p></li>
+<li><p>It can consider information about <strong>when</strong> a user-item event occurred (e.g. it may discount the value of events that take place in the distant past.</p></li>
+</ul>
+<p>Formalizing these factors produces us an expression for user-item affinity:</p>
+<div class="math notranslate nohighlight">
+\[a_{ij}=\sum_k w_k \left(\frac{1}{2}\right)^{\frac{t_0-t_k}{T}} \]</div>
+<p>where the affinity <span class="math notranslate nohighlight">\(a_{ij}\)</span> for user <span class="math notranslate nohighlight">\(i\)</span> and item <span class="math notranslate nohighlight">\(j\)</span> is the weighted sum of all <span class="math notranslate nohighlight">\(k\)</span> events involving user <span class="math notranslate nohighlight">\(i\)</span> and item <span class="math notranslate nohighlight">\(j\)</span>. <span class="math notranslate nohighlight">\(w_k\)</span> represents the weight of a particular event, and the power of 2 term reflects the temporally-discounted event. The <span class="math notranslate nohighlight">\((\frac{1}{2})^n\)</span> scaling factor causes the parameter <span class="math notranslate nohighlight">\(T\)</span> to serve as a half-life: events <span class="math notranslate nohighlight">\(T\)</span> units before <span class="math notranslate nohighlight">\(t_0\)</span> will be given half the weight as those taking place at <span class="math notranslate nohighlight">\(t_0\)</span>.</p>
+<p>Repeating this computation for all <span class="math notranslate nohighlight">\(n\)</span> users and <span class="math notranslate nohighlight">\(m\)</span> items results in an <span class="math notranslate nohighlight">\(n\times m\)</span> matrix <span class="math notranslate nohighlight">\(A\)</span>. Simplifications of the above expression can be obtained by setting all the weights equal to 1 (effectively ignoring event types), or by setting the half-life parameter <span class="math notranslate nohighlight">\(T\)</span> to infinity (ignoring transaction times).</p>
+</div>
+<div class="section" id="remove-seen-item">
+<h3>1.3 Remove seen item<a class="headerlink" href="#remove-seen-item" title="Permalink to this headline">¶</a></h3>
+<p>Optionally we remove items which have already been seen in the training set, i.e. don’t recommend items which have been previously bought by the user again.</p>
+</div>
+<div class="section" id="top-k-item-calculation">
+<h3>1.4 Top-k item calculation<a class="headerlink" href="#top-k-item-calculation" title="Permalink to this headline">¶</a></h3>
+<p>The personalized recommendations for a set of users can then be obtained by multiplying the affinity matrix (<span class="math notranslate nohighlight">\(A\)</span>) by the similarity matrix (<span class="math notranslate nohighlight">\(S\)</span>). The result is a recommendation score matrix, where each row corresponds to a user, each column corresponds to an item, and each entry corresponds to a user / item pair. Higher scores correspond to more strongly recommended items.</p>
+<p>It is worth noting that the complexity of recommending operation depends on the data size. SAR algorithm itself has <span class="math notranslate nohighlight">\(O(n^3)\)</span> complexity. Therefore the single-node implementation is not supposed to handle large dataset in a scalable manner. Whenever one uses the algorithm, it is recommended to run with sufficiently large memory.</p>
+</div>
+</div>
+<div class="section" id="sar-single-node-implementation">
+<h2>2 SAR single-node implementation<a class="headerlink" href="#sar-single-node-implementation" title="Permalink to this headline">¶</a></h2>
+<p>The SAR implementation illustrated in this notebook was developed in Python, primarily with Python packages like <code class="docutils literal notranslate"><span class="pre">numpy</span></code>, <code class="docutils literal notranslate"><span class="pre">pandas</span></code>, and <code class="docutils literal notranslate"><span class="pre">scipy</span></code> which are commonly used in most of the data analytics / machine learning tasks. Details of the implementation can be found in <span class="xref myst">Recommenders/recommenders/models/sar/sar_singlenode.py</span>.</p>
+</div>
+<div class="section" id="sar-single-node-based-movie-recommender">
+<h2>3 SAR single-node based movie recommender<a class="headerlink" href="#sar-single-node-based-movie-recommender" title="Permalink to this headline">¶</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># set the environment path to find Recommenders</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+
+<span class="kn">import</span> <span class="nn">itertools</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">os</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">papermill</span> <span class="k">as</span> <span class="nn">pm</span>
+
+<span class="kn">from</span> <span class="nn">recommenders.datasets</span> <span class="kn">import</span> <span class="n">movielens</span>
+<span class="kn">from</span> <span class="nn">recommenders.datasets.python_splitters</span> <span class="kn">import</span> <span class="n">python_stratified_split</span>
+<span class="kn">from</span> <span class="nn">recommenders.evaluation.python_evaluation</span> <span class="kn">import</span> <span class="n">map_at_k</span><span class="p">,</span> <span class="n">ndcg_at_k</span><span class="p">,</span> <span class="n">precision_at_k</span><span class="p">,</span> <span class="n">recall_at_k</span>
+<span class="kn">from</span> <span class="nn">recommenders.models.sar.sar_singlenode</span> <span class="kn">import</span> <span class="n">SARSingleNode</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;System version: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">version</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Pandas version: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">__version__</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>System version: 3.6.8 |Anaconda, Inc.| (default, Dec 30 2018, 01:22:34) 
+[GCC 7.3.0]
+Pandas version: 0.24.2
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell tag_parameters docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># top k items to recommend</span>
+<span class="n">TOP_K</span> <span class="o">=</span> <span class="mi">10</span>
+
+<span class="c1"># Select MovieLens data size: 100k, 1m, 10m, or 20m</span>
+<span class="n">MOVIELENS_DATA_SIZE</span> <span class="o">=</span> <span class="s1">&#39;100k&#39;</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="load-data">
+<h3>3.1 Load Data<a class="headerlink" href="#load-data" title="Permalink to this headline">¶</a></h3>
+<p>SAR is intended to be used on interactions with the following schema:
+<code class="docutils literal notranslate"><span class="pre">&lt;User</span> <span class="pre">ID&gt;,</span> <span class="pre">&lt;Item</span> <span class="pre">ID&gt;,</span> <span class="pre">&lt;Time&gt;</span></code>.</p>
+<p>Each row represents a single interaction between a user and an item. These interactions might be different types of events on an e-commerce website, such as a user clicking to view an item, adding it to a shopping basket, following a recommendation link, and so on.</p>
+<p>The MovieLens dataset is well formatted interactions of Users providing Ratings to Movies (movie ratings are used as the event weight) - we will use it for the rest of the example.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data</span> <span class="o">=</span> <span class="n">movielens</span><span class="o">.</span><span class="n">load_pandas_df</span><span class="p">(</span>
+    <span class="n">size</span><span class="o">=</span><span class="n">MOVIELENS_DATA_SIZE</span><span class="p">,</span>
+    <span class="n">header</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;UserId&#39;</span><span class="p">,</span> <span class="s1">&#39;MovieId&#39;</span><span class="p">,</span> <span class="s1">&#39;Rating&#39;</span><span class="p">,</span> <span class="s1">&#39;Timestamp&#39;</span><span class="p">],</span>
+    <span class="n">title_col</span><span class="o">=</span><span class="s1">&#39;Title&#39;</span>
+<span class="p">)</span>
+
+<span class="c1"># Convert the float precision to 32-bit in order to reduce memory consumption </span>
+<span class="n">data</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,</span> <span class="s1">&#39;Rating&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;Rating&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+
+<span class="n">data</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4.93MB [00:02, 2.36MB/s]                            
+</pre></div>
+</div>
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>UserId</th>
+      <th>MovieId</th>
+      <th>Rating</th>
+      <th>Timestamp</th>
+      <th>Title</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>196</td>
+      <td>242</td>
+      <td>3.0</td>
+      <td>881250949</td>
+      <td>Kolya (1996)</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>63</td>
+      <td>242</td>
+      <td>3.0</td>
+      <td>875747190</td>
+      <td>Kolya (1996)</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>226</td>
+      <td>242</td>
+      <td>5.0</td>
+      <td>883888671</td>
+      <td>Kolya (1996)</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>154</td>
+      <td>242</td>
+      <td>3.0</td>
+      <td>879138235</td>
+      <td>Kolya (1996)</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>306</td>
+      <td>242</td>
+      <td>5.0</td>
+      <td>876503793</td>
+      <td>Kolya (1996)</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+</div>
+<div class="section" id="split-the-data-using-the-python-random-splitter-provided-in-utilities">
+<h3>3.2 Split the data using the python random splitter provided in utilities:<a class="headerlink" href="#split-the-data-using-the-python-random-splitter-provided-in-utilities" title="Permalink to this headline">¶</a></h3>
+<p>We split the full dataset into a <code class="docutils literal notranslate"><span class="pre">train</span></code> and <code class="docutils literal notranslate"><span class="pre">test</span></code> dataset to evaluate performance of the algorithm against a held-out set not seen during training. Because SAR generates recommendations based on user preferences, all users that are in the test set must also exist in the training set. For this case, we can use the provided <code class="docutils literal notranslate"><span class="pre">python_stratified_split</span></code> function which holds out a percentage (in this case 25%) of items from each user, but ensures all users are in both <code class="docutils literal notranslate"><span class="pre">train</span></code> and <code class="docutils literal notranslate"><span class="pre">test</span></code> datasets. Other options are available in the <code class="docutils literal notranslate"><span class="pre">dataset.python_splitters</span></code> module which provide more control over how the split occurs.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">header</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;col_user&quot;</span><span class="p">:</span> <span class="s2">&quot;UserId&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;col_item&quot;</span><span class="p">:</span> <span class="s2">&quot;MovieId&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;col_rating&quot;</span><span class="p">:</span> <span class="s2">&quot;Rating&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;col_timestamp&quot;</span><span class="p">:</span> <span class="s2">&quot;Timestamp&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;col_prediction&quot;</span><span class="p">:</span> <span class="s2">&quot;Prediction&quot;</span><span class="p">,</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">train</span><span class="p">,</span> <span class="n">test</span> <span class="o">=</span> <span class="n">python_stratified_split</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">ratio</span><span class="o">=</span><span class="mf">0.75</span><span class="p">,</span> <span class="n">col_user</span><span class="o">=</span><span class="n">header</span><span class="p">[</span><span class="s2">&quot;col_user&quot;</span><span class="p">],</span> <span class="n">col_item</span><span class="o">=</span><span class="n">header</span><span class="p">[</span><span class="s2">&quot;col_item&quot;</span><span class="p">],</span> <span class="n">seed</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>In this case, for the illustration purpose, the following parameter values are used:</p>
+<table class="colwidths-auto table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Parameter</p></th>
+<th class="head"><p>Value</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">similarity_type</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">jaccard</span></code></p></td>
+<td><p>Method used to calculate item similarity.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">time_decay_coefficient</span></code></p></td>
+<td><p>30</p></td>
+<td><p>Period in days (term of <span class="math notranslate nohighlight">\(T\)</span> shown in the formula of Section 1.2)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">time_now</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">None</span></code></p></td>
+<td><p>Time decay reference.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">timedecay_formula</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">True</span></code></p></td>
+<td><p>Whether time decay formula is used.</p></td>
+</tr>
+</tbody>
+</table>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># set log level to INFO</span>
+<span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">DEBUG</span><span class="p">,</span> 
+                    <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">%(asctime)s</span><span class="s1"> </span><span class="si">%(levelname)-8s</span><span class="s1"> </span><span class="si">%(message)s</span><span class="s1">&#39;</span><span class="p">)</span>
+
+<span class="n">model</span> <span class="o">=</span> <span class="n">SARSingleNode</span><span class="p">(</span>
+    <span class="n">similarity_type</span><span class="o">=</span><span class="s2">&quot;jaccard&quot;</span><span class="p">,</span> 
+    <span class="n">time_decay_coefficient</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> 
+    <span class="n">time_now</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> 
+    <span class="n">timedecay_formula</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> 
+    <span class="o">**</span><span class="n">header</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">train</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2019-05-28 22:40:09,133 INFO     Collecting user affinity matrix
+2019-05-28 22:40:09,137 INFO     Calculating time-decayed affinities
+2019-05-28 22:40:09,178 INFO     Creating index columns
+2019-05-28 22:40:09,188 INFO     Building user affinity sparse matrix
+2019-05-28 22:40:09,194 INFO     Calculating item co-occurrence
+2019-05-28 22:40:09,412 INFO     Calculating item similarity
+2019-05-28 22:40:09,413 INFO     Using jaccard based similarity
+2019-05-28 22:40:09,534 INFO     Done training
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">top_k</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">recommend_k_items</span><span class="p">(</span><span class="n">test</span><span class="p">,</span> <span class="n">remove_seen</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2019-05-28 22:40:09,546 INFO     Calculating recommendation scores
+2019-05-28 22:40:09,641 INFO     Removing seen items
+</pre></div>
+</div>
+</div>
+</div>
+<p>The final output from the <code class="docutils literal notranslate"><span class="pre">recommend_k_items</span></code> method generates recommendation scores for each user-item pair, which are shown as follows.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">top_k_with_titles</span> <span class="o">=</span> <span class="p">(</span><span class="n">top_k</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">data</span><span class="p">[[</span><span class="s1">&#39;MovieId&#39;</span><span class="p">,</span> <span class="s1">&#39;Title&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">drop_duplicates</span><span class="p">()</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s1">&#39;MovieId&#39;</span><span class="p">),</span> 
+                                <span class="n">on</span><span class="o">=</span><span class="s1">&#39;MovieId&#39;</span><span class="p">,</span> 
+                                <span class="n">how</span><span class="o">=</span><span class="s1">&#39;inner&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;UserId&#39;</span><span class="p">,</span> <span class="s1">&#39;Prediction&#39;</span><span class="p">],</span> <span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span>
+<span class="n">display</span><span class="p">(</span><span class="n">top_k_with_titles</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">10</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>UserId</th>
+      <th>MovieId</th>
+      <th>Prediction</th>
+      <th>Title</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>9424</th>
+      <td>943</td>
+      <td>82</td>
+      <td>21.313228</td>
+      <td>Jurassic Park (1993)</td>
+    </tr>
+    <tr>
+      <th>9425</th>
+      <td>943</td>
+      <td>403</td>
+      <td>21.158839</td>
+      <td>Batman (1989)</td>
+    </tr>
+    <tr>
+      <th>9426</th>
+      <td>943</td>
+      <td>568</td>
+      <td>20.962922</td>
+      <td>Speed (1994)</td>
+    </tr>
+    <tr>
+      <th>9428</th>
+      <td>943</td>
+      <td>423</td>
+      <td>20.162170</td>
+      <td>E.T. the Extra-Terrestrial (1982)</td>
+    </tr>
+    <tr>
+      <th>9427</th>
+      <td>943</td>
+      <td>89</td>
+      <td>19.890513</td>
+      <td>Blade Runner (1982)</td>
+    </tr>
+    <tr>
+      <th>9429</th>
+      <td>943</td>
+      <td>393</td>
+      <td>19.832944</td>
+      <td>Mrs. Doubtfire (1993)</td>
+    </tr>
+    <tr>
+      <th>9423</th>
+      <td>943</td>
+      <td>11</td>
+      <td>19.570244</td>
+      <td>Seven (Se7en) (1995)</td>
+    </tr>
+    <tr>
+      <th>9422</th>
+      <td>943</td>
+      <td>71</td>
+      <td>19.553877</td>
+      <td>Lion King, The (1994)</td>
+    </tr>
+    <tr>
+      <th>9421</th>
+      <td>943</td>
+      <td>202</td>
+      <td>19.422129</td>
+      <td>Groundhog Day (1993)</td>
+    </tr>
+    <tr>
+      <th>9420</th>
+      <td>943</td>
+      <td>238</td>
+      <td>19.115604</td>
+      <td>Raising Arizona (1987)</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+</div>
+<div class="section" id="evaluate-the-results">
+<h3>3.3 Evaluate the results<a class="headerlink" href="#evaluate-the-results" title="Permalink to this headline">¶</a></h3>
+<p>It should be known that the recommendation scores generated by multiplying the item similarity matrix <span class="math notranslate nohighlight">\(S\)</span> and the user affinity matrix <span class="math notranslate nohighlight">\(A\)</span> <strong>DOES NOT</strong> have the same scale with the original explicit ratings in the movielens dataset. That is to say, SAR algorithm is meant for the task of <em>recommending relevent items to users</em> rather than <em>predicting explicit ratings for user-item pairs</em>.</p>
+<p>To this end, ranking metrics like precision&#64;k, recall&#64;k, etc., are more applicable to evaluate SAR algorithm. The following illustrates how to evaluate SAR model by using the evaluation functions provided in the <code class="docutils literal notranslate"><span class="pre">recommenders</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># all ranking metrics have the same arguments</span>
+<span class="n">args</span> <span class="o">=</span> <span class="p">[</span><span class="n">test</span><span class="p">,</span> <span class="n">top_k</span><span class="p">]</span>
+<span class="n">kwargs</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">col_user</span><span class="o">=</span><span class="s1">&#39;UserId&#39;</span><span class="p">,</span> 
+              <span class="n">col_item</span><span class="o">=</span><span class="s1">&#39;MovieId&#39;</span><span class="p">,</span> 
+              <span class="n">col_rating</span><span class="o">=</span><span class="s1">&#39;Rating&#39;</span><span class="p">,</span> 
+              <span class="n">col_prediction</span><span class="o">=</span><span class="s1">&#39;Prediction&#39;</span><span class="p">,</span> 
+              <span class="n">relevancy_method</span><span class="o">=</span><span class="s1">&#39;top_k&#39;</span><span class="p">,</span> 
+              <span class="n">k</span><span class="o">=</span><span class="n">TOP_K</span><span class="p">)</span>
+
+<span class="n">eval_map</span> <span class="o">=</span> <span class="n">map_at_k</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+<span class="n">eval_ndcg</span> <span class="o">=</span> <span class="n">ndcg_at_k</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+<span class="n">eval_precision</span> <span class="o">=</span> <span class="n">precision_at_k</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+<span class="n">eval_recall</span> <span class="o">=</span> <span class="n">recall_at_k</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Model:&quot;</span><span class="p">,</span>
+      <span class="sa">f</span><span class="s2">&quot;Top K:</span><span class="se">\t\t</span><span class="s2"> </span><span class="si">{</span><span class="n">TOP_K</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+      <span class="sa">f</span><span class="s2">&quot;MAP:</span><span class="se">\t\t</span><span class="s2"> </span><span class="si">{</span><span class="n">eval_map</span><span class="si">:</span><span class="s2">f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+      <span class="sa">f</span><span class="s2">&quot;NDCG:</span><span class="se">\t\t</span><span class="s2"> </span><span class="si">{</span><span class="n">eval_ndcg</span><span class="si">:</span><span class="s2">f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+      <span class="sa">f</span><span class="s2">&quot;Precision@K:</span><span class="se">\t</span><span class="s2"> </span><span class="si">{</span><span class="n">eval_precision</span><span class="si">:</span><span class="s2">f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+      <span class="sa">f</span><span class="s2">&quot;Recall@K:</span><span class="se">\t</span><span class="s2"> </span><span class="si">{</span><span class="n">eval_recall</span><span class="si">:</span><span class="s2">f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Model:
+Top K:		 10
+MAP:		 0.095544
+NDCG:		 0.350232
+Precision@K:	 0.305726
+Recall@K:	 0.164690
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="references">
+<h2>References<a class="headerlink" href="#references" title="Permalink to this headline">¶</a></h2>
+<p>Note SAR is a combinational algorithm that implements different industry heuristics. The followings are references that may be helpful in understanding the SAR logic and implementation.</p>
+<ol class="simple">
+<li><p>Badrul Sarwar, <em>et al</em>, “Item-based collaborative filtering recommendation algorithms”, WWW, 2001.</p></li>
+<li><p>Scipy (sparse matrix), url: <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/sparse.html">https://docs.scipy.org/doc/scipy/reference/sparse.html</a></p></li>
+<li><p>Asela Gunawardana and Guy Shani, “A survey of accuracy evaluation metrics of recommendation tasks”, The Journal of Machine Learning Research, vol. 10, pp 2935-2962, 2009.</p></li>
+</ol>
+</div>
+</div>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "reco_base"
+        },
+        kernelOptions: {
+            kernelName: "reco_base",
+            path: "./examples/02_model_collaborative_filtering"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'reco_base'</script>
+
+              </div>
+              
+        
+            
+
+
+
+<div class='prev-next-bottom'>
+    
+
+</div>
+        
+        </div>
+    </div>
+    <footer class="footer">
+    <div class="container">
+      <p>
+        
+          By The Jupyter Book community<br/>
+        
+            &copy; Copyright 2021.<br/>
+      </p>
+    </div>
+  </footer>
+</main>
+
+
+      </div>
+    </div>
+  
+  <script src="../../_static/js/index.1c5a1a01449ed65a7b51.js"></script>
+
+  
+  </body>
+</html>

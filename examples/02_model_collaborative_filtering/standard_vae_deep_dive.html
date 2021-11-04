@@ -1,0 +1,1587 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Standard Variational Autoencoders for Collaborative Filtering on MovieLens dataset. &#8212; &lt;h1 style=&#34;font-size:2em;text-align:center;color:#FF5733&#34;&gt;Recommenders&lt;/h1&gt;</title>
+    
+  <link href="../../_static/css/theme.css" rel="stylesheet" />
+  <link href="../../_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
+
+    
+  <link rel="stylesheet"
+    href="../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+
+    
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-book-theme.css?digest=c3fdc42140077d1ad13ad2f1588a4309" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/tabs.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    
+  <link rel="preload" as="script" href="../../_static/js/index.1c5a1a01449ed65a7b51.js">
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/togglebutton.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <script src="../../_static/tabs.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../../_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script>
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="../../_static/sphinx-thebe.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en" />
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="../../index.html">
+      
+      
+      
+      <h1 class="site-logo" id="site-title"><h1 style="font-size:2em;text-align:center;color:#FF5733">Recommenders</h1></h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="../../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        <p class="caption" role="heading">
+ <span class="caption-text">
+  Getting Started Notebooks
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../00_quick_start/als_movielens.html">
+   Running ALS on MovieLens (PySpark)
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../00_quick_start/ncf_movielens.html">
+   Neural Collaborative Filtering on MovieLens dataset.
+  </a>
+ </li>
+</ul>
+
+    </div>
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="topbar container-xl fixed-top">
+    <div class="topbar-contents row">
+        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
+        <div class="col pl-md-4 topbar-main">
+            
+            <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+                data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+                aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
+                title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+                <i class="fas fa-bars"></i>
+                <i class="fas fa-arrow-left"></i>
+                <i class="fas fa-arrow-up"></i>
+            </button>
+            
+            
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
+            class="fas fa-download"></i></button>
+
+    <div class="dropdown-buttons">
+        <!-- ipynb file if we had a myst markdown file -->
+        
+        <!-- Download raw file -->
+        <a class="dropdown-buttons" href="../../_sources/examples/02_model_collaborative_filtering/standard_vae_deep_dive.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
+                data-placement="left">.ipynb</button></a>
+        <!-- Download PDF via print -->
+        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
+            onClick="window.print()" data-toggle="tooltip" data-placement="left">.pdf</button>
+    </div>
+</div>
+
+            <!-- Source interaction buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
+    <div class="dropdown-buttons sourcebuttons">
+        <a class="repository-button"
+            href="https://github.com/microsoft/genalog"><button type="button" class="btn btn-secondary topbarbtn"
+                data-toggle="tooltip" data-placement="left" title="Source repository"><i
+                    class="fab fa-github"></i>repository</button></a>
+        <a class="issues-button"
+            href="https://github.com/microsoft/genalog/issues/new?title=Issue%20on%20page%20%2Fexamples/02_model_collaborative_filtering/standard_vae_deep_dive.html&body=Your%20issue%20content%20here."><button
+                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
+                title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
+        
+    </div>
+</div>
+
+            <!-- Full screen (wrap in <a> to have style consistency -->
+
+<a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+        data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+        title="Fullscreen mode"><i
+            class="fas fa-expand"></i></button></a>
+
+            <!-- Launch buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Launch interactive content"><i class="fas fa-rocket"></i></button>
+    <div class="dropdown-buttons">
+        
+        <a class="binder-button" href="https://mybinder.org/v2/gh/microsoft/genalog/main?urlpath=tree/docs/genalog_docs/examples/02_model_collaborative_filtering/standard_vae_deep_dive.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Launch Binder" data-toggle="tooltip"
+                data-placement="left"><img class="binder-button-logo"
+                    src="../../_static/images/logo_binder.svg"
+                    alt="Interact on binder">Binder</button></a>
+        
+        
+        
+        
+    </div>
+</div>
+
+        </div>
+
+        <!-- Table of contents -->
+        <div class="d-none d-md-block col-md-2 bd-toc show">
+            
+            <div class="tocsection onthispage pt-5 pb-3">
+                <i class="fas fa-list"></i> Contents
+            </div>
+            <nav id="bd-toc-nav" aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#">
+   Standard Variational Autoencoders for Collaborative Filtering on MovieLens dataset.
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#global-settings-and-imports">
+   0 Global Settings and Imports
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#standard-vae-algorithm">
+   1 Standard-VAE algorithm
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#keras-implementation-of-standard-vae">
+   2 Keras implementation of Standard VAE
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#data-preparation">
+   3 Data Preparation
+  </a>
+  <ul class="visible nav section-nav flex-column">
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#load-data-and-split">
+     3.1 Load data and split
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h3 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#load-data">
+       3.1.1 Load data
+      </a>
+     </li>
+     <li class="toc-h3 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#data-filtering">
+       3.1.2 Data Filtering
+      </a>
+     </li>
+     <li class="toc-h3 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#split-data">
+       3.1.3 Split data
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#click-matrix-generation">
+     3.2 Click matrix generation
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#train-standard-vae-using-keras">
+   4 Train Standard-VAE using Keras
+  </a>
+  <ul class="visible nav section-nav flex-column">
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#standard-vae-without-annealing-initial-approach">
+     4.1 Standard VAE without annealing  (initial approach)
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h3 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#prediction-and-evaluation-of-standard-vae-model-using-constant-beta-1">
+       Prediction and Evaluation of Standard-VAE model using constant
+       <span class="math notranslate nohighlight">
+        \(\beta\)
+       </span>
+       = 1.
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#standard-vae-with-annealing">
+     4.2 Standard VAE with annealing
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h3 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#prediction-and-evaluation-of-standard-vae-model-using-the-optimal-beta-with-annealing">
+       Prediction and Evaluation of Standard-VAE model using the optimal
+       <span class="math notranslate nohighlight">
+        \(\beta\)
+       </span>
+       with annealing.
+      </a>
+     </li>
+    </ul>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#conclusion">
+   5 Conclusion
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#references">
+   6 References
+  </a>
+ </li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+        
+              <div>
+                
+  <p><i>Copyright (c) Microsoft Corporation. All rights reserved.</i></p>
+<p><i>Licensed under the MIT License.</i></p>
+<div class="tex2jax_ignore mathjax_ignore section" id="standard-variational-autoencoders-for-collaborative-filtering-on-movielens-dataset">
+<h1>Standard Variational Autoencoders for Collaborative Filtering on MovieLens dataset.<a class="headerlink" href="#standard-variational-autoencoders-for-collaborative-filtering-on-movielens-dataset" title="Permalink to this headline">¶</a></h1>
+<p>This notebook accompanies the paper “<em>A Hybrid Variational Autoencoder for Collaborative Filtering</em>” by Kilol Gupta, Mukund Y. Raghuprasad, Pankhuri Kumar <a class="reference external" href="https://arxiv.org/pdf/1808.01006.pdf">[Gupta et al.,2018]</a>. We will study a part of this paper, more specific, the derivation of the “<em>Standard Variational Autoencoder</em>” <a class="reference external" href="https://arxiv.org/pdf/1808.01006.pdf">[Gupta et al.,2018, chapter 5.1]</a> .</p>
+<p>The “<em>Standard Variational Autoencoder</em>” is enhanced using <span class="math notranslate nohighlight">\(\mathbf \beta\)</span>-VAE <a class="reference external" href="https://openreview.net/pdf?id=Sy2fzU9gl">[Higgins et al, 2016]</a>, <a class="reference external" href="https://arxiv.org/pdf/1804.03599.pdf">[Burgess et al, 2018]</a>. Also, for tuning the parameter <span class="math notranslate nohighlight">\(\mathbf \beta\)</span> an annealing methodology is used based on <a class="reference external" href="https://arxiv.org/pdf/1511.06349.pdf">[Bowman et al, 2015]</a> and <a class="reference external" href="https://dl.acm.org/doi/pdf/10.1145/3178876.3186150?casa_token=Heh8W001edYAAAAA:P_y4buj0zb2ml8GpDXONkrc3EYEBOxgjZNAJOuqes60aeJ4C1Vg1Wq5Eh6mkCXhxNKp38pO_eUw">[Liang, Dawen, et al,2018]</a>.</p>
+<p>In this notebook, we will show a complete self-contained example of training a “<em>Standard Variational Autoencoder</em>” with a simple ELBO function/loss (described in the original paper) and the prosposed extention of it. The public Movielens-1M dataset is used for training and evaluating our model. For this notebook it is assumed that the reader has basic knowledge about VAE <a class="reference external" href="https://arxiv.org/pdf/1312.6114.pdf">[Kingma et al, 2013]</a>.</p>
+</div>
+<div class="tex2jax_ignore mathjax_ignore section" id="global-settings-and-imports">
+<h1>0 Global Settings and Imports<a class="headerlink" href="#global-settings-and-imports" title="Permalink to this headline">¶</a></h1>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># download the necessary libraries </span>
+<span class="o">!</span> pip install <span class="nv">tensorflow</span><span class="o">==</span><span class="m">2</span>.2.0-rc1
+<span class="o">!</span> pip install <span class="nv">keras</span><span class="o">==</span><span class="m">2</span>.3.1
+<span class="o">!</span> pip install papermill
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">papermill</span> <span class="k">as</span> <span class="nn">pm</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="o">%</span><span class="k">matplotlib</span> inline
+<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">set</span><span class="p">()</span>
+<span class="kn">import</span> <span class="nn">tensorflow</span> <span class="k">as</span> <span class="nn">tf</span>
+<span class="kn">import</span> <span class="nn">keras</span>
+
+<span class="kn">from</span> <span class="nn">recommenders.utils.timer</span> <span class="kn">import</span> <span class="n">Timer</span>
+<span class="kn">from</span> <span class="nn">recommenders.datasets</span> <span class="kn">import</span> <span class="n">movielens</span>
+<span class="kn">from</span> <span class="nn">recommenders.datasets.split_utils</span> <span class="kn">import</span> <span class="n">min_rating_filter_pandas</span>
+<span class="kn">from</span> <span class="nn">recommenders.datasets.python_splitters</span> <span class="kn">import</span> <span class="n">numpy_stratified_split</span>
+<span class="kn">from</span> <span class="nn">recommenders.evaluation.python_evaluation</span> <span class="kn">import</span> <span class="n">map_at_k</span><span class="p">,</span> <span class="n">ndcg_at_k</span><span class="p">,</span> <span class="n">precision_at_k</span><span class="p">,</span> <span class="n">recall_at_k</span>
+<span class="kn">from</span> <span class="nn">recommenders.utils.constants</span> <span class="kn">import</span> <span class="n">SEED</span> <span class="k">as</span> <span class="n">DEFAULT_SEED</span>
+
+<span class="kn">from</span> <span class="nn">recommenders.datasets.sparse</span> <span class="kn">import</span> <span class="n">AffinityMatrix</span>
+<span class="kn">from</span> <span class="nn">recommenders.utils.python_utils</span> <span class="kn">import</span> <span class="n">binarize</span>
+<span class="kn">from</span> <span class="nn">recommenders.models.vae.standard_vae</span> <span class="kn">import</span> <span class="n">StandardVAE</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;System version: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">version</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Pandas version: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">__version__</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Tensorflow version: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">__version__</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Keras version: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">keras</span><span class="o">.</span><span class="n">__version__</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Using TensorFlow backend.
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>System version: 3.6.9 (default, Jul 17 2020, 12:50:27) 
+[GCC 8.4.0]
+Pandas version: 1.1.2
+Tensorflow version: 2.2.0-rc1
+Keras version: 2.3.1
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell tag_parameters docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># top 100 items to recommend</span>
+<span class="n">TOP_K</span> <span class="o">=</span> <span class="mi">100</span>
+
+<span class="c1"># Select MovieLens data size: 100k, 1m, 10m, or 20m</span>
+<span class="n">MOVIELENS_DATA_SIZE</span> <span class="o">=</span> <span class="s1">&#39;1m&#39;</span>
+
+<span class="c1"># Model parameters</span>
+<span class="n">HELDOUT_USERS</span> <span class="o">=</span> <span class="mi">600</span> <span class="c1"># CHANGE FOR DIFFERENT DATASIZE</span>
+<span class="n">INTERMEDIATE_DIM</span> <span class="o">=</span> <span class="mi">200</span>
+<span class="n">LATENT_DIM</span> <span class="o">=</span> <span class="mi">70</span>
+<span class="n">EPOCHS</span> <span class="o">=</span> <span class="mi">400</span>
+<span class="n">BATCH_SIZE</span> <span class="o">=</span> <span class="mi">100</span>
+
+<span class="c1"># temporary Path to save the optimal model&#39;s weights</span>
+<span class="n">tmp_dir</span> <span class="o">=</span> <span class="n">TemporaryDirectory</span><span class="p">()</span>
+<span class="n">WEIGHTS_PATH</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">tmp_dir</span><span class="p">,</span> <span class="s2">&quot;svae_weights.hdf5&quot;</span><span class="p">)</span>
+
+<span class="n">SEED</span> <span class="o">=</span> <span class="mi">98765</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="tex2jax_ignore mathjax_ignore section" id="standard-vae-algorithm">
+<h1>1 Standard-VAE algorithm<a class="headerlink" href="#standard-vae-algorithm" title="Permalink to this headline">¶</a></h1>
+<p><strong>Notations</strong>: We use <span class="math notranslate nohighlight">\(u \in \{1,\dots,U\}\)</span> to index users and <span class="math notranslate nohighlight">\(i \in \{1,\dots,I\}\)</span> to index items. In this work, we consider learning with implicit feedback. The user-by-item interaction matrix is the click matrix <span class="math notranslate nohighlight">\(\mathbf{X} \in \mathbb{N}^{U\times I}\)</span>. The lower case <span class="math notranslate nohighlight">\(\mathbf{x}_u =[X_{u1},\dots,X_{uI}]^\top \in \mathbb{N}^I\)</span> is a bag-of-words vector with the number of clicks for each item from user u. We binarize the click matrix.</p>
+<p><strong>Standard-VAE Model</strong>: Autoencoder based recommendation is an unsupervised model attempting to reconstruct its input data in the output layer. The middle layer (bottleneck layer) is used as a salient feature representation of the input data. In this notebook, we study the standard variational autoencoder and derive the variational lower bound loss function of the standard variational autoencoder. The output of the SVAE is a probability distribution over the K items. This differs from the normal VAE that has the final output as the reconstructed input. So, the SVAE takes the user ratings in the form of a click matrix, <span class="math notranslate nohighlight">\(\mathbf{x}_u\)</span>, as inputs and then are encoded to learn the mean, <span class="math notranslate nohighlight">\(\mathbf{m}_u\)</span>, and the standard deviation, <span class="math notranslate nohighlight">\(\mathbf{\sigma}_u\)</span>, of the K-dimensional latent representation through the encoder function, <span class="math notranslate nohighlight">\(\mathbf{g}_\phi(\mathbf{x}_u)\)</span> = <span class="math notranslate nohighlight">\(\mathbf{m}_u\)</span>, <span class="math notranslate nohighlight">\(\mathbf{\sigma}_u\)</span>. In other words, the latent vector for each user,  <span class="math notranslate nohighlight">\(\mathbf{z}_u\)</span>, is sampled from the Gaussian distribution, where <span class="math notranslate nohighlight">\(\mathbf{z}_u\)</span> ∼ N(<span class="math notranslate nohighlight">\(\mathbf{m}_u\)</span>, <span class="math notranslate nohighlight">\(\mathbf{\sigma}_u\)</span>). Then, the decoder function, <span class="math notranslate nohighlight">\(\mathbf{f}_\theta\)</span>(<span class="math notranslate nohighlight">\(\mathbf{z}_u\)</span>) = <span class="math notranslate nohighlight">\(\mathbf{\pi}_u\)</span>, is used to decode the latent vector from K-dimensional space to a probability distribution <span class="math notranslate nohighlight">\(\mathbf{\pi}_u\)</span> in the original N-dimensional space. As a result, we get the probabilities of each of the N movies being viewed by each user.</p>
+<p>The objective <strong>function/loss</strong> used in the model is the <strong>ELBO</strong>:</p>
+<div class="math notranslate nohighlight">
+\[Loss= \log p_\theta(\mathbf{x}_u | \mathbf{z}_u) -  KL (q(\mathbf{z}_u)||p(\mathbf{z}_u|\mathbf{x}_u))\]</div>
+<p>where:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\mathbf{x}_u\)</span>: the movie feature vector</p></li>
+<li><p><span class="math notranslate nohighlight">\(\mathbf{z}_u\)</span>: latent representation of <span class="math notranslate nohighlight">\(\mathbf{x}_u\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(KL\)</span>: The Kullback-Leibler divergence measure</p></li>
+</ul>
+<p>The first part of the ELBO equation considers the logistic log-likelihood for a movie given its latent representation (reconstruction error), while the second KL term can be viewed as a regularization part. Our goal is to maximize <strong>ELBO</strong>, which is equivalent to minimizing the negative ELBO  (<strong>NELBO</strong>).</p>
+<p>The logistic log-likelihood fuction is given as, $<span class="math notranslate nohighlight">\(\log p_\theta(\mathbf{x}_u | \mathbf{z}_u) = \sum_{i} \mathbf{x}_{ui} \log \mathbf{\sigma}(\mathbf{f}_{ui}) + (1 - \mathbf{x}_{ui}) \log(1 - \mathbf{\sigma}(\mathbf{f}_{ui})) \)</span>$</p>
+<p>where:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\mathbf{\sigma}(\mathbf{x}) = 1 / (1+ \exp(-\mathbf{x}))\)</span> taken over all the movies i.</p></li>
+</ul>
+<p>In addition, we extended the <strong>ELBO</strong> by introducing a parameter <span class="math notranslate nohighlight">\(\beta\)</span>  (<a class="reference external" href="https://openreview.net/pdf?id=Sy2fzU9gl">Higgins et al, 2016</a>, <a class="reference external" href="https://arxiv.org/pdf/1804.03599.pdf">Burgess et al, 2018</a> ) to control the strength of regularization:</p>
+<div class="math notranslate nohighlight">
+\[
+Loss= \log p_\theta(\mathbf{x}_u | \mathbf{z}_u) - \mathbf{\beta}  KL (q(\mathbf{z}_u)||p(\mathbf{z}_u|\mathbf{x}_u))
+\]</div>
+<p>Τhe regularization view of the <strong>ELBO</strong> introduces a
+trade-off between how well we can fit the data and how close the
+approximate posterior stays to the prior during learning. By introducing the parameter <span class="math notranslate nohighlight">\(\mathbf{\beta}\)</span> &lt; 1, we are weakening the influence of the prior constraint. As a result, the model is less able to generate novel user histories by ancestral sampling. It is important to mention that our goal is not to maximize likelihood or generate imagined user histories, rather, our goal is to make good recommendations. So by treating <span class="math notranslate nohighlight">\(\mathbf{\beta}\)</span> as a free regularization parameter yields significant improvements in performance. We propose two different experiments.</p>
+<p>At first, the training of the model is being done by setting <span class="math notranslate nohighlight">\(\mathbf{\beta}\)</span>=1 <a class="reference external" href="https://arxiv.org/pdf/1808.01006.pdf">[Gupta et al.,2018, chapter 5.1]</a>.</p>
+<p>Finally, we introduce a simple heuristic for tuning <span class="math notranslate nohighlight">\(\mathbf{\beta}\)</span>. We anneal the KL divergence all the way to a specific value of <span class="math notranslate nohighlight">\(\mathbf{\beta}\)</span>, reaching that value at around 80% of the total number of epochs used during the training process. Then we identify the best performing  <span class="math notranslate nohighlight">\(\mathbf{\beta}\)</span>  based on the peak validation metric, and retrain the model with the same annealing schedule, but for the rest of epochs we are not increasing  <span class="math notranslate nohighlight">\(\mathbf{\beta}\)</span>  after reaching its optimal value.</p>
+<p>It can be hard to imagine how to evaluate a recommender system. The primary concern of recommender systems is that they need to be able to put relevant items very high up the list of recommendations. So we need rank-aware metrics to select recommenders that aim at these two primary goals:</p>
+<ol class="simple">
+<li><p>Where does the recommender place the items it suggests?</p></li>
+<li><p>How good is the recommender at modeling relative preference?</p></li>
+</ol>
+<p>So, the rank-aware metric we use is the Normalized Discounted Cumulative Gain. NDCG value putting highly relevant documents high up the recommended lists. It is able to use the fact that some documents are “more” relevant than others. It compares the predicted rank of the held-out items with their true rank. The metric recall, primarily concerned with being good at finding things. We need metrics that emphasis being good at finding and ranking things, like NDCG. That’s why we emphasize in NDCG.</p>
+</div>
+<div class="tex2jax_ignore mathjax_ignore section" id="keras-implementation-of-standard-vae">
+<h1>2 Keras implementation of Standard VAE<a class="headerlink" href="#keras-implementation-of-standard-vae" title="Permalink to this headline">¶</a></h1>
+<p>For the implementation of the model, Keras package is used.</p>
+<p>We will use the MovieLens dataset, which is composed of user-to-item interactions and integer ratings from 1 to 5. We convert MovieLens into binarized clicked matrix ( 1: the user liked this movie , 0: the user did NOT like or did NOT watch/rate this movie), and evaluate based on heldout users data.</p>
+</div>
+<div class="tex2jax_ignore mathjax_ignore section" id="data-preparation">
+<h1>3 Data Preparation<a class="headerlink" href="#data-preparation" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="load-data-and-split">
+<h2>3.1 Load data and split<a class="headerlink" href="#load-data-and-split" title="Permalink to this headline">¶</a></h2>
+<p>We load the data and create train / validation / test splits following strong generalization:</p>
+<ul class="simple">
+<li><p>We split all unique users into training users and heldout users (i.e. validation and test users)</p></li>
+<li><p>By using the lists of these users, we obtain corresponding training data and heldout data, which are converted to click matrices</p></li>
+<li><p>We train models using the entire click history of the training users.</p></li>
+<li><p>To evaluate, we take part of the click history from heldout (validation and test) data to learn the necessary user-level representations for the model and then compute metrics by looking at how well the model ranks the rest of the unseen click history from the heldout data</p></li>
+</ul>
+<div class="section" id="load-data">
+<h3>3.1.1 Load data<a class="headerlink" href="#load-data" title="Permalink to this headline">¶</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">movielens</span><span class="o">.</span><span class="n">load_pandas_df</span><span class="p">(</span>
+    <span class="n">size</span><span class="o">=</span><span class="n">MOVIELENS_DATA_SIZE</span><span class="p">,</span>
+    <span class="n">header</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;userID&quot;</span><span class="p">,</span> <span class="s2">&quot;itemID&quot;</span><span class="p">,</span> <span class="s2">&quot;rating&quot;</span><span class="p">,</span> <span class="s2">&quot;timestamp&quot;</span><span class="p">]</span>
+<span class="p">)</span>
+
+<span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>100%|██████████| 5.78k/5.78k [00:00&lt;00:00, 6.25kKB/s]
+</pre></div>
+</div>
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>userID</th>
+      <th>itemID</th>
+      <th>rating</th>
+      <th>timestamp</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1</td>
+      <td>1193</td>
+      <td>5.0</td>
+      <td>978300760</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>1</td>
+      <td>661</td>
+      <td>3.0</td>
+      <td>978302109</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>1</td>
+      <td>914</td>
+      <td>3.0</td>
+      <td>978301968</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>1</td>
+      <td>3408</td>
+      <td>4.0</td>
+      <td>978300275</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>1</td>
+      <td>2355</td>
+      <td>5.0</td>
+      <td>978824291</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">shape</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(1000209, 4)
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="data-filtering">
+<h3>3.1.2 Data Filtering<a class="headerlink" href="#data-filtering" title="Permalink to this headline">¶</a></h3>
+<p>For the data filtering we are using the below 3 steps which are recommended by the original paper <a class="reference external" href="https://dl.acm.org/doi/pdf/10.1145/3178876.3186150?casa_token=zul5haircsAAAAAA:iIKn7y-xWwSeqaP-MmmyUaJoJuNZX9Fx1aXeFJwkwtMpVDCrPMW3kZjuYo1LKhSuMeUMNf1mbP2o">[Liang, Dawen, et al,2018]</a>.</p>
+<p>We have to make sure that :</p>
+<ul class="simple">
+<li><p>user-to-movie interactions with rating &lt;=3.5 are filtered out. Applying this filtering we make sure that if a movie is rated less than 3.5 from the users that they watched this movie, it will not be contained in the final click matrix. If we do not apply this filter, the final click matrix will be even sparser.</p></li>
+<li><p>the users who clicked less than 5 movies are filtered out.</p></li>
+<li><p>the movies which are not clicked by any user are filtered out.</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Binarize the data (only keep ratings &gt;= 4)</span>
+<span class="n">df_preferred</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;rating&#39;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mf">3.5</span><span class="p">]</span>
+<span class="nb">print</span> <span class="p">(</span><span class="n">df_preferred</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="n">df_low_rating</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;rating&#39;</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="mf">3.5</span><span class="p">]</span>
+
+
+<span class="c1"># df.head()</span>
+<span class="n">df_preferred</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(575281, 4)
+</pre></div>
+</div>
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>userID</th>
+      <th>itemID</th>
+      <th>rating</th>
+      <th>timestamp</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1</td>
+      <td>1193</td>
+      <td>5.0</td>
+      <td>978300760</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>1</td>
+      <td>3408</td>
+      <td>4.0</td>
+      <td>978300275</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>1</td>
+      <td>2355</td>
+      <td>5.0</td>
+      <td>978824291</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>1</td>
+      <td>1287</td>
+      <td>5.0</td>
+      <td>978302039</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>1</td>
+      <td>2804</td>
+      <td>5.0</td>
+      <td>978300719</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>1</td>
+      <td>594</td>
+      <td>4.0</td>
+      <td>978302268</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>1</td>
+      <td>919</td>
+      <td>4.0</td>
+      <td>978301368</td>
+    </tr>
+    <tr>
+      <th>10</th>
+      <td>1</td>
+      <td>595</td>
+      <td>5.0</td>
+      <td>978824268</td>
+    </tr>
+    <tr>
+      <th>11</th>
+      <td>1</td>
+      <td>938</td>
+      <td>4.0</td>
+      <td>978301752</td>
+    </tr>
+    <tr>
+      <th>12</th>
+      <td>1</td>
+      <td>2398</td>
+      <td>4.0</td>
+      <td>978302281</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df_low_rating</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>userID</th>
+      <th>itemID</th>
+      <th>rating</th>
+      <th>timestamp</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>1</th>
+      <td>1</td>
+      <td>661</td>
+      <td>3.0</td>
+      <td>978302109</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>1</td>
+      <td>914</td>
+      <td>3.0</td>
+      <td>978301968</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>1</td>
+      <td>1197</td>
+      <td>3.0</td>
+      <td>978302268</td>
+    </tr>
+    <tr>
+      <th>16</th>
+      <td>1</td>
+      <td>2687</td>
+      <td>3.0</td>
+      <td>978824268</td>
+    </tr>
+    <tr>
+      <th>20</th>
+      <td>1</td>
+      <td>2321</td>
+      <td>3.0</td>
+      <td>978302205</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>1000195</th>
+      <td>6040</td>
+      <td>1079</td>
+      <td>2.0</td>
+      <td>956715648</td>
+    </tr>
+    <tr>
+      <th>1000197</th>
+      <td>6040</td>
+      <td>2020</td>
+      <td>3.0</td>
+      <td>956715288</td>
+    </tr>
+    <tr>
+      <th>1000198</th>
+      <td>6040</td>
+      <td>2021</td>
+      <td>3.0</td>
+      <td>956716374</td>
+    </tr>
+    <tr>
+      <th>1000203</th>
+      <td>6040</td>
+      <td>1090</td>
+      <td>3.0</td>
+      <td>956715518</td>
+    </tr>
+    <tr>
+      <th>1000204</th>
+      <td>6040</td>
+      <td>1091</td>
+      <td>1.0</td>
+      <td>956716541</td>
+    </tr>
+  </tbody>
+</table>
+<p>424928 rows × 4 columns</p>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Keep users who clicked on at least 5 movies</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">min_rating_filter_pandas</span><span class="p">(</span><span class="n">df_preferred</span><span class="p">,</span> <span class="n">min_rating</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">filter_by</span><span class="o">=</span><span class="s2">&quot;user&quot;</span><span class="p">)</span>
+
+<span class="c1"># Keep movies that were clicked on by at least on 1 user</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">min_rating_filter_pandas</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">min_rating</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">filter_by</span><span class="o">=</span><span class="s2">&quot;item&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Obtain both usercount and itemcount after filtering</span>
+<span class="n">usercount</span> <span class="o">=</span> <span class="n">df</span><span class="p">[[</span><span class="s1">&#39;userID&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;userID&#39;</span><span class="p">,</span> <span class="n">as_index</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">size</span><span class="p">()</span>
+<span class="n">itemcount</span> <span class="o">=</span> <span class="n">df</span><span class="p">[[</span><span class="s1">&#39;itemID&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;itemID&#39;</span><span class="p">,</span> <span class="n">as_index</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">size</span><span class="p">()</span>
+
+<span class="c1"># Compute sparsity after filtering</span>
+<span class="n">sparsity</span> <span class="o">=</span> <span class="mf">1.</span> <span class="o">*</span> <span class="n">df</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="p">(</span><span class="n">usercount</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">itemcount</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;After filtering, there are </span><span class="si">%d</span><span class="s2"> watching events from </span><span class="si">%d</span><span class="s2"> users and </span><span class="si">%d</span><span class="s2"> movies (sparsity: </span><span class="si">%.3f%%</span><span class="s2">)&quot;</span> <span class="o">%</span> 
+      <span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">usercount</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">itemcount</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">sparsity</span> <span class="o">*</span> <span class="mi">100</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>After filtering, there are 575272 watching events from 6034 users and 3533 movies (sparsity: 2.699%)
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="split-data">
+<h3>3.1.3 Split data<a class="headerlink" href="#split-data" title="Permalink to this headline">¶</a></h3>
+<p>For data slitting we use:</p>
+<ul class="simple">
+<li><p>600 (~ 10%) users in validation set</p></li>
+<li><p>600 (~ 10%) users in testing set</p></li>
+<li><p>the rest of them (~ 80%) in training set</p></li>
+</ul>
+<p>Since the model is trained using the click history of the training users, we have to make sure that the movies that exist in the validation and test sets are the movies that exist in the train set. In other words, validation and test set should not contain movies that do not exist in the train set.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">unique_users</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">userID</span><span class="o">.</span><span class="n">unique</span><span class="p">())</span>
+<span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="n">SEED</span><span class="p">)</span>
+<span class="n">unique_users</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">permutation</span><span class="p">(</span><span class="n">unique_users</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create train/validation/test users</span>
+<span class="n">n_users</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">unique_users</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Number of unique users:&quot;</span><span class="p">,</span> <span class="n">n_users</span><span class="p">)</span>
+
+<span class="n">train_users</span> <span class="o">=</span> <span class="n">unique_users</span><span class="p">[:(</span><span class="n">n_users</span> <span class="o">-</span> <span class="n">HELDOUT_USERS</span> <span class="o">*</span> <span class="mi">2</span><span class="p">)]</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Number of training users:&quot;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">train_users</span><span class="p">))</span>
+
+<span class="n">val_users</span> <span class="o">=</span> <span class="n">unique_users</span><span class="p">[(</span><span class="n">n_users</span> <span class="o">-</span> <span class="n">HELDOUT_USERS</span> <span class="o">*</span> <span class="mi">2</span><span class="p">)</span> <span class="p">:</span> <span class="p">(</span><span class="n">n_users</span> <span class="o">-</span> <span class="n">HELDOUT_USERS</span><span class="p">)]</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Number of validation users:&quot;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">val_users</span><span class="p">))</span>
+
+<span class="n">test_users</span> <span class="o">=</span> <span class="n">unique_users</span><span class="p">[(</span><span class="n">n_users</span> <span class="o">-</span> <span class="n">HELDOUT_USERS</span><span class="p">):]</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Number of test users:&quot;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">test_users</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Number of unique users: 6034
+
+Number of training users: 4834
+
+Number of validation users: 600
+
+Number of test users: 600
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># For training set keep only users that are in train_users list</span>
+<span class="n">train_set</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;userID&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">train_users</span><span class="p">)]</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Number of training observations: &quot;</span><span class="p">,</span> <span class="n">train_set</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+
+<span class="c1"># For validation set keep only users that are in val_users list</span>
+<span class="n">val_set</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;userID&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">val_users</span><span class="p">)]</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Number of validation observations: &quot;</span><span class="p">,</span> <span class="n">val_set</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+
+<span class="c1"># For test set keep only users that are in test_users list</span>
+<span class="n">test_set</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;userID&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">test_users</span><span class="p">)]</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Number of test observations: &quot;</span><span class="p">,</span> <span class="n">test_set</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+
+<span class="c1"># train_set/val_set/test_set contain user - movie interactions with rating 4 or 5</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Number of training observations:  462827
+
+Number of validation observations:  57388
+
+Number of test observations:  55057
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Obtain list of unique movies used in training set</span>
+<span class="n">unique_train_items</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">train_set</span><span class="p">[</span><span class="s1">&#39;itemID&#39;</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Number of unique movies that rated in training set&quot;</span><span class="p">,</span> <span class="n">unique_train_items</span><span class="o">.</span><span class="n">size</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Number of unique movies that rated in training set 3497
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># For validation set keep only movies that used in training set</span>
+<span class="n">val_set</span> <span class="o">=</span> <span class="n">val_set</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">val_set</span><span class="p">[</span><span class="s1">&#39;itemID&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">unique_train_items</span><span class="p">)]</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Number of validation observations after filtering: &quot;</span><span class="p">,</span> <span class="n">val_set</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+
+<span class="c1"># For test set keep only movies that used in training set</span>
+<span class="n">test_set</span> <span class="o">=</span> <span class="n">test_set</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">test_set</span><span class="p">[</span><span class="s1">&#39;itemID&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">unique_train_items</span><span class="p">)]</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Number of test observations after filtering: &quot;</span><span class="p">,</span> <span class="n">test_set</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Number of validation observations after filtering:  57374
+
+Number of test observations after filtering:  55027
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="click-matrix-generation">
+<h2>3.2 Click matrix generation<a class="headerlink" href="#click-matrix-generation" title="Permalink to this headline">¶</a></h2>
+<p>From section 3.1 we end up with 3 datasets train_set, val_set and test_set.  For our model we need to give a click matrix as an input that contains only 0-s and 1-s, where each row represents a user and each column represents a movie.
+So, the click matrix contains the preferences of the user, marking each cell with 0 when the user did not enjoy (ratings below 3.5) or did not watch a movie and with 1 when the user enjoyed a movie (ratings above 3.5).</p>
+<p>The training set will be a click matrix containing full historicity of all training users. However, the test set and validation set should be splitted into train and test parts. As a result, we get 4 datasets:</p>
+<ul class="simple">
+<li><p>val_data_tr</p></li>
+<li><p>val_data_te</p></li>
+<li><p>test_data_tr</p></li>
+<li><p>test_data_te</p></li>
+</ul>
+<p>‘val_data_tr’ contains 75% of the the preferred movies (movies marked as 1 in the click matrix) per user.
+The rest 25% of the preffered movies are contained into the ‘val_data_te’. The same splitting is followed for test set.</p>
+<p>The ‘val_data_tr’ is given as an input for our model at the end of each epoch. The result of the model is a ‘reconstructed_val_data_tr’, which contains the movies recommended for each user by the model. In order to evaluate the performance of the model, at the end of each epoch, we compare the ‘reconstructed_val_data_tr’ (predicted recommendations by the model) with the ‘val_data_te’ (true movie preferences of each user) using NDCG&#64;k metric.</p>
+<p>For the final evaluation of the model the ‘test_data_tr’ and ‘test_data_te’ are being used. As we described before, the ‘test_data_tr’ is given as an input for the model and returns the ‘reconstructed_test_data_tr’ dataset with the recommendations made by the model. Then, the ‘reconstructed_test_data_tr’ is compared with ‘test_data_te’ through different metrics:</p>
+<ul class="simple">
+<li><p>MAP</p></li>
+<li><p>NDCG&#64;k</p></li>
+<li><p>Recall&#64;k</p></li>
+<li><p>Precision&#64;k</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Instantiate the sparse matrix generation for train, validation and test sets</span>
+<span class="c1"># use list of unique items from training set for all sets</span>
+<span class="n">am_train</span> <span class="o">=</span> <span class="n">AffinityMatrix</span><span class="p">(</span><span class="n">df</span><span class="o">=</span><span class="n">train_set</span><span class="p">,</span> <span class="n">items_list</span><span class="o">=</span><span class="n">unique_train_items</span><span class="p">)</span>
+
+<span class="n">am_val</span> <span class="o">=</span> <span class="n">AffinityMatrix</span><span class="p">(</span><span class="n">df</span><span class="o">=</span><span class="n">val_set</span><span class="p">,</span> <span class="n">items_list</span><span class="o">=</span><span class="n">unique_train_items</span><span class="p">)</span>
+
+<span class="n">am_test</span> <span class="o">=</span> <span class="n">AffinityMatrix</span><span class="p">(</span><span class="n">df</span><span class="o">=</span><span class="n">test_set</span><span class="p">,</span> <span class="n">items_list</span><span class="o">=</span><span class="n">unique_train_items</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Obtain the sparse matrix for train, validation and test sets</span>
+<span class="n">train_data</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">am_train</span><span class="o">.</span><span class="n">gen_affinity_matrix</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">train_data</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+
+<span class="n">val_data</span><span class="p">,</span> <span class="n">val_map_users</span><span class="p">,</span> <span class="n">val_map_items</span> <span class="o">=</span> <span class="n">am_val</span><span class="o">.</span><span class="n">gen_affinity_matrix</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">val_data</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+
+<span class="n">test_data</span><span class="p">,</span> <span class="n">test_map_users</span><span class="p">,</span> <span class="n">test_map_items</span> <span class="o">=</span> <span class="n">am_test</span><span class="o">.</span><span class="n">gen_affinity_matrix</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">test_data</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(4834, 3497)
+(600, 3497)
+(600, 3497)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Split validation and test data into training and testing parts</span>
+<span class="n">val_data_tr</span><span class="p">,</span> <span class="n">val_data_te</span> <span class="o">=</span> <span class="n">numpy_stratified_split</span><span class="p">(</span><span class="n">val_data</span><span class="p">,</span> <span class="n">ratio</span><span class="o">=</span><span class="mf">0.75</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="n">SEED</span><span class="p">)</span>
+<span class="n">test_data_tr</span><span class="p">,</span> <span class="n">test_data_te</span> <span class="o">=</span> <span class="n">numpy_stratified_split</span><span class="p">(</span><span class="n">test_data</span><span class="p">,</span> <span class="n">ratio</span><span class="o">=</span><span class="mf">0.75</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="n">SEED</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Binarize train, validation and test data</span>
+<span class="n">train_data</span> <span class="o">=</span> <span class="n">binarize</span><span class="p">(</span><span class="n">a</span><span class="o">=</span><span class="n">train_data</span><span class="p">,</span> <span class="n">threshold</span><span class="o">=</span><span class="mf">3.5</span><span class="p">)</span>
+<span class="n">val_data</span> <span class="o">=</span> <span class="n">binarize</span><span class="p">(</span><span class="n">a</span><span class="o">=</span><span class="n">val_data</span><span class="p">,</span> <span class="n">threshold</span><span class="o">=</span><span class="mf">3.5</span><span class="p">)</span>
+<span class="n">test_data</span> <span class="o">=</span> <span class="n">binarize</span><span class="p">(</span><span class="n">a</span><span class="o">=</span><span class="n">test_data</span><span class="p">,</span> <span class="n">threshold</span><span class="o">=</span><span class="mf">3.5</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Binarize validation data: training part  </span>
+<span class="n">val_data_tr</span> <span class="o">=</span> <span class="n">binarize</span><span class="p">(</span><span class="n">a</span><span class="o">=</span><span class="n">val_data_tr</span><span class="p">,</span> <span class="n">threshold</span><span class="o">=</span><span class="mf">3.5</span><span class="p">)</span>
+
+<span class="c1"># Binarize validation data: testing part (save non-binary version in the separate object, will be used for calculating NDCG)</span>
+<span class="n">val_data_te_ratings</span> <span class="o">=</span> <span class="n">val_data_te</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">val_data_te</span> <span class="o">=</span> <span class="n">binarize</span><span class="p">(</span><span class="n">a</span><span class="o">=</span><span class="n">val_data_te</span><span class="p">,</span> <span class="n">threshold</span><span class="o">=</span><span class="mf">3.5</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Binarize test data: training part </span>
+<span class="n">test_data_tr</span> <span class="o">=</span> <span class="n">binarize</span><span class="p">(</span><span class="n">a</span><span class="o">=</span><span class="n">test_data_tr</span><span class="p">,</span> <span class="n">threshold</span><span class="o">=</span><span class="mf">3.5</span><span class="p">)</span>
+
+<span class="c1"># Binarize test data: testing part (save non-binary version in the separate object, will be used for calculating NDCG)</span>
+<span class="n">test_data_te_ratings</span> <span class="o">=</span> <span class="n">test_data_te</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">test_data_te</span> <span class="o">=</span> <span class="n">binarize</span><span class="p">(</span><span class="n">a</span><span class="o">=</span><span class="n">test_data_te</span><span class="p">,</span> <span class="n">threshold</span><span class="o">=</span><span class="mf">3.5</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># retrieve real ratings from initial dataset </span>
+
+<span class="n">test_data_te_ratings</span><span class="o">=</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">test_data_te_ratings</span><span class="p">)</span>
+<span class="n">val_data_te_ratings</span><span class="o">=</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">val_data_te_ratings</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">index</span><span class="p">,</span><span class="n">i</span> <span class="ow">in</span> <span class="n">df_low_rating</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
+  <span class="n">user_old</span><span class="o">=</span> <span class="n">i</span><span class="p">[</span><span class="s1">&#39;userID&#39;</span><span class="p">]</span> <span class="c1"># old value </span>
+  <span class="n">item_old</span><span class="o">=</span><span class="n">i</span><span class="p">[</span><span class="s1">&#39;itemID&#39;</span><span class="p">]</span> <span class="c1"># old value </span>
+
+  <span class="k">if</span> <span class="p">(</span><span class="n">test_map_users</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">user_old</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)</span>  <span class="ow">and</span> <span class="p">(</span><span class="n">test_map_items</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">item_old</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)</span> <span class="p">:</span>
+      <span class="n">user_new</span><span class="o">=</span><span class="n">test_map_users</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">user_old</span><span class="p">)</span> <span class="c1"># new value </span>
+      <span class="n">item_new</span><span class="o">=</span><span class="n">test_map_items</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">item_old</span><span class="p">)</span> <span class="c1"># new value </span>
+      <span class="n">rating</span><span class="o">=</span><span class="n">i</span><span class="p">[</span><span class="s1">&#39;rating&#39;</span><span class="p">]</span> 
+      <span class="n">test_data_te_ratings</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="n">user_new</span><span class="p">,</span><span class="n">item_new</span><span class="p">]</span><span class="o">=</span> <span class="n">rating</span>   
+
+  <span class="k">if</span> <span class="p">(</span><span class="n">val_map_users</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">user_old</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)</span>  <span class="ow">and</span> <span class="p">(</span><span class="n">val_map_items</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">item_old</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)</span> <span class="p">:</span>
+      <span class="n">user_new</span><span class="o">=</span><span class="n">val_map_users</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">user_old</span><span class="p">)</span> <span class="c1"># new value </span>
+      <span class="n">item_new</span><span class="o">=</span><span class="n">val_map_items</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">item_old</span><span class="p">)</span> <span class="c1"># new value </span>
+      <span class="n">rating</span><span class="o">=</span><span class="n">i</span><span class="p">[</span><span class="s1">&#39;rating&#39;</span><span class="p">]</span> 
+      <span class="n">val_data_te_ratings</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="n">user_new</span><span class="p">,</span><span class="n">item_new</span><span class="p">]</span><span class="o">=</span> <span class="n">rating</span>   
+
+
+<span class="n">val_data_te_ratings</span><span class="o">=</span><span class="n">val_data_te_ratings</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()</span>    
+<span class="n">test_data_te_ratings</span><span class="o">=</span><span class="n">test_data_te_ratings</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()</span>    
+<span class="c1"># test_data_te_ratings  </span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Just checking</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">val_data</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">val_data_tr</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">val_data_te</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>57374.0
+43028.0
+14346.0
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Just checking</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">test_data</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">test_data_tr</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">test_data_te</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>55027.0
+41278.0
+13749.0
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="tex2jax_ignore mathjax_ignore section" id="train-standard-vae-using-keras">
+<h1>4 Train Standard-VAE using Keras<a class="headerlink" href="#train-standard-vae-using-keras" title="Permalink to this headline">¶</a></h1>
+<p><strong>Model Architecture:</strong></p>
+<p>For “MovieLens-1M dataset”, we set both the generative function and the inference model to be 3-layer multilayer perceptron (MLP) with symmetrical architecture.
+The generative function is a [70 -&gt; 200 -&gt; n_items] MLP, which means the inference function is a [n_items -&gt; 200 -&gt; 70] MLP. Thus the overall architecture for the Multi-VAE is [n_items -&gt; 200 -&gt; 70 -&gt; 200 -&gt; n_items].</p>
+<p>Also, Dropout is applied both in encoder and decoder to avoid overfitting.</p>
+<p>Note that this architecture, illustrated in the graph below, is the one that resulted optimal results after doing hyperparameter tuning.</p>
+<p>![image.png](data:image/png;base64,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)</p>
+<div class="section" id="standard-vae-without-annealing-initial-approach">
+<h2>4.1 Standard VAE without annealing  (initial approach)<a class="headerlink" href="#standard-vae-without-annealing-initial-approach" title="Permalink to this headline">¶</a></h2>
+<p>Firstly, we train Standard-VAE model using constant <span class="math notranslate nohighlight">\(\mathbf \beta\)</span>= 1.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model_without_anneal</span> <span class="o">=</span> <span class="n">StandardVAE</span><span class="p">(</span><span class="n">n_users</span><span class="o">=</span><span class="n">train_data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="c1"># Number of unique users in the training set</span>
+                                   <span class="n">original_dim</span><span class="o">=</span><span class="n">train_data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="c1"># Number of unique items in the training set</span>
+                                   <span class="n">intermediate_dim</span><span class="o">=</span><span class="n">INTERMEDIATE_DIM</span><span class="p">,</span> 
+                                   <span class="n">latent_dim</span><span class="o">=</span><span class="n">LATENT_DIM</span><span class="p">,</span> 
+                                   <span class="n">n_epochs</span><span class="o">=</span><span class="n">EPOCHS</span><span class="p">,</span> 
+                                   <span class="n">batch_size</span><span class="o">=</span><span class="n">BATCH_SIZE</span><span class="p">,</span> 
+                                   <span class="n">k</span><span class="o">=</span><span class="n">TOP_K</span><span class="p">,</span>
+                                   <span class="n">verbose</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                                   <span class="n">seed</span><span class="o">=</span><span class="n">SEED</span><span class="p">,</span>
+                                   <span class="n">save_path</span><span class="o">=</span><span class="n">WEIGHTS_PATH</span><span class="p">,</span>
+                                   <span class="n">drop_encoder</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
+                                   <span class="n">drop_decoder</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
+                                   <span class="n">annealing</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                                   <span class="n">beta</span><span class="o">=</span><span class="mf">1.0</span>
+                                   <span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">Timer</span><span class="p">()</span> <span class="k">as</span> <span class="n">t</span><span class="p">:</span>
+    <span class="n">model_without_anneal</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">x_train</span><span class="o">=</span><span class="n">train_data</span><span class="p">,</span> 
+                             <span class="n">x_valid</span><span class="o">=</span><span class="n">val_data</span><span class="p">,</span> 
+                             <span class="n">x_val_tr</span><span class="o">=</span><span class="n">val_data_tr</span><span class="p">,</span> 
+                             <span class="n">x_val_te</span><span class="o">=</span><span class="n">val_data_te_ratings</span><span class="p">,</span> <span class="c1"># with the original ratings </span>
+                             <span class="n">mapper</span><span class="o">=</span><span class="n">am_val</span>
+                             <span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Took </span><span class="si">{}</span><span class="s2"> seconds for training.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">t</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Took 635.6573 seconds for training.
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model_without_anneal</span><span class="o">.</span><span class="n">display_metrics</span><span class="p">()</span> 
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/standard_vae_deep_dive_45_0.png" src="../../_images/standard_vae_deep_dive_45_0.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ndcg_val_without_anneal</span> <span class="o">=</span> <span class="n">model_without_anneal</span><span class="o">.</span><span class="n">ndcg_per_epoch</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="prediction-and-evaluation-of-standard-vae-model-using-constant-beta-1">
+<h3>Prediction and Evaluation of Standard-VAE model using constant <span class="math notranslate nohighlight">\(\beta\)</span> = 1.<a class="headerlink" href="#prediction-and-evaluation-of-standard-vae-model-using-constant-beta-1" title="Permalink to this headline">¶</a></h3>
+<p>Evaluate with recommending 10 items.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Use k = 10</span>
+<span class="k">with</span> <span class="n">Timer</span><span class="p">()</span> <span class="k">as</span> <span class="n">t</span><span class="p">:</span>
+    <span class="c1"># Model prediction on the training part of test set </span>
+    <span class="n">top_k</span> <span class="o">=</span>  <span class="n">model_without_anneal</span><span class="o">.</span><span class="n">recommend_k_items</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">test_data_tr</span><span class="p">,</span>
+                                                    <span class="n">k</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+                                                    <span class="n">remove_seen</span><span class="o">=</span><span class="kc">True</span>
+                                                    <span class="p">)</span>
+
+    <span class="c1"># Convert sparse matrix back to df</span>
+    <span class="n">top_k_df</span> <span class="o">=</span> <span class="n">am_test</span><span class="o">.</span><span class="n">map_back_sparse</span><span class="p">(</span><span class="n">top_k</span><span class="p">,</span> <span class="n">kind</span><span class="o">=</span><span class="s1">&#39;prediction&#39;</span><span class="p">)</span>
+    <span class="n">test_df</span> <span class="o">=</span> <span class="n">am_test</span><span class="o">.</span><span class="n">map_back_sparse</span><span class="p">(</span><span class="n">test_data_te_ratings</span><span class="p">,</span> <span class="n">kind</span><span class="o">=</span><span class="s1">&#39;ratings&#39;</span><span class="p">)</span> <span class="c1"># use test_data_te_, with the original ratings</span>
+    
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Took </span><span class="si">{}</span><span class="s2"> seconds for prediction.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">t</span><span class="p">))</span>
+
+<span class="c1"># Use the ranking metrics for evaluation</span>
+<span class="n">eval_map_1</span> <span class="o">=</span> <span class="n">map_at_k</span><span class="p">(</span><span class="n">test_df</span><span class="p">,</span> <span class="n">top_k_df</span><span class="p">,</span> <span class="n">col_prediction</span><span class="o">=</span><span class="s1">&#39;prediction&#39;</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">eval_ndcg_1</span> <span class="o">=</span> <span class="n">ndcg_at_k</span><span class="p">(</span><span class="n">test_df</span><span class="p">,</span> <span class="n">top_k_df</span><span class="p">,</span> <span class="n">col_prediction</span><span class="o">=</span><span class="s1">&#39;prediction&#39;</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">eval_precision_1</span> <span class="o">=</span> <span class="n">precision_at_k</span><span class="p">(</span><span class="n">test_df</span><span class="p">,</span> <span class="n">top_k_df</span><span class="p">,</span> <span class="n">col_prediction</span><span class="o">=</span><span class="s1">&#39;prediction&#39;</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">eval_recall_1</span> <span class="o">=</span> <span class="n">recall_at_k</span><span class="p">(</span><span class="n">test_df</span><span class="p">,</span> <span class="n">top_k_df</span><span class="p">,</span> <span class="n">col_prediction</span><span class="o">=</span><span class="s1">&#39;prediction&#39;</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;MAP@10:</span><span class="se">\t\t</span><span class="si">%f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">eval_map_1</span><span class="p">,</span>
+      <span class="s2">&quot;NDCG@10:</span><span class="se">\t</span><span class="si">%f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">eval_ndcg_1</span><span class="p">,</span>
+      <span class="s2">&quot;Precision@10:</span><span class="se">\t</span><span class="si">%f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">eval_precision_1</span><span class="p">,</span>
+      <span class="s2">&quot;Recall@10: </span><span class="se">\t</span><span class="si">%f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">eval_recall_1</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Took 0.9969 seconds for prediction.
+MAP@10:		0.051831
+NDCG@10:	0.446227
+Precision@10:	0.421667
+Recall@10: 	0.081252
+</pre></div>
+</div>
+</div>
+</div>
+<p>Evaluate with recommending 100 items.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Use k = 100 </span>
+<span class="k">with</span> <span class="n">Timer</span><span class="p">()</span> <span class="k">as</span> <span class="n">t</span><span class="p">:</span>
+    <span class="c1"># Model prediction on the training part of test set </span>
+    <span class="n">top_k</span> <span class="o">=</span>  <span class="n">model_without_anneal</span><span class="o">.</span><span class="n">recommend_k_items</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">test_data_tr</span><span class="p">,</span>
+                                                    <span class="n">k</span><span class="o">=</span><span class="n">TOP_K</span><span class="p">,</span>
+                                                    <span class="n">remove_seen</span><span class="o">=</span><span class="kc">True</span>
+                                                    <span class="p">)</span>
+
+    <span class="c1"># Convert sparse matrix back to df</span>
+    <span class="n">top_k_df</span> <span class="o">=</span> <span class="n">am_test</span><span class="o">.</span><span class="n">map_back_sparse</span><span class="p">(</span><span class="n">top_k</span><span class="p">,</span> <span class="n">kind</span><span class="o">=</span><span class="s1">&#39;prediction&#39;</span><span class="p">)</span>
+    <span class="n">test_df</span> <span class="o">=</span> <span class="n">am_test</span><span class="o">.</span><span class="n">map_back_sparse</span><span class="p">(</span><span class="n">test_data_te_ratings</span><span class="p">,</span> <span class="n">kind</span><span class="o">=</span><span class="s1">&#39;ratings&#39;</span><span class="p">)</span> <span class="c1"># use test_data_te_, with the original ratings</span>
+    
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Took </span><span class="si">{}</span><span class="s2"> seconds for prediction.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">t</span><span class="p">))</span>
+
+<span class="c1"># Use the ranking metrics for evaluation</span>
+<span class="n">eval_map_2</span> <span class="o">=</span> <span class="n">map_at_k</span><span class="p">(</span><span class="n">test_df</span><span class="p">,</span> <span class="n">top_k_df</span><span class="p">,</span> <span class="n">col_prediction</span><span class="o">=</span><span class="s1">&#39;prediction&#39;</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="n">TOP_K</span><span class="p">)</span>
+<span class="n">eval_ndcg_2</span> <span class="o">=</span> <span class="n">ndcg_at_k</span><span class="p">(</span><span class="n">test_df</span><span class="p">,</span> <span class="n">top_k_df</span><span class="p">,</span> <span class="n">col_prediction</span><span class="o">=</span><span class="s1">&#39;prediction&#39;</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="n">TOP_K</span><span class="p">)</span>
+<span class="n">eval_precision_2</span> <span class="o">=</span> <span class="n">precision_at_k</span><span class="p">(</span><span class="n">test_df</span><span class="p">,</span> <span class="n">top_k_df</span><span class="p">,</span> <span class="n">col_prediction</span><span class="o">=</span><span class="s1">&#39;prediction&#39;</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="n">TOP_K</span><span class="p">)</span>
+<span class="n">eval_recall_2</span> <span class="o">=</span> <span class="n">recall_at_k</span><span class="p">(</span><span class="n">test_df</span><span class="p">,</span> <span class="n">top_k_df</span><span class="p">,</span> <span class="n">col_prediction</span><span class="o">=</span><span class="s1">&#39;prediction&#39;</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="n">TOP_K</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;MAP@100:</span><span class="se">\t</span><span class="si">%f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">eval_map_2</span><span class="p">,</span>
+      <span class="s2">&quot;NDCG@100:</span><span class="se">\t</span><span class="si">%f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">eval_ndcg_2</span><span class="p">,</span>
+      <span class="s2">&quot;Precision@100:</span><span class="se">\t</span><span class="si">%f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">eval_precision_2</span><span class="p">,</span>
+      <span class="s2">&quot;Recall@100: </span><span class="se">\t</span><span class="si">%f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">eval_recall_2</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Took 0.4622 seconds for prediction.
+MAP@100:	0.138111
+NDCG@100:	0.392379
+Precision@100:	0.231383
+Recall@100: 	0.354346
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="standard-vae-with-annealing">
+<h2>4.2 Standard VAE with annealing<a class="headerlink" href="#standard-vae-with-annealing" title="Permalink to this headline">¶</a></h2>
+<p>We are going to use annealing procedure for finding the optimal <span class="math notranslate nohighlight">\(\mathbf \beta\)</span>.</p>
+<p>Now, in order to find the optimal <span class="math notranslate nohighlight">\(\beta\)</span>, we train our model using annealing with anneal_cap equal 1.0.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model_with_anneal</span> <span class="o">=</span> <span class="n">StandardVAE</span><span class="p">(</span><span class="n">n_users</span><span class="o">=</span><span class="n">train_data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="c1"># Number of unique users in the training set</span>
+                                <span class="n">original_dim</span><span class="o">=</span><span class="n">train_data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="c1"># Number of unique items in the training set</span>
+                                <span class="n">intermediate_dim</span><span class="o">=</span><span class="n">INTERMEDIATE_DIM</span><span class="p">,</span> 
+                                <span class="n">latent_dim</span><span class="o">=</span><span class="n">LATENT_DIM</span><span class="p">,</span> 
+                                <span class="n">n_epochs</span><span class="o">=</span><span class="n">EPOCHS</span><span class="p">,</span> 
+                                <span class="n">batch_size</span><span class="o">=</span><span class="n">BATCH_SIZE</span><span class="p">,</span> 
+                                <span class="n">k</span><span class="o">=</span><span class="n">TOP_K</span><span class="p">,</span>
+                                <span class="n">verbose</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                                <span class="n">seed</span><span class="o">=</span><span class="n">SEED</span><span class="p">,</span>
+                                <span class="n">save_path</span><span class="o">=</span><span class="n">WEIGHTS_PATH</span><span class="p">,</span>
+                                <span class="n">drop_encoder</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
+                                <span class="n">drop_decoder</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
+                                <span class="n">annealing</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                                <span class="n">anneal_cap</span><span class="o">=</span><span class="mf">1.0</span>
+                                <span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">Timer</span><span class="p">()</span> <span class="k">as</span> <span class="n">t</span><span class="p">:</span>
+    <span class="n">model_with_anneal</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">x_train</span><span class="o">=</span><span class="n">train_data</span><span class="p">,</span> 
+                          <span class="n">x_valid</span><span class="o">=</span><span class="n">val_data</span><span class="p">,</span> 
+                          <span class="n">x_val_tr</span><span class="o">=</span><span class="n">val_data_tr</span><span class="p">,</span> 
+                          <span class="n">x_val_te</span><span class="o">=</span><span class="n">val_data_te_ratings</span><span class="p">,</span> <span class="c1">#  with the original ratings</span>
+                          <span class="n">mapper</span><span class="o">=</span><span class="n">am_val</span>
+                          <span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Took </span><span class="si">{}</span><span class="s2"> seconds for training.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">t</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Took 633.1969 seconds for training.
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model_with_anneal</span><span class="o">.</span><span class="n">display_metrics</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/standard_vae_deep_dive_55_0.png" src="../../_images/standard_vae_deep_dive_55_0.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ndcg_val_with_anneal</span> <span class="o">=</span> <span class="n">model_with_anneal</span><span class="o">.</span><span class="n">ndcg_per_epoch</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Using the optimal beta as anneal cap , we retrain our model.</p>
+<p>When NDCG&#64;k of validation set reach a peak, the weights of the model are saved. Using this model we evaluate the test set.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Get optimal beta </span>
+<span class="n">optimal_beta</span> <span class="o">=</span> <span class="n">model_with_anneal</span><span class="o">.</span><span class="n">get_optimal_beta</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span> <span class="s2">&quot;The optimal beta is: &quot;</span><span class="p">,</span> <span class="n">optimal_beta</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The optimal beta is:  0.08125
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model_optimal_beta</span> <span class="o">=</span> <span class="n">StandardVAE</span><span class="p">(</span><span class="n">n_users</span><span class="o">=</span><span class="n">train_data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="c1"># Number of unique users in the training set</span>
+                                 <span class="n">original_dim</span><span class="o">=</span><span class="n">train_data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="c1"># Number of unique items in the training set</span>
+                                 <span class="n">intermediate_dim</span><span class="o">=</span><span class="n">INTERMEDIATE_DIM</span><span class="p">,</span>
+                                 <span class="n">latent_dim</span><span class="o">=</span><span class="n">LATENT_DIM</span><span class="p">,</span>
+                                 <span class="n">n_epochs</span><span class="o">=</span><span class="n">EPOCHS</span><span class="p">,</span>
+                                 <span class="n">batch_size</span><span class="o">=</span><span class="n">BATCH_SIZE</span><span class="p">,</span>
+                                 <span class="n">k</span><span class="o">=</span><span class="n">TOP_K</span><span class="p">,</span>  
+                                 <span class="n">verbose</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                                 <span class="n">seed</span><span class="o">=</span><span class="n">SEED</span><span class="p">,</span>
+                                 <span class="n">save_path</span><span class="o">=</span><span class="n">WEIGHTS_PATH</span><span class="p">,</span>
+                                 <span class="n">drop_encoder</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
+                                 <span class="n">drop_decoder</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
+                                 <span class="n">annealing</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                                 <span class="n">anneal_cap</span><span class="o">=</span><span class="n">optimal_beta</span><span class="p">,</span>  
+                                 <span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">Timer</span><span class="p">()</span> <span class="k">as</span> <span class="n">t</span><span class="p">:</span>
+    <span class="n">model_optimal_beta</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">x_train</span><span class="o">=</span><span class="n">train_data</span><span class="p">,</span> 
+                           <span class="n">x_valid</span><span class="o">=</span><span class="n">val_data</span><span class="p">,</span> 
+                           <span class="n">x_val_tr</span><span class="o">=</span><span class="n">val_data_tr</span><span class="p">,</span> 
+                           <span class="n">x_val_te</span><span class="o">=</span><span class="n">val_data_te_ratings</span><span class="p">,</span> <span class="c1"># with the original ratings</span>
+                           <span class="n">mapper</span><span class="o">=</span><span class="n">am_val</span>
+                           <span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Took </span><span class="si">{}</span><span class="s2"> seconds for training.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">t</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Took 639.4168 seconds for training.
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span> <span class="n">model_optimal_beta</span><span class="o">.</span><span class="n">display_metrics</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/standard_vae_deep_dive_61_0.png" src="../../_images/standard_vae_deep_dive_61_0.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ndcg_val_optimal_beta</span> <span class="o">=</span> <span class="n">model_optimal_beta</span><span class="o">.</span><span class="n">ndcg_per_epoch</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="prediction-and-evaluation-of-standard-vae-model-using-the-optimal-beta-with-annealing">
+<h3>Prediction and Evaluation of Standard-VAE model using the optimal <span class="math notranslate nohighlight">\(\beta\)</span> with annealing.<a class="headerlink" href="#prediction-and-evaluation-of-standard-vae-model-using-the-optimal-beta-with-annealing" title="Permalink to this headline">¶</a></h3>
+<p>Evaluate with recommending 10 items.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Use k = 10</span>
+<span class="k">with</span> <span class="n">Timer</span><span class="p">()</span> <span class="k">as</span> <span class="n">t</span><span class="p">:</span>
+    <span class="c1"># Model prediction on the training part of test set </span>
+    <span class="n">top_k</span> <span class="o">=</span>  <span class="n">model_optimal_beta</span><span class="o">.</span><span class="n">recommend_k_items</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">test_data_tr</span><span class="p">,</span>
+                                                  <span class="n">k</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+                                                  <span class="n">remove_seen</span><span class="o">=</span><span class="kc">True</span>
+                                                  <span class="p">)</span>
+
+    <span class="c1"># Convert sparse matrix back to df</span>
+    <span class="n">top_k_df</span> <span class="o">=</span> <span class="n">am_test</span><span class="o">.</span><span class="n">map_back_sparse</span><span class="p">(</span><span class="n">top_k</span><span class="p">,</span> <span class="n">kind</span><span class="o">=</span><span class="s1">&#39;prediction&#39;</span><span class="p">)</span>
+    <span class="n">test_df</span> <span class="o">=</span> <span class="n">am_test</span><span class="o">.</span><span class="n">map_back_sparse</span><span class="p">(</span><span class="n">test_data_te_ratings</span><span class="p">,</span> <span class="n">kind</span><span class="o">=</span><span class="s1">&#39;ratings&#39;</span><span class="p">)</span> <span class="c1"># use test_data_te_, with the original ratings</span>
+    
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Took </span><span class="si">{}</span><span class="s2"> seconds for prediction.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">t</span><span class="p">))</span>
+
+<span class="c1"># Use the ranking metrics for evaluation</span>
+<span class="n">eval_map_3</span> <span class="o">=</span> <span class="n">map_at_k</span><span class="p">(</span><span class="n">test_df</span><span class="p">,</span> <span class="n">top_k_df</span><span class="p">,</span> <span class="n">col_prediction</span><span class="o">=</span><span class="s1">&#39;prediction&#39;</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">eval_ndcg_3</span> <span class="o">=</span> <span class="n">ndcg_at_k</span><span class="p">(</span><span class="n">test_df</span><span class="p">,</span> <span class="n">top_k_df</span><span class="p">,</span> <span class="n">col_prediction</span><span class="o">=</span><span class="s1">&#39;prediction&#39;</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">eval_precision_3</span> <span class="o">=</span> <span class="n">precision_at_k</span><span class="p">(</span><span class="n">test_df</span><span class="p">,</span> <span class="n">top_k_df</span><span class="p">,</span> <span class="n">col_prediction</span><span class="o">=</span><span class="s1">&#39;prediction&#39;</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">eval_recall_3</span> <span class="o">=</span> <span class="n">recall_at_k</span><span class="p">(</span><span class="n">test_df</span><span class="p">,</span> <span class="n">top_k_df</span><span class="p">,</span> <span class="n">col_prediction</span><span class="o">=</span><span class="s1">&#39;prediction&#39;</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;MAP@10:</span><span class="se">\t\t</span><span class="si">%f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">eval_map_3</span><span class="p">,</span>
+      <span class="s2">&quot;NDCG@10:</span><span class="se">\t</span><span class="si">%f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">eval_ndcg_3</span><span class="p">,</span>
+      <span class="s2">&quot;Precision@10:</span><span class="se">\t</span><span class="si">%f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">eval_precision_3</span><span class="p">,</span>
+      <span class="s2">&quot;Recall@10: </span><span class="se">\t</span><span class="si">%f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">eval_recall_3</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Took 0.1775 seconds for prediction.
+MAP@10:		0.066183
+NDCG@10:	0.496464
+Precision@10:	0.473000
+Recall@10: 	0.101120
+</pre></div>
+</div>
+</div>
+</div>
+<p>Evaluate with recommending 100 items.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Use k = TOP_K</span>
+<span class="k">with</span> <span class="n">Timer</span><span class="p">()</span> <span class="k">as</span> <span class="n">t</span><span class="p">:</span>
+    <span class="c1"># Model prediction on the training part of test set </span>
+    <span class="n">top_k</span> <span class="o">=</span>  <span class="n">model_optimal_beta</span><span class="o">.</span><span class="n">recommend_k_items</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">test_data_tr</span><span class="p">,</span>
+                                                  <span class="n">k</span><span class="o">=</span><span class="n">TOP_K</span><span class="p">,</span>
+                                                  <span class="n">remove_seen</span><span class="o">=</span><span class="kc">True</span>
+                                                  <span class="p">)</span>
+
+    <span class="c1"># Convert sparse matrix back to df</span>
+    <span class="n">top_k_df</span> <span class="o">=</span> <span class="n">am_test</span><span class="o">.</span><span class="n">map_back_sparse</span><span class="p">(</span><span class="n">top_k</span><span class="p">,</span> <span class="n">kind</span><span class="o">=</span><span class="s1">&#39;prediction&#39;</span><span class="p">)</span>
+    <span class="n">test_df</span> <span class="o">=</span> <span class="n">am_test</span><span class="o">.</span><span class="n">map_back_sparse</span><span class="p">(</span><span class="n">test_data_te_ratings</span><span class="p">,</span> <span class="n">kind</span><span class="o">=</span><span class="s1">&#39;ratings&#39;</span><span class="p">)</span> <span class="c1"># with the original ratings</span>
+    
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Took </span><span class="si">{}</span><span class="s2"> seconds for prediction.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">t</span><span class="p">))</span>
+
+<span class="c1"># Use the ranking metrics for evaluation</span>
+<span class="n">eval_map_4</span> <span class="o">=</span> <span class="n">map_at_k</span><span class="p">(</span><span class="n">test_df</span><span class="p">,</span> <span class="n">top_k_df</span><span class="p">,</span> <span class="n">col_prediction</span><span class="o">=</span><span class="s1">&#39;prediction&#39;</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="n">TOP_K</span><span class="p">)</span>
+<span class="n">eval_ndcg_4</span> <span class="o">=</span> <span class="n">ndcg_at_k</span><span class="p">(</span><span class="n">test_df</span><span class="p">,</span> <span class="n">top_k_df</span><span class="p">,</span> <span class="n">col_prediction</span><span class="o">=</span><span class="s1">&#39;prediction&#39;</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="n">TOP_K</span><span class="p">)</span>
+<span class="n">eval_precision_4</span> <span class="o">=</span> <span class="n">precision_at_k</span><span class="p">(</span><span class="n">test_df</span><span class="p">,</span> <span class="n">top_k_df</span><span class="p">,</span> <span class="n">col_prediction</span><span class="o">=</span><span class="s1">&#39;prediction&#39;</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="n">TOP_K</span><span class="p">)</span>
+<span class="n">eval_recall_4</span> <span class="o">=</span> <span class="n">recall_at_k</span><span class="p">(</span><span class="n">test_df</span><span class="p">,</span> <span class="n">top_k_df</span><span class="p">,</span> <span class="n">col_prediction</span><span class="o">=</span><span class="s1">&#39;prediction&#39;</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="n">TOP_K</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;MAP@100:</span><span class="se">\t</span><span class="si">%f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">eval_map_4</span><span class="p">,</span>
+      <span class="s2">&quot;NDCG@100:</span><span class="se">\t</span><span class="si">%f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">eval_ndcg_4</span><span class="p">,</span>
+      <span class="s2">&quot;Precision@100:</span><span class="se">\t</span><span class="si">%f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">eval_precision_4</span><span class="p">,</span>
+      <span class="s2">&quot;Recall@100: </span><span class="se">\t</span><span class="si">%f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">eval_recall_4</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Took 0.4522 seconds for prediction.
+MAP@100:	0.171624
+NDCG@100:	0.443328
+Precision@100:	0.251867
+Recall@100: 	0.409650
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="tex2jax_ignore mathjax_ignore section" id="conclusion">
+<h1>5 Conclusion<a class="headerlink" href="#conclusion" title="Permalink to this headline">¶</a></h1>
+<p>Through this notebook, it is proven that the VAE using annealing outperforms the model without annealing (using <span class="math notranslate nohighlight">\(\mathbf \beta\)</span>=1). Specifically, the results of evaluting the test set, for the the 2 different approaches, are:</p>
+<table class="colwidths-auto table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Model</p></th>
+<th class="head"><p>NDCG&#64;100</p></th>
+<th class="head"><p>NDCG&#64;10</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Standard-VAE (wihtout annealing, β=1)</p></td>
+<td><p>0.392</p></td>
+<td><p>0.446</p></td>
+</tr>
+<tr class="row-odd"><td><p>Standard-VAE (with annealing, optimal β)</p></td>
+<td><p>0.443</p></td>
+<td><p>0.496</p></td>
+</tr>
+</tbody>
+</table>
+<p>This annealing procedure is used as an efficient way to tune the parameter <span class="math notranslate nohighlight">\(\mathbf \beta\)</span>. Otherwise, training multiple models using different values of <span class="math notranslate nohighlight">\(\mathbf \beta\)</span> can be really time consuming.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plot setup</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">style</span><span class="o">=</span><span class="s1">&#39;whitegrid&#39;</span><span class="p">)</span>
+
+<span class="c1"># Plot NDCG@k of validation sets for three models</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ndcg_val_without_anneal</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;without anneal&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ndcg_val_with_anneal</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;g&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;with anneal at β=1&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ndcg_val_optimal_beta</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;with anneal at optimal β&#39;</span><span class="p">)</span>
+
+<span class="c1"># Add plot title and axis names</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;VALIDATION NDCG@100 FOR DIFFERENT MODELS </span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Epochs&#39;</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;NDCG@100&#39;</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s1">&#39;lower right&#39;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/standard_vae_deep_dive_70_0.png" src="../../_images/standard_vae_deep_dive_70_0.png" />
+</div>
+</div>
+</div>
+<div class="tex2jax_ignore mathjax_ignore section" id="references">
+<h1>6 References<a class="headerlink" href="#references" title="Permalink to this headline">¶</a></h1>
+<p>[Liang, Dawen, et al, 2018] <a class="reference external" href="https://dl.acm.org/doi/pdf/10.1145/3178876.3186150?casa_token=zul5haircsAAAAAA:iIKn7y-xWwSeqaP-MmmyUaJoJuNZX9Fx1aXeFJwkwtMpVDCrPMW3kZjuYo1LKhSuMeUMNf1mbP2o">Liang, Dawen, et al. “Variational autoencoders for collaborative filtering.” Proceedings of the 2018 World Wide Web Conference. 2018.</a></p>
+<p>[Kingma et al, 2013] <a class="reference external" href="https://arxiv.org/pdf/1312.6114.pdf">Kingma, Diederik P., and Max Welling. “Auto-encoding variational bayes.”  (2013).</a></p>
+<p>[Burgess et al, 2018] <a class="reference external" href="https://arxiv.org/pdf/1804.03599.pdf">Burgess, Christopher P., et al. “Understanding disentangling in <span class="math notranslate nohighlight">\(\beta \)</span>-VAE.” (2018)</a></p>
+<p>[Higgins et al, 2016] <a class="reference external" href="https://openreview.net/pdf?id=Sy2fzU9gl">Higgins, Irina, et al. “beta-vae: Learning basic visual concepts with a constrained variational framework.” (2016).</a></p>
+<p>[Bowman et al, 2015] <a class="reference external" href="https://arxiv.org/pdf/1511.06349.pdf">Samuel R. Bowman, Luke Vilnis, Oriol Vinyals, Andrew M. Dai, Rafal Jozefowicz,
+and Samy Bengio. 2015. Generating sentences from a continuous space. (2015).</a></p>
+</div>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./examples/02_model_collaborative_filtering"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+              </div>
+              
+        
+            
+
+
+
+<div class='prev-next-bottom'>
+    
+
+</div>
+        
+        </div>
+    </div>
+    <footer class="footer">
+    <div class="container">
+      <p>
+        
+          By The Jupyter Book community<br/>
+        
+            &copy; Copyright 2021.<br/>
+      </p>
+    </div>
+  </footer>
+</main>
+
+
+      </div>
+    </div>
+  
+  <script src="../../_static/js/index.1c5a1a01449ed65a7b51.js"></script>
+
+  
+  </body>
+</html>

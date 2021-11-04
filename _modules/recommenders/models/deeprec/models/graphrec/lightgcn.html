@@ -1,0 +1,609 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>recommenders.models.deeprec.models.graphrec.lightgcn &#8212; &lt;h1 style=&#34;font-size:2em;text-align:center;color:#FF5733&#34;&gt;Recommenders&lt;/h1&gt;</title>
+    
+  <link href="../../../../../../_static/css/theme.css" rel="stylesheet" />
+  <link href="../../../../../../_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
+
+    
+  <link rel="stylesheet"
+    href="../../../../../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../../../../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../../../../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+
+    
+    <link rel="stylesheet" type="text/css" href="../../../../../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../_static/sphinx-book-theme.css?digest=c3fdc42140077d1ad13ad2f1588a4309" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../_static/tabs.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    
+  <link rel="preload" as="script" href="../../../../../../_static/js/index.1c5a1a01449ed65a7b51.js">
+
+    <script data-url_root="../../../../../../" id="documentation_options" src="../../../../../../_static/documentation_options.js"></script>
+    <script src="../../../../../../_static/jquery.js"></script>
+    <script src="../../../../../../_static/underscore.js"></script>
+    <script src="../../../../../../_static/doctools.js"></script>
+    <script src="../../../../../../_static/togglebutton.js"></script>
+    <script src="../../../../../../_static/clipboard.min.js"></script>
+    <script src="../../../../../../_static/copybutton.js"></script>
+    <script src="../../../../../../_static/tabs.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../../../../../../_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
+    <link rel="canonical" href="https://microsoft.github.io/genalog/_modules/recommenders/models/deeprec/models/graphrec/lightgcn.html" />
+    <link rel="index" title="Index" href="../../../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../../../search.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en" />
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="../../../../../../index.html">
+      
+      
+      
+      <h1 class="site-logo" id="site-title"><h1 style="font-size:2em;text-align:center;color:#FF5733">Recommenders</h1></h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="../../../../../../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        
+    </div>
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="topbar container-xl fixed-top">
+    <div class="topbar-contents row">
+        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
+        <div class="col pl-md-4 topbar-main">
+            
+            <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+                data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+                aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
+                title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+                <i class="fas fa-bars"></i>
+                <i class="fas fa-arrow-left"></i>
+                <i class="fas fa-arrow-up"></i>
+            </button>
+            
+            
+            <!-- Source interaction buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
+    <div class="dropdown-buttons sourcebuttons">
+        <a class="repository-button"
+            href="https://github.com/microsoft/genalog"><button type="button" class="btn btn-secondary topbarbtn"
+                data-toggle="tooltip" data-placement="left" title="Source repository"><i
+                    class="fab fa-github"></i>repository</button></a>
+        <a class="issues-button"
+            href="https://github.com/microsoft/genalog/issues/new?title=Issue%20on%20page%20%2F_modules/recommenders/models/deeprec/models/graphrec/lightgcn.html&body=Your%20issue%20content%20here."><button
+                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
+                title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
+        
+    </div>
+</div>
+
+            <!-- Full screen (wrap in <a> to have style consistency -->
+
+<a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+        data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+        title="Fullscreen mode"><i
+            class="fas fa-expand"></i></button></a>
+
+            <!-- Launch buttons -->
+
+        </div>
+
+        <!-- Table of contents -->
+        <div class="d-none d-md-block col-md-2 bd-toc show">
+            
+        </div>
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+        
+              <div>
+                
+  <h1>Source code for recommenders.models.deeprec.models.graphrec.lightgcn</h1><div class="highlight"><pre>
+<span></span><span class="c1"># Copyright (c) Microsoft Corporation. All rights reserved.</span>
+<span class="c1"># Licensed under the MIT License.</span>
+
+<span class="kn">import</span> <span class="nn">tensorflow</span> <span class="k">as</span> <span class="nn">tf</span>
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">from</span> <span class="nn">recommenders.evaluation.python_evaluation</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">map_at_k</span><span class="p">,</span>
+    <span class="n">ndcg_at_k</span><span class="p">,</span>
+    <span class="n">precision_at_k</span><span class="p">,</span>
+    <span class="n">recall_at_k</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span> <span class="nn">recommenders.utils.python_utils</span> <span class="kn">import</span> <span class="n">get_top_k_scored_items</span>
+
+
+<div class="viewcode-block" id="LightGCN"><a class="viewcode-back" href="../../../../../../source/models.html#recommenders.models.deeprec.models.graphrec.lightgcn.LightGCN">[docs]</a><span class="k">class</span> <span class="nc">LightGCN</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;LightGCN model</span>
+
+<span class="sd">    :Citation:</span>
+
+<span class="sd">        He, Xiangnan, Kuan Deng, Xiang Wang, Yan Li, Yongdong Zhang, and Meng Wang.</span>
+<span class="sd">        &quot;LightGCN: Simplifying and Powering Graph Convolution Network for Recommendation.&quot; arXiv</span>
+<span class="sd">        preprint arXiv:2002.02126, 2020.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">hparams</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Initializing the model. Create parameters, placeholders, embeddings and loss function.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            hparams (object): A tf.contrib.training.HParams object, hold the entire set of hyperparameters.</span>
+<span class="sd">            data (object): A recommenders.models.deeprec.DataModel.ImplicitCF object, load and process data.</span>
+<span class="sd">            seed (int): Seed.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">tf</span><span class="o">.</span><span class="n">set_random_seed</span><span class="p">(</span><span class="n">seed</span><span class="p">)</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="n">seed</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">data</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">epochs</span> <span class="o">=</span> <span class="n">hparams</span><span class="o">.</span><span class="n">epochs</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lr</span> <span class="o">=</span> <span class="n">hparams</span><span class="o">.</span><span class="n">learning_rate</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">emb_dim</span> <span class="o">=</span> <span class="n">hparams</span><span class="o">.</span><span class="n">embed_size</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">batch_size</span> <span class="o">=</span> <span class="n">hparams</span><span class="o">.</span><span class="n">batch_size</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">n_layers</span> <span class="o">=</span> <span class="n">hparams</span><span class="o">.</span><span class="n">n_layers</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">decay</span> <span class="o">=</span> <span class="n">hparams</span><span class="o">.</span><span class="n">decay</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">eval_epoch</span> <span class="o">=</span> <span class="n">hparams</span><span class="o">.</span><span class="n">eval_epoch</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">top_k</span> <span class="o">=</span> <span class="n">hparams</span><span class="o">.</span><span class="n">top_k</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">save_model</span> <span class="o">=</span> <span class="n">hparams</span><span class="o">.</span><span class="n">save_model</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">save_epoch</span> <span class="o">=</span> <span class="n">hparams</span><span class="o">.</span><span class="n">save_epoch</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">metrics</span> <span class="o">=</span> <span class="n">hparams</span><span class="o">.</span><span class="n">metrics</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model_dir</span> <span class="o">=</span> <span class="n">hparams</span><span class="o">.</span><span class="n">MODEL_DIR</span>
+
+        <span class="n">metric_options</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;map&quot;</span><span class="p">,</span> <span class="s2">&quot;ndcg&quot;</span><span class="p">,</span> <span class="s2">&quot;precision&quot;</span><span class="p">,</span> <span class="s2">&quot;recall&quot;</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">metric</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">metrics</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">metric</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">metric_options</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                    <span class="s2">&quot;Wrong metric(s), please select one of this list: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                        <span class="n">metric_options</span>
+                    <span class="p">)</span>
+                <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">norm_adj</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get_norm_adj_mat</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">n_users</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">n_users</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">n_items</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">n_items</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">users</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">placeholder</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">int32</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="kc">None</span><span class="p">,))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pos_items</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">placeholder</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">int32</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="kc">None</span><span class="p">,))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">neg_items</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">placeholder</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">int32</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="kc">None</span><span class="p">,))</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">weights</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_init_weights</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ua_embeddings</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ia_embeddings</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_create_lightgcn_embed</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">u_g_embeddings</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">embedding_lookup</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ua_embeddings</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">users</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pos_i_g_embeddings</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">embedding_lookup</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ia_embeddings</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">pos_items</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">neg_i_g_embeddings</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">embedding_lookup</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ia_embeddings</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">neg_items</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">u_g_embeddings_pre</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">embedding_lookup</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">weights</span><span class="p">[</span><span class="s2">&quot;user_embedding&quot;</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">users</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pos_i_g_embeddings_pre</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">embedding_lookup</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">weights</span><span class="p">[</span><span class="s2">&quot;item_embedding&quot;</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">pos_items</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">neg_i_g_embeddings_pre</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">embedding_lookup</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">weights</span><span class="p">[</span><span class="s2">&quot;item_embedding&quot;</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">neg_items</span>
+        <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">batch_ratings</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">u_g_embeddings</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">pos_i_g_embeddings</span><span class="p">,</span>
+            <span class="n">transpose_a</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">transpose_b</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">mf_loss</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">emb_loss</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_create_bpr_loss</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">u_g_embeddings</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">pos_i_g_embeddings</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">neg_i_g_embeddings</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">loss</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mf_loss</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">emb_loss</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">opt</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">train</span><span class="o">.</span><span class="n">AdamOptimizer</span><span class="p">(</span><span class="n">learning_rate</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">lr</span><span class="p">)</span><span class="o">.</span><span class="n">minimize</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">loss</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">saver</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">train</span><span class="o">.</span><span class="n">Saver</span><span class="p">(</span><span class="n">max_to_keep</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+        <span class="n">gpu_options</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">GPUOptions</span><span class="p">(</span><span class="n">allow_growth</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sess</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">Session</span><span class="p">(</span><span class="n">config</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">ConfigProto</span><span class="p">(</span><span class="n">gpu_options</span><span class="o">=</span><span class="n">gpu_options</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">global_variables_initializer</span><span class="p">())</span>
+
+    <span class="k">def</span> <span class="nf">_init_weights</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Initialize user and item embeddings.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            dict: With keys `user_embedding` and `item_embedding`, embeddings of all users and items.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">all_weights</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+        <span class="n">initializer</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">contrib</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">xavier_initializer</span><span class="p">()</span>
+
+        <span class="n">all_weights</span><span class="p">[</span><span class="s2">&quot;user_embedding&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">Variable</span><span class="p">(</span>
+            <span class="n">initializer</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">n_users</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">emb_dim</span><span class="p">]),</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;user_embedding&quot;</span>
+        <span class="p">)</span>
+        <span class="n">all_weights</span><span class="p">[</span><span class="s2">&quot;item_embedding&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">Variable</span><span class="p">(</span>
+            <span class="n">initializer</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">n_items</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">emb_dim</span><span class="p">]),</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;item_embedding&quot;</span>
+        <span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Using xavier initialization.&quot;</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">all_weights</span>
+
+    <span class="k">def</span> <span class="nf">_create_lightgcn_embed</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Calculate the average embeddings of users and items after every layer of the model.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            tf.Tensor, tf.Tensor: Average user embeddings. Average item embeddings.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">A_hat</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_convert_sp_mat_to_sp_tensor</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">norm_adj</span><span class="p">)</span>
+
+        <span class="n">ego_embeddings</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span>
+            <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">weights</span><span class="p">[</span><span class="s2">&quot;user_embedding&quot;</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">weights</span><span class="p">[</span><span class="s2">&quot;item_embedding&quot;</span><span class="p">]],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span>
+        <span class="p">)</span>
+        <span class="n">all_embeddings</span> <span class="o">=</span> <span class="p">[</span><span class="n">ego_embeddings</span><span class="p">]</span>
+
+        <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_layers</span><span class="p">):</span>
+            <span class="n">ego_embeddings</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">sparse_tensor_dense_matmul</span><span class="p">(</span><span class="n">A_hat</span><span class="p">,</span> <span class="n">ego_embeddings</span><span class="p">)</span>
+            <span class="n">all_embeddings</span> <span class="o">+=</span> <span class="p">[</span><span class="n">ego_embeddings</span><span class="p">]</span>
+
+        <span class="n">all_embeddings</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="n">all_embeddings</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">all_embeddings</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">reduce_mean</span><span class="p">(</span><span class="n">all_embeddings</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">keepdims</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="n">u_g_embeddings</span><span class="p">,</span> <span class="n">i_g_embeddings</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">split</span><span class="p">(</span>
+            <span class="n">all_embeddings</span><span class="p">,</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">n_users</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_items</span><span class="p">],</span> <span class="mi">0</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">u_g_embeddings</span><span class="p">,</span> <span class="n">i_g_embeddings</span>
+
+    <span class="k">def</span> <span class="nf">_create_bpr_loss</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">users</span><span class="p">,</span> <span class="n">pos_items</span><span class="p">,</span> <span class="n">neg_items</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Calculate BPR loss.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            users (tf.Tensor): User embeddings to calculate loss.</span>
+<span class="sd">            pos_items (tf.Tensor): Positive item embeddings to calculate loss.</span>
+<span class="sd">            neg_items (tf.Tensor): Negative item embeddings to calculate loss.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            tf.Tensor, tf.Tensor: Matrix factorization loss. Embedding regularization loss.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">pos_scores</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">reduce_sum</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">multiply</span><span class="p">(</span><span class="n">users</span><span class="p">,</span> <span class="n">pos_items</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">neg_scores</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">reduce_sum</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">multiply</span><span class="p">(</span><span class="n">users</span><span class="p">,</span> <span class="n">neg_items</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+        <span class="n">regularizer</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">tf</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">l2_loss</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">u_g_embeddings_pre</span><span class="p">)</span>
+            <span class="o">+</span> <span class="n">tf</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">l2_loss</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pos_i_g_embeddings_pre</span><span class="p">)</span>
+            <span class="o">+</span> <span class="n">tf</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">l2_loss</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">neg_i_g_embeddings_pre</span><span class="p">)</span>
+        <span class="p">)</span>
+        <span class="n">regularizer</span> <span class="o">=</span> <span class="n">regularizer</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">batch_size</span>
+        <span class="n">mf_loss</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">reduce_mean</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">softplus</span><span class="p">(</span><span class="o">-</span><span class="p">(</span><span class="n">pos_scores</span> <span class="o">-</span> <span class="n">neg_scores</span><span class="p">)))</span>
+        <span class="n">emb_loss</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">decay</span> <span class="o">*</span> <span class="n">regularizer</span>
+        <span class="k">return</span> <span class="n">mf_loss</span><span class="p">,</span> <span class="n">emb_loss</span>
+
+    <span class="k">def</span> <span class="nf">_convert_sp_mat_to_sp_tensor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Convert a scipy sparse matrix to tf.SparseTensor.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            tf.SparseTensor: SparseTensor after conversion.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">coo</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">tocoo</span><span class="p">()</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+        <span class="n">indices</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mat</span><span class="p">([</span><span class="n">coo</span><span class="o">.</span><span class="n">row</span><span class="p">,</span> <span class="n">coo</span><span class="o">.</span><span class="n">col</span><span class="p">])</span><span class="o">.</span><span class="n">transpose</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">tf</span><span class="o">.</span><span class="n">SparseTensor</span><span class="p">(</span><span class="n">indices</span><span class="p">,</span> <span class="n">coo</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">coo</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+
+<div class="viewcode-block" id="LightGCN.fit"><a class="viewcode-back" href="../../../../../../source/models.html#recommenders.models.deeprec.models.graphrec.lightgcn.LightGCN.fit">[docs]</a>    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Fit the model on self.data.train. If eval_epoch is not -1, evaluate the model on `self.data.test`</span>
+<span class="sd">        every `eval_epoch` epoch to observe the training status.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">epoch</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">epochs</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+            <span class="n">train_start</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+            <span class="n">loss</span><span class="p">,</span> <span class="n">mf_loss</span><span class="p">,</span> <span class="n">emb_loss</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span>
+            <span class="n">n_batch</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">train</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">//</span> <span class="bp">self</span><span class="o">.</span><span class="n">batch_size</span> <span class="o">+</span> <span class="mi">1</span>
+            <span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_batch</span><span class="p">):</span>
+                <span class="n">users</span><span class="p">,</span> <span class="n">pos_items</span><span class="p">,</span> <span class="n">neg_items</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">train_loader</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">batch_size</span><span class="p">)</span>
+                <span class="n">_</span><span class="p">,</span> <span class="n">batch_loss</span><span class="p">,</span> <span class="n">batch_mf_loss</span><span class="p">,</span> <span class="n">batch_emb_loss</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span>
+                    <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">opt</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">loss</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">mf_loss</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">emb_loss</span><span class="p">],</span>
+                    <span class="n">feed_dict</span><span class="o">=</span><span class="p">{</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">users</span><span class="p">:</span> <span class="n">users</span><span class="p">,</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">pos_items</span><span class="p">:</span> <span class="n">pos_items</span><span class="p">,</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">neg_items</span><span class="p">:</span> <span class="n">neg_items</span><span class="p">,</span>
+                    <span class="p">},</span>
+                <span class="p">)</span>
+                <span class="n">loss</span> <span class="o">+=</span> <span class="n">batch_loss</span> <span class="o">/</span> <span class="n">n_batch</span>
+                <span class="n">mf_loss</span> <span class="o">+=</span> <span class="n">batch_mf_loss</span> <span class="o">/</span> <span class="n">n_batch</span>
+                <span class="n">emb_loss</span> <span class="o">+=</span> <span class="n">batch_emb_loss</span> <span class="o">/</span> <span class="n">n_batch</span>
+
+            <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">loss</span><span class="p">):</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;ERROR: loss is nan.&quot;</span><span class="p">)</span>
+                <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">()</span>
+            <span class="n">train_end</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+            <span class="n">train_time</span> <span class="o">=</span> <span class="n">train_end</span> <span class="o">-</span> <span class="n">train_start</span>
+
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">save_model</span> <span class="ow">and</span> <span class="n">epoch</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">save_epoch</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">save_path_str</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model_dir</span><span class="p">,</span> <span class="s2">&quot;epoch_&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">epoch</span><span class="p">))</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">save_path_str</span><span class="p">):</span>
+                    <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">save_path_str</span><span class="p">)</span>
+                <span class="n">checkpoint_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">saver</span><span class="o">.</span><span class="n">save</span><span class="p">(</span>  <span class="c1"># noqa: F841</span>
+                    <span class="n">sess</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">sess</span><span class="p">,</span> <span class="n">save_path</span><span class="o">=</span><span class="n">save_path_str</span>
+                <span class="p">)</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Save model to path </span><span class="si">{0}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">save_path_str</span><span class="p">)))</span>
+
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">eval_epoch</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span> <span class="ow">or</span> <span class="n">epoch</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">eval_epoch</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span>
+                    <span class="s2">&quot;Epoch </span><span class="si">%d</span><span class="s2"> (train)</span><span class="si">%.1f</span><span class="s2">s: train loss = </span><span class="si">%.5f</span><span class="s2"> = (mf)</span><span class="si">%.5f</span><span class="s2"> + (embed)</span><span class="si">%.5f</span><span class="s2">&quot;</span>
+                    <span class="o">%</span> <span class="p">(</span><span class="n">epoch</span><span class="p">,</span> <span class="n">train_time</span><span class="p">,</span> <span class="n">loss</span><span class="p">,</span> <span class="n">mf_loss</span><span class="p">,</span> <span class="n">emb_loss</span><span class="p">)</span>
+                <span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">eval_start</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+                <span class="n">ret</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">run_eval</span><span class="p">()</span>
+                <span class="n">eval_end</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+                <span class="n">eval_time</span> <span class="o">=</span> <span class="n">eval_end</span> <span class="o">-</span> <span class="n">eval_start</span>
+
+                <span class="nb">print</span><span class="p">(</span>
+                    <span class="s2">&quot;Epoch </span><span class="si">%d</span><span class="s2"> (train)</span><span class="si">%.1f</span><span class="s2">s + (eval)</span><span class="si">%.1f</span><span class="s2">s: train loss = </span><span class="si">%.5f</span><span class="s2"> = (mf)</span><span class="si">%.5f</span><span class="s2"> + (embed)</span><span class="si">%.5f</span><span class="s2">, </span><span class="si">%s</span><span class="s2">&quot;</span>
+                    <span class="o">%</span> <span class="p">(</span>
+                        <span class="n">epoch</span><span class="p">,</span>
+                        <span class="n">train_time</span><span class="p">,</span>
+                        <span class="n">eval_time</span><span class="p">,</span>
+                        <span class="n">loss</span><span class="p">,</span>
+                        <span class="n">mf_loss</span><span class="p">,</span>
+                        <span class="n">emb_loss</span><span class="p">,</span>
+                        <span class="s2">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+                            <span class="n">metric</span> <span class="o">+</span> <span class="s2">&quot; = </span><span class="si">%.5f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">r</span><span class="p">)</span>
+                            <span class="k">for</span> <span class="n">metric</span><span class="p">,</span> <span class="n">r</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">metrics</span><span class="p">,</span> <span class="n">ret</span><span class="p">)</span>
+                        <span class="p">),</span>
+                    <span class="p">)</span>
+                <span class="p">)</span></div>
+
+<div class="viewcode-block" id="LightGCN.load"><a class="viewcode-back" href="../../../../../../source/models.html#recommenders.models.deeprec.models.graphrec.lightgcn.LightGCN.load">[docs]</a>    <span class="k">def</span> <span class="nf">load</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model_path</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Load an existing model.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            model_path: Model path.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            IOError: if the restore operation failed.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">saver</span><span class="o">.</span><span class="n">restore</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sess</span><span class="p">,</span> <span class="n">model_path</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span>
+                <span class="s2">&quot;Failed to find any matching files for </span><span class="si">{0}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">model_path</span><span class="p">)</span>
+            <span class="p">)</span></div>
+
+<div class="viewcode-block" id="LightGCN.run_eval"><a class="viewcode-back" href="../../../../../../source/models.html#recommenders.models.deeprec.models.graphrec.lightgcn.LightGCN.run_eval">[docs]</a>    <span class="k">def</span> <span class="nf">run_eval</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Run evaluation on self.data.test.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            dict: Results of all metrics in `self.metrics`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">topk_scores</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">recommend_k_items</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">test</span><span class="p">,</span> <span class="n">top_k</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">top_k</span><span class="p">,</span> <span class="n">use_id</span><span class="o">=</span><span class="kc">True</span>
+        <span class="p">)</span>
+        <span class="n">ret</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">metric</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">metrics</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">metric</span> <span class="o">==</span> <span class="s2">&quot;map&quot;</span><span class="p">:</span>
+                <span class="n">ret</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                    <span class="n">map_at_k</span><span class="p">(</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">test</span><span class="p">,</span> <span class="n">topk_scores</span><span class="p">,</span> <span class="n">relevancy_method</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">top_k</span>
+                    <span class="p">)</span>
+                <span class="p">)</span>
+            <span class="k">elif</span> <span class="n">metric</span> <span class="o">==</span> <span class="s2">&quot;ndcg&quot;</span><span class="p">:</span>
+                <span class="n">ret</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                    <span class="n">ndcg_at_k</span><span class="p">(</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">test</span><span class="p">,</span> <span class="n">topk_scores</span><span class="p">,</span> <span class="n">relevancy_method</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">top_k</span>
+                    <span class="p">)</span>
+                <span class="p">)</span>
+            <span class="k">elif</span> <span class="n">metric</span> <span class="o">==</span> <span class="s2">&quot;precision&quot;</span><span class="p">:</span>
+                <span class="n">ret</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                    <span class="n">precision_at_k</span><span class="p">(</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">test</span><span class="p">,</span> <span class="n">topk_scores</span><span class="p">,</span> <span class="n">relevancy_method</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">top_k</span>
+                    <span class="p">)</span>
+                <span class="p">)</span>
+            <span class="k">elif</span> <span class="n">metric</span> <span class="o">==</span> <span class="s2">&quot;recall&quot;</span><span class="p">:</span>
+                <span class="n">ret</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                    <span class="n">recall_at_k</span><span class="p">(</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">test</span><span class="p">,</span> <span class="n">topk_scores</span><span class="p">,</span> <span class="n">relevancy_method</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">top_k</span>
+                    <span class="p">)</span>
+                <span class="p">)</span>
+        <span class="k">return</span> <span class="n">ret</span></div>
+
+<div class="viewcode-block" id="LightGCN.score"><a class="viewcode-back" href="../../../../../../source/models.html#recommenders.models.deeprec.models.graphrec.lightgcn.LightGCN.score">[docs]</a>    <span class="k">def</span> <span class="nf">score</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user_ids</span><span class="p">,</span> <span class="n">remove_seen</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Score all items for test users.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            user_ids (np.array): Users to test.</span>
+<span class="sd">            remove_seen (bool): Flag to remove items seen in training from recommendation.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            numpy.ndarray: Value of interest of all items for the users.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">user_ids</span><span class="p">)):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">&quot;LightGCN cannot score users that are not in the training set&quot;</span>
+            <span class="p">)</span>
+        <span class="n">u_batch_size</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">batch_size</span>
+        <span class="n">n_user_batchs</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">user_ids</span><span class="p">)</span> <span class="o">//</span> <span class="n">u_batch_size</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="n">test_scores</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">u_batch_id</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_user_batchs</span><span class="p">):</span>
+            <span class="n">start</span> <span class="o">=</span> <span class="n">u_batch_id</span> <span class="o">*</span> <span class="n">u_batch_size</span>
+            <span class="n">end</span> <span class="o">=</span> <span class="p">(</span><span class="n">u_batch_id</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">u_batch_size</span>
+            <span class="n">user_batch</span> <span class="o">=</span> <span class="n">user_ids</span><span class="p">[</span><span class="n">start</span><span class="p">:</span><span class="n">end</span><span class="p">]</span>
+            <span class="n">item_batch</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">n_items</span><span class="p">)</span>
+            <span class="n">rate_batch</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">batch_ratings</span><span class="p">,</span> <span class="p">{</span><span class="bp">self</span><span class="o">.</span><span class="n">users</span><span class="p">:</span> <span class="n">user_batch</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">pos_items</span><span class="p">:</span> <span class="n">item_batch</span><span class="p">}</span>
+            <span class="p">)</span>
+            <span class="n">test_scores</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">rate_batch</span><span class="p">))</span>
+        <span class="n">test_scores</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span><span class="n">test_scores</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">remove_seen</span><span class="p">:</span>
+            <span class="n">test_scores</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">R</span><span class="o">.</span><span class="n">tocsr</span><span class="p">()[</span><span class="n">user_ids</span><span class="p">,</span> <span class="p">:]</span> <span class="o">*</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">inf</span>
+        <span class="k">return</span> <span class="n">test_scores</span></div>
+
+<div class="viewcode-block" id="LightGCN.recommend_k_items"><a class="viewcode-back" href="../../../../../../source/models.html#recommenders.models.deeprec.models.graphrec.lightgcn.LightGCN.recommend_k_items">[docs]</a>    <span class="k">def</span> <span class="nf">recommend_k_items</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">test</span><span class="p">,</span> <span class="n">top_k</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">sort_top_k</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">remove_seen</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">use_id</span><span class="o">=</span><span class="kc">False</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Recommend top K items for all users in the test set.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            test (pandas.DataFrame): Test data.</span>
+<span class="sd">            top_k (int): Number of top items to recommend.</span>
+<span class="sd">            sort_top_k (bool): Flag to sort top k results.</span>
+<span class="sd">            remove_seen (bool): Flag to remove items seen in training from recommendation.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            pandas.DataFrame: Top k recommendation items for each user.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">use_id</span><span class="p">:</span>
+            <span class="n">user_ids</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">data</span><span class="o">.</span><span class="n">user2id</span><span class="p">[</span><span class="n">x</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">test</span><span class="p">[</span><span class="n">data</span><span class="o">.</span><span class="n">col_user</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">()])</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">user_ids</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">test</span><span class="p">[</span><span class="n">data</span><span class="o">.</span><span class="n">col_user</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">())</span>
+
+        <span class="n">test_scores</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">user_ids</span><span class="p">,</span> <span class="n">remove_seen</span><span class="o">=</span><span class="n">remove_seen</span><span class="p">)</span>
+
+        <span class="n">top_items</span><span class="p">,</span> <span class="n">top_scores</span> <span class="o">=</span> <span class="n">get_top_k_scored_items</span><span class="p">(</span>
+            <span class="n">scores</span><span class="o">=</span><span class="n">test_scores</span><span class="p">,</span> <span class="n">top_k</span><span class="o">=</span><span class="n">top_k</span><span class="p">,</span> <span class="n">sort_top_k</span><span class="o">=</span><span class="n">sort_top_k</span>
+        <span class="p">)</span>
+
+        <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
+            <span class="p">{</span>
+                <span class="n">data</span><span class="o">.</span><span class="n">col_user</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span>
+                    <span class="n">test</span><span class="p">[</span><span class="n">data</span><span class="o">.</span><span class="n">col_user</span><span class="p">]</span><span class="o">.</span><span class="n">drop_duplicates</span><span class="p">()</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">top_items</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+                <span class="p">),</span>
+                <span class="n">data</span><span class="o">.</span><span class="n">col_item</span><span class="p">:</span> <span class="n">top_items</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+                <span class="k">if</span> <span class="n">use_id</span>
+                <span class="k">else</span> <span class="p">[</span><span class="n">data</span><span class="o">.</span><span class="n">id2item</span><span class="p">[</span><span class="n">item</span><span class="p">]</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">top_items</span><span class="o">.</span><span class="n">flatten</span><span class="p">()],</span>
+                <span class="n">data</span><span class="o">.</span><span class="n">col_prediction</span><span class="p">:</span> <span class="n">top_scores</span><span class="o">.</span><span class="n">flatten</span><span class="p">(),</span>
+            <span class="p">}</span>
+        <span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">df</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">)</span><span class="o">.</span><span class="n">dropna</span><span class="p">()</span></div>
+
+    <span class="k">def</span> <span class="nf">output_embeddings</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">idmapper</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="n">user_file</span><span class="p">):</span>
+        <span class="n">embeddings</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">target</span><span class="o">.</span><span class="n">eval</span><span class="p">(</span><span class="n">session</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">sess</span><span class="p">))</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">user_file</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">wt</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+                <span class="n">wt</span><span class="o">.</span><span class="n">write</span><span class="p">(</span>
+                    <span class="s2">&quot;</span><span class="si">{0}</span><span class="se">\t</span><span class="si">{1}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                        <span class="n">idmapper</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="nb">str</span><span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">embeddings</span><span class="p">[</span><span class="n">i</span><span class="p">]])</span>
+                    <span class="p">)</span>
+                <span class="p">)</span>
+
+<div class="viewcode-block" id="LightGCN.infer_embedding"><a class="viewcode-back" href="../../../../../../source/models.html#recommenders.models.deeprec.models.graphrec.lightgcn.LightGCN.infer_embedding">[docs]</a>    <span class="k">def</span> <span class="nf">infer_embedding</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user_file</span><span class="p">,</span> <span class="n">item_file</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Export user and item embeddings to csv files.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            user_file (str): Path of file to save user embeddings.</span>
+<span class="sd">            item_file (str): Path of file to save item embeddings.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># create output directories if they do not exist</span>
+        <span class="n">dirs</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">user_file</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">dirs</span><span class="p">):</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">dirs</span><span class="p">)</span>
+        <span class="n">dirs</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">item_file</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">dirs</span><span class="p">):</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">dirs</span><span class="p">)</span>
+
+        <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">output_embeddings</span><span class="p">(</span>
+            <span class="n">data</span><span class="o">.</span><span class="n">id2user</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_users</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ua_embeddings</span><span class="p">,</span> <span class="n">user_file</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">output_embeddings</span><span class="p">(</span>
+            <span class="n">data</span><span class="o">.</span><span class="n">id2item</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_items</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ia_embeddings</span><span class="p">,</span> <span class="n">item_file</span>
+        <span class="p">)</span></div></div>
+</pre></div>
+
+              </div>
+              
+        
+            
+
+
+
+<div class='prev-next-bottom'>
+    
+
+</div>
+        
+        </div>
+    </div>
+    <footer class="footer">
+    <div class="container">
+      <p>
+        
+          By The Jupyter Book community<br/>
+        
+            &copy; Copyright 2021.<br/>
+          <div class="extra_footer">
+            Don't forget to check out <a href= https://arxiv.org/abs/2108.02899>our paper from Document Intelligence Workshop at KDD 2021!</a>
+          </div>
+      </p>
+    </div>
+  </footer>
+</main>
+
+
+      </div>
+    </div>
+  
+  <script src="../../../../../../_static/js/index.1c5a1a01449ed65a7b51.js"></script>
+
+  
+  </body>
+</html>

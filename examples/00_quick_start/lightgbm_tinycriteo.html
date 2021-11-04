@@ -1,0 +1,1118 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>LightGBM: A Highly Efficient Gradient Boosting Decision Tree &#8212; &lt;h1 style=&#34;font-size:2em;text-align:center;color:#FF5733&#34;&gt;Recommenders&lt;/h1&gt;</title>
+    
+  <link href="../../_static/css/theme.css" rel="stylesheet" />
+  <link href="../../_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
+
+    
+  <link rel="stylesheet"
+    href="../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+
+    
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-book-theme.css?digest=c3fdc42140077d1ad13ad2f1588a4309" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/tabs.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    
+  <link rel="preload" as="script" href="../../_static/js/index.1c5a1a01449ed65a7b51.js">
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/togglebutton.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <script src="../../_static/tabs.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../../_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script>
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="../../_static/sphinx-thebe.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en" />
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="../../index.html">
+      
+      
+      
+      <h1 class="site-logo" id="site-title"><h1 style="font-size:2em;text-align:center;color:#FF5733">Recommenders</h1></h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="../../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        <p class="caption" role="heading">
+ <span class="caption-text">
+  Getting Started Notebooks
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="als_movielens.html">
+   Running ALS on MovieLens (PySpark)
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ncf_movielens.html">
+   Neural Collaborative Filtering on MovieLens dataset.
+  </a>
+ </li>
+</ul>
+
+    </div>
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="topbar container-xl fixed-top">
+    <div class="topbar-contents row">
+        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
+        <div class="col pl-md-4 topbar-main">
+            
+            <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+                data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+                aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
+                title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+                <i class="fas fa-bars"></i>
+                <i class="fas fa-arrow-left"></i>
+                <i class="fas fa-arrow-up"></i>
+            </button>
+            
+            
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
+            class="fas fa-download"></i></button>
+
+    <div class="dropdown-buttons">
+        <!-- ipynb file if we had a myst markdown file -->
+        
+        <!-- Download raw file -->
+        <a class="dropdown-buttons" href="../../_sources/examples/00_quick_start/lightgbm_tinycriteo.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
+                data-placement="left">.ipynb</button></a>
+        <!-- Download PDF via print -->
+        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
+            onClick="window.print()" data-toggle="tooltip" data-placement="left">.pdf</button>
+    </div>
+</div>
+
+            <!-- Source interaction buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
+    <div class="dropdown-buttons sourcebuttons">
+        <a class="repository-button"
+            href="https://github.com/microsoft/genalog"><button type="button" class="btn btn-secondary topbarbtn"
+                data-toggle="tooltip" data-placement="left" title="Source repository"><i
+                    class="fab fa-github"></i>repository</button></a>
+        <a class="issues-button"
+            href="https://github.com/microsoft/genalog/issues/new?title=Issue%20on%20page%20%2Fexamples/00_quick_start/lightgbm_tinycriteo.html&body=Your%20issue%20content%20here."><button
+                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
+                title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
+        
+    </div>
+</div>
+
+            <!-- Full screen (wrap in <a> to have style consistency -->
+
+<a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+        data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+        title="Fullscreen mode"><i
+            class="fas fa-expand"></i></button></a>
+
+            <!-- Launch buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Launch interactive content"><i class="fas fa-rocket"></i></button>
+    <div class="dropdown-buttons">
+        
+        <a class="binder-button" href="https://mybinder.org/v2/gh/microsoft/genalog/main?urlpath=tree/docs/genalog_docs/examples/00_quick_start/lightgbm_tinycriteo.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Launch Binder" data-toggle="tooltip"
+                data-placement="left"><img class="binder-button-logo"
+                    src="../../_static/images/logo_binder.svg"
+                    alt="Interact on binder">Binder</button></a>
+        
+        
+        
+        
+    </div>
+</div>
+
+        </div>
+
+        <!-- Table of contents -->
+        <div class="d-none d-md-block col-md-2 bd-toc show">
+            
+            <div class="tocsection onthispage pt-5 pb-3">
+                <i class="fas fa-list"></i> Contents
+            </div>
+            <nav id="bd-toc-nav" aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#global-settings-and-imports">
+   Global Settings and Imports
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#parameter-setting">
+     Parameter Setting
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#data-preparation">
+   Data Preparation
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#basic-usage">
+   Basic Usage
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#ordinal-encoding">
+     Ordinal Encoding
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#create-model">
+     Create model
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#optimized-usage">
+   Optimized Usage
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#label-encoding-and-binary-encoding">
+     Label-encoding and Binary-encoding
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#training-and-evaluation">
+     Training and Evaluation
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#model-saving-and-loading">
+   Model saving and loading
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#additional-reading">
+   Additional Reading
+  </a>
+ </li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+        
+              <div>
+                
+  <p><i>Copyright (c) Microsoft Corporation. All rights reserved.</i></p>
+<p><i>Licensed under the MIT License.</i></p>
+<div class="tex2jax_ignore mathjax_ignore section" id="lightgbm-a-highly-efficient-gradient-boosting-decision-tree">
+<h1>LightGBM: A Highly Efficient Gradient Boosting Decision Tree<a class="headerlink" href="#lightgbm-a-highly-efficient-gradient-boosting-decision-tree" title="Permalink to this headline">¶</a></h1>
+<p>This notebook will give you an example of how to train a LightGBM model to estimate click-through rates on an e-commerce advertisement. We will train a LightGBM based model on the Criteo dataset.</p>
+<p><a class="reference external" href="https://github.com/Microsoft/LightGBM">LightGBM</a> is a gradient boosting framework that uses tree-based learning algorithms. It is designed to be distributed and efficient with the following advantages:</p>
+<ul class="simple">
+<li><p>Fast training speed and high efficiency.</p></li>
+<li><p>Low memory usage.</p></li>
+<li><p>Great accuracy.</p></li>
+<li><p>Support of parallel and GPU learning.</p></li>
+<li><p>Capable of handling large-scale data.</p></li>
+</ul>
+<div class="section" id="global-settings-and-imports">
+<h2>Global Settings and Imports<a class="headerlink" href="#global-settings-and-imports" title="Permalink to this headline">¶</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">lightgbm</span> <span class="k">as</span> <span class="nn">lgb</span>
+<span class="kn">import</span> <span class="nn">papermill</span> <span class="k">as</span> <span class="nn">pm</span>
+<span class="kn">import</span> <span class="nn">scrapbook</span> <span class="k">as</span> <span class="nn">sb</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">category_encoders</span> <span class="k">as</span> <span class="nn">ce</span>
+<span class="kn">from</span> <span class="nn">tempfile</span> <span class="kn">import</span> <span class="n">TemporaryDirectory</span>
+<span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">roc_auc_score</span><span class="p">,</span> <span class="n">log_loss</span>
+
+<span class="kn">import</span> <span class="nn">recommenders.models.lightgbm.lightgbm_utils</span> <span class="k">as</span> <span class="nn">lgb_utils</span>
+<span class="kn">import</span> <span class="nn">recommenders.datasets.criteo</span> <span class="k">as</span> <span class="nn">criteo</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;System version: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">version</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;LightGBM version: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">lgb</span><span class="o">.</span><span class="n">__version__</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>System version: 3.6.7 |Anaconda, Inc.| (default, Oct 23 2018, 19:16:44) 
+[GCC 7.3.0]
+LightGBM version: 2.2.1
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="parameter-setting">
+<h3>Parameter Setting<a class="headerlink" href="#parameter-setting" title="Permalink to this headline">¶</a></h3>
+<p>Let’s set the main related parameters for LightGBM now. Basically, the task is a binary classification (predicting click or no click), so the objective function is set to binary logloss, and ‘AUC’ metric, is used as a metric which is less effected by imbalance in the classes of the dataset.</p>
+<p>Generally, we can adjust the number of leaves (MAX_LEAF), the minimum number of data in each leaf (MIN_DATA), maximum number of trees (NUM_OF_TREES), the learning rate of trees (TREE_LEARNING_RATE) and EARLY_STOPPING_ROUNDS (to avoid overfitting) in the model to get better performance.</p>
+<p>Besides, we can also adjust some other listed parameters to optimize the results. <a class="reference external" href="https://github.com/Microsoft/LightGBM/blob/master/docs/Parameters.rst">In this link</a>, a list of all the parameters is shown. Also, some advice on how to tune these parameters can be found <a class="reference external" href="https://github.com/Microsoft/LightGBM/blob/master/docs/Parameters-Tuning.rst">in this url</a>.</p>
+<div class="cell tag_parameters docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">MAX_LEAF</span> <span class="o">=</span> <span class="mi">64</span>
+<span class="n">MIN_DATA</span> <span class="o">=</span> <span class="mi">20</span>
+<span class="n">NUM_OF_TREES</span> <span class="o">=</span> <span class="mi">100</span>
+<span class="n">TREE_LEARNING_RATE</span> <span class="o">=</span> <span class="mf">0.15</span>
+<span class="n">EARLY_STOPPING_ROUNDS</span> <span class="o">=</span> <span class="mi">20</span>
+<span class="n">METRIC</span> <span class="o">=</span> <span class="s2">&quot;auc&quot;</span>
+<span class="n">SIZE</span> <span class="o">=</span> <span class="s2">&quot;sample&quot;</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">params</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;task&#39;</span><span class="p">:</span> <span class="s1">&#39;train&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;boosting_type&#39;</span><span class="p">:</span> <span class="s1">&#39;gbdt&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;num_class&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="s1">&#39;objective&#39;</span><span class="p">:</span> <span class="s2">&quot;binary&quot;</span><span class="p">,</span>
+    <span class="s1">&#39;metric&#39;</span><span class="p">:</span> <span class="n">METRIC</span><span class="p">,</span>
+    <span class="s1">&#39;num_leaves&#39;</span><span class="p">:</span> <span class="n">MAX_LEAF</span><span class="p">,</span>
+    <span class="s1">&#39;min_data&#39;</span><span class="p">:</span> <span class="n">MIN_DATA</span><span class="p">,</span>
+    <span class="s1">&#39;boost_from_average&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="c1">#set it according to your cpu cores.</span>
+    <span class="s1">&#39;num_threads&#39;</span><span class="p">:</span> <span class="mi">20</span><span class="p">,</span>
+    <span class="s1">&#39;feature_fraction&#39;</span><span class="p">:</span> <span class="mf">0.8</span><span class="p">,</span>
+    <span class="s1">&#39;learning_rate&#39;</span><span class="p">:</span> <span class="n">TREE_LEARNING_RATE</span><span class="p">,</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="data-preparation">
+<h2>Data Preparation<a class="headerlink" href="#data-preparation" title="Permalink to this headline">¶</a></h2>
+<p>Here we use CSV format as the example data input. Our example data is a sample (about 100 thousand samples) from <a class="reference external" href="https://www.kaggle.com/c/criteo-display-ad-challenge">Criteo dataset</a>. The Criteo dataset is a well-known industry benchmarking dataset for developing CTR prediction models, and it’s frequently adopted as evaluation dataset by research papers. The original dataset is too large for a lightweight demo, so we sample a small portion from it as a demo dataset.</p>
+<p>Specifically, there are 39 columns of features in Criteo, where 13 columns are numerical features (I1-I13) and the other 26 columns are categorical features (C1-C26).</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">nume_cols</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;I&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">14</span><span class="p">)]</span>
+<span class="n">cate_cols</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;C&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">27</span><span class="p">)]</span>
+<span class="n">label_col</span> <span class="o">=</span> <span class="s2">&quot;Label&quot;</span>
+
+<span class="n">header</span> <span class="o">=</span> <span class="p">[</span><span class="n">label_col</span><span class="p">]</span> <span class="o">+</span> <span class="n">nume_cols</span> <span class="o">+</span> <span class="n">cate_cols</span>
+<span class="k">with</span> <span class="n">TemporaryDirectory</span><span class="p">()</span> <span class="k">as</span> <span class="n">tmp</span><span class="p">:</span>
+    <span class="n">all_data</span> <span class="o">=</span> <span class="n">criteo</span><span class="o">.</span><span class="n">load_pandas_df</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="n">SIZE</span><span class="p">,</span> <span class="n">local_cache_path</span><span class="o">=</span><span class="n">tmp</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="n">header</span><span class="p">)</span>
+<span class="n">display</span><span class="p">(</span><span class="n">all_data</span><span class="o">.</span><span class="n">head</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>8.79MB [00:00, 12.1MB/s]                            
+</pre></div>
+</div>
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Label</th>
+      <th>I1</th>
+      <th>I2</th>
+      <th>I3</th>
+      <th>I4</th>
+      <th>I5</th>
+      <th>I6</th>
+      <th>I7</th>
+      <th>I8</th>
+      <th>I9</th>
+      <th>...</th>
+      <th>C17</th>
+      <th>C18</th>
+      <th>C19</th>
+      <th>C20</th>
+      <th>C21</th>
+      <th>C22</th>
+      <th>C23</th>
+      <th>C24</th>
+      <th>C25</th>
+      <th>C26</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>0</td>
+      <td>1.0</td>
+      <td>1</td>
+      <td>5.0</td>
+      <td>0.0</td>
+      <td>1382.0</td>
+      <td>4.0</td>
+      <td>15.0</td>
+      <td>2.0</td>
+      <td>181.0</td>
+      <td>...</td>
+      <td>e5ba7672</td>
+      <td>f54016b9</td>
+      <td>21ddcdc9</td>
+      <td>b1252a9d</td>
+      <td>07b5194c</td>
+      <td>NaN</td>
+      <td>3a171ecb</td>
+      <td>c5c50484</td>
+      <td>e8b83407</td>
+      <td>9727dd16</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>0</td>
+      <td>2.0</td>
+      <td>0</td>
+      <td>44.0</td>
+      <td>1.0</td>
+      <td>102.0</td>
+      <td>8.0</td>
+      <td>2.0</td>
+      <td>2.0</td>
+      <td>4.0</td>
+      <td>...</td>
+      <td>07c540c4</td>
+      <td>b04e4670</td>
+      <td>21ddcdc9</td>
+      <td>5840adea</td>
+      <td>60f6221e</td>
+      <td>NaN</td>
+      <td>3a171ecb</td>
+      <td>43f13e8b</td>
+      <td>e8b83407</td>
+      <td>731c3655</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>0</td>
+      <td>2.0</td>
+      <td>0</td>
+      <td>1.0</td>
+      <td>14.0</td>
+      <td>767.0</td>
+      <td>89.0</td>
+      <td>4.0</td>
+      <td>2.0</td>
+      <td>245.0</td>
+      <td>...</td>
+      <td>8efede7f</td>
+      <td>3412118d</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>e587c466</td>
+      <td>ad3062eb</td>
+      <td>3a171ecb</td>
+      <td>3b183c5c</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>0</td>
+      <td>NaN</td>
+      <td>893</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>4392.0</td>
+      <td>NaN</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>...</td>
+      <td>1e88c74f</td>
+      <td>74ef3502</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>6b3a5ca6</td>
+      <td>NaN</td>
+      <td>3a171ecb</td>
+      <td>9117a34a</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>0</td>
+      <td>3.0</td>
+      <td>-1</td>
+      <td>NaN</td>
+      <td>0.0</td>
+      <td>2.0</td>
+      <td>0.0</td>
+      <td>3.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>...</td>
+      <td>1e88c74f</td>
+      <td>26b3c7a7</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>21c9516a</td>
+      <td>NaN</td>
+      <td>32c7478e</td>
+      <td>b34f3128</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+  </tbody>
+</table>
+<p>5 rows × 40 columns</p>
+</div></div></div>
+</div>
+<p>First, we cut three sets (train_data (first 80%), valid_data (middle 10%) and test_data (last 10%)), cut from the original all data. <br>
+Notably, considering the Criteo is a kind of time-series streaming data, which is also very common in recommendation scenario, we split the data by its order.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># split data to 3 sets    </span>
+<span class="n">length</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">all_data</span><span class="p">)</span>
+<span class="n">train_data</span> <span class="o">=</span> <span class="n">all_data</span><span class="o">.</span><span class="n">loc</span><span class="p">[:</span><span class="mf">0.8</span><span class="o">*</span><span class="n">length</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+<span class="n">valid_data</span> <span class="o">=</span> <span class="n">all_data</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mf">0.8</span><span class="o">*</span><span class="n">length</span><span class="p">:</span><span class="mf">0.9</span><span class="o">*</span><span class="n">length</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+<span class="n">test_data</span> <span class="o">=</span> <span class="n">all_data</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mf">0.9</span><span class="o">*</span><span class="n">length</span><span class="p">:]</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="basic-usage">
+<h2>Basic Usage<a class="headerlink" href="#basic-usage" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="ordinal-encoding">
+<h3>Ordinal Encoding<a class="headerlink" href="#ordinal-encoding" title="Permalink to this headline">¶</a></h3>
+<p>Considering LightGBM could handle the low-frequency features and missing value by itself, for basic usage, we only encode the string-like categorical features by an ordinal encoder.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ord_encoder</span> <span class="o">=</span> <span class="n">ce</span><span class="o">.</span><span class="n">ordinal</span><span class="o">.</span><span class="n">OrdinalEncoder</span><span class="p">(</span><span class="n">cols</span><span class="o">=</span><span class="n">cate_cols</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">encode_csv</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">encoder</span><span class="p">,</span> <span class="n">label_col</span><span class="p">,</span> <span class="n">typ</span><span class="o">=</span><span class="s1">&#39;fit&#39;</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">typ</span> <span class="o">==</span> <span class="s1">&#39;fit&#39;</span><span class="p">:</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">encoder</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">encoder</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">label_col</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+    <span class="k">del</span> <span class="n">df</span><span class="p">[</span><span class="n">label_col</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">df</span><span class="p">,</span> <span class="n">y</span>
+
+<span class="n">train_x</span><span class="p">,</span> <span class="n">train_y</span> <span class="o">=</span> <span class="n">encode_csv</span><span class="p">(</span><span class="n">train_data</span><span class="p">,</span> <span class="n">ord_encoder</span><span class="p">,</span> <span class="n">label_col</span><span class="p">)</span>
+<span class="n">valid_x</span><span class="p">,</span> <span class="n">valid_y</span> <span class="o">=</span> <span class="n">encode_csv</span><span class="p">(</span><span class="n">valid_data</span><span class="p">,</span> <span class="n">ord_encoder</span><span class="p">,</span> <span class="n">label_col</span><span class="p">,</span> <span class="s1">&#39;transform&#39;</span><span class="p">)</span>
+<span class="n">test_x</span><span class="p">,</span> <span class="n">test_y</span> <span class="o">=</span> <span class="n">encode_csv</span><span class="p">(</span><span class="n">test_data</span><span class="p">,</span> <span class="n">ord_encoder</span><span class="p">,</span> <span class="n">label_col</span><span class="p">,</span> <span class="s1">&#39;transform&#39;</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Train Data Shape: X: </span><span class="si">{trn_x_shape}</span><span class="s1">; Y: </span><span class="si">{trn_y_shape}</span><span class="s1">.</span><span class="se">\n</span><span class="s1">Valid Data Shape: X: </span><span class="si">{vld_x_shape}</span><span class="s1">; Y: </span><span class="si">{vld_y_shape}</span><span class="s1">.</span><span class="se">\n</span><span class="s1">Test Data Shape: X: </span><span class="si">{tst_x_shape}</span><span class="s1">; Y: </span><span class="si">{tst_y_shape}</span><span class="s1">.</span><span class="se">\n</span><span class="s1">&#39;</span>
+      <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">trn_x_shape</span><span class="o">=</span><span class="n">train_x</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span>
+              <span class="n">trn_y_shape</span><span class="o">=</span><span class="n">train_y</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span>
+              <span class="n">vld_x_shape</span><span class="o">=</span><span class="n">valid_x</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span>
+              <span class="n">vld_y_shape</span><span class="o">=</span><span class="n">valid_y</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span>
+              <span class="n">tst_x_shape</span><span class="o">=</span><span class="n">test_x</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span>
+              <span class="n">tst_y_shape</span><span class="o">=</span><span class="n">test_y</span><span class="o">.</span><span class="n">shape</span><span class="p">,))</span>
+<span class="n">train_x</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Train Data Shape: X: (80000, 39); Y: (80000,).
+Valid Data Shape: X: (10000, 39); Y: (10000,).
+Test Data Shape: X: (10000, 39); Y: (10000,).
+</pre></div>
+</div>
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>I1</th>
+      <th>I2</th>
+      <th>I3</th>
+      <th>I4</th>
+      <th>I5</th>
+      <th>I6</th>
+      <th>I7</th>
+      <th>I8</th>
+      <th>I9</th>
+      <th>I10</th>
+      <th>...</th>
+      <th>C17</th>
+      <th>C18</th>
+      <th>C19</th>
+      <th>C20</th>
+      <th>C21</th>
+      <th>C22</th>
+      <th>C23</th>
+      <th>C24</th>
+      <th>C25</th>
+      <th>C26</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1.0</td>
+      <td>1</td>
+      <td>5.0</td>
+      <td>0.0</td>
+      <td>1382.0</td>
+      <td>4.0</td>
+      <td>15.0</td>
+      <td>2.0</td>
+      <td>181.0</td>
+      <td>1.0</td>
+      <td>...</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2.0</td>
+      <td>0</td>
+      <td>44.0</td>
+      <td>1.0</td>
+      <td>102.0</td>
+      <td>8.0</td>
+      <td>2.0</td>
+      <td>2.0</td>
+      <td>4.0</td>
+      <td>1.0</td>
+      <td>...</td>
+      <td>2</td>
+      <td>2</td>
+      <td>1</td>
+      <td>2</td>
+      <td>2</td>
+      <td>1</td>
+      <td>1</td>
+      <td>2</td>
+      <td>1</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>2.0</td>
+      <td>0</td>
+      <td>1.0</td>
+      <td>14.0</td>
+      <td>767.0</td>
+      <td>89.0</td>
+      <td>4.0</td>
+      <td>2.0</td>
+      <td>245.0</td>
+      <td>1.0</td>
+      <td>...</td>
+      <td>3</td>
+      <td>3</td>
+      <td>2</td>
+      <td>3</td>
+      <td>3</td>
+      <td>2</td>
+      <td>1</td>
+      <td>3</td>
+      <td>2</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>NaN</td>
+      <td>893</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>4392.0</td>
+      <td>NaN</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>NaN</td>
+      <td>...</td>
+      <td>4</td>
+      <td>4</td>
+      <td>2</td>
+      <td>3</td>
+      <td>4</td>
+      <td>1</td>
+      <td>1</td>
+      <td>4</td>
+      <td>2</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>3.0</td>
+      <td>-1</td>
+      <td>NaN</td>
+      <td>0.0</td>
+      <td>2.0</td>
+      <td>0.0</td>
+      <td>3.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>1.0</td>
+      <td>...</td>
+      <td>4</td>
+      <td>5</td>
+      <td>2</td>
+      <td>3</td>
+      <td>5</td>
+      <td>1</td>
+      <td>2</td>
+      <td>5</td>
+      <td>2</td>
+      <td>3</td>
+    </tr>
+  </tbody>
+</table>
+<p>5 rows × 39 columns</p>
+</div></div></div>
+</div>
+</div>
+<div class="section" id="create-model">
+<h3>Create model<a class="headerlink" href="#create-model" title="Permalink to this headline">¶</a></h3>
+<p>When both hyper-parameters and data are ready, we can create a model:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">lgb_train</span> <span class="o">=</span> <span class="n">lgb</span><span class="o">.</span><span class="n">Dataset</span><span class="p">(</span><span class="n">train_x</span><span class="p">,</span> <span class="n">train_y</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">,</span> <span class="n">categorical_feature</span><span class="o">=</span><span class="n">cate_cols</span><span class="p">)</span>
+<span class="n">lgb_valid</span> <span class="o">=</span> <span class="n">lgb</span><span class="o">.</span><span class="n">Dataset</span><span class="p">(</span><span class="n">valid_x</span><span class="p">,</span> <span class="n">valid_y</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="n">reference</span><span class="o">=</span><span class="n">lgb_train</span><span class="p">,</span> <span class="n">categorical_feature</span><span class="o">=</span><span class="n">cate_cols</span><span class="p">)</span>
+<span class="n">lgb_test</span> <span class="o">=</span> <span class="n">lgb</span><span class="o">.</span><span class="n">Dataset</span><span class="p">(</span><span class="n">test_x</span><span class="p">,</span> <span class="n">test_y</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="n">reference</span><span class="o">=</span><span class="n">lgb_train</span><span class="p">,</span> <span class="n">categorical_feature</span><span class="o">=</span><span class="n">cate_cols</span><span class="p">)</span>
+<span class="n">lgb_model</span> <span class="o">=</span> <span class="n">lgb</span><span class="o">.</span><span class="n">train</span><span class="p">(</span><span class="n">params</span><span class="p">,</span>
+                      <span class="n">lgb_train</span><span class="p">,</span>
+                      <span class="n">num_boost_round</span><span class="o">=</span><span class="n">NUM_OF_TREES</span><span class="p">,</span>
+                      <span class="n">early_stopping_rounds</span><span class="o">=</span><span class="n">EARLY_STOPPING_ROUNDS</span><span class="p">,</span>
+                      <span class="n">valid_sets</span><span class="o">=</span><span class="n">lgb_valid</span><span class="p">,</span>
+                      <span class="n">categorical_feature</span><span class="o">=</span><span class="n">cate_cols</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[1]	valid_0&#39;s auc: 0.728695
+Training until validation scores don&#39;t improve for 20 rounds.
+[2]	valid_0&#39;s auc: 0.742373
+[3]	valid_0&#39;s auc: 0.747298
+[4]	valid_0&#39;s auc: 0.747969
+[5]	valid_0&#39;s auc: 0.751102
+[6]	valid_0&#39;s auc: 0.753734
+[7]	valid_0&#39;s auc: 0.755335
+[8]	valid_0&#39;s auc: 0.75658
+[9]	valid_0&#39;s auc: 0.757071
+[10]	valid_0&#39;s auc: 0.758572
+[11]	valid_0&#39;s auc: 0.759742
+[12]	valid_0&#39;s auc: 0.760415
+[13]	valid_0&#39;s auc: 0.760602
+[14]	valid_0&#39;s auc: 0.761192
+[15]	valid_0&#39;s auc: 0.7616
+[16]	valid_0&#39;s auc: 0.761697
+[17]	valid_0&#39;s auc: 0.762255
+[18]	valid_0&#39;s auc: 0.76253
+[19]	valid_0&#39;s auc: 0.763092
+[20]	valid_0&#39;s auc: 0.762172
+[21]	valid_0&#39;s auc: 0.762066
+[22]	valid_0&#39;s auc: 0.761866
+[23]	valid_0&#39;s auc: 0.761433
+[24]	valid_0&#39;s auc: 0.761588
+[25]	valid_0&#39;s auc: 0.761017
+[26]	valid_0&#39;s auc: 0.761086
+[27]	valid_0&#39;s auc: 0.761177
+[28]	valid_0&#39;s auc: 0.760893
+[29]	valid_0&#39;s auc: 0.760635
+[30]	valid_0&#39;s auc: 0.760104
+[31]	valid_0&#39;s auc: 0.759298
+[32]	valid_0&#39;s auc: 0.759176
+[33]	valid_0&#39;s auc: 0.758384
+[34]	valid_0&#39;s auc: 0.758168
+[35]	valid_0&#39;s auc: 0.757902
+[36]	valid_0&#39;s auc: 0.758005
+[37]	valid_0&#39;s auc: 0.757782
+[38]	valid_0&#39;s auc: 0.757542
+[39]	valid_0&#39;s auc: 0.756966
+Early stopping, best iteration is:
+[19]	valid_0&#39;s auc: 0.763092
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now let’s see what is the model’s performance:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">test_preds</span> <span class="o">=</span> <span class="n">lgb_model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">test_x</span><span class="p">)</span>
+<span class="n">auc</span> <span class="o">=</span> <span class="n">roc_auc_score</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">test_y</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)),</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">test_preds</span><span class="p">))</span>
+<span class="n">logloss</span> <span class="o">=</span> <span class="n">log_loss</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">test_y</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)),</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">test_preds</span><span class="p">),</span> <span class="n">eps</span><span class="o">=</span><span class="mf">1e-12</span><span class="p">)</span>
+<span class="n">res_basic</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;auc&quot;</span><span class="p">:</span> <span class="n">auc</span><span class="p">,</span> <span class="s2">&quot;logloss&quot;</span><span class="p">:</span> <span class="n">logloss</span><span class="p">}</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">res_basic</span><span class="p">)</span>
+<span class="n">sb</span><span class="o">.</span><span class="n">glue</span><span class="p">(</span><span class="s2">&quot;res_basic&quot;</span><span class="p">,</span> <span class="n">res_basic</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;auc&#39;: 0.7674356153037237, &#39;logloss&#39;: 0.466876775528735}
+</pre></div>
+</div>
+</div>
+</div>
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=default"></script>
+</div>
+</div>
+<div class="section" id="optimized-usage">
+<h2>Optimized Usage<a class="headerlink" href="#optimized-usage" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="label-encoding-and-binary-encoding">
+<h3>Label-encoding and Binary-encoding<a class="headerlink" href="#label-encoding-and-binary-encoding" title="Permalink to this headline">¶</a></h3>
+<p>Next, since LightGBM has a better capability in handling dense numerical features effectively, we try to convert all the categorical features in original data into numerical ones, by label-encoding [3] and binary-encoding [4]. Also due to the sequence property of Criteo, the label-encoding we adopted is executed one-by-one, which means we encode the samples in order, by the information of the previous samples before each sample (sequential label-encoding and sequential count-encoding). Besides, we also filter the low-frequency categorical features and fill the missing values by the mean of corresponding columns for the numerical features. (consulting <code class="docutils literal notranslate"><span class="pre">lgb_utils.NumEncoder</span></code>)</p>
+<p>Specifically, in <code class="docutils literal notranslate"><span class="pre">lgb_utils.NumEncoder</span></code>, the main steps are as follows.</p>
+<ul class="simple">
+<li><p>Firstly, we convert the low-frequency categorical features to <code class="docutils literal notranslate"><span class="pre">&quot;LESS&quot;</span></code> and the missing categorical features to <code class="docutils literal notranslate"><span class="pre">&quot;UNK&quot;</span></code>.</p></li>
+<li><p>Secondly, we convert the missing numerical features into the mean of corresponding columns.</p></li>
+<li><p>Thirdly, the string-like categorical features are ordinal encoded like the example shown in basic usage.</p></li>
+<li><p>And then, we target encode the categorical features in the samples order one-by-one. For each sample, we add the label and count information of its former samples into the data and produce new features. Formally, for <span class="math notranslate nohighlight">\(i=1,2,...,n\)</span>, we add <span class="math notranslate nohighlight">\(\frac{\sum\nolimits_{j=1}^{i-1} I(x_j=c) \cdot y}{\sum\nolimits_{j=1}^{i-1} I(x_j=c)}\)</span> as a new label feature for current sample <span class="math notranslate nohighlight">\(x_i\)</span>, where <span class="math notranslate nohighlight">\(c\)</span> is a category to encode in current sample, so <span class="math notranslate nohighlight">\((i-1)\)</span> is the number of former samples, and <span class="math notranslate nohighlight">\(I(\cdot)\)</span> is the indicator function that check the former samples contain <span class="math notranslate nohighlight">\(c\)</span> (whether <span class="math notranslate nohighlight">\(x_j=c\)</span>) or not. At the meantime, we also add the count frequency of <span class="math notranslate nohighlight">\(c\)</span>, which is <span class="math notranslate nohighlight">\(\frac{\sum\nolimits_{j=1}^{i-1} I(x_j=c)}{i-1}\)</span>, as a new count feature.</p></li>
+<li><p>Finally, based on the results of ordinal encoding, we add the binary encoding results as new columns into the data.</p></li>
+</ul>
+<p>Note that the statistics used in the above process only updates when fitting the training set, while maintaining static when transforming the testing set because the label of test data should be considered as unknown.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">label_col</span> <span class="o">=</span> <span class="s1">&#39;Label&#39;</span>
+<span class="n">num_encoder</span> <span class="o">=</span> <span class="n">lgb_utils</span><span class="o">.</span><span class="n">NumEncoder</span><span class="p">(</span><span class="n">cate_cols</span><span class="p">,</span> <span class="n">nume_cols</span><span class="p">,</span> <span class="n">label_col</span><span class="p">)</span>
+<span class="n">train_x</span><span class="p">,</span> <span class="n">train_y</span> <span class="o">=</span> <span class="n">num_encoder</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">train_data</span><span class="p">)</span>
+<span class="n">valid_x</span><span class="p">,</span> <span class="n">valid_y</span> <span class="o">=</span> <span class="n">num_encoder</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">valid_data</span><span class="p">)</span>
+<span class="n">test_x</span><span class="p">,</span> <span class="n">test_y</span> <span class="o">=</span> <span class="n">num_encoder</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">test_data</span><span class="p">)</span>
+<span class="k">del</span> <span class="n">num_encoder</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Train Data Shape: X: </span><span class="si">{trn_x_shape}</span><span class="s1">; Y: </span><span class="si">{trn_y_shape}</span><span class="s1">.</span><span class="se">\n</span><span class="s1">Valid Data Shape: X: </span><span class="si">{vld_x_shape}</span><span class="s1">; Y: </span><span class="si">{vld_y_shape}</span><span class="s1">.</span><span class="se">\n</span><span class="s1">Test Data Shape: X: </span><span class="si">{tst_x_shape}</span><span class="s1">; Y: </span><span class="si">{tst_y_shape}</span><span class="s1">.</span><span class="se">\n</span><span class="s1">&#39;</span>
+      <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">trn_x_shape</span><span class="o">=</span><span class="n">train_x</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span>
+              <span class="n">trn_y_shape</span><span class="o">=</span><span class="n">train_y</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span>
+              <span class="n">vld_x_shape</span><span class="o">=</span><span class="n">valid_x</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span>
+              <span class="n">vld_y_shape</span><span class="o">=</span><span class="n">valid_y</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span>
+              <span class="n">tst_x_shape</span><span class="o">=</span><span class="n">test_x</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span>
+              <span class="n">tst_y_shape</span><span class="o">=</span><span class="n">test_y</span><span class="o">.</span><span class="n">shape</span><span class="p">,))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2019-04-29 11:26:21,158 [INFO] Filtering and fillna features
+100%|██████████| 26/26 [00:02&lt;00:00, 12.36it/s]
+100%|██████████| 13/13 [00:00&lt;00:00, 711.59it/s]
+2019-04-29 11:26:23,286 [INFO] Ordinal encoding cate features
+2019-04-29 11:26:24,680 [INFO] Target encoding cate features
+100%|██████████| 26/26 [00:03&lt;00:00,  6.72it/s]
+2019-04-29 11:26:28,554 [INFO] Start manual binary encoding
+100%|██████████| 65/65 [00:04&lt;00:00, 15.87it/s]
+100%|██████████| 26/26 [00:02&lt;00:00,  8.17it/s]
+2019-04-29 11:26:35,518 [INFO] Filtering and fillna features
+100%|██████████| 26/26 [00:00&lt;00:00, 171.81it/s]
+100%|██████████| 13/13 [00:00&lt;00:00, 2174.25it/s]
+2019-04-29 11:26:35,690 [INFO] Ordinal encoding cate features
+2019-04-29 11:26:35,854 [INFO] Target encoding cate features
+100%|██████████| 26/26 [00:00&lt;00:00, 53.42it/s]
+2019-04-29 11:26:36,344 [INFO] Start manual binary encoding
+100%|██████████| 65/65 [00:03&lt;00:00, 20.02it/s]
+100%|██████████| 26/26 [00:01&lt;00:00, 17.67it/s]
+2019-04-29 11:26:41,081 [INFO] Filtering and fillna features
+100%|██████████| 26/26 [00:00&lt;00:00, 158.08it/s]
+100%|██████████| 13/13 [00:00&lt;00:00, 2203.78it/s]
+2019-04-29 11:26:41,267 [INFO] Ordinal encoding cate features
+2019-04-29 11:26:41,429 [INFO] Target encoding cate features
+100%|██████████| 26/26 [00:00&lt;00:00, 53.08it/s]
+2019-04-29 11:26:41,922 [INFO] Start manual binary encoding
+100%|██████████| 65/65 [00:03&lt;00:00, 20.10it/s]
+100%|██████████| 26/26 [00:01&lt;00:00, 18.37it/s]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Train Data Shape: X: (80000, 268); Y: (80000, 1).
+Valid Data Shape: X: (10000, 268); Y: (10000, 1).
+Test Data Shape: X: (10000, 268); Y: (10000, 1).
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="training-and-evaluation">
+<h3>Training and Evaluation<a class="headerlink" href="#training-and-evaluation" title="Permalink to this headline">¶</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">lgb_train</span> <span class="o">=</span> <span class="n">lgb</span><span class="o">.</span><span class="n">Dataset</span><span class="p">(</span><span class="n">train_x</span><span class="p">,</span> <span class="n">train_y</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">)</span>
+<span class="n">lgb_valid</span> <span class="o">=</span> <span class="n">lgb</span><span class="o">.</span><span class="n">Dataset</span><span class="p">(</span><span class="n">valid_x</span><span class="p">,</span> <span class="n">valid_y</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="n">reference</span><span class="o">=</span><span class="n">lgb_train</span><span class="p">)</span>
+<span class="n">lgb_model</span> <span class="o">=</span> <span class="n">lgb</span><span class="o">.</span><span class="n">train</span><span class="p">(</span><span class="n">params</span><span class="p">,</span>
+                      <span class="n">lgb_train</span><span class="p">,</span>
+                      <span class="n">num_boost_round</span><span class="o">=</span><span class="n">NUM_OF_TREES</span><span class="p">,</span>
+                      <span class="n">early_stopping_rounds</span><span class="o">=</span><span class="n">EARLY_STOPPING_ROUNDS</span><span class="p">,</span>
+                      <span class="n">valid_sets</span><span class="o">=</span><span class="n">lgb_valid</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[1]	valid_0&#39;s auc: 0.731759
+Training until validation scores don&#39;t improve for 20 rounds.
+[2]	valid_0&#39;s auc: 0.747705
+[3]	valid_0&#39;s auc: 0.751667
+[4]	valid_0&#39;s auc: 0.75589
+[5]	valid_0&#39;s auc: 0.758054
+[6]	valid_0&#39;s auc: 0.758094
+[7]	valid_0&#39;s auc: 0.759904
+[8]	valid_0&#39;s auc: 0.761098
+[9]	valid_0&#39;s auc: 0.761744
+[10]	valid_0&#39;s auc: 0.762308
+[11]	valid_0&#39;s auc: 0.762473
+[12]	valid_0&#39;s auc: 0.763606
+[13]	valid_0&#39;s auc: 0.764222
+[14]	valid_0&#39;s auc: 0.765004
+[15]	valid_0&#39;s auc: 0.765933
+[16]	valid_0&#39;s auc: 0.766507
+[17]	valid_0&#39;s auc: 0.767192
+[18]	valid_0&#39;s auc: 0.767284
+[19]	valid_0&#39;s auc: 0.767859
+[20]	valid_0&#39;s auc: 0.768619
+[21]	valid_0&#39;s auc: 0.769045
+[22]	valid_0&#39;s auc: 0.768987
+[23]	valid_0&#39;s auc: 0.769601
+[24]	valid_0&#39;s auc: 0.77011
+[25]	valid_0&#39;s auc: 0.770183
+[26]	valid_0&#39;s auc: 0.770539
+[27]	valid_0&#39;s auc: 0.77096
+[28]	valid_0&#39;s auc: 0.771164
+[29]	valid_0&#39;s auc: 0.771296
+[30]	valid_0&#39;s auc: 0.771402
+[31]	valid_0&#39;s auc: 0.771596
+[32]	valid_0&#39;s auc: 0.771476
+[33]	valid_0&#39;s auc: 0.771697
+[34]	valid_0&#39;s auc: 0.77169
+[35]	valid_0&#39;s auc: 0.771836
+[36]	valid_0&#39;s auc: 0.771832
+[37]	valid_0&#39;s auc: 0.771948
+[38]	valid_0&#39;s auc: 0.772098
+[39]	valid_0&#39;s auc: 0.772136
+[40]	valid_0&#39;s auc: 0.771748
+[41]	valid_0&#39;s auc: 0.771748
+[42]	valid_0&#39;s auc: 0.771724
+[43]	valid_0&#39;s auc: 0.771676
+[44]	valid_0&#39;s auc: 0.77169
+[45]	valid_0&#39;s auc: 0.771916
+[46]	valid_0&#39;s auc: 0.771864
+[47]	valid_0&#39;s auc: 0.771851
+[48]	valid_0&#39;s auc: 0.771891
+[49]	valid_0&#39;s auc: 0.771629
+[50]	valid_0&#39;s auc: 0.771984
+[51]	valid_0&#39;s auc: 0.772085
+[52]	valid_0&#39;s auc: 0.771988
+[53]	valid_0&#39;s auc: 0.771778
+[54]	valid_0&#39;s auc: 0.771485
+[55]	valid_0&#39;s auc: 0.7715
+[56]	valid_0&#39;s auc: 0.770778
+[57]	valid_0&#39;s auc: 0.770816
+[58]	valid_0&#39;s auc: 0.770408
+[59]	valid_0&#39;s auc: 0.770489
+Early stopping, best iteration is:
+[39]	valid_0&#39;s auc: 0.772136
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">test_preds</span> <span class="o">=</span> <span class="n">lgb_model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">test_x</span><span class="p">)</span>
+<span class="n">auc</span> <span class="o">=</span> <span class="n">roc_auc_score</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">test_y</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)),</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">test_preds</span><span class="p">))</span>
+<span class="n">logloss</span> <span class="o">=</span> <span class="n">log_loss</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">test_y</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)),</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">test_preds</span><span class="p">),</span> <span class="n">eps</span><span class="o">=</span><span class="mf">1e-12</span><span class="p">)</span>
+<span class="n">res_optim</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;auc&quot;</span><span class="p">:</span> <span class="n">auc</span><span class="p">,</span> <span class="s2">&quot;logloss&quot;</span><span class="p">:</span> <span class="n">logloss</span><span class="p">}</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">res_optim</span><span class="p">)</span>
+<span class="n">sb</span><span class="o">.</span><span class="n">glue</span><span class="p">(</span><span class="s2">&quot;res_optim&quot;</span><span class="p">,</span> <span class="n">res_optim</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;auc&#39;: 0.7757371640011422, &#39;logloss&#39;: 0.4606505068849181}
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="model-saving-and-loading">
+<h2>Model saving and loading<a class="headerlink" href="#model-saving-and-loading" title="Permalink to this headline">¶</a></h2>
+<p>Now we finish the basic training and testing for LightGBM, next let’s try to save and reload the model, and then evaluate it again.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">TemporaryDirectory</span><span class="p">()</span> <span class="k">as</span> <span class="n">tmp</span><span class="p">:</span>
+    <span class="n">save_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">tmp</span><span class="p">,</span> <span class="sa">r</span><span class="s1">&#39;finished.model&#39;</span><span class="p">)</span>
+    <span class="n">lgb_model</span><span class="o">.</span><span class="n">save_model</span><span class="p">(</span><span class="n">save_file</span><span class="p">)</span>
+    <span class="n">loaded_model</span> <span class="o">=</span> <span class="n">lgb</span><span class="o">.</span><span class="n">Booster</span><span class="p">(</span><span class="n">model_file</span><span class="o">=</span><span class="n">save_file</span><span class="p">)</span>
+
+<span class="c1"># eval the performance again</span>
+<span class="n">test_preds</span> <span class="o">=</span> <span class="n">loaded_model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">test_x</span><span class="p">)</span>
+
+<span class="n">auc</span> <span class="o">=</span> <span class="n">roc_auc_score</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">test_y</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)),</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">test_preds</span><span class="p">))</span>
+<span class="n">logloss</span> <span class="o">=</span> <span class="n">log_loss</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">test_y</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)),</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">test_preds</span><span class="p">),</span> <span class="n">eps</span><span class="o">=</span><span class="mf">1e-12</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">({</span><span class="s2">&quot;auc&quot;</span><span class="p">:</span> <span class="n">auc</span><span class="p">,</span> <span class="s2">&quot;logloss&quot;</span><span class="p">:</span> <span class="n">logloss</span><span class="p">})</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;auc&#39;: 0.7757371640011422, &#39;logloss&#39;: 0.4606505068849181}
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="additional-reading">
+<h2>Additional Reading<a class="headerlink" href="#additional-reading" title="Permalink to this headline">¶</a></h2>
+<p>[1] Guolin Ke, Qi Meng, Thomas Finley, Taifeng Wang, Wei Chen, Weidong Ma, Qiwei Ye, and Tie-Yan Liu. 2017. LightGBM: A highly efficient gradient boosting decision tree. In Advances in Neural Information Processing Systems. 3146–3154.<br>
+[2] The parameters of LightGBM: <a class="reference external" href="https://github.com/Microsoft/LightGBM/blob/master/docs/Parameters.rst">https://github.com/Microsoft/LightGBM/blob/master/docs/Parameters.rst</a> <br>
+[3] Anna Veronika Dorogush, Vasily Ershov, and Andrey Gulin. 2018. CatBoost: gradient boosting with categorical features support. arXiv preprint arXiv:1810.11363 (2018).<br>
+[4] Scikit-learn. 2018. categorical_encoding. <a class="reference external" href="https://github.com/scikit-learn-contrib/categorical-encoding">https://github.com/scikit-learn-contrib/categorical-encoding</a><br></p>
+</div>
+</div>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "reco_pyspark"
+        },
+        kernelOptions: {
+            kernelName: "reco_pyspark",
+            path: "./examples/00_quick_start"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'reco_pyspark'</script>
+
+              </div>
+              
+        
+            
+
+
+
+<div class='prev-next-bottom'>
+    
+
+</div>
+        
+        </div>
+    </div>
+    <footer class="footer">
+    <div class="container">
+      <p>
+        
+          By The Jupyter Book community<br/>
+        
+            &copy; Copyright 2021.<br/>
+      </p>
+    </div>
+  </footer>
+</main>
+
+
+      </div>
+    </div>
+  
+  <script src="../../_static/js/index.1c5a1a01449ed65a7b51.js"></script>
+
+  
+  </body>
+</html>

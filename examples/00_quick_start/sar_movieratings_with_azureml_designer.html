@@ -1,0 +1,560 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Quickstart to integrate Recommenders in AzureML Designer &#8212; &lt;h1 style=&#34;font-size:2em;text-align:center;color:#FF5733&#34;&gt;Recommenders&lt;/h1&gt;</title>
+    
+  <link href="../../_static/css/theme.css" rel="stylesheet" />
+  <link href="../../_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
+
+    
+  <link rel="stylesheet"
+    href="../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+
+    
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-book-theme.css?digest=c3fdc42140077d1ad13ad2f1588a4309" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/tabs.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    
+  <link rel="preload" as="script" href="../../_static/js/index.1c5a1a01449ed65a7b51.js">
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/togglebutton.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <script src="../../_static/tabs.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../../_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script>
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="../../_static/sphinx-thebe.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en" />
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="../../index.html">
+      
+      
+      
+      <h1 class="site-logo" id="site-title"><h1 style="font-size:2em;text-align:center;color:#FF5733">Recommenders</h1></h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="../../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        <p class="caption" role="heading">
+ <span class="caption-text">
+  Getting Started Notebooks
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="als_movielens.html">
+   Running ALS on MovieLens (PySpark)
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ncf_movielens.html">
+   Neural Collaborative Filtering on MovieLens dataset.
+  </a>
+ </li>
+</ul>
+
+    </div>
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="topbar container-xl fixed-top">
+    <div class="topbar-contents row">
+        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
+        <div class="col pl-md-4 topbar-main">
+            
+            <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+                data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+                aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
+                title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+                <i class="fas fa-bars"></i>
+                <i class="fas fa-arrow-left"></i>
+                <i class="fas fa-arrow-up"></i>
+            </button>
+            
+            
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
+            class="fas fa-download"></i></button>
+
+    <div class="dropdown-buttons">
+        <!-- ipynb file if we had a myst markdown file -->
+        
+        <!-- Download raw file -->
+        <a class="dropdown-buttons" href="../../_sources/examples/00_quick_start/sar_movieratings_with_azureml_designer.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
+                data-placement="left">.ipynb</button></a>
+        <!-- Download PDF via print -->
+        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
+            onClick="window.print()" data-toggle="tooltip" data-placement="left">.pdf</button>
+    </div>
+</div>
+
+            <!-- Source interaction buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
+    <div class="dropdown-buttons sourcebuttons">
+        <a class="repository-button"
+            href="https://github.com/microsoft/genalog"><button type="button" class="btn btn-secondary topbarbtn"
+                data-toggle="tooltip" data-placement="left" title="Source repository"><i
+                    class="fab fa-github"></i>repository</button></a>
+        <a class="issues-button"
+            href="https://github.com/microsoft/genalog/issues/new?title=Issue%20on%20page%20%2Fexamples/00_quick_start/sar_movieratings_with_azureml_designer.html&body=Your%20issue%20content%20here."><button
+                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
+                title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
+        
+    </div>
+</div>
+
+            <!-- Full screen (wrap in <a> to have style consistency -->
+
+<a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+        data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+        title="Fullscreen mode"><i
+            class="fas fa-expand"></i></button></a>
+
+            <!-- Launch buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Launch interactive content"><i class="fas fa-rocket"></i></button>
+    <div class="dropdown-buttons">
+        
+        <a class="binder-button" href="https://mybinder.org/v2/gh/microsoft/genalog/main?urlpath=tree/docs/genalog_docs/examples/00_quick_start/sar_movieratings_with_azureml_designer.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Launch Binder" data-toggle="tooltip"
+                data-placement="left"><img class="binder-button-logo"
+                    src="../../_static/images/logo_binder.svg"
+                    alt="Interact on binder">Binder</button></a>
+        
+        
+        
+        
+    </div>
+</div>
+
+        </div>
+
+        <!-- Table of contents -->
+        <div class="d-none d-md-block col-md-2 bd-toc show">
+            
+            <div class="tocsection onthispage pt-5 pb-3">
+                <i class="fas fa-list"></i> Contents
+            </div>
+            <nav id="bd-toc-nav" aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#">
+   Quickstart to integrate Recommenders in AzureML Designer
+  </a>
+  <ul class="visible nav section-nav flex-column">
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#component-implementation">
+     Component implementation
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h3 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#define-python-entry">
+       Define python entry
+      </a>
+     </li>
+     <li class="toc-h3 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#define-component-specification-yaml">
+       Define component specification yaml
+      </a>
+     </li>
+    </ul>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#module-registration">
+   Module Registration
+  </a>
+  <ul class="visible nav section-nav flex-column">
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#register-in-studio-ui">
+     Register in studio UI
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#register-using-cli">
+     Register using CLI
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h3 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#cli-installation">
+       CLI Installation
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#running-recommenders-in-azureml-designer">
+     Running Recommenders in AzureML Designer
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#references">
+     References
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+        
+              <div>
+                
+  <p><i>Copyright (c) Microsoft Corporation. All rights reserved.</i></p>
+<p><i>Licensed under the MIT License.</i></p>
+<div class="tex2jax_ignore mathjax_ignore section" id="quickstart-to-integrate-recommenders-in-azureml-designer">
+<h1>Quickstart to integrate Recommenders in AzureML Designer<a class="headerlink" href="#quickstart-to-integrate-recommenders-in-azureml-designer" title="Permalink to this headline">¶</a></h1>
+<p>This notebook shows how to integrate any algorithm in Recommenders library into AzureML Designer.</p>
+<p><a class="reference external" href="https://docs.microsoft.com/en-us/azure/machine-learning/concept-designer">AzureML Designer</a> lets you visually connect datasets and modules on an interactive canvas to create machine learning models.</p>
+<p>One of the features of AzureML Designer is that it is possible for developers to integrate any python library to make it available as a module/component. In this notebook are are going to show how to integrate <a class="reference internal" href="sar_movielens.html"><span class="doc std std-doc">SAR</span></a> and several other modules in Designer.</p>
+<p><strong>Note that custom module is renamed to component.</strong></p>
+<div class="section" id="component-implementation">
+<h2>Component implementation<a class="headerlink" href="#component-implementation" title="Permalink to this headline">¶</a></h2>
+<p>The scenario that we are going to reproduce in Designer, as a reference example, is the content of the <a class="reference internal" href="sar_movielens.html"><span class="doc std std-doc">SAR quickstart notebook</span></a>. In it, we load a dataset, split it into train and test sets, train SAR algorithm, predict using the test set and compute several ranking metrics (precision at k, recall at k, MAP and nDCG).</p>
+<p>For the pipeline that we want to create in Designer, we need to build the following modules:</p>
+<ul class="simple">
+<li><p>Stratified splitter</p></li>
+<li><p>SAR training</p></li>
+<li><p>SAR prediction</p></li>
+<li><p>Precision at k</p></li>
+<li><p>Recall at k</p></li>
+<li><p>MAP</p></li>
+<li><p>nDCG</p></li>
+</ul>
+<p>The python code is defined with a python entry and a yaml file. All the python entries and yaml files for this pipeline can be found in <span class="xref myst">contrib/azureml_designer_modules</span>.</p>
+<div class="section" id="define-python-entry">
+<h3>Define python entry<a class="headerlink" href="#define-python-entry" title="Permalink to this headline">¶</a></h3>
+<p>To illustrate how a python entry is defined we are going to explain the <span class="xref myst">precision at k entry</span>. A simplified version of the code is shown next:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Dependencies</span>
+<span class="kn">from</span> <span class="nn">azureml.studio.core.data_frame_schema</span> <span class="kn">import</span> <span class="n">DataFrameSchema</span>
+<span class="kn">from</span> <span class="nn">azureml.studio.core.io.data_frame_directory</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">load_data_frame_from_directory</span><span class="p">,</span>
+    <span class="n">save_data_frame_to_directory</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span> <span class="nn">recommenders.evaluation.python_evaluation</span> <span class="kn">import</span> <span class="n">precision_at_k</span>
+
+<span class="c1"># First, the input variables of precision_at_k are defined as argparse arguments</span>
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">()</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--rating-true&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;True DataFrame.&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--rating-pred&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Predicted DataFrame.&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+        <span class="s2">&quot;--col-user&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;A string parameter with column name for user.&quot;</span>
+    <span class="p">)</span>
+    <span class="c1"># ... more arguments</span>
+    <span class="n">args</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_known_args</span><span class="p">()</span>
+
+    <span class="c1"># This module has two main inputs from the canvas, the true and predicted labels</span>
+    <span class="c1"># they are loaded into the runtime as a pandas DataFrame</span>
+    <span class="n">rating_true</span> <span class="o">=</span> <span class="n">load_data_frame_from_directory</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">rating_true</span><span class="p">)</span><span class="o">.</span><span class="n">data</span>
+    <span class="n">rating_pred</span> <span class="o">=</span> <span class="n">load_data_frame_from_directory</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">rating_pred</span><span class="p">)</span><span class="o">.</span><span class="n">data</span>
+
+    <span class="c1"># The python function is instantiated and the computation is performed</span>
+    <span class="n">eval_precision</span> <span class="o">=</span> <span class="n">precision_at_k</span><span class="p">(</span><span class="n">rating_true</span><span class="p">,</span> <span class="n">rating_pred</span><span class="p">)</span>
+    
+    <span class="c1"># To output the result to Designer, we write it as a DataFrame</span>
+    <span class="n">score_result</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s2">&quot;precision_at_k&quot;</span><span class="p">:</span> <span class="p">[</span><span class="n">eval_precision</span><span class="p">]})</span>
+    <span class="n">save_data_frame_to_directory</span><span class="p">(</span>
+        <span class="n">args</span><span class="o">.</span><span class="n">score_result</span><span class="p">,</span>
+        <span class="n">score_result</span><span class="p">,</span>
+        <span class="n">schema</span><span class="o">=</span><span class="n">DataFrameSchema</span><span class="o">.</span><span class="n">data_frame_to_dict</span><span class="p">(</span><span class="n">score_result</span><span class="p">),</span>
+    <span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="define-component-specification-yaml">
+<h3>Define component specification yaml<a class="headerlink" href="#define-component-specification-yaml" title="Permalink to this headline">¶</a></h3>
+<p>Once we have the python entry, we need to create the yaml file that will interact with Designer, <span class="xref myst">precision_at_k.yaml</span>.</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">$schema</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">http://azureml/sdk-2-0/CommandComponent.json</span>
+<span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">microsoft.com.cat.precision_at_k</span>
+<span class="nt">version</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">1.1.1</span>
+<span class="nt">display_name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Precision at K</span>
+<span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">CommandComponent</span>
+<span class="nt">description</span><span class="p">:</span> <span class="s">&#39;Precision</span><span class="nv"> </span><span class="s">at</span><span class="nv"> </span><span class="s">K</span><span class="nv"> </span><span class="s">metric</span><span class="nv"> </span><span class="s">from</span><span class="nv"> </span><span class="s">Recommenders</span><span class="nv"> </span><span class="s">repo:</span><span class="nv"> </span><span class="s">https://github.com/Microsoft/Recommenders.&#39;</span>
+<span class="nt">tags</span><span class="p">:</span>
+  <span class="nt">Recommenders</span><span class="p">:</span>
+  <span class="nt">Metrics</span><span class="p">:</span>
+<span class="nt">inputs</span><span class="p">:</span>
+  <span class="nt">rating_true</span><span class="p">:</span>
+    <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">AnyDirectory</span>
+    <span class="nt">description</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">True DataFrame.</span>
+    <span class="nt">optional</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">false</span>
+  <span class="nt">rating_pred</span><span class="p">:</span>
+    <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">AnyDirectory</span>
+    <span class="nt">description</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Predicted DataFrame.</span>
+    <span class="nt">optional</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">false</span>
+  <span class="nt">user_column</span><span class="p">:</span>
+    <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">String</span>
+    <span class="nt">description</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Column name of user IDs.</span>
+    <span class="nt">default</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">UserId</span>
+    <span class="nt">optional</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">false</span>
+  <span class="nt">item_column</span><span class="p">:</span>
+    <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">String</span>
+    <span class="nt">description</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Column name of item IDs.</span>
+    <span class="nt">default</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">MovieId</span>
+    <span class="nt">optional</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">false</span>
+  <span class="nt">rating_column</span><span class="p">:</span>
+    <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">String</span>
+    <span class="nt">description</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Column name of ratings.</span>
+    <span class="nt">default</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Rating</span>
+    <span class="nt">optional</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">false</span>
+  <span class="nt">prediction_column</span><span class="p">:</span>
+    <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">String</span>
+    <span class="nt">description</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Column name of predictions.</span>
+    <span class="nt">default</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">prediction</span>
+    <span class="nt">optional</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">false</span>
+  <span class="nt">relevancy_method</span><span class="p">:</span>
+    <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">String</span>
+    <span class="nt">description</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">method for determining relevancy [&#39;top_k&#39;, &#39;by_threshold&#39;].</span>
+    <span class="nt">default</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">top_k</span>
+    <span class="nt">optional</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">false</span>
+  <span class="nt">top_k</span><span class="p">:</span>
+    <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Integer</span>
+    <span class="nt">description</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Number of top k items per user.</span>
+    <span class="nt">default</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">10</span>
+    <span class="nt">optional</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">false</span>
+  <span class="nt">threshold</span><span class="p">:</span>
+    <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Float</span>
+    <span class="nt">description</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Threshold of top items per user.</span>
+    <span class="nt">default</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">10.0</span>
+    <span class="nt">optional</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">false</span>
+<span class="nt">outputs</span><span class="p">:</span>
+  <span class="nt">score</span><span class="p">:</span>
+    <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">AnyDirectory</span>
+    <span class="nt">description</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Precision at k (min=0, max=1).</span>
+<span class="nt">code</span><span class="p">:</span>
+  <span class="l l-Scalar l-Scalar-Plain">../../</span>
+<span class="nt">command</span><span class="p">:</span> <span class="p p-Indicator">&gt;-</span>
+  <span class="no">python contrib/azureml_designer_modules/entries/precision_at_k_entry.py</span>
+  <span class="no">--rating-true {inputs.rating_true} --rating-pred {inputs.rating_pred} --col-user</span>
+  <span class="no">{inputs.user_column} --col-item {inputs.item_column} --col-rating {inputs.rating_column}</span>
+  <span class="no">--col-prediction {inputs.prediction_column} --relevancy-method {inputs.relevancy_method}</span>
+  <span class="no">--k {inputs.top_k} --threshold {inputs.threshold} --score-result {outputs.score}</span>
+<span class="nt">environment</span><span class="p">:</span>
+  <span class="nt">conda</span><span class="p">:</span>
+    <span class="nt">conda_dependencies_file</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">contrib/azureml_designer_modules/module_specs/sar_conda.yaml</span>
+  <span class="nt">os</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Linux</span>
+</pre></div>
+</div>
+<p>In the yaml file we can see a number of sections. The heading defines attributes like name, version or description. In the section inputs, all inputs are defined. The two main dataframes have ports, which can be connected to other modules. The inputs without port appear in a canvas menu. The output is defined as a DataFrame as well. The last section, implementation, defines the conda environment, the associated python entry and the arguments to the python file.</p>
+</div>
+</div>
+</div>
+<div class="tex2jax_ignore mathjax_ignore section" id="module-registration">
+<h1>Module Registration<a class="headerlink" href="#module-registration" title="Permalink to this headline">¶</a></h1>
+<p>Once the code is implemented, we need to register it as an AzureML Designer custom module. The registration can be performed following these simple steps:</p>
+<div class="section" id="register-in-studio-ui">
+<h2>Register in studio UI<a class="headerlink" href="#register-in-studio-ui" title="Permalink to this headline">¶</a></h2>
+<p>You can directly register a custom module/component in the studio UI.</p>
+<p>Follow <a class="reference external" href="https://aka.ms/component-tutorial1">this tutorial</a> to register the related components to your workspace.</p>
+</div>
+<div class="section" id="register-using-cli">
+<h2>Register using CLI<a class="headerlink" href="#register-using-cli" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="cli-installation">
+<h3>CLI Installation<a class="headerlink" href="#cli-installation" title="Permalink to this headline">¶</a></h3>
+<p>The first step is to install <a class="reference external" href="https://docs.microsoft.com/en-us/cli/azure/install-azure-cli">Azure CLI</a> and Component CLI extension. Assuming that you have installed the Recommenders environment <code class="docutils literal notranslate"><span class="pre">reco_base</span></code> as explained in the <span class="xref myst">SETUP.md</span>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">conda</span> <span class="n">activate</span> <span class="n">reco_base</span>
+<span class="n">pip</span> <span class="n">install</span> <span class="n">azure</span><span class="o">-</span><span class="n">cli</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Login</span>
+<span class="o">!</span>az login -o none
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Uninstall azure-cli-ml (the `az ml` commands)</span>
+<span class="o">!</span>az extension remove -n azure-cli-ml 
+
+<span class="c1"># Install remote version of azure-cli-ml (which includes `az ml component` commands)</span>
+<span class="o">!</span>az extension add --source https://azuremlsdktestpypi.blob.core.windows.net/wheels/modulesdkpreview/azure_cli_ml-0.1.0.29211468-py3-none-any.whl --pip-extra-index-urls https://azuremlsdktestpypi.azureedge.net/modulesdkpreview --yes --verbose
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>az account <span class="nb">set</span> -s <span class="s2">&quot;Your subscription name&quot;</span>
+<span class="o">!</span>az ml folder attach -w <span class="s2">&quot;Your workspace name&quot;</span> -g <span class="s2">&quot;Your resource group name&quot;</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">tempfile</span>
+<span class="kn">import</span> <span class="nn">shutil</span>
+<span class="kn">import</span> <span class="nn">subprocess</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Regsiter components with spec via Azure CLI</span>
+<span class="n">root_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">(),</span> <span class="s2">&quot;../../&quot;</span><span class="p">))</span>
+<span class="n">specs_folder</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">root_path</span><span class="p">,</span> <span class="s2">&quot;contrib/azureml_designer_modules/module_specs&quot;</span><span class="p">)</span>
+<span class="n">github_prefix</span> <span class="o">=</span> <span class="s1">&#39;https://github.com/microsoft/recommenders/blob/main/recommenders/azureml/azureml_designer_modules/module_specs/&#39;</span>
+<span class="n">specs</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">specs_folder</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">spec</span> <span class="ow">in</span> <span class="n">specs</span><span class="p">:</span>
+    <span class="n">spec_path</span> <span class="o">=</span> <span class="n">github_prefix</span> <span class="o">+</span> <span class="n">spec</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Start to register component spec: </span><span class="si">{</span><span class="n">spec</span><span class="si">}</span><span class="s2"> ...&quot;</span><span class="p">)</span>
+    <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;az ml component create --file </span><span class="si">{</span><span class="n">spec_path</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">shell</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Done.&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="running-recommenders-in-azureml-designer">
+<h2>Running Recommenders in AzureML Designer<a class="headerlink" href="#running-recommenders-in-azureml-designer" title="Permalink to this headline">¶</a></h2>
+<p>Once the modules are registered, they will appear in the canvas as the module <code class="docutils literal notranslate"><span class="pre">Recommenders</span></code>. There you will be able to create a pipeline like this:</p>
+<p><img alt="img" src="https://raw.githubusercontent.com/Azure/AzureMachineLearningGallery/main/pipelines/sar-pipeline/sar-pipeline.png" /></p>
+<p>Now, thanks to AzureML Designer, users can compute the latest state of the art algorithms in recommendation systems without writing a line of python code.</p>
+</div>
+<div class="section" id="references">
+<h2>References<a class="headerlink" href="#references" title="Permalink to this headline">¶</a></h2>
+<ol class="simple">
+<li><p><a class="reference external" href="https://docs.microsoft.com/en-us/azure/machine-learning/concept-designer">AzureML Designer documentation</a></p></li>
+<li><p><a class="reference external" href="https://aka.ms/designer-tutorial">Tutorial: Prediction of automobile price</a></p></li>
+<li><p><a class="reference external" href="https://aka.ms/component-tutorial1">Tutorial: Register component to workspace</a></p></li>
+<li><p><a class="reference external" href="https://aka.ms/component-tutorial2">Tutorial: Create a new component</a></p></li>
+</ol>
+</div>
+</div>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./examples/00_quick_start"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+              </div>
+              
+        
+            
+
+
+
+<div class='prev-next-bottom'>
+    
+
+</div>
+        
+        </div>
+    </div>
+    <footer class="footer">
+    <div class="container">
+      <p>
+        
+          By The Jupyter Book community<br/>
+        
+            &copy; Copyright 2021.<br/>
+      </p>
+    </div>
+  </footer>
+</main>
+
+
+      </div>
+    </div>
+  
+  <script src="../../_static/js/index.1c5a1a01449ed65a7b51.js"></script>
+
+  
+  </body>
+</html>

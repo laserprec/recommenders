@@ -1,0 +1,702 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Wikidata Knowledge Graph Extraction &#8212; &lt;h1 style=&#34;font-size:2em;text-align:center;color:#FF5733&#34;&gt;Recommenders&lt;/h1&gt;</title>
+    
+  <link href="../../_static/css/theme.css" rel="stylesheet" />
+  <link href="../../_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
+
+    
+  <link rel="stylesheet"
+    href="../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+
+    
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-book-theme.css?digest=c3fdc42140077d1ad13ad2f1588a4309" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/tabs.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    
+  <link rel="preload" as="script" href="../../_static/js/index.1c5a1a01449ed65a7b51.js">
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/togglebutton.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <script src="../../_static/tabs.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../../_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script>
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="../../_static/sphinx-thebe.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en" />
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="../../index.html">
+      
+      
+      
+      <h1 class="site-logo" id="site-title"><h1 style="font-size:2em;text-align:center;color:#FF5733">Recommenders</h1></h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="../../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        <p class="caption" role="heading">
+ <span class="caption-text">
+  Getting Started Notebooks
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../00_quick_start/als_movielens.html">
+   Running ALS on MovieLens (PySpark)
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../00_quick_start/ncf_movielens.html">
+   Neural Collaborative Filtering on MovieLens dataset.
+  </a>
+ </li>
+</ul>
+
+    </div>
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="topbar container-xl fixed-top">
+    <div class="topbar-contents row">
+        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
+        <div class="col pl-md-4 topbar-main">
+            
+            <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+                data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+                aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
+                title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+                <i class="fas fa-bars"></i>
+                <i class="fas fa-arrow-left"></i>
+                <i class="fas fa-arrow-up"></i>
+            </button>
+            
+            
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
+            class="fas fa-download"></i></button>
+
+    <div class="dropdown-buttons">
+        <!-- ipynb file if we had a myst markdown file -->
+        
+        <!-- Download raw file -->
+        <a class="dropdown-buttons" href="../../_sources/examples/01_prepare_data/wikidata_knowledge_graph.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
+                data-placement="left">.ipynb</button></a>
+        <!-- Download PDF via print -->
+        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
+            onClick="window.print()" data-toggle="tooltip" data-placement="left">.pdf</button>
+    </div>
+</div>
+
+            <!-- Source interaction buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
+    <div class="dropdown-buttons sourcebuttons">
+        <a class="repository-button"
+            href="https://github.com/microsoft/genalog"><button type="button" class="btn btn-secondary topbarbtn"
+                data-toggle="tooltip" data-placement="left" title="Source repository"><i
+                    class="fab fa-github"></i>repository</button></a>
+        <a class="issues-button"
+            href="https://github.com/microsoft/genalog/issues/new?title=Issue%20on%20page%20%2Fexamples/01_prepare_data/wikidata_knowledge_graph.html&body=Your%20issue%20content%20here."><button
+                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
+                title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
+        
+    </div>
+</div>
+
+            <!-- Full screen (wrap in <a> to have style consistency -->
+
+<a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+        data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+        title="Fullscreen mode"><i
+            class="fas fa-expand"></i></button></a>
+
+            <!-- Launch buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Launch interactive content"><i class="fas fa-rocket"></i></button>
+    <div class="dropdown-buttons">
+        
+        <a class="binder-button" href="https://mybinder.org/v2/gh/microsoft/genalog/main?urlpath=tree/docs/genalog_docs/examples/01_prepare_data/wikidata_knowledge_graph.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Launch Binder" data-toggle="tooltip"
+                data-placement="left"><img class="binder-button-logo"
+                    src="../../_static/images/logo_binder.svg"
+                    alt="Interact on binder">Binder</button></a>
+        
+        
+        
+        
+    </div>
+</div>
+
+        </div>
+
+        <!-- Table of contents -->
+        <div class="d-none d-md-block col-md-2 bd-toc show">
+            
+            <div class="tocsection onthispage pt-5 pb-3">
+                <i class="fas fa-list"></i> Contents
+            </div>
+            <nav id="bd-toc-nav" aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#">
+   Wikidata Knowledge Graph Extraction
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#create-a-kg-from-linked-entities-in-wikidata">
+   1. Create a KG from linked entities in Wikidata
+  </a>
+  <ul class="visible nav section-nav flex-column">
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#visualize-kg-using-network">
+     Visualize KG using network
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#create-a-kg-from-the-movielens-dataset">
+   2. Create a KG from the Movielens Dataset
+  </a>
+ </li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+        
+              <div>
+                
+  <div class="section" id="wikidata-knowledge-graph-extraction">
+<h1>Wikidata Knowledge Graph Extraction<a class="headerlink" href="#wikidata-knowledge-graph-extraction" title="Permalink to this headline">¶</a></h1>
+<p>Many recommendation algorithms (DKN, RippleNet, KGCN) use Knowledge Graphs (KGs) as an external source of information. We found that one of the bottlenecks to benchmark current algorithms like DKN, RippleNet or KGCN is that they used Microsoft Satori. As Satori is not open source, it’s not possible to replicate the results found in the papers. The solution is using other open source KGs.</p>
+<p>The goal of this notebook is to provide examples of how to interact with Wikipedia queries and Wikidata to extract a Knowledge Graph that can be used with the mentioned algorithms.</p>
+<p>The steps covered are:</p>
+<ul class="simple">
+<li><p>How to find a Wikidata entity (<a class="reference external" href="https://www.wikidata.org/wiki/Wikidata:Glossary/en">https://www.wikidata.org/wiki/Wikidata:Glossary/en</a> from a text query</p></li>
+<li><p>How to find surrounding entities and descriptions for an entity</p></li>
+<li><p>Create a KG for Movielens</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># set the environment path to find Recommenders</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;System version: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">version</span><span class="p">))</span>
+
+<span class="kn">import</span> <span class="nn">papermill</span> <span class="k">as</span> <span class="nn">pm</span>
+<span class="kn">import</span> <span class="nn">scrapbook</span> <span class="k">as</span> <span class="nn">sb</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">networkx</span> <span class="k">as</span> <span class="nn">nx</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">from</span> <span class="nn">recommenders.datasets</span> <span class="kn">import</span> <span class="n">movielens</span>
+
+<span class="kn">from</span> <span class="nn">recommenders.datasets.wikidata</span> <span class="kn">import</span> <span class="p">(</span><span class="n">search_wikidata</span><span class="p">,</span> 
+                                         <span class="n">find_wikidata_id</span><span class="p">,</span> 
+                                         <span class="n">query_entity_links</span><span class="p">,</span> 
+                                         <span class="n">read_linked_entities</span><span class="p">,</span>
+                                         <span class="n">query_entity_description</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>System version: 3.6.8 |Anaconda, Inc.| (default, Dec 30 2018, 01:22:34) 
+[GCC 7.3.0]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell tag_parameters docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Select MovieLens data size: 100k, 1m, 10m, or 20m</span>
+<span class="n">MOVIELENS_DATA_SIZE</span> <span class="o">=</span> <span class="s1">&#39;100k&#39;</span>
+<span class="n">MOVIELENS_SAMPLE</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">MOVIELENS_SAMPLE_SIZE</span> <span class="o">=</span> <span class="mi">50</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="create-a-kg-from-linked-entities-in-wikidata">
+<h1>1. Create a KG from linked entities in Wikidata<a class="headerlink" href="#create-a-kg-from-linked-entities-in-wikidata" title="Permalink to this headline">¶</a></h1>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">names</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;The Godfather&quot;</span><span class="p">,</span> <span class="s2">&quot;Al Pacino&quot;</span><span class="p">,</span> <span class="s2">&quot;Tom Hanks&quot;</span><span class="p">,</span> <span class="s2">&quot;Forrest Gump&quot;</span><span class="p">,</span> <span class="s2">&quot;Julia Roberts&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="s2">&quot;My Best Friend&#39;s Wedding&quot;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%time</span>
+
+<span class="c1"># the following code has been wrapped in a helper function called search_wikidata()</span>
+<span class="c1"># it is provided here to show the details of which calls are being made to wikipedia APIs</span>
+
+<span class="c1"># capture results as a list of dicts to transform to DataFrame (this is faster than appending to DataFrames)</span>
+<span class="n">results_list</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">name</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">names</span><span class="p">):</span>
+    <span class="c1"># first get the wikipedia entity_id for each name</span>
+    <span class="n">entity_id</span> <span class="o">=</span> <span class="n">find_wikidata_id</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">entity_id</span> <span class="o">==</span> <span class="s2">&quot;entityNotFound&quot;</span><span class="p">:</span>
+        <span class="k">continue</span>
+
+    <span class="c1"># next we query wikipedia to get entity links</span>
+    <span class="n">json_links</span> <span class="o">=</span> <span class="n">query_entity_links</span><span class="p">(</span><span class="n">entity_id</span><span class="p">)</span>
+
+    <span class="c1"># the following function extracts entities from the links</span>
+    <span class="n">related_links</span> <span class="o">=</span> <span class="n">read_linked_entities</span><span class="p">(</span><span class="n">json_links</span><span class="p">)</span>
+
+    <span class="c1"># now we can construct an connection in our graph between two entities</span>
+    <span class="k">for</span> <span class="n">related_entity</span><span class="p">,</span> <span class="n">related_name</span> <span class="ow">in</span> <span class="n">related_links</span><span class="p">:</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span>
+            <span class="n">original_entity</span><span class="o">=</span><span class="n">entity_id</span><span class="p">,</span>
+            <span class="n">linked_entities</span><span class="o">=</span><span class="n">related_entity</span><span class="p">,</span>
+            <span class="n">name_linked_entities</span><span class="o">=</span><span class="n">related_name</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">results_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+
+<span class="n">results_list</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">results_list</span><span class="p">)</span>
+<span class="n">results_list</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Wall time: 4.38 s
+</pre></div>
+</div>
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>name</th>
+      <th>original_entity</th>
+      <th>linked_entities</th>
+      <th>name_linked_entities</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>The Godfather</td>
+      <td>Q47703</td>
+      <td>Q377616</td>
+      <td>New Hollywood</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>The Godfather</td>
+      <td>Q47703</td>
+      <td>Q130232</td>
+      <td>drama film</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>The Godfather</td>
+      <td>Q47703</td>
+      <td>Q52162262</td>
+      <td>film based on literature</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>The Godfather</td>
+      <td>Q47703</td>
+      <td>Q7444356</td>
+      <td>gangster film</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>The Godfather</td>
+      <td>Q47703</td>
+      <td>Q959790</td>
+      <td>crime film</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="section" id="visualize-kg-using-network">
+<h2>Visualize KG using network<a class="headerlink" href="#visualize-kg-using-network" title="Permalink to this headline">¶</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">G</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">from_pandas_edgelist</span><span class="p">(</span><span class="n">results_list</span><span class="p">,</span> <span class="s1">&#39;original_entity&#39;</span><span class="p">,</span> <span class="s1">&#39;linked_entities&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">target_names</span> <span class="o">=</span> <span class="n">results_list</span><span class="p">[[</span><span class="s2">&quot;linked_entities&quot;</span><span class="p">,</span> <span class="s2">&quot;name_linked_entities&quot;</span><span class="p">]]</span><span class="o">.</span><span class="n">drop_duplicates</span><span class="p">()</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;linked_entities&quot;</span><span class="p">:</span> <span class="s2">&quot;labels&quot;</span><span class="p">,</span> <span class="s2">&quot;name_linked_entities&quot;</span><span class="p">:</span> <span class="s2">&quot;name&quot;</span><span class="p">})</span>
+<span class="n">source_names</span> <span class="o">=</span> <span class="n">results_list</span><span class="p">[[</span><span class="s2">&quot;original_entity&quot;</span><span class="p">,</span> <span class="s2">&quot;name&quot;</span><span class="p">]]</span><span class="o">.</span><span class="n">drop_duplicates</span><span class="p">()</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;original_entity&quot;</span><span class="p">:</span> <span class="s2">&quot;labels&quot;</span><span class="p">})</span>
+<span class="n">names</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">target_names</span><span class="p">,</span> <span class="n">source_names</span><span class="p">])</span>
+<span class="n">names</span> <span class="o">=</span> <span class="n">names</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s2">&quot;labels&quot;</span><span class="p">)</span>
+<span class="n">names</span> <span class="o">=</span> <span class="n">names</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span><span class="mi">12</span><span class="p">))</span> 
+<span class="n">pos</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">spring_layout</span><span class="p">(</span><span class="n">G</span><span class="p">)</span>
+<span class="n">nx</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">G</span><span class="p">,</span><span class="n">pos</span><span class="p">,</span> <span class="n">node_size</span><span class="o">=</span><span class="mi">60</span><span class="p">,</span><span class="n">font_size</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span> <span class="n">width</span> <span class="o">=</span> <span class="mf">0.2</span><span class="p">)</span>
+<span class="n">nx</span><span class="o">.</span><span class="n">draw_networkx_labels</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">pos</span><span class="p">,</span> <span class="n">names</span><span class="p">,</span> <span class="n">font_size</span><span class="o">=</span><span class="mi">9</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>C:\Users\scgraham\AppData\Local\Continuum\anaconda3\envs\reco_base\lib\site-packages\networkx\drawing\nx_pylab.py:579: MatplotlibDeprecationWarning: 
+The iterable function was deprecated in Matplotlib 3.1 and will be removed in 3.3. Use np.iterable instead.
+  if not cb.iterable(width):
+</pre></div>
+</div>
+<img alt="../../_images/wikidata_knowledge_graph_9_1.png" src="../../_images/wikidata_knowledge_graph_9_1.png" />
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="create-a-kg-from-the-movielens-dataset">
+<h1>2. Create a KG from the Movielens Dataset<a class="headerlink" href="#create-a-kg-from-the-movielens-dataset" title="Permalink to this headline">¶</a></h1>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Obtain pairs of Movie Title - IDs from Movielens</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">movielens</span><span class="o">.</span><span class="n">load_pandas_df</span><span class="p">(</span><span class="n">MOVIELENS_DATA_SIZE</span><span class="p">,</span>
+                              <span class="p">(</span><span class="s1">&#39;UserId&#39;</span><span class="p">,</span> <span class="s1">&#39;ItemId&#39;</span><span class="p">,</span> <span class="s1">&#39;Rating&#39;</span><span class="p">,</span> <span class="s1">&#39;Timestamp&#39;</span><span class="p">),</span>
+                             <span class="n">title_col</span><span class="o">=</span><span class="s1">&#39;Title&#39;</span><span class="p">,</span>
+                             <span class="n">genres_col</span><span class="o">=</span><span class="s1">&#39;Genres&#39;</span><span class="p">,</span>
+                             <span class="n">year_col</span><span class="o">=</span><span class="s1">&#39;Year&#39;</span>
+        <span class="p">)</span>
+<span class="n">movies</span> <span class="o">=</span> <span class="n">df</span><span class="p">[[</span><span class="s2">&quot;Title&quot;</span><span class="p">,</span> <span class="s2">&quot;ItemId&quot;</span><span class="p">]]</span><span class="o">.</span><span class="n">drop_duplicates</span><span class="p">()</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>100%|████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 4.81k/4.81k [00:02&lt;00:00, 2.29kKB/s]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">movies</span><span class="p">[</span><span class="s2">&quot;Title&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">:</span><span class="mi">5</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0                  Kolya (1996)
+1      L.A. Confidential (1997)
+2           Heavyweights (1994)
+3    Legends of the Fall (1994)
+4           Jackie Brown (1997)
+Name: Title, dtype: object
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># For notebook testing</span>
+<span class="k">if</span> <span class="n">MOVIELENS_SAMPLE</span> <span class="o">==</span> <span class="kc">True</span><span class="p">:</span>
+    <span class="n">movies</span> <span class="o">=</span> <span class="n">movies</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="n">MOVIELENS_SAMPLE_SIZE</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">movies</span><span class="o">.</span><span class="n">shape</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(50, 3)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">names</span> <span class="o">=</span> <span class="p">[</span><span class="n">t</span> <span class="o">+</span> <span class="s1">&#39; film&#39;</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">movies</span><span class="p">[</span><span class="s1">&#39;Title&#39;</span><span class="p">]]</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">search_wikidata</span><span class="p">(</span><span class="n">names</span><span class="p">,</span> <span class="n">extras</span><span class="o">=</span><span class="n">movies</span><span class="p">[[</span><span class="s1">&#39;Title&#39;</span><span class="p">,</span> <span class="s1">&#39;ItemId&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">to_dict</span><span class="p">())</span>
+<span class="n">result</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>name</th>
+      <th>original_entity</th>
+      <th>linked_entities</th>
+      <th>name_linked_entities</th>
+      <th>description</th>
+      <th>Title</th>
+      <th>ItemId</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>Kolya (1996) film</td>
+      <td>Q1141186</td>
+      <td>Q130232</td>
+      <td>drama film</td>
+      <td>1996 film by Jan Svěrák</td>
+      <td>Kolya (1996)</td>
+      <td>242</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>Kolya (1996) film</td>
+      <td>Q1141186</td>
+      <td>Q157443</td>
+      <td>comedy film</td>
+      <td>1996 film by Jan Svěrák</td>
+      <td>Kolya (1996)</td>
+      <td>242</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>Kolya (1996) film</td>
+      <td>Q1141186</td>
+      <td>Q10819887</td>
+      <td>Andrei Chalimon</td>
+      <td>1996 film by Jan Svěrák</td>
+      <td>Kolya (1996)</td>
+      <td>242</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>Kolya (1996) film</td>
+      <td>Q1141186</td>
+      <td>Q11775055</td>
+      <td>René Přibil</td>
+      <td>1996 film by Jan Svěrák</td>
+      <td>Kolya (1996)</td>
+      <td>242</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>Kolya (1996) film</td>
+      <td>Q1141186</td>
+      <td>Q12035276</td>
+      <td>Marek Daniel</td>
+      <td>1996 film by Jan Svěrák</td>
+      <td>Kolya (1996)</td>
+      <td>242</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">result</span><span class="p">[</span><span class="s2">&quot;Title&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Aladdin (1992)                                   226
+Right Stuff, The (1983)                           80
+Age of Innocence, The (1993)                      74
+L.A. Confidential (1997)                          70
+Kolya (1996)                                      67
+Jaws (1975)                                       59
+Cop Land (1997)                                   55
+Remains of the Day, The (1993)                    51
+Jackie Brown (1997)                               51
+Jungle Book, The (1994)                           45
+Twister (1996)                                    45
+Legends of the Fall (1994)                        45
+Heavyweights (1994)                               42
+Just Cause (1995)                                 40
+Kiss the Girls (1997)                             39
+Trigger Effect, The (1996)                        34
+Romy and Michele&#39;s High School Reunion (1997)     34
+Curdled (1996)                                    29
+Beautiful Thing (1996)                            24
+Crumb (1994)                                      16
+Name: Title, dtype: int64
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># result.to_csv(&quot;movielens_&quot; + MOVIELENS_DATA_SIZE + &#39;_wikidata.csv&#39;, index = False)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">number_movies</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="s2">&quot;Title&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Record results with papermill for unit-tests</span>
+<span class="n">sb</span><span class="o">.</span><span class="n">glue</span><span class="p">(</span><span class="s2">&quot;length_result&quot;</span><span class="p">,</span> <span class="n">number_movies</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+</div>
+</div>
+</div>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "reco_base"
+        },
+        kernelOptions: {
+            kernelName: "reco_base",
+            path: "./examples/01_prepare_data"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'reco_base'</script>
+
+              </div>
+              
+        
+            
+
+
+
+<div class='prev-next-bottom'>
+    
+
+</div>
+        
+        </div>
+    </div>
+    <footer class="footer">
+    <div class="container">
+      <p>
+        
+          By The Jupyter Book community<br/>
+        
+            &copy; Copyright 2021.<br/>
+      </p>
+    </div>
+  </footer>
+</main>
+
+
+      </div>
+    </div>
+  
+  <script src="../../_static/js/index.1c5a1a01449ed65a7b51.js"></script>
+
+  
+  </body>
+</html>

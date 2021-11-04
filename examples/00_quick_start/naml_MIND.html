@@ -1,0 +1,695 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>NAML: Neural News Recommendation with Attentive Multi-View Learning &#8212; &lt;h1 style=&#34;font-size:2em;text-align:center;color:#FF5733&#34;&gt;Recommenders&lt;/h1&gt;</title>
+    
+  <link href="../../_static/css/theme.css" rel="stylesheet" />
+  <link href="../../_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
+
+    
+  <link rel="stylesheet"
+    href="../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+
+    
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-book-theme.css?digest=c3fdc42140077d1ad13ad2f1588a4309" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/tabs.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    
+  <link rel="preload" as="script" href="../../_static/js/index.1c5a1a01449ed65a7b51.js">
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/togglebutton.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <script src="../../_static/tabs.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../../_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script>
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="../../_static/sphinx-thebe.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en" />
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="../../index.html">
+      
+      
+      
+      <h1 class="site-logo" id="site-title"><h1 style="font-size:2em;text-align:center;color:#FF5733">Recommenders</h1></h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="../../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        <p class="caption" role="heading">
+ <span class="caption-text">
+  Getting Started Notebooks
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="als_movielens.html">
+   Running ALS on MovieLens (PySpark)
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ncf_movielens.html">
+   Neural Collaborative Filtering on MovieLens dataset.
+  </a>
+ </li>
+</ul>
+
+    </div>
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="topbar container-xl fixed-top">
+    <div class="topbar-contents row">
+        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
+        <div class="col pl-md-4 topbar-main">
+            
+            <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+                data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+                aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
+                title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+                <i class="fas fa-bars"></i>
+                <i class="fas fa-arrow-left"></i>
+                <i class="fas fa-arrow-up"></i>
+            </button>
+            
+            
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
+            class="fas fa-download"></i></button>
+
+    <div class="dropdown-buttons">
+        <!-- ipynb file if we had a myst markdown file -->
+        
+        <!-- Download raw file -->
+        <a class="dropdown-buttons" href="../../_sources/examples/00_quick_start/naml_MIND.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
+                data-placement="left">.ipynb</button></a>
+        <!-- Download PDF via print -->
+        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
+            onClick="window.print()" data-toggle="tooltip" data-placement="left">.pdf</button>
+    </div>
+</div>
+
+            <!-- Source interaction buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
+    <div class="dropdown-buttons sourcebuttons">
+        <a class="repository-button"
+            href="https://github.com/microsoft/genalog"><button type="button" class="btn btn-secondary topbarbtn"
+                data-toggle="tooltip" data-placement="left" title="Source repository"><i
+                    class="fab fa-github"></i>repository</button></a>
+        <a class="issues-button"
+            href="https://github.com/microsoft/genalog/issues/new?title=Issue%20on%20page%20%2Fexamples/00_quick_start/naml_MIND.html&body=Your%20issue%20content%20here."><button
+                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
+                title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
+        
+    </div>
+</div>
+
+            <!-- Full screen (wrap in <a> to have style consistency -->
+
+<a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+        data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+        title="Fullscreen mode"><i
+            class="fas fa-expand"></i></button></a>
+
+            <!-- Launch buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Launch interactive content"><i class="fas fa-rocket"></i></button>
+    <div class="dropdown-buttons">
+        
+        <a class="binder-button" href="https://mybinder.org/v2/gh/microsoft/genalog/main?urlpath=tree/docs/genalog_docs/examples/00_quick_start/naml_MIND.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Launch Binder" data-toggle="tooltip"
+                data-placement="left"><img class="binder-button-logo"
+                    src="../../_static/images/logo_binder.svg"
+                    alt="Interact on binder">Binder</button></a>
+        
+        
+        
+        
+    </div>
+</div>
+
+        </div>
+
+        <!-- Table of contents -->
+        <div class="d-none d-md-block col-md-2 bd-toc show">
+            
+            <div class="tocsection onthispage pt-5 pb-3">
+                <i class="fas fa-list"></i> Contents
+            </div>
+            <nav id="bd-toc-nav" aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#properties-of-naml">
+   Properties of NAML:
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#data-format">
+   Data format:
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#news-data">
+     news data
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#behaviors-data">
+     behaviors data
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#global-settings-and-imports">
+   Global settings and imports
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#prepare-parameters">
+   Prepare Parameters
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#download-and-load-data">
+   Download and load data
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#create-hyper-parameters">
+   Create hyper-parameters
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#train-the-naml-model">
+   Train the NAML model
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#save-the-model">
+   Save the model
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#output-prediction-file">
+   Output Prediction File
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#reference">
+   Reference
+  </a>
+ </li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+        
+              <div>
+                
+  <p><i>Copyright (c) Microsoft Corporation. All rights reserved.</i></p>
+<p><i>Licensed under the MIT License.</i></p>
+<div class="tex2jax_ignore mathjax_ignore section" id="naml-neural-news-recommendation-with-attentive-multi-view-learning">
+<h1>NAML: Neural News Recommendation with Attentive Multi-View Learning<a class="headerlink" href="#naml-neural-news-recommendation-with-attentive-multi-view-learning" title="Permalink to this headline">¶</a></h1>
+<p>NAML [1] is a multi-view news recommendation approach. The core of NAML is a news encoder and a user encoder. The newsencoder is composed of a title encoder, a body encoder, a vert encoder and a subvert encoder. The CNN-based title encoder and body encoder learn title and body representations by capturing words semantic information. After getting news title, body, vert and subvert representations, an attention network is used to aggregate those vectors. In the user encoder, we learn representations of users from their browsed news. Besides, we apply additive attention to learn more informative news and user representations by selecting important words and news.</p>
+<div class="section" id="properties-of-naml">
+<h2>Properties of NAML:<a class="headerlink" href="#properties-of-naml" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>NAML is a multi-view neural news recommendation approach.</p></li>
+<li><p>It uses news title, news body, news vert and news subvert to get news repersentations. And it uses user historical behaviors to learn user representations.</p></li>
+<li><p>NAML uses additive attention to learn informative news and user representations by selecting important words and news.</p></li>
+<li><p>Due to some legal issue, MIND dataset does not release news body. Therefore, we use news abstract instead.</p></li>
+</ul>
+</div>
+<div class="section" id="data-format">
+<h2>Data format:<a class="headerlink" href="#data-format" title="Permalink to this headline">¶</a></h2>
+<p>For quicker training and evaluaiton, we sample MINDdemo dataset of 5k users from <a class="reference external" href="https://msnews.github.io/">MIND small dataset</a>. The MINDdemo dataset has the same file format as MINDsmall and MINDlarge. If you want to try experiments on MINDsmall
+and MINDlarge, please change the dowload source.
+Select the MIND_type parameter from [‘large’, ‘small’, ‘demo’] to choose dataset.</p>
+<p><strong>MINDdemo_train</strong> is used for training, and <strong>MINDdemo_dev</strong> is used for evaluation. Training data and evaluation data are composed of a news file and a behaviors file. You can find more detailed data description in <a class="reference external" href="https://github.com/msnews/msnews.github.io/blob/master/assets/doc/introduction.md">MIND repo</a></p>
+<div class="section" id="news-data">
+<h3>news data<a class="headerlink" href="#news-data" title="Permalink to this headline">¶</a></h3>
+<p>This file contains news information including newsid, category, subcatgory, news title, news abstarct, news url and entities in news title, entities in news abstarct.
+One simple example: <br></p>
+<p><code class="docutils literal notranslate"><span class="pre">N46466	lifestyle	lifestyleroyals	The</span> <span class="pre">Brands</span> <span class="pre">Queen</span> <span class="pre">Elizabeth,</span> <span class="pre">Prince</span> <span class="pre">Charles,</span> <span class="pre">and</span> <span class="pre">Prince</span> <span class="pre">Philip</span> <span class="pre">Swear</span> <span class="pre">By	Shop</span> <span class="pre">the</span> <span class="pre">notebooks,</span> <span class="pre">jackets,</span> <span class="pre">and</span> <span class="pre">more</span> <span class="pre">that</span> <span class="pre">the</span> <span class="pre">royals</span> <span class="pre">can't</span> <span class="pre">live</span> <span class="pre">without.	https://www.msn.com/en-us/lifestyle/lifestyleroyals/the-brands-queen-elizabeth,-prince-charles,-and-prince-philip-swear-by/ss-AAGH0ET?ocid=chopendata	[{&quot;Label&quot;:</span> <span class="pre">&quot;Prince</span> <span class="pre">Philip,</span> <span class="pre">Duke</span> <span class="pre">of</span> <span class="pre">Edinburgh&quot;,</span> <span class="pre">&quot;Type&quot;:</span> <span class="pre">&quot;P&quot;,</span> <span class="pre">&quot;WikidataId&quot;:</span> <span class="pre">&quot;Q80976&quot;,</span> <span class="pre">&quot;Confidence&quot;:</span> <span class="pre">1.0,</span> <span class="pre">&quot;OccurrenceOffsets&quot;:</span> <span class="pre">[48],</span> <span class="pre">&quot;SurfaceForms&quot;:</span> <span class="pre">[&quot;Prince</span> <span class="pre">Philip&quot;]},</span> <span class="pre">{&quot;Label&quot;:</span> <span class="pre">&quot;Charles,</span> <span class="pre">Prince</span> <span class="pre">of</span> <span class="pre">Wales&quot;,</span> <span class="pre">&quot;Type&quot;:</span> <span class="pre">&quot;P&quot;,</span> <span class="pre">&quot;WikidataId&quot;:</span> <span class="pre">&quot;Q43274&quot;,</span> <span class="pre">&quot;Confidence&quot;:</span> <span class="pre">1.0,</span> <span class="pre">&quot;OccurrenceOffsets&quot;:</span> <span class="pre">[28],</span> <span class="pre">&quot;SurfaceForms&quot;:</span> <span class="pre">[&quot;Prince</span> <span class="pre">Charles&quot;]},</span> <span class="pre">{&quot;Label&quot;:</span> <span class="pre">&quot;Elizabeth</span> <span class="pre">II&quot;,</span> <span class="pre">&quot;Type&quot;:</span> <span class="pre">&quot;P&quot;,</span> <span class="pre">&quot;WikidataId&quot;:</span> <span class="pre">&quot;Q9682&quot;,</span> <span class="pre">&quot;Confidence&quot;:</span> <span class="pre">0.97,</span> <span class="pre">&quot;OccurrenceOffsets&quot;:</span> <span class="pre">[11],</span> <span class="pre">&quot;SurfaceForms&quot;:</span> <span class="pre">[&quot;Queen</span> <span class="pre">Elizabeth&quot;]}]	[]</span></code>
+<br></p>
+<p>In general, each line in data file represents information of one piece of news: <br></p>
+<p><code class="docutils literal notranslate"><span class="pre">[News</span> <span class="pre">ID]</span> <span class="pre">[Category]</span> <span class="pre">[Subcategory]</span> <span class="pre">[News</span> <span class="pre">Title]</span> <span class="pre">[News</span> <span class="pre">Abstrct]</span> <span class="pre">[News</span> <span class="pre">Url]</span> <span class="pre">[Entities</span> <span class="pre">in</span> <span class="pre">News</span> <span class="pre">Title]</span> <span class="pre">[Entities</span> <span class="pre">in</span> <span class="pre">News</span> <span class="pre">Abstract]</span> <span class="pre">...</span></code></p>
+<br>
+<p>We generate a word_dict file to tranform words in news title and news abstract to word indexes, and a embedding matrix is initted from pretrained glove embeddings.</p>
+</div>
+<div class="section" id="behaviors-data">
+<h3>behaviors data<a class="headerlink" href="#behaviors-data" title="Permalink to this headline">¶</a></h3>
+<p>One simple example: <br>
+<code class="docutils literal notranslate"><span class="pre">1	U82271	11/11/2019</span> <span class="pre">3:28:58</span> <span class="pre">PM	N3130</span> <span class="pre">N11621</span> <span class="pre">N12917</span> <span class="pre">N4574</span> <span class="pre">N12140</span> <span class="pre">N9748	N13390-0</span> <span class="pre">N7180-0</span> <span class="pre">N20785-0</span> <span class="pre">N6937-0</span> <span class="pre">N15776-0</span> <span class="pre">N25810-0</span> <span class="pre">N20820-0</span> <span class="pre">N6885-0</span> <span class="pre">N27294-0</span> <span class="pre">N18835-0</span> <span class="pre">N16945-0</span> <span class="pre">N7410-0</span> <span class="pre">N23967-0</span> <span class="pre">N22679-0</span> <span class="pre">N20532-0</span> <span class="pre">N26651-0</span> <span class="pre">N22078-0</span> <span class="pre">N4098-0</span> <span class="pre">N16473-0</span> <span class="pre">N13841-0</span> <span class="pre">N15660-0</span> <span class="pre">N25787-0</span> <span class="pre">N2315-0</span> <span class="pre">N1615-0</span> <span class="pre">N9087-0</span> <span class="pre">N23880-0</span> <span class="pre">N3600-0</span> <span class="pre">N24479-0</span> <span class="pre">N22882-0</span> <span class="pre">N26308-0</span> <span class="pre">N13594-0</span> <span class="pre">N2220-0</span> <span class="pre">N28356-0</span> <span class="pre">N17083-0</span> <span class="pre">N21415-0</span> <span class="pre">N18671-0</span> <span class="pre">N9440-0</span> <span class="pre">N17759-0</span> <span class="pre">N10861-0</span> <span class="pre">N21830-0</span> <span class="pre">N8064-0</span> <span class="pre">N5675-0</span> <span class="pre">N15037-0</span> <span class="pre">N26154-0</span> <span class="pre">N15368-1</span> <span class="pre">N481-0</span> <span class="pre">N3256-0</span> <span class="pre">N20663-0</span> <span class="pre">N23940-0</span> <span class="pre">N7654-0</span> <span class="pre">N10729-0</span> <span class="pre">N7090-0</span> <span class="pre">N23596-0</span> <span class="pre">N15901-0</span> <span class="pre">N16348-0</span> <span class="pre">N13645-0</span> <span class="pre">N8124-0</span> <span class="pre">N20094-0</span> <span class="pre">N27774-0</span> <span class="pre">N23011-0</span> <span class="pre">N14832-0</span> <span class="pre">N15971-0</span> <span class="pre">N27729-0</span> <span class="pre">N2167-0</span> <span class="pre">N11186-0</span> <span class="pre">N18390-0</span> <span class="pre">N21328-0</span> <span class="pre">N10992-0</span> <span class="pre">N20122-0</span> <span class="pre">N1958-0</span> <span class="pre">N2004-0</span> <span class="pre">N26156-0</span> <span class="pre">N17632-0</span> <span class="pre">N26146-0</span> <span class="pre">N17322-0</span> <span class="pre">N18403-0</span> <span class="pre">N17397-0</span> <span class="pre">N18215-0</span> <span class="pre">N14475-0</span> <span class="pre">N9781-0</span> <span class="pre">N17958-0</span> <span class="pre">N3370-0</span> <span class="pre">N1127-0</span> <span class="pre">N15525-0</span> <span class="pre">N12657-0</span> <span class="pre">N10537-0</span> <span class="pre">N18224-0</span></code>
+<br></p>
+<p>In general, each line in data file represents one instance of an impression. The format is like: <br></p>
+<p><code class="docutils literal notranslate"><span class="pre">[Impression</span> <span class="pre">ID]</span> <span class="pre">[User</span> <span class="pre">ID]</span> <span class="pre">[Impression</span> <span class="pre">Time]</span> <span class="pre">[User</span> <span class="pre">Click</span> <span class="pre">History]</span> <span class="pre">[Impression</span> <span class="pre">News]</span></code></p>
+<br>
+<p>User Click History is the user historical clicked news before Impression Time. Impression News is the displayed news in an impression, which format is:<br></p>
+<p><code class="docutils literal notranslate"><span class="pre">[News</span> <span class="pre">ID</span> <span class="pre">1]-[label1]</span> <span class="pre">...</span> <span class="pre">[News</span> <span class="pre">ID</span> <span class="pre">n]-[labeln]</span></code></p>
+<br>
+Label represents whether the news is clicked by the user. All information of news in User Click History and Impression News can be found in news data file.</div>
+</div>
+<div class="section" id="global-settings-and-imports">
+<h2>Global settings and imports<a class="headerlink" href="#global-settings-and-imports" title="Permalink to this headline">¶</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">zipfile</span>
+<span class="kn">from</span> <span class="nn">tqdm</span> <span class="kn">import</span> <span class="n">tqdm</span>
+<span class="kn">import</span> <span class="nn">scrapbook</span> <span class="k">as</span> <span class="nn">sb</span>
+<span class="kn">from</span> <span class="nn">tempfile</span> <span class="kn">import</span> <span class="n">TemporaryDirectory</span>
+<span class="kn">import</span> <span class="nn">tensorflow</span> <span class="k">as</span> <span class="nn">tf</span>
+<span class="n">tf</span><span class="o">.</span><span class="n">get_logger</span><span class="p">()</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="s1">&#39;ERROR&#39;</span><span class="p">)</span> <span class="c1"># only show error messages</span>
+
+<span class="kn">from</span> <span class="nn">recommenders.models.deeprec.deeprec_utils</span> <span class="kn">import</span> <span class="n">download_deeprec_resources</span> 
+<span class="kn">from</span> <span class="nn">recommenders.models.newsrec.newsrec_utils</span> <span class="kn">import</span> <span class="n">prepare_hparams</span>
+<span class="kn">from</span> <span class="nn">recommenders.models.newsrec.models.naml</span> <span class="kn">import</span> <span class="n">NAMLModel</span>
+<span class="kn">from</span> <span class="nn">recommenders.models.newsrec.io.mind_all_iterator</span> <span class="kn">import</span> <span class="n">MINDAllIterator</span>
+<span class="kn">from</span> <span class="nn">recommenders.models.newsrec.newsrec_utils</span> <span class="kn">import</span> <span class="n">get_mind_data_set</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;System version: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">version</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Tensorflow version: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">__version__</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>System version: 3.6.11 | packaged by conda-forge | (default, Aug  5 2020, 20:09:42) 
+[GCC 7.5.0]
+Tensorflow version: 1.15.2
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="prepare-parameters">
+<h2>Prepare Parameters<a class="headerlink" href="#prepare-parameters" title="Permalink to this headline">¶</a></h2>
+<div class="cell tag_parameters docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">epochs</span> <span class="o">=</span> <span class="mi">5</span>
+<span class="n">seed</span> <span class="o">=</span> <span class="mi">42</span>
+<span class="n">batch_size</span> <span class="o">=</span> <span class="mi">32</span>
+
+<span class="c1"># Options: demo, small, large</span>
+<span class="n">MIND_type</span> <span class="o">=</span> <span class="s1">&#39;demo&#39;</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="download-and-load-data">
+<h2>Download and load data<a class="headerlink" href="#download-and-load-data" title="Permalink to this headline">¶</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">tmpdir</span> <span class="o">=</span> <span class="n">TemporaryDirectory</span><span class="p">()</span>
+<span class="n">data_path</span> <span class="o">=</span> <span class="n">tmpdir</span><span class="o">.</span><span class="n">name</span>
+
+<span class="n">train_news_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">data_path</span><span class="p">,</span> <span class="s1">&#39;train&#39;</span><span class="p">,</span> <span class="sa">r</span><span class="s1">&#39;news.tsv&#39;</span><span class="p">)</span>
+<span class="n">train_behaviors_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">data_path</span><span class="p">,</span> <span class="s1">&#39;train&#39;</span><span class="p">,</span> <span class="sa">r</span><span class="s1">&#39;behaviors.tsv&#39;</span><span class="p">)</span>
+<span class="n">valid_news_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">data_path</span><span class="p">,</span> <span class="s1">&#39;valid&#39;</span><span class="p">,</span> <span class="sa">r</span><span class="s1">&#39;news.tsv&#39;</span><span class="p">)</span>
+<span class="n">valid_behaviors_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">data_path</span><span class="p">,</span> <span class="s1">&#39;valid&#39;</span><span class="p">,</span> <span class="sa">r</span><span class="s1">&#39;behaviors.tsv&#39;</span><span class="p">)</span>
+<span class="n">wordEmb_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">data_path</span><span class="p">,</span> <span class="s2">&quot;utils&quot;</span><span class="p">,</span> <span class="s2">&quot;embedding_all.npy&quot;</span><span class="p">)</span>
+<span class="n">userDict_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">data_path</span><span class="p">,</span> <span class="s2">&quot;utils&quot;</span><span class="p">,</span> <span class="s2">&quot;uid2index.pkl&quot;</span><span class="p">)</span>
+<span class="n">wordDict_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">data_path</span><span class="p">,</span> <span class="s2">&quot;utils&quot;</span><span class="p">,</span> <span class="s2">&quot;word_dict_all.pkl&quot;</span><span class="p">)</span>
+<span class="n">vertDict_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">data_path</span><span class="p">,</span> <span class="s2">&quot;utils&quot;</span><span class="p">,</span> <span class="s2">&quot;vert_dict.pkl&quot;</span><span class="p">)</span>
+<span class="n">subvertDict_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">data_path</span><span class="p">,</span> <span class="s2">&quot;utils&quot;</span><span class="p">,</span> <span class="s2">&quot;subvert_dict.pkl&quot;</span><span class="p">)</span>
+<span class="n">yaml_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">data_path</span><span class="p">,</span> <span class="s2">&quot;utils&quot;</span><span class="p">,</span> <span class="sa">r</span><span class="s1">&#39;naml.yaml&#39;</span><span class="p">)</span>
+
+<span class="n">mind_url</span><span class="p">,</span> <span class="n">mind_train_dataset</span><span class="p">,</span> <span class="n">mind_dev_dataset</span><span class="p">,</span> <span class="n">mind_utils</span> <span class="o">=</span> <span class="n">get_mind_data_set</span><span class="p">(</span><span class="n">MIND_type</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">train_news_file</span><span class="p">):</span>
+    <span class="n">download_deeprec_resources</span><span class="p">(</span><span class="n">mind_url</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">data_path</span><span class="p">,</span> <span class="s1">&#39;train&#39;</span><span class="p">),</span> <span class="n">mind_train_dataset</span><span class="p">)</span>
+    
+<span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">valid_news_file</span><span class="p">):</span>
+    <span class="n">download_deeprec_resources</span><span class="p">(</span><span class="n">mind_url</span><span class="p">,</span> \
+                               <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">data_path</span><span class="p">,</span> <span class="s1">&#39;valid&#39;</span><span class="p">),</span> <span class="n">mind_dev_dataset</span><span class="p">)</span>
+<span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">yaml_file</span><span class="p">):</span>
+    <span class="n">download_deeprec_resources</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;https://recodatasets.z20.web.core.windows.net/newsrec/&#39;</span><span class="p">,</span> \
+                               <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">data_path</span><span class="p">,</span> <span class="s1">&#39;utils&#39;</span><span class="p">),</span> <span class="n">mind_utils</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>100%|██████████| 17.0k/17.0k [00:01&lt;00:00, 10.0kKB/s]
+100%|██████████| 9.84k/9.84k [00:01&lt;00:00, 8.42kKB/s]
+100%|██████████| 95.0k/95.0k [00:06&lt;00:00, 14.5kKB/s]
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="create-hyper-parameters">
+<h2>Create hyper-parameters<a class="headerlink" href="#create-hyper-parameters" title="Permalink to this headline">¶</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">hparams</span> <span class="o">=</span> <span class="n">prepare_hparams</span><span class="p">(</span><span class="n">yaml_file</span><span class="p">,</span> 
+                          <span class="n">wordEmb_file</span><span class="o">=</span><span class="n">wordEmb_file</span><span class="p">,</span>
+                          <span class="n">wordDict_file</span><span class="o">=</span><span class="n">wordDict_file</span><span class="p">,</span> 
+                          <span class="n">userDict_file</span><span class="o">=</span><span class="n">userDict_file</span><span class="p">,</span>
+                          <span class="n">vertDict_file</span><span class="o">=</span><span class="n">vertDict_file</span><span class="p">,</span> 
+                          <span class="n">subvertDict_file</span><span class="o">=</span><span class="n">subvertDict_file</span><span class="p">,</span>
+                          <span class="n">batch_size</span><span class="o">=</span><span class="n">batch_size</span><span class="p">,</span>
+                          <span class="n">epochs</span><span class="o">=</span><span class="n">epochs</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">hparams</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>data_format=naml,iterator_type=None,support_quick_scoring=True,wordEmb_file=/tmp/tmp1_pb4727/utils/embedding_all.npy,wordDict_file=/tmp/tmp1_pb4727/utils/word_dict_all.pkl,userDict_file=/tmp/tmp1_pb4727/utils/uid2index.pkl,vertDict_file=/tmp/tmp1_pb4727/utils/vert_dict.pkl,subvertDict_file=/tmp/tmp1_pb4727/utils/subvert_dict.pkl,title_size=30,body_size=50,word_emb_dim=300,word_size=None,user_num=None,vert_num=17,subvert_num=249,his_size=50,npratio=4,dropout=0.2,attention_hidden_dim=200,head_num=4,head_dim=100,cnn_activation=relu,dense_activation=relu,filter_num=400,window_size=3,vert_emb_dim=100,subvert_emb_dim=100,gru_unit=400,type=ini,user_emb_dim=50,learning_rate=0.0001,loss=cross_entropy_loss,optimizer=adam,epochs=5,batch_size=32,show_step=100000,metrics=[&#39;group_auc&#39;, &#39;mean_mrr&#39;, &#39;ndcg@5;10&#39;]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">iterator</span> <span class="o">=</span> <span class="n">MINDAllIterator</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="train-the-naml-model">
+<h2>Train the NAML model<a class="headerlink" href="#train-the-naml-model" title="Permalink to this headline">¶</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model</span> <span class="o">=</span> <span class="n">NAMLModel</span><span class="p">(</span><span class="n">hparams</span><span class="p">,</span> <span class="n">iterator</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="n">seed</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">run_eval</span><span class="p">(</span><span class="n">valid_news_file</span><span class="p">,</span> <span class="n">valid_behaviors_file</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>18693it [01:18, 239.62it/s]
+7507it [00:30, 249.74it/s]
+7538it [00:01, 6423.03it/s]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;group_auc&#39;: 0.4807, &#39;mean_mrr&#39;: 0.2104, &#39;ndcg@5&#39;: 0.2141, &#39;ndcg@10&#39;: 0.2766}
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%time</span>
+<span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">train_news_file</span><span class="p">,</span> <span class="n">train_behaviors_file</span><span class="p">,</span><span class="n">valid_news_file</span><span class="p">,</span> <span class="n">valid_behaviors_file</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1085it [01:49,  9.91it/s]
+18693it [01:16, 242.85it/s]
+7507it [00:30, 244.22it/s]
+7538it [00:01, 6540.79it/s]
+2it [00:00, 10.26it/s]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>at epoch 1
+train info: logloss loss:1.4915421532046411
+eval info: group_auc:0.5789, mean_mrr:0.2473, ndcg@10:0.3371, ndcg@5:0.2699
+at epoch 1 , train time: 109.5 eval time: 116.2
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1085it [01:43, 10.48it/s]
+18693it [01:16, 243.31it/s]
+7507it [00:30, 247.71it/s]
+7538it [00:01, 6653.75it/s]
+1it [00:00,  9.91it/s]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>at epoch 2
+train info: logloss loss:1.4155106401663222
+eval info: group_auc:0.607, mean_mrr:0.2659, ndcg@10:0.3586, ndcg@5:0.2934
+at epoch 2 , train time: 103.5 eval time: 115.7
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1085it [01:43, 10.45it/s]
+18693it [01:16, 244.17it/s]
+7507it [00:30, 246.78it/s]
+7538it [00:01, 5570.62it/s]
+1it [00:00,  9.92it/s]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>at epoch 3
+train info: logloss loss:1.3669039504319291
+eval info: group_auc:0.6199, mean_mrr:0.2719, ndcg@10:0.3675, ndcg@5:0.3038
+at epoch 3 , train time: 103.8 eval time: 115.7
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1085it [01:43, 10.46it/s]
+18693it [01:16, 244.82it/s]
+7507it [00:30, 245.09it/s]
+7538it [00:00, 8483.47it/s]
+1it [00:00,  9.64it/s]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>at epoch 4
+train info: logloss loss:1.3437963971344558
+eval info: group_auc:0.6329, mean_mrr:0.2883, ndcg@10:0.3828, ndcg@5:0.3193
+at epoch 4 , train time: 103.7 eval time: 115.3
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1085it [01:43, 10.46it/s]
+18693it [01:16, 244.65it/s]
+7507it [00:30, 247.97it/s]
+7538it [00:01, 6144.20it/s]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>at epoch 5
+train info: logloss loss:1.3198621605398468
+eval info: group_auc:0.6272, mean_mrr:0.2846, ndcg@10:0.376, ndcg@5:0.31
+at epoch 5 , train time: 103.8 eval time: 115.3
+CPU times: user 30min 1s, sys: 2min 34s, total: 32min 35s
+Wall time: 18min 22s
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;recommenders.models.newsrec.models.naml.NAMLModel at 0x7f13946c2dd8&gt;
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%time</span>
+<span class="n">res_syn</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">run_eval</span><span class="p">(</span><span class="n">valid_news_file</span><span class="p">,</span> <span class="n">valid_behaviors_file</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">res_syn</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>18693it [01:16, 245.66it/s]
+7507it [00:30, 249.77it/s]
+7538it [00:01, 6922.17it/s]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;group_auc&#39;: 0.6272, &#39;mean_mrr&#39;: 0.2846, &#39;ndcg@5&#39;: 0.31, &#39;ndcg@10&#39;: 0.376}
+CPU times: user 4min 2s, sys: 25.8 s, total: 4min 28s
+Wall time: 1min 54s
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sb</span><span class="o">.</span><span class="n">glue</span><span class="p">(</span><span class="s2">&quot;res_syn&quot;</span><span class="p">,</span> <span class="n">res_syn</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="save-the-model">
+<h2>Save the model<a class="headerlink" href="#save-the-model" title="Permalink to this headline">¶</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">data_path</span><span class="p">,</span> <span class="s2">&quot;model&quot;</span><span class="p">)</span>
+<span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">model_path</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="n">model</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">save_weights</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">model_path</span><span class="p">,</span> <span class="s2">&quot;naml_ckpt&quot;</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="output-prediction-file">
+<h2>Output Prediction File<a class="headerlink" href="#output-prediction-file" title="Permalink to this headline">¶</a></h2>
+<p>This code segment is used to generate the prediction.zip file, which is in the same format in <a class="reference external" href="https://competitions.codalab.org/competitions/24122#learn_the_details-submission-guidelines">MIND Competition Submission Tutorial</a>.</p>
+<p>Please change the <code class="docutils literal notranslate"><span class="pre">MIND_type</span></code> parameter to <code class="docutils literal notranslate"><span class="pre">large</span></code> if you want to submit your prediction to <a class="reference external" href="https://msnews.github.io/competition.html">MIND Competition</a>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">group_impr_indexes</span><span class="p">,</span> <span class="n">group_labels</span><span class="p">,</span> <span class="n">group_preds</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">run_fast_eval</span><span class="p">(</span><span class="n">valid_news_file</span><span class="p">,</span> <span class="n">valid_behaviors_file</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>18693it [01:16, 244.49it/s]
+7507it [00:30, 249.89it/s]
+7538it [00:01, 7159.06it/s]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">data_path</span><span class="p">,</span> <span class="s1">&#39;prediction.txt&#39;</span><span class="p">),</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">impr_index</span><span class="p">,</span> <span class="n">preds</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">group_impr_indexes</span><span class="p">,</span> <span class="n">group_preds</span><span class="p">)):</span>
+        <span class="n">impr_index</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="n">pred_rank</span> <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">preds</span><span class="p">)[::</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+        <span class="n">pred_rank</span> <span class="o">=</span> <span class="s1">&#39;[&#39;</span> <span class="o">+</span> <span class="s1">&#39;,&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">pred_rank</span><span class="p">])</span> <span class="o">+</span> <span class="s1">&#39;]&#39;</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="nb">str</span><span class="p">(</span><span class="n">impr_index</span><span class="p">),</span> <span class="n">pred_rank</span><span class="p">])</span><span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>7538it [00:00, 40033.61it/s]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">f</span> <span class="o">=</span> <span class="n">zipfile</span><span class="o">.</span><span class="n">ZipFile</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">data_path</span><span class="p">,</span> <span class="s1">&#39;prediction.zip&#39;</span><span class="p">),</span> <span class="s1">&#39;w&#39;</span><span class="p">,</span> <span class="n">zipfile</span><span class="o">.</span><span class="n">ZIP_DEFLATED</span><span class="p">)</span>
+<span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">data_path</span><span class="p">,</span> <span class="s1">&#39;prediction.txt&#39;</span><span class="p">),</span> <span class="n">arcname</span><span class="o">=</span><span class="s1">&#39;prediction.txt&#39;</span><span class="p">)</span>
+<span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="reference">
+<h2>Reference<a class="headerlink" href="#reference" title="Permalink to this headline">¶</a></h2>
+<p>[1] Chuhan Wu, Fangzhao Wu, Mingxiao An, Jianqiang Huang, Yongfeng Huang and Xing Xie: Neural News Recommendation with Attentive Multi-View Learning, IJCAI 2019<br>
+[2] Wu, Fangzhao, et al. “MIND: A Large-scale Dataset for News Recommendation” Proceedings of the 58th Annual Meeting of the Association for Computational Linguistics. <a class="reference external" href="https://msnews.github.io/competition.html">https://msnews.github.io/competition.html</a> <br>
+[3] GloVe: Global Vectors for Word Representation. <a class="reference external" href="https://nlp.stanford.edu/projects/glove/">https://nlp.stanford.edu/projects/glove/</a></p>
+</div>
+</div>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "reco_gpu"
+        },
+        kernelOptions: {
+            kernelName: "reco_gpu",
+            path: "./examples/00_quick_start"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'reco_gpu'</script>
+
+              </div>
+              
+        
+            
+
+
+
+<div class='prev-next-bottom'>
+    
+
+</div>
+        
+        </div>
+    </div>
+    <footer class="footer">
+    <div class="container">
+      <p>
+        
+          By The Jupyter Book community<br/>
+        
+            &copy; Copyright 2021.<br/>
+      </p>
+    </div>
+  </footer>
+</main>
+
+
+      </div>
+    </div>
+  
+  <script src="../../_static/js/index.1c5a1a01449ed65a7b51.js"></script>
+
+  
+  </body>
+</html>

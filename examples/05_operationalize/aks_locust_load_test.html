@@ -1,0 +1,552 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AKS Load Testing &#8212; &lt;h1 style=&#34;font-size:2em;text-align:center;color:#FF5733&#34;&gt;Recommenders&lt;/h1&gt;</title>
+    
+  <link href="../../_static/css/theme.css" rel="stylesheet" />
+  <link href="../../_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
+
+    
+  <link rel="stylesheet"
+    href="../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+
+    
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-book-theme.css?digest=c3fdc42140077d1ad13ad2f1588a4309" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/tabs.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    
+  <link rel="preload" as="script" href="../../_static/js/index.1c5a1a01449ed65a7b51.js">
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/togglebutton.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <script src="../../_static/tabs.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../../_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script>
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="../../_static/sphinx-thebe.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en" />
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="../../index.html">
+      
+      
+      
+      <h1 class="site-logo" id="site-title"><h1 style="font-size:2em;text-align:center;color:#FF5733">Recommenders</h1></h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="../../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        <p class="caption" role="heading">
+ <span class="caption-text">
+  Getting Started Notebooks
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../00_quick_start/als_movielens.html">
+   Running ALS on MovieLens (PySpark)
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../00_quick_start/ncf_movielens.html">
+   Neural Collaborative Filtering on MovieLens dataset.
+  </a>
+ </li>
+</ul>
+
+    </div>
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="topbar container-xl fixed-top">
+    <div class="topbar-contents row">
+        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
+        <div class="col pl-md-4 topbar-main">
+            
+            <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+                data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+                aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
+                title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+                <i class="fas fa-bars"></i>
+                <i class="fas fa-arrow-left"></i>
+                <i class="fas fa-arrow-up"></i>
+            </button>
+            
+            
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
+            class="fas fa-download"></i></button>
+
+    <div class="dropdown-buttons">
+        <!-- ipynb file if we had a myst markdown file -->
+        
+        <!-- Download raw file -->
+        <a class="dropdown-buttons" href="../../_sources/examples/05_operationalize/aks_locust_load_test.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
+                data-placement="left">.ipynb</button></a>
+        <!-- Download PDF via print -->
+        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
+            onClick="window.print()" data-toggle="tooltip" data-placement="left">.pdf</button>
+    </div>
+</div>
+
+            <!-- Source interaction buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
+    <div class="dropdown-buttons sourcebuttons">
+        <a class="repository-button"
+            href="https://github.com/microsoft/genalog"><button type="button" class="btn btn-secondary topbarbtn"
+                data-toggle="tooltip" data-placement="left" title="Source repository"><i
+                    class="fab fa-github"></i>repository</button></a>
+        <a class="issues-button"
+            href="https://github.com/microsoft/genalog/issues/new?title=Issue%20on%20page%20%2Fexamples/05_operationalize/aks_locust_load_test.html&body=Your%20issue%20content%20here."><button
+                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
+                title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
+        
+    </div>
+</div>
+
+            <!-- Full screen (wrap in <a> to have style consistency -->
+
+<a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+        data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+        title="Fullscreen mode"><i
+            class="fas fa-expand"></i></button></a>
+
+            <!-- Launch buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Launch interactive content"><i class="fas fa-rocket"></i></button>
+    <div class="dropdown-buttons">
+        
+        <a class="binder-button" href="https://mybinder.org/v2/gh/microsoft/genalog/main?urlpath=tree/docs/genalog_docs/examples/05_operationalize/aks_locust_load_test.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Launch Binder" data-toggle="tooltip"
+                data-placement="left"><img class="binder-button-logo"
+                    src="../../_static/images/logo_binder.svg"
+                    alt="Interact on binder">Binder</button></a>
+        
+        
+        
+        
+    </div>
+</div>
+
+        </div>
+
+        <!-- Table of contents -->
+        <div class="d-none d-md-block col-md-2 bd-toc show">
+            
+            <div class="tocsection onthispage pt-5 pb-3">
+                <i class="fas fa-list"></i> Contents
+            </div>
+            <nav id="bd-toc-nav" aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#create-a-temporary-directory-for-generated-files">
+   Create a temporary directory for generated files
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#retrieve-the-aks-service-information">
+   Retrieve the AKS service information
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#get-sample-data-for-testing">
+   Get Sample data for testing
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#setup-locustfile">
+   Setup LocustFile
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#load-test-results">
+   Load Test Results
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#cleanup-temporary-directory">
+   Cleanup temporary directory
+  </a>
+ </li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+        
+              <div>
+                
+  <p>Copyright (c) Microsoft Corporation. All rights reserved.</p>
+<p>Licensed under the MIT License.</p>
+<div class="section" id="aks-load-testing">
+<h1>AKS Load Testing<a class="headerlink" href="#aks-load-testing" title="Permalink to this headline">¶</a></h1>
+<p>Once a model has been deployed to production it is important to ensure that the deployment target can support the expected load (number of users and expected response speed). This is critical for providing recommendations in production systems that must support recommendations for multiple users simultaneously. As the number of concurrent users grows the load on the recommendation system can increase significantly, so understanding the limits of any operationalized system is necessary to avoid unwanted system failures or slow response times for users.</p>
+<p>To perform this kind of load test we can leverage tools that simulate user requests at varying rates and establish how many requests per seconds, or what the average response time is for the service. This notebook walks through the process of performing load testing for a deployed model on Azure Kubernetes Service (AKS).</p>
+<p>This notebook assumes an AKS Webservice was used to deploy the model from a Azure Machine Learning service Workspace.
+An example of this approach is provided in the <a class="reference internal" href="lightgbm_criteo_o16n.html"><span class="doc std std-doc">LightGBM Operationalization notebook</span></a>.</p>
+<p>We use <a class="reference external" href="https://docs.locust.io/en/stable/">Locust</a> to perform the load testing, see documentation for more details about this tool.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">subprocess</span>
+<span class="kn">from</span> <span class="nn">tempfile</span> <span class="kn">import</span> <span class="n">TemporaryDirectory</span>
+<span class="kn">from</span> <span class="nn">urllib.parse</span> <span class="kn">import</span> <span class="n">urlparse</span>
+
+<span class="kn">import</span> <span class="nn">requests</span>
+
+<span class="kn">from</span> <span class="nn">azureml.core</span> <span class="kn">import</span> <span class="n">Workspace</span>
+<span class="kn">from</span> <span class="nn">azureml.core</span> <span class="kn">import</span> <span class="n">VERSION</span> <span class="k">as</span> <span class="n">azureml_version</span>
+<span class="kn">from</span> <span class="nn">azureml.core.webservice</span> <span class="kn">import</span> <span class="n">AksWebservice</span>
+
+<span class="kn">from</span> <span class="nn">recommenders.datasets.criteo</span> <span class="kn">import</span> <span class="n">get_spark_schema</span><span class="p">,</span> <span class="n">load_pandas_df</span>
+
+<span class="c1"># Check core SDK version number</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Azure ML SDK version: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">azureml_version</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Azure ML SDK version: 1.0.18
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># We increase the cell width to capture all the output from locust later</span>
+<span class="kn">from</span> <span class="nn">IPython.core.display</span> <span class="kn">import</span> <span class="n">display</span><span class="p">,</span> <span class="n">HTML</span>
+<span class="n">display</span><span class="p">(</span><span class="n">HTML</span><span class="p">(</span><span class="s2">&quot;&lt;style&gt;.container { width:100% !important; }&lt;/style&gt;&quot;</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><style>.container { width:100% !important; }</style></div></div>
+</div>
+<div class="section" id="create-a-temporary-directory-for-generated-files">
+<h2>Create a temporary directory for generated files<a class="headerlink" href="#create-a-temporary-directory-for-generated-files" title="Permalink to this headline">¶</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">TMP_DIR</span> <span class="o">=</span> <span class="n">TemporaryDirectory</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="retrieve-the-aks-service-information">
+<h2>Retrieve the AKS service information<a class="headerlink" href="#retrieve-the-aks-service-information" title="Permalink to this headline">¶</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># this must match the service name that has been deployed</span>
+<span class="n">SERVICE_NAME</span> <span class="o">=</span> <span class="s1">&#39;lightgbm-criteo&#39;</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ws</span> <span class="o">=</span> <span class="n">Workspace</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;&lt;AZUREML-WORKSPACE-NAME&quot;</span><span class="p">,</span>
+    <span class="n">subscription_id</span><span class="o">=</span><span class="s1">&#39;&lt;AZURE-SUBSCRIPTION-ID&gt;&#39;</span><span class="p">,</span>
+    <span class="n">resource_group</span><span class="o">=</span><span class="s1">&#39;&lt;AZURE-RESOURCE-GROUP&gt;&#39;</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Warning: Falling back to use azure cli login credentials.
+If you run your code in unattended mode, i.e., where you can&#39;t give a user input, then we recommend to use ServicePrincipalAuthentication or MsiAuthentication.
+Please refer to aka.ms/aml-notebook-auth for different authentication mechanisms in azureml-sdk.
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Found the config file in: C:\Users\scgraham\repos\Recommenders\notebooks\05_operationalize\aml_config\config.json
+Wrote the config file config.json to: C:\Users\scgraham\repos\Recommenders\notebooks\05_operationalize\aml_config\config.json
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">aks_service</span> <span class="o">=</span> <span class="n">AksWebservice</span><span class="p">(</span><span class="n">ws</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">SERVICE_NAME</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Get the scoring the URI</span>
+<span class="n">url</span> <span class="o">=</span> <span class="n">aks_service</span><span class="o">.</span><span class="n">scoring_uri</span>
+<span class="n">parsed_url</span> <span class="o">=</span> <span class="n">urlparse</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+
+<span class="c1"># Setup authentication using one of the keys from aks_service</span>
+<span class="n">headers</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">Authorization</span><span class="o">=</span><span class="s1">&#39;Bearer </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">aks_service</span><span class="o">.</span><span class="n">get_keys</span><span class="p">()[</span><span class="mi">0</span><span class="p">]))</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="get-sample-data-for-testing">
+<h2>Get Sample data for testing<a class="headerlink" href="#get-sample-data-for-testing" title="Permalink to this headline">¶</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Grab some sample data</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">load_pandas_df</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="s1">&#39;sample&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>8.79MB [00:04, 1.93MB/s]                                                                                                                                                                                                                                                   
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">:]</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&quot;label&quot;:0,&quot;int00&quot;:1.0,&quot;int01&quot;:1,&quot;int02&quot;:5.0,&quot;int03&quot;:0.0,&quot;int04&quot;:1382.0,&quot;int05&quot;:4.0,&quot;int06&quot;:15.0,&quot;int07&quot;:2.0,&quot;int08&quot;:181.0,&quot;int09&quot;:1.0,&quot;int10&quot;:2.0,&quot;int11&quot;:null,&quot;int12&quot;:2.0,&quot;cat00&quot;:&quot;68fd1e64&quot;,&quot;cat01&quot;:&quot;80e26c9b&quot;,&quot;cat02&quot;:&quot;fb936136&quot;,&quot;cat03&quot;:&quot;7b4723c4&quot;,&quot;cat04&quot;:&quot;25c83c98&quot;,&quot;cat05&quot;:&quot;7e0ccccf&quot;,&quot;cat06&quot;:&quot;de7995b8&quot;,&quot;cat07&quot;:&quot;1f89b562&quot;,&quot;cat08&quot;:&quot;a73ee510&quot;,&quot;cat09&quot;:&quot;a8cd5504&quot;,&quot;cat10&quot;:&quot;b2cb9c98&quot;,&quot;cat11&quot;:&quot;37c9c164&quot;,&quot;cat12&quot;:&quot;2824a5f6&quot;,&quot;cat13&quot;:&quot;1adce6ef&quot;,&quot;cat14&quot;:&quot;8ba8b39a&quot;,&quot;cat15&quot;:&quot;891b62e7&quot;,&quot;cat16&quot;:&quot;e5ba7672&quot;,&quot;cat17&quot;:&quot;f54016b9&quot;,&quot;cat18&quot;:&quot;21ddcdc9&quot;,&quot;cat19&quot;:&quot;b1252a9d&quot;,&quot;cat20&quot;:&quot;07b5194c&quot;,&quot;cat21&quot;:null,&quot;cat22&quot;:&quot;3a171ecb&quot;,&quot;cat23&quot;:&quot;c5c50484&quot;,&quot;cat24&quot;:&quot;e8b83407&quot;,&quot;cat25&quot;:&quot;9727dd16&quot;}
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Ensure the aks service is running and provides expected results</span>
+<span class="n">aks_service</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;{&quot;result&quot;: 0.35952275816753043}&#39;
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Make sure an HTTP request to the service will also work</span>
+<span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="n">url</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="n">data</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&quot;result&quot;: 0.35952275816753043}
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="setup-locustfile">
+<h2>Setup LocustFile<a class="headerlink" href="#setup-locustfile" title="Permalink to this headline">¶</a></h2>
+<p>Locust uses a locust file (defaulting to <a class="reference external" href="http://locustfile.py">locustfile.py</a>) which controls the user behavior.</p>
+<p>In this example we create a UserBehavior class which encapsulates the tasks that the user will conduct each time it is started. We are only interested in ensure the service can handle a request with sample data so the only task used is the score task which is a simple post request like what was done manually above.</p>
+<p>The next class defines how a user will be instantiated, in this case we create a user which will make start an http session with the host server and execute the defined tasks. The task will be repeated after waiting for a small period of time. That wait period is determined by making a uniform random sample between the min and max wait times (in milliseconds).</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">locustfile</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">from locust import HttpLocust, TaskSet, task</span>
+
+
+<span class="s2">class UserBehavior(TaskSet):</span>
+<span class="s2">    @task</span>
+<span class="s2">    def score(self):</span>
+<span class="s2">        self.client.post(&quot;</span><span class="si">{score_url}</span><span class="s2">&quot;, json=&#39;</span><span class="si">{data}</span><span class="s2">&#39;, headers=</span><span class="si">{headers}</span><span class="s2">)</span>
+
+
+<span class="s2">class WebsiteUser(HttpLocust):</span>
+<span class="s2">    task_set = UserBehavior</span>
+<span class="s2">    # min and max time to wait before repeating task</span>
+<span class="s2">    min_wait = 1000</span>
+<span class="s2">    max_wait = 2000</span>
+<span class="s2">&quot;&quot;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span> <span class="n">score_url</span><span class="o">=</span><span class="n">parsed_url</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
+
+<span class="n">locustfile_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">TMP_DIR</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="s1">&#39;locustfile.py&#39;</span><span class="p">)</span>
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">locustfile_path</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">locustfile</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>The next step is to start the locust load test tool. It can be run with a web interface or directly from the command line. In this case we will just run it from the command line and specify the number of concurrent users, how fast the users should spawn and how long the test should run for. All these options can be controlled via the web interface gui as well as providing more information on failures so it is useful to read the documentation for more advanced usage. Here we will just run the test and capture the summary results.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cmd</span> <span class="o">=</span> <span class="s2">&quot;locust -H </span><span class="si">{host}</span><span class="s2"> -f </span><span class="si">{path}</span><span class="s2"> --no-web -c </span><span class="si">{users}</span><span class="s2"> -r </span><span class="si">{rate}</span><span class="s2"> -t </span><span class="si">{duration}</span><span class="s2"> --only-summary&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+    <span class="n">host</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">{url.scheme}</span><span class="s1">://</span><span class="si">{url.netloc}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="n">parsed_url</span><span class="p">),</span>
+    <span class="n">path</span><span class="o">=</span><span class="n">locustfile_path</span><span class="p">,</span>
+    <span class="n">users</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span>  <span class="c1"># concurrent users</span>
+    <span class="n">rate</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>  <span class="c1"># hatch rate (users / second)</span>
+    <span class="n">duration</span><span class="o">=</span><span class="s1">&#39;1m&#39;</span><span class="p">,</span>  <span class="c1"># test duration</span>
+<span class="p">)</span>
+<span class="n">process</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">cmd</span><span class="p">,</span> <span class="n">shell</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">stderr</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">process</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[2019-05-28 12:36:31,630] 9821192-1116/INFO/locust.main: Run time limit set to 60 seconds
+[2019-05-28 12:36:31,631] 9821192-1116/INFO/locust.main: Starting Locust 0.11.0
+[2019-05-28 12:36:31,631] 9821192-1116/INFO/locust.runners: Hatching and swarming 200 clients at the rate 10 clients/s...
+[2019-05-28 12:36:51,864] 9821192-1116/INFO/locust.runners: All locusts hatched: WebsiteUser: 200
+[2019-05-28 12:37:30,701] 9821192-1116/INFO/locust.main: Time limit reached. Stopping Locust.
+[2019-05-28 12:37:30,707] 9821192-1116/INFO/locust.main: Shutting down (exit code 0), bye.
+[2019-05-28 12:37:30,707] 9821192-1116/INFO/locust.main: Cleaning up runner...
+[2019-05-28 12:37:30,738] 9821192-1116/INFO/locust.main: Running teardowns...
+ Name                                                          # reqs      # fails     Avg     Min     Max  |  Median   req/s
+--------------------------------------------------------------------------------------------------------------------------------------------
+ POST /api/v1/service/lightgbm-criteo/score                      5298     0(0.00%)     364      34     927  |     390  104.30
+--------------------------------------------------------------------------------------------------------------------------------------------
+ Total                                                           5298     0(0.00%)                                     104.30
+
+Percentage of the requests completed within given times
+ Name                                                           # reqs    50%    66%    75%    80%    90%    95%    98%    99%   100%
+--------------------------------------------------------------------------------------------------------------------------------------------
+ POST /api/v1/service/lightgbm-criteo/score                       5298    390    420    440    460    500    530    590    640    930
+--------------------------------------------------------------------------------------------------------------------------------------------
+ Total                                                            5298    390    420    440    460    500    530    590    640    930
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="load-test-results">
+<h2>Load Test Results<a class="headerlink" href="#load-test-results" title="Permalink to this headline">¶</a></h2>
+<p>Above you can see the number of requests, failures and statistics on response time, as well as the number of requests per second that the server is handling.</p>
+<p>The second line shows the distribution of response times which can be helpful to understand over all the requests how the load is impacting the response speed and whether there may be outliers which are impacting performance.</p>
+</div>
+<div class="section" id="cleanup-temporary-directory">
+<h2>Cleanup temporary directory<a class="headerlink" href="#cleanup-temporary-directory" title="Permalink to this headline">¶</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">TMP_DIR</span><span class="o">.</span><span class="n">cleanup</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./examples/05_operationalize"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+              </div>
+              
+        
+            
+
+
+
+<div class='prev-next-bottom'>
+    
+
+</div>
+        
+        </div>
+    </div>
+    <footer class="footer">
+    <div class="container">
+      <p>
+        
+          By The Jupyter Book community<br/>
+        
+            &copy; Copyright 2021.<br/>
+      </p>
+    </div>
+  </footer>
+</main>
+
+
+      </div>
+    </div>
+  
+  <script src="../../_static/js/index.1c5a1a01449ed65a7b51.js"></script>
+
+  
+  </body>
+</html>

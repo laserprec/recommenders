@@ -1,0 +1,770 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Bayesian Personalized Ranking (BPR) &#8212; &lt;h1 style=&#34;font-size:2em;text-align:center;color:#FF5733&#34;&gt;Recommenders&lt;/h1&gt;</title>
+    
+  <link href="../../_static/css/theme.css" rel="stylesheet" />
+  <link href="../../_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
+
+    
+  <link rel="stylesheet"
+    href="../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+
+    
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-book-theme.css?digest=c3fdc42140077d1ad13ad2f1588a4309" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/tabs.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    
+  <link rel="preload" as="script" href="../../_static/js/index.1c5a1a01449ed65a7b51.js">
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/togglebutton.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <script src="../../_static/tabs.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../../_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script>
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="../../_static/sphinx-thebe.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en" />
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="../../index.html">
+      
+      
+      
+      <h1 class="site-logo" id="site-title"><h1 style="font-size:2em;text-align:center;color:#FF5733">Recommenders</h1></h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="../../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        <p class="caption" role="heading">
+ <span class="caption-text">
+  Getting Started Notebooks
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../00_quick_start/als_movielens.html">
+   Running ALS on MovieLens (PySpark)
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../00_quick_start/ncf_movielens.html">
+   Neural Collaborative Filtering on MovieLens dataset.
+  </a>
+ </li>
+</ul>
+
+    </div>
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="topbar container-xl fixed-top">
+    <div class="topbar-contents row">
+        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
+        <div class="col pl-md-4 topbar-main">
+            
+            <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+                data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+                aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
+                title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+                <i class="fas fa-bars"></i>
+                <i class="fas fa-arrow-left"></i>
+                <i class="fas fa-arrow-up"></i>
+            </button>
+            
+            
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
+            class="fas fa-download"></i></button>
+
+    <div class="dropdown-buttons">
+        <!-- ipynb file if we had a myst markdown file -->
+        
+        <!-- Download raw file -->
+        <a class="dropdown-buttons" href="../../_sources/examples/02_model_collaborative_filtering/cornac_bpr_deep_dive.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
+                data-placement="left">.ipynb</button></a>
+        <!-- Download PDF via print -->
+        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
+            onClick="window.print()" data-toggle="tooltip" data-placement="left">.pdf</button>
+    </div>
+</div>
+
+            <!-- Source interaction buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
+    <div class="dropdown-buttons sourcebuttons">
+        <a class="repository-button"
+            href="https://github.com/microsoft/genalog"><button type="button" class="btn btn-secondary topbarbtn"
+                data-toggle="tooltip" data-placement="left" title="Source repository"><i
+                    class="fab fa-github"></i>repository</button></a>
+        <a class="issues-button"
+            href="https://github.com/microsoft/genalog/issues/new?title=Issue%20on%20page%20%2Fexamples/02_model_collaborative_filtering/cornac_bpr_deep_dive.html&body=Your%20issue%20content%20here."><button
+                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
+                title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
+        
+    </div>
+</div>
+
+            <!-- Full screen (wrap in <a> to have style consistency -->
+
+<a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+        data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+        title="Fullscreen mode"><i
+            class="fas fa-expand"></i></button></a>
+
+            <!-- Launch buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Launch interactive content"><i class="fas fa-rocket"></i></button>
+    <div class="dropdown-buttons">
+        
+        <a class="binder-button" href="https://mybinder.org/v2/gh/microsoft/genalog/main?urlpath=tree/docs/genalog_docs/examples/02_model_collaborative_filtering/cornac_bpr_deep_dive.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Launch Binder" data-toggle="tooltip"
+                data-placement="left"><img class="binder-button-logo"
+                    src="../../_static/images/logo_binder.svg"
+                    alt="Interact on binder">Binder</button></a>
+        
+        
+        
+        
+    </div>
+</div>
+
+        </div>
+
+        <!-- Table of contents -->
+        <div class="d-none d-md-block col-md-2 bd-toc show">
+            
+            <div class="tocsection onthispage pt-5 pb-3">
+                <i class="fas fa-list"></i> Contents
+            </div>
+            <nav id="bd-toc-nav" aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#global-settings-and-imports">
+   0 Global Settings and Imports
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#bpr-algorithm">
+   1 BPR Algorithm
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#personalized-ranking-from-implicit-feedback">
+     1.1 Personalized Ranking from Implicit Feedback
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#objective-function">
+     1.2 Objective Function
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#learning-with-matrix-factorization">
+     1.3 Learning with Matrix Factorization
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#stochastic-gradient-descent">
+       Stochastic Gradient Descent
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#matrix-factorization-for-preference-approximation">
+       Matrix Factorization for Preference Approximation
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#analogies-to-auc-optimization">
+       Analogies to AUC optimization
+      </a>
+     </li>
+    </ul>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#cornac-implementation-of-bpr">
+   2 Cornac implementation of BPR
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#cornac-bpr-movie-recommender">
+   3 Cornac BPR movie recommender
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#load-and-split-data">
+     3.1 Load and split data
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#cornac-dataset">
+     3.2 Cornac Dataset
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#train-the-bpr-model">
+     3.3 Train the BPR model
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#prediction-and-evaluation">
+     3.4 Prediction and Evaluation
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#references">
+   References
+  </a>
+ </li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+        
+              <div>
+                
+  <p><i>Copyright (c) Microsoft Corporation. All rights reserved.</i></p>
+<p><i>Licensed under the MIT License.</i></p>
+<div class="tex2jax_ignore mathjax_ignore section" id="bayesian-personalized-ranking-bpr">
+<h1>Bayesian Personalized Ranking (BPR)<a class="headerlink" href="#bayesian-personalized-ranking-bpr" title="Permalink to this headline">¶</a></h1>
+<p>This notebook serves as an introduction to Bayesian Personalized Ranking (BPR) model for implicit feedback.  In this tutorial, we focus on learning the BPR model using matrix factorization approach, hence, the model is sometimes also named BPRMF.</p>
+<p>The implementation of the model is from <a class="reference external" href="https://github.com/PreferredAI/cornac">Cornac</a>, which is a framework for recommender systems with a focus on models leveraging auxiliary data (e.g., item descriptive text and image, social network, etc).</p>
+<div class="section" id="global-settings-and-imports">
+<h2>0 Global Settings and Imports<a class="headerlink" href="#global-settings-and-imports" title="Permalink to this headline">¶</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">cornac</span>
+<span class="kn">import</span> <span class="nn">papermill</span> <span class="k">as</span> <span class="nn">pm</span>
+<span class="kn">import</span> <span class="nn">scrapbook</span> <span class="k">as</span> <span class="nn">sb</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">from</span> <span class="nn">recommenders.datasets</span> <span class="kn">import</span> <span class="n">movielens</span>
+<span class="kn">from</span> <span class="nn">recommenders.datasets.python_splitters</span> <span class="kn">import</span> <span class="n">python_random_split</span>
+<span class="kn">from</span> <span class="nn">recommenders.evaluation.python_evaluation</span> <span class="kn">import</span> <span class="n">map_at_k</span><span class="p">,</span> <span class="n">ndcg_at_k</span><span class="p">,</span> <span class="n">precision_at_k</span><span class="p">,</span> <span class="n">recall_at_k</span>
+<span class="kn">from</span> <span class="nn">recommenders.models.cornac.cornac_utils</span> <span class="kn">import</span> <span class="n">predict_ranking</span>
+<span class="kn">from</span> <span class="nn">recommenders.utils.timer</span> <span class="kn">import</span> <span class="n">Timer</span>
+<span class="kn">from</span> <span class="nn">recommenders.utils.constants</span> <span class="kn">import</span> <span class="n">SEED</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;System version: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">version</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Cornac version: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">cornac</span><span class="o">.</span><span class="n">__version__</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>System version: 3.6.8 |Anaconda, Inc.| (default, Feb 21 2019, 18:30:04) [MSC v.1916 64 bit (AMD64)]
+Cornac version: 1.1.2
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell tag_parameters docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Select MovieLens data size: 100k, 1m, 10m, or 20m</span>
+<span class="n">MOVIELENS_DATA_SIZE</span> <span class="o">=</span> <span class="s1">&#39;100k&#39;</span>
+
+<span class="c1"># top k items to recommend</span>
+<span class="n">TOP_K</span> <span class="o">=</span> <span class="mi">10</span>
+
+<span class="c1"># Model parameters</span>
+<span class="n">NUM_FACTORS</span> <span class="o">=</span> <span class="mi">200</span>
+<span class="n">NUM_EPOCHS</span> <span class="o">=</span> <span class="mi">100</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="bpr-algorithm">
+<h2>1 BPR Algorithm<a class="headerlink" href="#bpr-algorithm" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="personalized-ranking-from-implicit-feedback">
+<h3>1.1 Personalized Ranking from Implicit Feedback<a class="headerlink" href="#personalized-ranking-from-implicit-feedback" title="Permalink to this headline">¶</a></h3>
+<p>The task of personalized ranking aims at providing each user a ranked list of items (recommendations).  This is very common in scenarios where recommender systems are based on implicit user behavior (e.g. purchases, clicks).  The available observations are only positive feedback where the non-observed ones are a mixture of real negative feedback and missing values.</p>
+<p>One usual approach for item recommendation is directly predicting a preference score <span class="math notranslate nohighlight">\(\hat{x}_{u,i}\)</span> given to item <span class="math notranslate nohighlight">\(i\)</span> by user <span class="math notranslate nohighlight">\(u\)</span>.  BPR uses a different approach by using item pairs <span class="math notranslate nohighlight">\((i, j)\)</span> and optimizing for the correct ranking given preference of user <span class="math notranslate nohighlight">\(u\)</span>, thus, there are notions of <em>positive</em> and <em>negative</em> items.  The training data <span class="math notranslate nohighlight">\(D_S : U \times I \times I\)</span> is defined as:</p>
+<div class="math notranslate nohighlight">
+\[D_S = \{(u, i, j) \mid i \in I^{+}_{u} \wedge j \in I \setminus I^{+}_{u}\}\]</div>
+<p>where user <span class="math notranslate nohighlight">\(u\)</span> is assumed to prefer <span class="math notranslate nohighlight">\(i\)</span> over <span class="math notranslate nohighlight">\(j\)</span> (i.e. <span class="math notranslate nohighlight">\(i\)</span> is a <em>positive item</em> and <span class="math notranslate nohighlight">\(j\)</span> is a <em>negative item</em>).</p>
+</div>
+<div class="section" id="objective-function">
+<h3>1.2 Objective Function<a class="headerlink" href="#objective-function" title="Permalink to this headline">¶</a></h3>
+<p>From the Bayesian perspective, BPR maximizes the posterior probability over the model parameters <span class="math notranslate nohighlight">\(\Theta\)</span> by optimizing the likelihood function <span class="math notranslate nohighlight">\(p(i &gt;_{u} j | \Theta)\)</span> and the prior probability <span class="math notranslate nohighlight">\(p(\Theta)\)</span>.</p>
+<div class="math notranslate nohighlight">
+\[p(\Theta \mid &gt;_{u}) \propto p(i &gt;_{u} j \mid \Theta) \times p(\Theta)\]</div>
+<p>The joint probability of the likelihood over all users <span class="math notranslate nohighlight">\(u \in U\)</span> can be simplified to:</p>
+<div class="math notranslate nohighlight">
+\[ \prod_{u \in U} p(&gt;_{u} \mid \Theta) = \prod_{(u, i, j) \in D_S} p(i &gt;_{u} j \mid \Theta) \]</div>
+<p>The individual probability that a user <span class="math notranslate nohighlight">\(u\)</span> prefers item <span class="math notranslate nohighlight">\(i\)</span> to item <span class="math notranslate nohighlight">\(j\)</span> can be defined as:</p>
+<div class="math notranslate nohighlight">
+\[ p(i &gt;_{u} j \mid \Theta) = \sigma (\hat{x}_{uij}(\Theta)) \]</div>
+<p>where <span class="math notranslate nohighlight">\(\sigma\)</span> is the logistic sigmoid:</p>
+<div class="math notranslate nohighlight">
+\[ \sigma(x) = \frac{1}{1 + e^{-x}} \]</div>
+<p>The preference scoring function <span class="math notranslate nohighlight">\(\hat{x}_{uij}(\Theta)\)</span> could be an arbitrary real-valued function of the model parameter <span class="math notranslate nohighlight">\(\Theta\)</span>.  Thus, it makes BPR a general framework for modeling the relationship between triplets <span class="math notranslate nohighlight">\((u, i, j)\)</span> where different model classes like matrix factorization could be used for estimating <span class="math notranslate nohighlight">\(\hat{x}_{uij}(\Theta)\)</span>.</p>
+<p>For the prior, one of the common pratices is to choose <span class="math notranslate nohighlight">\(p(\Theta)\)</span> following a normal distribution, which results in a nice form of L2 regularization in the final log-form of the objective function.</p>
+<div class="math notranslate nohighlight">
+\[ p(\Theta) \sim N(0, \Sigma_{\Theta}) \]</div>
+<p>To reduce the complexity of the model, all parameters <span class="math notranslate nohighlight">\(\Theta\)</span> are assumed to be independent and having the same variance, which gives a simpler form of the co-variance matrix <span class="math notranslate nohighlight">\(\Sigma_{\Theta} = \lambda_{\Theta}I\)</span>.  Thus, there are less number of hyperparameters to be determined.</p>
+<p>The final objective of the maximum posterior estimator:</p>
+<div class="math notranslate nohighlight">
+\[ J = \sum_{(u, i, j) \in D_S} \text{ln } \sigma(\hat{x}_{uij}) - \lambda_{\Theta} ||\Theta||^2 \]</div>
+<p>where <span class="math notranslate nohighlight">\(\lambda_\Theta\)</span> are the model specific regularization paramerters.</p>
+</div>
+<div class="section" id="learning-with-matrix-factorization">
+<h3>1.3 Learning with Matrix Factorization<a class="headerlink" href="#learning-with-matrix-factorization" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="stochastic-gradient-descent">
+<h4>Stochastic Gradient Descent<a class="headerlink" href="#stochastic-gradient-descent" title="Permalink to this headline">¶</a></h4>
+<p>As the defined objective function is differentible, gradient descent based method for optimization is naturally adopted.  The gradient of the objective <span class="math notranslate nohighlight">\(J\)</span> with respect to the model parameters:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{align}
+\frac{\partial J}{\partial \Theta} &amp; = \sum_{(u, i, j) \in D_S} \frac{\partial}{\partial \Theta} \text{ln} \ \sigma(\hat{x}_{uij}) - \lambda_{\Theta} \frac{\partial}{\partial \Theta} ||\Theta||^2 \\
+&amp; \propto \sum_{(u, i, j) \in D_S} \frac{-e^{-\hat{x}_{uij}}}{1 + e^{-\hat{x}_{uij}}} \cdot  \frac{\partial}{\partial \Theta} \hat{x}_{uij} - \lambda_{\Theta} \Theta
+\end{align}
+\end{split}\]</div>
+<p>Due to slow convergence of full gradient descent, we prefer using stochastic gradient descent to optimize the BPR model.  For each triplet <span class="math notranslate nohighlight">\((u, i, j) \in D_S\)</span>, the update rule for the parameters:</p>
+<div class="math notranslate nohighlight">
+\[ \Theta \leftarrow \Theta + \alpha \Big( \frac{e^{-\hat{x}_{uij}}}{1 + e^{-\hat{x}_{uij}}} \cdot \frac{\partial}{\partial \Theta} \hat{x}_{uij} + \lambda_\Theta \Theta \Big) \]</div>
+</div>
+<div class="section" id="matrix-factorization-for-preference-approximation">
+<h4>Matrix Factorization for Preference Approximation<a class="headerlink" href="#matrix-factorization-for-preference-approximation" title="Permalink to this headline">¶</a></h4>
+<p>As mentioned earlier, the preference scoring function <span class="math notranslate nohighlight">\(\hat{x}_{uij}(\Theta)\)</span> could be approximated by any real-valued function.  First, the estimator <span class="math notranslate nohighlight">\(\hat{x}_{uij}\)</span> is decomposed into:</p>
+<div class="math notranslate nohighlight">
+\[ \hat{x}_{uij} = \hat{x}_{ui} - \hat{x}_{uj} \]</div>
+<p>The problem of estimating <span class="math notranslate nohighlight">\(\hat{x}_{ui}\)</span> is a standard collaborative filtering formulation, where matrix factorization approach has shown to be very effective.  The prediction formula can written as dot product between user feature vector <span class="math notranslate nohighlight">\(w_u\)</span> and item feature vector <span class="math notranslate nohighlight">\(h_i\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[ \hat{x}_{ui} = \langle w_u , h_i \rangle = \sum_{f=1}^{k} w_{uf} \cdot h_{if} \]</div>
+<p>The  derivatives of matrix factorization with respect to the model parameters are:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\frac{\partial}{\partial \theta} \hat{x}_{uij} = 
+\begin{cases}
+    (h_{if} - h_{jf})  &amp; \text{if } \theta = w_{uf} \\
+    w_{uf}             &amp; \text{if } \theta = h_{if} \\
+    -w_{uf}            &amp; \text{if } \theta = h_{jf} \\
+    0                  &amp; \text{else}
+\end{cases}
+\end{split}\]</div>
+<p>In theory, any kernel can be used to estimate <span class="math notranslate nohighlight">\(\hat{x}_{ui}\)</span> besides the dot product <span class="math notranslate nohighlight">\( \langle \cdot , \cdot \rangle \)</span>.  For example, k-Nearest-Neighbor (kNN) has also been shown to achieve good performance.</p>
+</div>
+<div class="section" id="analogies-to-auc-optimization">
+<h4>Analogies to AUC optimization<a class="headerlink" href="#analogies-to-auc-optimization" title="Permalink to this headline">¶</a></h4>
+<p>By optimizing the objective function of BPR model, we effectively maximizing <a class="reference external" href="https://towardsdatascience.com/understanding-auc-roc-curve-68b2303cc9c5">AUC</a> measurement.  To keep the notebook focused, please refer to the <a class="reference external" href="https://arxiv.org/ftp/arxiv/papers/1205/1205.2618.pdf">paper</a> for details of the analysis (Section 4.1.1).</p>
+</div>
+</div>
+</div>
+<div class="section" id="cornac-implementation-of-bpr">
+<h2>2 Cornac implementation of BPR<a class="headerlink" href="#cornac-implementation-of-bpr" title="Permalink to this headline">¶</a></h2>
+<p>BPR is implemented in the <a class="reference external" href="https://cornac.readthedocs.io/en/latest/index.html">Cornac</a> framework as part of the model collections.</p>
+<ul class="simple">
+<li><p>Detailed documentations of the BPR model in Cornac can be found <a class="reference external" href="https://cornac.readthedocs.io/en/latest/models.html#bayesian-personalized-ranking-bpr">here</a>.</p></li>
+<li><p>Source codes of the BPR implementation is available on the Cornac Github repository, which can be found <a class="reference external" href="https://github.com/PreferredAI/cornac/blob/master/cornac/models/bpr/recom_bpr.pyx">here</a>.</p></li>
+</ul>
+</div>
+<div class="section" id="cornac-bpr-movie-recommender">
+<h2>3 Cornac BPR movie recommender<a class="headerlink" href="#cornac-bpr-movie-recommender" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="load-and-split-data">
+<h3>3.1 Load and split data<a class="headerlink" href="#load-and-split-data" title="Permalink to this headline">¶</a></h3>
+<p>To evaluate the performance of item recommendation, we adopted the provided <code class="docutils literal notranslate"><span class="pre">python_random_split</span></code> tool for the consistency.  Data is randomly split into training and test sets with the ratio of 75/25.</p>
+<p>Note that Cornac also cover different <a class="reference external" href="https://cornac.readthedocs.io/en/latest/eval_methods.html">built-in schemes</a> for model evaluation.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data</span> <span class="o">=</span> <span class="n">movielens</span><span class="o">.</span><span class="n">load_pandas_df</span><span class="p">(</span>
+    <span class="n">size</span><span class="o">=</span><span class="n">MOVIELENS_DATA_SIZE</span><span class="p">,</span>
+    <span class="n">header</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;userID&quot;</span><span class="p">,</span> <span class="s2">&quot;itemID&quot;</span><span class="p">,</span> <span class="s2">&quot;rating&quot;</span><span class="p">]</span>
+<span class="p">)</span>
+
+<span class="n">data</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>100%|███████████████████████████████████████████████████████████████████████████████████████| 4.81k/4.81k [00:08&lt;00:00, 590KB/s]
+</pre></div>
+</div>
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>userID</th>
+      <th>itemID</th>
+      <th>rating</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>0</td>
+      <td>196</td>
+      <td>242</td>
+      <td>3.0</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>186</td>
+      <td>302</td>
+      <td>3.0</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>22</td>
+      <td>377</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>244</td>
+      <td>51</td>
+      <td>2.0</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>166</td>
+      <td>346</td>
+      <td>1.0</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">train</span><span class="p">,</span> <span class="n">test</span> <span class="o">=</span> <span class="n">python_random_split</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="mf">0.75</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="cornac-dataset">
+<h3>3.2 Cornac Dataset<a class="headerlink" href="#cornac-dataset" title="Permalink to this headline">¶</a></h3>
+<p>To work with models implemented in Cornac, we need to construct an object from <a class="reference external" href="https://cornac.readthedocs.io/en/latest/data.html#module-cornac.data.dataset">Dataset</a> class.</p>
+<p>Dataset Class in Cornac serves as the main object that the models will interact with.  In addition to data transformations, Dataset provides a bunch of useful iterators for looping through the data, as well as supporting different negative sampling techniques.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">train_set</span> <span class="o">=</span> <span class="n">cornac</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Dataset</span><span class="o">.</span><span class="n">from_uir</span><span class="p">(</span><span class="n">train</span><span class="o">.</span><span class="n">itertuples</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">),</span> <span class="n">seed</span><span class="o">=</span><span class="n">SEED</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Number of users: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">train_set</span><span class="o">.</span><span class="n">num_users</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Number of items: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">train_set</span><span class="o">.</span><span class="n">num_items</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Number of users: 943
+Number of items: 1642
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="train-the-bpr-model">
+<h3>3.3 Train the BPR model<a class="headerlink" href="#train-the-bpr-model" title="Permalink to this headline">¶</a></h3>
+<p>The BPR has a few important parameters that we need to consider:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">k</span></code>: controls the dimension of the latent space (i.e. the size of the vectors  <span class="math notranslate nohighlight">\(w_u\)</span>  and  <span class="math notranslate nohighlight">\(h_i\)</span> ).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">max_iter</span></code>: defines the number of iterations of the SGD procedure.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">learning_rate</span></code>: controls the step size <span class="math notranslate nohighlight">\(\alpha\)</span> in the gradient update rules.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">lambda_reg</span></code>: controls the L2-Regularization <span class="math notranslate nohighlight">\(\lambda\)</span> in the objective function.</p></li>
+</ul>
+<p>Note that different values of <code class="docutils literal notranslate"><span class="pre">k</span></code> and <code class="docutils literal notranslate"><span class="pre">max_iter</span></code> will affect the training time.</p>
+<p>We will here set <code class="docutils literal notranslate"><span class="pre">k</span></code> to 200, <code class="docutils literal notranslate"><span class="pre">max_iter</span></code> to 100, <code class="docutils literal notranslate"><span class="pre">learning_rate</span></code> to 0.01, and <code class="docutils literal notranslate"><span class="pre">lambda_reg</span></code> to 0.001. To train the model, we simply need to call the <code class="docutils literal notranslate"><span class="pre">fit()</span></code> method.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">bpr</span> <span class="o">=</span> <span class="n">cornac</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">BPR</span><span class="p">(</span>
+    <span class="n">k</span><span class="o">=</span><span class="n">NUM_FACTORS</span><span class="p">,</span>
+    <span class="n">max_iter</span><span class="o">=</span><span class="n">NUM_EPOCHS</span><span class="p">,</span>
+    <span class="n">learning_rate</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span>
+    <span class="n">lambda_reg</span><span class="o">=</span><span class="mf">0.001</span><span class="p">,</span>
+    <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">seed</span><span class="o">=</span><span class="n">SEED</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">Timer</span><span class="p">()</span> <span class="k">as</span> <span class="n">t</span><span class="p">:</span>
+    <span class="n">bpr</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">train_set</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Took </span><span class="si">{}</span><span class="s2"> seconds for training.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">t</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>100%|██████████████████████████████████████████████████████████| 100/100 [00:07&lt;00:00, 13.27it/s, correct=92.19%, skipped=9.38%]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Optimization finished!
+Took 7.6953 seconds for training.
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="prediction-and-evaluation">
+<h3>3.4 Prediction and Evaluation<a class="headerlink" href="#prediction-and-evaluation" title="Permalink to this headline">¶</a></h3>
+<p>Now that our model is trained, we can produce the ranked lists for recommendation.  Every recommender models in Cornac provide <code class="docutils literal notranslate"><span class="pre">rate()</span></code> and <code class="docutils literal notranslate"><span class="pre">rank()</span></code> methods for predicting item rated value as well as item ranked list for a given user.  To make use of the current evaluation schemes, we will through <code class="docutils literal notranslate"><span class="pre">predict()</span></code> and <code class="docutils literal notranslate"><span class="pre">predict_ranking()</span></code> functions inside <code class="docutils literal notranslate"><span class="pre">cornac_utils</span></code> to produce the predictions.</p>
+<p>Note that BPR model is effectively designed for item ranking.  Hence, we only measure the performance using ranking metrics.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">Timer</span><span class="p">()</span> <span class="k">as</span> <span class="n">t</span><span class="p">:</span>
+    <span class="n">all_predictions</span> <span class="o">=</span> <span class="n">predict_ranking</span><span class="p">(</span><span class="n">bpr</span><span class="p">,</span> <span class="n">train</span><span class="p">,</span> <span class="n">usercol</span><span class="o">=</span><span class="s1">&#39;userID&#39;</span><span class="p">,</span> <span class="n">itemcol</span><span class="o">=</span><span class="s1">&#39;itemID&#39;</span><span class="p">,</span> <span class="n">remove_seen</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Took </span><span class="si">{}</span><span class="s2"> seconds for prediction.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">t</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Took 1.7393803596496582 seconds for prediction.
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">all_predictions</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>userID</th>
+      <th>itemID</th>
+      <th>prediction</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>75000</td>
+      <td>811</td>
+      <td>755</td>
+      <td>0.117239</td>
+    </tr>
+    <tr>
+      <td>75001</td>
+      <td>811</td>
+      <td>287</td>
+      <td>2.579992</td>
+    </tr>
+    <tr>
+      <td>75002</td>
+      <td>811</td>
+      <td>181</td>
+      <td>3.743980</td>
+    </tr>
+    <tr>
+      <td>75003</td>
+      <td>811</td>
+      <td>96</td>
+      <td>1.959841</td>
+    </tr>
+    <tr>
+      <td>75004</td>
+      <td>811</td>
+      <td>83</td>
+      <td>1.122369</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">k</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="n">eval_map</span> <span class="o">=</span> <span class="n">map_at_k</span><span class="p">(</span><span class="n">test</span><span class="p">,</span> <span class="n">all_predictions</span><span class="p">,</span> <span class="n">col_prediction</span><span class="o">=</span><span class="s1">&#39;prediction&#39;</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="n">k</span><span class="p">)</span>
+<span class="n">eval_ndcg</span> <span class="o">=</span> <span class="n">ndcg_at_k</span><span class="p">(</span><span class="n">test</span><span class="p">,</span> <span class="n">all_predictions</span><span class="p">,</span> <span class="n">col_prediction</span><span class="o">=</span><span class="s1">&#39;prediction&#39;</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="n">k</span><span class="p">)</span>
+<span class="n">eval_precision</span> <span class="o">=</span> <span class="n">precision_at_k</span><span class="p">(</span><span class="n">test</span><span class="p">,</span> <span class="n">all_predictions</span><span class="p">,</span> <span class="n">col_prediction</span><span class="o">=</span><span class="s1">&#39;prediction&#39;</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="n">k</span><span class="p">)</span>
+<span class="n">eval_recall</span> <span class="o">=</span> <span class="n">recall_at_k</span><span class="p">(</span><span class="n">test</span><span class="p">,</span> <span class="n">all_predictions</span><span class="p">,</span> <span class="n">col_prediction</span><span class="o">=</span><span class="s1">&#39;prediction&#39;</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="n">k</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;MAP:</span><span class="se">\t</span><span class="si">%f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">eval_map</span><span class="p">,</span>
+      <span class="s2">&quot;NDCG:</span><span class="se">\t</span><span class="si">%f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">eval_ndcg</span><span class="p">,</span>
+      <span class="s2">&quot;Precision@K:</span><span class="se">\t</span><span class="si">%f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">eval_precision</span><span class="p">,</span>
+      <span class="s2">&quot;Recall@K:</span><span class="se">\t</span><span class="si">%f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">eval_recall</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>MAP:	0.109077
+NDCG:	0.403395
+Precision@K:	0.354989
+Recall@K:	0.180183
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Record results with papermill for tests</span>
+<span class="n">sb</span><span class="o">.</span><span class="n">glue</span><span class="p">(</span><span class="s2">&quot;map&quot;</span><span class="p">,</span> <span class="n">eval_map</span><span class="p">)</span>
+<span class="n">sb</span><span class="o">.</span><span class="n">glue</span><span class="p">(</span><span class="s2">&quot;ndcg&quot;</span><span class="p">,</span> <span class="n">eval_ndcg</span><span class="p">)</span>
+<span class="n">sb</span><span class="o">.</span><span class="n">glue</span><span class="p">(</span><span class="s2">&quot;precision&quot;</span><span class="p">,</span> <span class="n">eval_precision</span><span class="p">)</span>
+<span class="n">sb</span><span class="o">.</span><span class="n">glue</span><span class="p">(</span><span class="s2">&quot;recall&quot;</span><span class="p">,</span> <span class="n">eval_recall</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="references">
+<h2>References<a class="headerlink" href="#references" title="Permalink to this headline">¶</a></h2>
+<ol class="simple">
+<li><p>Rendle, S., Freudenthaler, C., Gantner, Z., &amp; Schmidt-Thieme, L. (2009, June). BPR: Bayesian personalized ranking from implicit feedback. <a class="reference external" href="https://arxiv.org/ftp/arxiv/papers/1205/1205.2618.pdf">https://arxiv.org/ftp/arxiv/papers/1205/1205.2618.pdf</a></p></li>
+<li><p>Pan, R., Zhou, Y., Cao, B., Liu, N. N., Lukose, R., Scholz, M., &amp; Yang, Q. (2008, December). One-class collaborative filtering. <a class="reference external" href="https://cseweb.ucsd.edu/classes/fa17/cse291-b/reading/04781145.pdf">https://cseweb.ucsd.edu/classes/fa17/cse291-b/reading/04781145.pdf</a></p></li>
+<li><p><strong>Cornac</strong> - A Comparative Framework for Multimodal Recommender Systems. <a class="reference external" href="https://cornac.preferred.ai/">https://cornac.preferred.ai/</a></p></li>
+</ol>
+</div>
+</div>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./examples/02_model_collaborative_filtering"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+              </div>
+              
+        
+            
+
+
+
+<div class='prev-next-bottom'>
+    
+
+</div>
+        
+        </div>
+    </div>
+    <footer class="footer">
+    <div class="container">
+      <p>
+        
+          By The Jupyter Book community<br/>
+        
+            &copy; Copyright 2021.<br/>
+      </p>
+    </div>
+  </footer>
+</main>
+
+
+      </div>
+    </div>
+  
+  <script src="../../_static/js/index.1c5a1a01449ed65a7b51.js"></script>
+
+  
+  </body>
+</html>
