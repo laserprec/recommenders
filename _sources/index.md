@@ -1,6 +1,6 @@
 ````{margin}
 ```sh
-pip install recommenders[examples]
+pip install recommenders
 ```
 <a class="github-button" href="https://github.com/microsoft/recommenders" data-icon="octicon-star" style="margin:auto" data-size="large" data-show-count="false" aria-label="Star us microsoft/recommenders on GitHub">Star Us</a><script async defer src="https://buttons.github.io/buttons.js"></script>
 ````
